@@ -1,0 +1,13 @@
+.h1 {
+    font-weight: bold;
+}
+
+#photometric_diagram {
+    background-color: @view_bg_color;
+    border: 1px solid @shade_color;
+    border-radius: 10px;
+}
+
+.unknown_value {
+    color: @shade_color;
+}
