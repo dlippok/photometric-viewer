@@ -3,7 +3,7 @@ from gi.repository.Gdk import Clipboard, ContentProvider
 from gi.repository.Gtk import Box, Orientation, Label, SelectionMode, Button
 from gi.repository.Pango import EllipsizeMode
 
-from model.photometry import Photometry
+from photometric_viewer.model.photometry import Photometry
 
 
 class LuminaireProperties(Gtk.ListBox):

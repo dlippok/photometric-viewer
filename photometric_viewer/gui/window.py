@@ -2,9 +2,9 @@ from gi.repository import Adw, Gtk, Gio
 from gi.repository.Gtk import Label, Separator, PackType, Orientation, ScrolledWindow, PolicyType, Button, \
     FileChooserDialog, Filter, FileFilter
 
-from formats.ies import import_from_file
-from gui.content import MainContent
-from model.photometry import Photometry
+from photometric_viewer.formats.ies import import_from_file
+from photometric_viewer.gui.content import MainContent
+from photometric_viewer.model.photometry import Photometry
 
 
 class MainWindow(Adw.Window):

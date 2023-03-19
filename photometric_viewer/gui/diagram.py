@@ -3,8 +3,8 @@ import math
 import cairo
 from gi.repository import Gtk
 
-from model.photometry import Photometry
-from utils.plotters import LightDistributionPlotter
+from photometric_viewer.model.photometry import Photometry
+from photometric_viewer.utils.plotters import LightDistributionPlotter
 
 
 class PhotometricDiagram(Gtk.DrawingArea):

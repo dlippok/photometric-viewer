@@ -1,8 +1,8 @@
 import math
 
 import cairo
-from model.photometry import Photometry
-from utils.coordinates import cartesian_to_screen
+from photometric_viewer.model.photometry import Photometry
+from photometric_viewer.utils.coordinates import cartesian_to_screen
 
 
 class LightDistributionPlotter:

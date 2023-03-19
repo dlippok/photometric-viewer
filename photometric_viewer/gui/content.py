@@ -1,10 +1,10 @@
 from gi.repository import Gtk
 from gi.repository.Gtk import Orientation
-from model.photometry import Photometry
 
-from gui.diagram import PhotometricDiagram
-from gui.header import Header
-from gui.properties import LuminaireProperties
+from photometric_viewer.model.photometry import Photometry
+from photometric_viewer.gui.diagram import PhotometricDiagram
+from photometric_viewer.gui.header import Header
+from photometric_viewer.gui.properties import LuminaireProperties
 
 
 class MainContent(Gtk.Box):

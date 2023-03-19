@@ -1,5 +1,6 @@
 from typing import IO
 
+from photometric_viewer.model.photometry import Photometry, PhotometryMetadata
 
 
 def _get_n_values(f: IO, n: int):
