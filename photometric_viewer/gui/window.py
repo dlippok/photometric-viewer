@@ -1,3 +1,5 @@
+import io
+
 from gi.repository import Adw, Gtk, Gio
 from gi.repository.Gtk import Label, Orientation, ScrolledWindow, PolicyType, Button, \
     FileChooserDialog, FileFilter
@@ -5,11 +7,13 @@ from gi.repository.Gtk import Label, Orientation, ScrolledWindow, PolicyType, Bu
 from photometric_viewer.formats.ies import import_from_file
 from photometric_viewer.gui.content import PhotometryContent
 from photometric_viewer.model.photometry import Photometry
+from photometric_viewer.utils.io import gio_file_stream
 
 
 class MainWindow(Adw.Window):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.opened_photometry = None
 
         self.set_default_size(500, 600)
         self.set_title(title='IES preview')
@@ -37,6 +41,7 @@ class MainWindow(Adw.Window):
         photometry_content = PhotometryContent()
         photometry_content.set_photometry(photometry)
         self.clamp.set_child(photometry_content)
+        self.opened_photometry = photometry
 
     def display_empty_content(self):
         box = Gtk.Box(orientation=Orientation.VERTICAL, valign=Gtk.Align.CENTER, spacing=16)
@@ -63,7 +68,7 @@ class MainWindow(Adw.Window):
     def on_open_response(self, dialog: FileChooserDialog, response):
         if response == Gtk.ResponseType.ACCEPT:
             file: Gio.File = dialog.get_file()
-            with open(file.get_path()) as f:
+            with gio_file_stream(file) as f:
                 self.open_photometry(import_from_file(f))
         dialog.close()
 

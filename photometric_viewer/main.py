@@ -2,6 +2,9 @@ import os
 
 import gi
 
+from photometric_viewer.formats.ies import import_from_file
+from photometric_viewer.utils.io import gio_file_stream
+
 gi.require_version(namespace='Gtk', version='4.0')
 gi.require_version(namespace='Adw', version='1')
 
@@ -13,17 +16,12 @@ import sys
 class Application(Adw.Application):
     def __init__(self):
         super().__init__(application_id='info.dalee.photometric-viewer',
-                         flags=Gio.ApplicationFlags.FLAGS_NONE)
+                         flags=Gio.ApplicationFlags.HANDLES_OPEN | Gio.ApplicationFlags.NON_UNIQUE)
         self.win = None
 
-    def do_startup(self):
-        Adw.Application.do_startup(self)
+    def create_window(self):
+        self.win = MainWindow(application=self)
 
-    def do_activate(self):
-        self.win = self.props.active_window
-        if not self.win:
-            self.win = MainWindow(application=self)
-        self.win.present()
         css_provider = Gtk.CssProvider()
         css_provider.load_from_path(os.path.dirname(__file__) + "/styles/style.css")
 
@@ -31,8 +29,23 @@ class Application(Adw.Application):
             Gdk.Display.get_default(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
         )
 
+    def do_startup(self):
+        Adw.Application.do_startup(self)
+        self.create_window()
+
+    def do_activate(self):
+        self.props.active_window.present()
+
     def do_shutdown(self):
         Adw.Application.do_shutdown(self)
+
+    def do_open(self, *args, **kwargs):
+        file: Gio.File = args[0][0]
+        with gio_file_stream(file) as f:
+            photometry = import_from_file(f)
+            self.win.open_photometry(photometry)
+        self.props.active_window.present()
+
 
 def run():
     app = Application()
