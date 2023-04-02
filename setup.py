@@ -11,13 +11,13 @@ setup(name='photometric-viewer',
       entry_points={
         'console_scripts': ['photometric-viewer=photometric_viewer.main:run'],
       },
-      package_data = {
+      package_data={
             'photometric_viewer': ['styles/style.css'],
-
       },
       data_files=[
             ('share/icons/hicolor/scalable/apps', ['data/icons/photometric-viewer.svg']),
             ('share/icons/hicolor/symbolic/apps', ['data/icons/photometric-viewer-symbolic.svg']),
-            ('share/applications', ['data/desktop/info.dalee.photometric-viewer.desktop'])
+            ('share/applications', ['data/desktop/info.dalee.photometric-viewer.desktop']),
+            ('share/mime/packages', ['data/desktop/info.dalee.photometric-viewer.mime.xml'])
       ],
       zip_safe=False)

@@ -9,3 +9,4 @@ Categories=GNOME;Graphics;Viewer;DataVisualization;Engineering
 OnlyShowIn=GNOME;XFCE;
 Keywords=Photometry;Photometric;IES;IESNA;Lighting
 SingleMainWindow=false
+MimeType=application/x-iesna
