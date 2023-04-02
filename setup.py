@@ -13,5 +13,11 @@ setup(name='photometric-viewer',
       },
       package_data = {
             'photometric_viewer': ['styles/style.css'],
+
       },
+      data_files=[
+            ('share/icons/hicolor/scalable/apps', ['data/icons/photometric-viewer.svg']),
+            ('share/icons/hicolor/symbolic/apps', ['data/icons/photometric-viewer-symbolic.svg']),
+            ('share/applications', ['data/desktop/info.dalee.photometric-viewer.desktop'])
+      ],
       zip_safe=False)

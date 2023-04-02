@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="128"
+   height="128"
+   viewBox="0 0 33.866666 33.866668"
+   version="1.1"
+   id="svg5"
+   inkscape:export-filename="/home/dalee/bitmap.png"
+   inkscape:export-xdpi="72.57"
+   inkscape:export-ydpi="72.57"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="photometric-viewer-symbolic.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     units="px"
+     showguides="false"
+     inkscape:zoom="1.726283"
+     inkscape:cx="76.464869"
+     inkscape:cy="17.668019"
+     inkscape:window-width="1920"
+     inkscape:window-height="1016"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <linearGradient
+       id="linearGradient13462"
+       inkscape:swatch="solid">
+      <stop
+         style="stop-color:#b94545;stop-opacity:1;"
+         offset="0"
+         id="stop13460" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient12624"
+       inkscape:swatch="solid">
+      <stop
+         style="stop-color:#aa8800;stop-opacity:1;"
+         offset="0"
+         id="stop12622" />
+    </linearGradient>
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="path19122"
+       style="opacity:1;fill:none;fill-opacity:0.925797;fill-rule:evenodd;stroke:#5d656b;stroke-width:2.11666667;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 27.075842,14.579359 c 0,2.440334 -2.576271,5.994761 -4.267166,7.648472 -1.851333,1.810626 -0.09234,6.270886 -5.779826,6.315716 -5.639572,0.04449 -4.801083,-5.423792 -6.51304,-6.627834 -2.4064825,-1.692512 -3.7249854,-4.349191 -3.7249854,-7.336354 0,-5.1122177 4.5409534,-9.256486 10.1425084,-9.256486 5.601552,0 10.142509,4.1442683 10.142509,9.256486 z"
+       sodipodi:nodetypes="sssssss" />
+  </g>
+</svg>
