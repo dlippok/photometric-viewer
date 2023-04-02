@@ -30,7 +30,7 @@ class LuminaireProperties(Gtk.ListBox):
         )
         value_label.set_ellipsize(EllipsizeMode.END)
         value_label.set_tooltip_text(value)
-        value_label.set_width_chars(10)
+        value_label.set_width_chars(8)
 
         copy_button: Button = Button.new_from_icon_name("edit-copy")
         copy_button.connect("clicked", self.on_copy_clicked, value)

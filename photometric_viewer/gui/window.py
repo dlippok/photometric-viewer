@@ -1,5 +1,3 @@
-import io
-
 from gi.repository import Adw, Gtk, Gio
 from gi.repository.Gtk import Label, Orientation, ScrolledWindow, PolicyType, Button, \
     FileChooserDialog, FileFilter
@@ -15,8 +13,8 @@ class MainWindow(Adw.Window):
         super().__init__(**kwargs)
         self.opened_photometry = None
 
-        self.set_default_size(500, 600)
-        self.set_title(title='IES preview')
+        self.set_default_size(600, 600)
+        self.set_title(title='Photometric Viewer')
 
         self.clamp = Adw.Clamp()
 
@@ -63,6 +61,7 @@ class MainWindow(Adw.Window):
         dialog.add_button("Cancel", Gtk.ResponseType.CANCEL)
         dialog.add_filter(ies_filter)
         dialog.add_filter(all_files_filter)
+        dialog.set_transient_for(self)
         dialog.show()
 
     def on_open_response(self, dialog: FileChooserDialog, response):
@@ -76,4 +75,3 @@ class MainWindow(Adw.Window):
         if photometry.metadata.luminaire:
             self.set_title(title=photometry.metadata.luminaire)
         self.display_photometry_content(photometry)
-
