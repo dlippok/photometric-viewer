@@ -1,9 +1,9 @@
 from gi.repository import Adw, Gtk, Gio
-from gi.repository.Gtk import Label, Separator, PackType, Orientation, ScrolledWindow, PolicyType, Button, \
-    FileChooserDialog, Filter, FileFilter
+from gi.repository.Gtk import Label, Orientation, ScrolledWindow, PolicyType, Button, \
+    FileChooserDialog, FileFilter
 
 from photometric_viewer.formats.ies import import_from_file
-from photometric_viewer.gui.content import MainContent
+from photometric_viewer.gui.content import PhotometryContent
 from photometric_viewer.model.photometry import Photometry
 
 
@@ -14,13 +14,10 @@ class MainWindow(Adw.Window):
         self.set_default_size(500, 600)
         self.set_title(title='IES preview')
 
-        self.main_content = MainContent()
-
-        clamp = Adw.Clamp()
-        clamp.set_child(self.main_content)
+        self.clamp = Adw.Clamp()
 
         scrolled_window = ScrolledWindow()
-        scrolled_window.set_child(clamp)
+        scrolled_window.set_child(self.clamp)
         scrolled_window.set_vexpand(True)
         scrolled_window.set_policy(PolicyType.NEVER, PolicyType.AUTOMATIC)
 
@@ -34,6 +31,19 @@ class MainWindow(Adw.Window):
         box.append(scrolled_window)
 
         self.set_content(box)
+        self.display_empty_content()
+
+    def display_photometry_content(self, photometry):
+        photometry_content = PhotometryContent()
+        photometry_content.set_photometry(photometry)
+        self.clamp.set_child(photometry_content)
+
+    def display_empty_content(self):
+        box = Gtk.Box(orientation=Orientation.VERTICAL, valign=Gtk.Align.CENTER, spacing=16)
+
+        box.append(Label(label="No content", name="no-content-header"))
+        box.append(Label(label="Open photometric file to display it here", name="no-content-subtitle"))
+        self.clamp.set_child(box)
 
     def on_open_clicked(self, button):
         ies_filter = FileFilter(name="IESNA (*.ies)")
@@ -60,5 +70,5 @@ class MainWindow(Adw.Window):
     def open_photometry(self, photometry: Photometry):
         if photometry.metadata.luminaire:
             self.set_title(title=photometry.metadata.luminaire)
-        self.main_content.set_photometry(photometry)
+        self.display_photometry_content(photometry)
 

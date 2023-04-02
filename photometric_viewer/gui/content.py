@@ -7,7 +7,7 @@ from photometric_viewer.gui.header import Header
 from photometric_viewer.gui.properties import LuminaireProperties
 
 
-class MainContent(Gtk.Box):
+class PhotometryContent(Gtk.Box):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.diagram = PhotometricDiagram()
