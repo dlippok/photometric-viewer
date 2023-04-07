@@ -1,4 +1,4 @@
-# Photometric viewer
+# Photometric Viewer
 GTK 4 bases application for viewing IES photometric files.
 
 ![Screenshot](docs/screenshots/Screenshot.png "Screenshot")
@@ -13,4 +13,4 @@ pip3 install .
 
 ## Authors
 
-[Damian Lippok](https://github.com/dlippok)
+- [Damian Lippok](https://github.com/dlippok)
