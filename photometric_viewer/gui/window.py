@@ -1,6 +1,6 @@
 from gi.repository import Adw, Gtk, Gio
 from gi.repository.Gtk import Label, Orientation, ScrolledWindow, PolicyType, Button, \
-    FileChooserDialog, FileFilter
+    FileChooserDialog, FileFilter, FileChooserNative
 
 from photometric_viewer.formats.ies import import_from_file
 from photometric_viewer.gui.content import PhotometryContent
@@ -32,6 +32,22 @@ class MainWindow(Adw.Window):
         box.append(header_bar)
         box.append(scrolled_window)
 
+        ies_filter = FileFilter(name="IESNA (*.ies)")
+        ies_filter.add_pattern("*.ies")
+
+        all_files_filter = FileFilter(name="All Files")
+        all_files_filter.add_pattern("*")
+
+        self.file_chooser = FileChooserNative(
+            action=Gtk.FileChooserAction.OPEN,
+            select_multiple=False,
+            modal=True,
+            transient_for=self
+        )
+        self.file_chooser.connect("response", self.on_open_response)
+        self.file_chooser.add_filter(ies_filter)
+        self.file_chooser.add_filter(all_files_filter)
+
         self.set_content(box)
         self.display_empty_content()
 
@@ -49,27 +65,13 @@ class MainWindow(Adw.Window):
         self.clamp.set_child(box)
 
     def on_open_clicked(self, button):
-        ies_filter = FileFilter(name="IESNA (*.ies)")
-        ies_filter.add_pattern("*.ies")
-
-        all_files_filter = FileFilter(name="All Files")
-        all_files_filter.add_pattern("*")
-
-        dialog = FileChooserDialog()
-        dialog.connect("response", self.on_open_response)
-        dialog.add_button("Open", Gtk.ResponseType.ACCEPT)
-        dialog.add_button("Cancel", Gtk.ResponseType.CANCEL)
-        dialog.add_filter(ies_filter)
-        dialog.add_filter(all_files_filter)
-        dialog.set_transient_for(self)
-        dialog.show()
+        self.file_chooser.show()
 
     def on_open_response(self, dialog: FileChooserDialog, response):
         if response == Gtk.ResponseType.ACCEPT:
             file: Gio.File = dialog.get_file()
             with gio_file_stream(file) as f:
                 self.open_photometry(import_from_file(f))
-        dialog.close()
 
     def open_photometry(self, photometry: Photometry):
         if photometry.metadata.luminaire:
