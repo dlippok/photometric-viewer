@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+    <id>info.dalee.photometric-viewer</id>
+    <launchable type="desktop-id">info.dalee.photometric-viewer.desktop</launchable>
+    <name>Photometric Viewer</name>
+    <summary>GTK 4 bases application for viewing IES photometric files.</summary>
+    <description>
+        <p>Allows viewing light distribution curves and metadata of IESNA photometric files.</p>
+    </description>
+    <screenshots>
+        <screenshot type="default">
+            <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Screenshot.png</image>
+        </screenshot>
+    </screenshots>
+    <project_license>MIT</project_license>
+    <metadata_license>CC0-1.0</metadata_license>
+    <url type="bugtracker">https://github.com/dlippok/photometric-viewer/issues</url>
+    <update_contact>mail.dalee_at_gmail.com</update_contact>
+
+    <content_rating type="oars-1.1" />>
+
+    <requires>
+        <display_length compare="gt">xsmall</display_length>
+        <internet>offline-only</internet>
+    </requires>
+
+    <releases>
+        <release version="-1.1.0" date="2023-04-07"/>
+    </releases>
+    <url type="homepage">https://github.com/dlippok/photometric-viewer</url>
+</component>
