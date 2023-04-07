@@ -2,7 +2,7 @@
 Name=Photometric Viewer
 GenericName=Viewing tool for photometric files
 Exec=photometric-viewer %f
-Icon=info.dalee.photometric-viewer
+Icon=io.github.dlippok.photometric-viewer
 Terminal=false
 Type=Application
 Categories=GNOME;Graphics;Viewer;DataVisualization;Engineering

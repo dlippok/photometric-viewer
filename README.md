@@ -1,5 +1,5 @@
 # Photometric Viewer
-GTK 4 bases application for viewing IES photometric files.
+GTK 4 based application for viewing IES photometric files.
 
 ![Screenshot](docs/screenshots/Screenshot.png "Screenshot")
 

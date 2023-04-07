@@ -15,10 +15,10 @@ setup(name='photometric-viewer',
             'photometric_viewer': ['styles/style.css'],
       },
       data_files=[
-            ('share/icons/hicolor/scalable/apps', ['data/icons/info.dalee.photometric-viewer.svg']),
-            ('share/icons/hicolor/symbolic/apps', ['data/icons/info.dalee.photometric-viewer-symbolic.svg']),
-            ('share/applications', ['data/desktop/info.dalee.photometric-viewer.desktop']),
-            ('share/mime/packages', ['data/desktop/info.dalee.photometric-viewer.mime.xml']),
-            ('share/metainfo', ['data/info.dalee.photometric-viewer.metainfo.xml'])
+            ('share/icons/hicolor/scalable/apps', ['data/icons/io.github.dlippok.photometric-viewer.svg']),
+            ('share/icons/hicolor/symbolic/apps', ['data/icons/io.github.dlippok.photometric-viewer-symbolic.svg']),
+            ('share/applications', ['data/desktop/io.github.dlippok.photometric-viewer.desktop']),
+            ('share/mime/packages', ['data/desktop/io.github.dlippok.photometric-viewer.mime.xml']),
+            ('share/metainfo', ['data/io.github.dlippok.photometric-viewer.metainfo.xml'])
       ],
       zip_safe=False)
