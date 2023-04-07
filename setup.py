@@ -15,8 +15,8 @@ setup(name='photometric-viewer',
             'photometric_viewer': ['styles/style.css'],
       },
       data_files=[
-            ('share/icons/hicolor/scalable/apps', ['data/icons/photometric-viewer.svg']),
-            ('share/icons/hicolor/symbolic/apps', ['data/icons/photometric-viewer-symbolic.svg']),
+            ('share/icons/hicolor/scalable/apps', ['data/icons/info.dalee.photometric-viewer.svg']),
+            ('share/icons/hicolor/symbolic/apps', ['data/icons/info.dalee.photometric-viewer-symbolic.svg']),
             ('share/applications', ['data/desktop/info.dalee.photometric-viewer.desktop']),
             ('share/mime/packages', ['data/desktop/info.dalee.photometric-viewer.mime.xml'])
       ],
