@@ -1,6 +1,7 @@
 from typing import IO
 
-from photometric_viewer.model.photometry import Photometry, PhotometryMetadata
+from photometric_viewer.formats.exceptions import InvalidLuminousOpeningException
+from photometric_viewer.model.photometry import Photometry, PhotometryMetadata, LuminousOpening, LuminousOpeningShape
 
 
 def _get_n_values(f: IO, n: int):
@@ -26,6 +27,32 @@ def _read_non_empty_line(f: IO):
         else:
             return line
 
+
+def create_luminous_opening(attributes):
+    factor = 0
+    match attributes["luminous_opening_units"]:
+        case 1:
+            factor = 0.3048
+        case 2:
+            factor = 1
+
+    match (attributes["luminous_opening_width"], attributes["luminous_opening_length"]):
+        case w, l if w > 0 and l > 0:
+            return LuminousOpening(w * factor, l * factor, LuminousOpeningShape.RECTANGULAR)
+        case w, l if w > 0 and l == 0:
+            return LuminousOpening(w * factor, w * factor, LuminousOpeningShape.RECTANGULAR)
+        case w, l if w == 0 and l > 0:
+            return LuminousOpening(l * factor, l * factor, LuminousOpeningShape.RECTANGULAR)
+        case w, l if w < 0 and l < 0:
+            return LuminousOpening(abs(w) * factor, abs(l) * factor, LuminousOpeningShape.ROUND)
+        case w, l if w < 0 and l == 0:
+            return LuminousOpening(abs(w) * factor, abs(w) * factor, LuminousOpeningShape.ROUND)
+        case w, l if w == 0 and l < 0:
+            return LuminousOpening(abs(l) * factor, abs(l) * factor, LuminousOpeningShape.ROUND)
+        case _:
+            raise InvalidLuminousOpeningException()
+
+
 def import_from_file(f: IO):
     ies_header = _read_non_empty_line(f)
 
@@ -45,10 +72,11 @@ def import_from_file(f: IO):
         "multiplying_factor": float(raw_attributes[2]),
         "n_v_angles": int(raw_attributes[3]),
         "n_h_angles": int(raw_attributes[4]),
-        "luminous_opening_units": int(raw_attributes[5]),
-        "luminous_opening_width": float(raw_attributes[6]),
-        "luminous_opening_height": float(raw_attributes[7]),
+        "photometer_type": int(raw_attributes[5]),
+        "luminous_opening_units": int(raw_attributes[6]),
+        "luminous_opening_width": float(raw_attributes[7]),
         "luminous_opening_length": float(raw_attributes[8]),
+        "luminous_opening_height": float(raw_attributes[9]),
     }
 
     [ballast_factor, lamp_photometric_factor, input_watts] = _get_n_values(f, 3)
@@ -74,6 +102,7 @@ def import_from_file(f: IO):
         v_angles=v_angles,
         h_angles=h_angles,
         c_values=candela_values,
+        luminous_opening=create_luminous_opening(attributes),
         metadata=PhotometryMetadata(
             luminaire=metadata.pop("LUMINAIRE", None),
             manufacturer=metadata.pop("MANUFAC", None),
