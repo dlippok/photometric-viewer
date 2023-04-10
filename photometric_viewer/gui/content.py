@@ -1,6 +1,7 @@
 from gi.repository import Gtk
 from gi.repository.Gtk import Orientation
 
+from photometric_viewer.gui.geometry import LuminaireGeometry
 from photometric_viewer.model.photometry import Photometry
 from photometric_viewer.gui.diagram import PhotometricDiagram
 from photometric_viewer.gui.header import Header
@@ -12,6 +13,7 @@ class PhotometryContent(Gtk.Box):
         super().__init__(**kwargs)
         self.diagram = PhotometricDiagram()
         self.properties = LuminaireProperties()
+        self.geometry = LuminaireGeometry()
 
         self.set_orientation(Orientation.VERTICAL)
         self.set_spacing(16)
@@ -23,10 +25,14 @@ class PhotometryContent(Gtk.Box):
         self.append(Header(label="Photometric diagram", xalign=0))
         self.append(self.diagram)
 
+        self.append(Header(label="Geometry", xalign=0))
+        self.append(self.geometry)
+
         self.append(Header(label="Properties", xalign=0))
         self.append(self.properties)
 
     def set_photometry(self, photometry: Photometry):
         self.diagram.set_photometry(photometry)
+        self.geometry.set_photometry(photometry)
         self.properties.set_photometry(photometry)
 
