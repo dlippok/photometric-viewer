@@ -1,0 +1,2 @@
+class InvalidLuminousOpeningException(Exception):
+    pass
