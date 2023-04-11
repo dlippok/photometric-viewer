@@ -14,6 +14,7 @@ class LuminousOpeningShape(Enum):
     RECTANGULAR = 1
     ROUND = 2
 
+
 @dataclass
 class LuminousOpening:
     width: float
@@ -22,12 +23,29 @@ class LuminousOpening:
 
 
 @dataclass
+class Lamps:
+    number_of_lamps: int
+    description: str | None
+    catalog_number: str | None
+    position: str | None
+    lumens_per_lamp: float | None
+    is_absolute: bool
+
+
+@dataclass
+class Ballast:
+    description: str | None
+    catalog_number: str | None
+
+@dataclass
 class Photometry:
     lumens: float
     v_angles: List[float]
     h_angles: List[float]
     c_values: Dict[Tuple[float, float], float]
     luminous_opening: LuminousOpening
+    lamps: Lamps
+    ballast: Ballast
     metadata: PhotometryMetadata
 
     def get_values_for_c_angle(self, angle) -> Dict[float, float]:
