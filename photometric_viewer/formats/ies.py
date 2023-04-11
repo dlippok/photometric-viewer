@@ -1,7 +1,8 @@
 from typing import IO
 
 from photometric_viewer.formats.exceptions import InvalidLuminousOpeningException
-from photometric_viewer.model.photometry import Photometry, PhotometryMetadata, LuminousOpening, LuminousOpeningShape
+from photometric_viewer.model.photometry import Photometry, PhotometryMetadata, LuminousOpening, LuminousOpeningShape, \
+    Lamps, Ballast
 
 
 def _get_n_values(f: IO, n: int):
@@ -103,6 +104,19 @@ def import_from_file(f: IO):
         h_angles=h_angles,
         c_values=candela_values,
         luminous_opening=create_luminous_opening(attributes),
+        lamps=Lamps(
+            number_of_lamps=attributes["numer_of_lamps"],
+            lumens_per_lamp=attributes["lumens_per_lamp"] if attributes["lumens_per_lamp"] >= 0 else None,
+            is_absolute=attributes["lumens_per_lamp"] < 0,
+            description=metadata.pop("LAMP", None),
+            catalog_number=metadata.pop("LAMPCAT", None),
+            position=metadata.pop("LAMPPOSITION", None)
+
+        ),
+        ballast=Ballast(
+            description=metadata.pop("BALLAST", None),
+            catalog_number=metadata.pop("BALLASTCAT", None),
+        ),
         metadata=PhotometryMetadata(
             luminaire=metadata.pop("LUMINAIRE", None),
             manufacturer=metadata.pop("MANUFAC", None),
