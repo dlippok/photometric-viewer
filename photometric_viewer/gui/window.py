@@ -1,9 +1,15 @@
+from typing import Optional
+
 from gi.repository import Adw, Gtk, Gio
+from gi.repository.Adw import ViewStackPage
 from gi.repository.Gtk import Label, Orientation, ScrolledWindow, PolicyType, Button, \
     FileChooserDialog, FileFilter, FileChooserNative
 
 from photometric_viewer.formats.ies import import_from_file
 from photometric_viewer.gui.content import PhotometryContent
+
+from photometric_viewer.gui.empty import EmptyPage
+from photometric_viewer.gui.source import SourceView
 from photometric_viewer.model.photometry import Photometry
 from photometric_viewer.utils.io import gio_file_stream
 
@@ -11,26 +17,28 @@ from photometric_viewer.utils.io import gio_file_stream
 class MainWindow(Adw.Window):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.opened_photometry = None
+        self.opened_photometry: Optional[Photometry] = None
 
-        self.set_default_size(600, 600)
+        self.set_default_size(550, 700)
         self.set_title(title='Photometric Viewer')
 
-        self.clamp = Adw.Clamp()
-
-        scrolled_window = ScrolledWindow()
-        scrolled_window.set_child(self.clamp)
-        scrolled_window.set_vexpand(True)
-        scrolled_window.set_policy(PolicyType.NEVER, PolicyType.AUTOMATIC)
+        self.content_bin = Adw.Bin()
+        self.content_bin.set_child(EmptyPage())
+        self.content_bin.set_vexpand(True)
 
         open_button = Button(label="Open")
         open_button.connect("clicked", self.on_open_clicked)
 
+        self.switcher_bar = Adw.ViewSwitcherTitle()
+        self.switcher_bar.set_title("Photometric Viewer")
+        self.switcher_bar.set_visible(True)
+
         box = Gtk.Box(orientation=Orientation.VERTICAL)
         header_bar = Adw.HeaderBar()
+        header_bar.set_title_widget(self.switcher_bar)
         header_bar.pack_start(open_button)
         box.append(header_bar)
-        box.append(scrolled_window)
+        box.append(self.content_bin)
 
         ies_filter = FileFilter(name="IESNA (*.ies)")
         ies_filter.add_pattern("*.ies")
@@ -49,20 +57,25 @@ class MainWindow(Adw.Window):
         self.file_chooser.add_filter(all_files_filter)
 
         self.set_content(box)
-        self.display_empty_content()
 
-    def display_photometry_content(self, photometry):
+    def display_photometry_content(self, photometry: Photometry):
         photometry_content = PhotometryContent()
         photometry_content.set_photometry(photometry)
-        self.clamp.set_child(photometry_content)
+
+        source_view = SourceView()
+        source_view.set_photometry(photometry)
+
+        view_stack = Adw.ViewStack()
+
+        properties_page: ViewStackPage = view_stack.add_titled(photometry_content, "photometry", "Photometry")
+        properties_page.set_icon_name("view-reveal-symbolic")
+
+        source_page: ViewStackPage = view_stack.add_titled(source_view, "source", "Source")
+        source_page.set_icon_name("view-paged-symbolic")
+
+        self.content_bin.set_child(view_stack)
+        self.switcher_bar.set_stack(view_stack)
         self.opened_photometry = photometry
-
-    def display_empty_content(self):
-        box = Gtk.Box(orientation=Orientation.VERTICAL, valign=Gtk.Align.CENTER, spacing=16)
-
-        box.append(Label(label="No content", name="no-content-header"))
-        box.append(Label(label="Open photometric file to display it here", name="no-content-subtitle"))
-        self.clamp.set_child(box)
 
     def on_open_clicked(self, button):
         self.file_chooser.show()
