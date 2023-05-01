@@ -43,12 +43,12 @@
     </requires>
 
     <releases>
-        <release version="0.1.0" date="2023-04-07"/>
         <release version="0.2.0" date="2023-05-01">
             <description>
                 <p>Adds support for additional luminaire properties and displaying source text of photometric files.</p>
             </description>
         </release>
+        <release version="0.1.0" date="2023-04-07"/>
     </releases>
     <url type="homepage">https://github.com/dlippok/photometric-viewer</url>
 </component>
