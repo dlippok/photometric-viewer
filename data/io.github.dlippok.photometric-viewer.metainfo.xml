@@ -9,7 +9,19 @@
     </description>
     <screenshots>
         <screenshot type="default">
-            <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Screenshot.png</image>
+            <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Desktop.png</image>
+        </screenshot>
+        <screenshot>
+            <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Main.png</image>
+        </screenshot>
+        <screenshot>
+            <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Properties.png</image>
+        </screenshot>
+        <screenshot>
+            <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Source.png</image>
+        </screenshot>
+        <screenshot>
+            <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Dark.png</image>
         </screenshot>
     </screenshots>
     <project_license>MIT</project_license>
@@ -19,13 +31,19 @@
 
     <content_rating type="oars-1.1" />>
 
+    <supports>
+        <control>pointing</control>
+        <control>keyboard</control>
+        <control>touch</control>
+    </supports>
+
     <requires>
         <display_length compare="gt">xsmall</display_length>
         <internet>offline-only</internet>
     </requires>
 
     <releases>
-        <release version="0.1.0" date="2023-04-07"/>
+        <release version="0.2.0" date="2023-05-01"/>
     </releases>
     <url type="homepage">https://github.com/dlippok/photometric-viewer</url>
 </component>
