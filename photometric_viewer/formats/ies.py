@@ -98,6 +98,9 @@ def import_from_file(f: IO):
             candela_values[(h_angle, v_angle)] = value
             n += 1
 
+    f.seek(0)
+    source = f.read()
+
     return Photometry(
         lumens=attributes["lumens_per_lamp"] * attributes["numer_of_lamps"] if attributes["lumens_per_lamp"] >= 0 else None,
         v_angles=v_angles,
@@ -120,7 +123,8 @@ def import_from_file(f: IO):
         metadata=PhotometryMetadata(
             luminaire=metadata.pop("LUMINAIRE", None),
             manufacturer=metadata.pop("MANUFAC", None),
-            additional_properties=metadata
+            additional_properties=metadata,
+            file_source=source
         )
     )
 

@@ -8,6 +8,7 @@ class PhotometryMetadata:
     luminaire: str
     manufacturer: str
     additional_properties: Dict[str, str]
+    file_source: str
 
 
 class LuminousOpeningShape(Enum):
