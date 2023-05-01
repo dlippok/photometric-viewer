@@ -59,11 +59,19 @@ def import_from_file(f: IO):
 
     metadata = {}
     next_line = _read_non_empty_line(f)
+    last_key = None
     while next_line.startswith("["):
         metadata_line = next_line.split("]")
         metadata_key = metadata_line[0].strip("[").strip()
         metadata_value = metadata_line[1].strip()
-        metadata[metadata_key] = metadata_value
+        if metadata_key == 'MORE' and last_key is not None:
+            metadata[last_key] = metadata[last_key] + "\n" + metadata_value
+        elif metadata_key in metadata.keys():
+            metadata[metadata_key] = metadata[metadata_key] + "\n" + metadata_value
+            last_key = metadata_key
+        else:
+            metadata[metadata_key] = metadata_value
+            last_key = metadata_key
         next_line = _read_non_empty_line(f)
 
     raw_attributes = _get_n_values(f, 10)
@@ -121,6 +129,7 @@ def import_from_file(f: IO):
             catalog_number=metadata.pop("BALLASTCAT", None),
         ),
         metadata=PhotometryMetadata(
+            catalog_number=metadata.pop("LUMCAT", None),
             luminaire=metadata.pop("LUMINAIRE", None),
             manufacturer=metadata.pop("MANUFAC", None),
             additional_properties=metadata,
