@@ -6,6 +6,7 @@ from typing import Dict, Tuple, List
 @dataclass
 class PhotometryMetadata:
     luminaire: str
+    catalog_number: str
     manufacturer: str
     additional_properties: Dict[str, str]
     file_source: str
