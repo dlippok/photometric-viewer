@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='photometric-viewer',
-      version='0.1',
+      version='0.2',
       description='Viewing tool for photometric files',
       url='http://github.com/dlippok/photoetric-viewer',
       author='Damian Lippok',
