@@ -67,7 +67,7 @@ class MainWindow(Adw.Window):
 
         view_stack = Adw.ViewStack()
 
-        properties_page: ViewStackPage = view_stack.add_titled(photometry_content, "properties", "Photometry")
+        properties_page: ViewStackPage = view_stack.add_titled(photometry_content, "photometry", "Photometry")
         properties_page.set_icon_name("view-reveal-symbolic")
 
         source_page: ViewStackPage = view_stack.add_titled(source_view, "source", "Source")
