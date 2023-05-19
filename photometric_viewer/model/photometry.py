@@ -12,16 +12,24 @@ class PhotometryMetadata:
     file_source: str
 
 
-class LuminousOpeningShape(Enum):
+class Shape(Enum):
     RECTANGULAR = 1
     ROUND = 2
 
 
 @dataclass
-class LuminousOpening:
+class LuminousOpeningGeometry:
     width: float
     length: float
-    shape: LuminousOpeningShape
+    shape: Shape
+
+
+@dataclass
+class LuminaireGeometry:
+    width: float
+    length: float
+    height: float
+    shape: Shape
 
 
 @dataclass
@@ -50,7 +58,8 @@ class Photometry:
 
     # Values in Candela for absolute photometry, cd/klm othewise
     c_values: Dict[Tuple[float, float], float]
-    luminous_opening: LuminousOpening
+    luminous_opening_geometry: LuminousOpeningGeometry
+    luminaire_geometry: LuminaireGeometry | None
     lamps: List[Lamps]
     ballast: Ballast | None
     metadata: PhotometryMetadata

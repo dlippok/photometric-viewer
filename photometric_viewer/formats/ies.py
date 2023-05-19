@@ -1,7 +1,7 @@
 from typing import IO
 
 from photometric_viewer.formats.exceptions import InvalidLuminousOpeningException
-from photometric_viewer.model.photometry import Photometry, PhotometryMetadata, LuminousOpening, LuminousOpeningShape, \
+from photometric_viewer.model.photometry import Photometry, PhotometryMetadata, LuminousOpeningGeometry, Shape, \
     Lamps, Ballast
 from photometric_viewer.utils.io import read_non_empty_line
 
@@ -30,17 +30,17 @@ def create_luminous_opening(attributes):
 
     match (attributes["luminous_opening_width"], attributes["luminous_opening_length"]):
         case w, l if w > 0 and l > 0:
-            return LuminousOpening(w * factor, l * factor, LuminousOpeningShape.RECTANGULAR)
+            return LuminousOpeningGeometry(w * factor, l * factor, Shape.RECTANGULAR)
         case w, l if w > 0 and l == 0:
-            return LuminousOpening(w * factor, w * factor, LuminousOpeningShape.RECTANGULAR)
+            return LuminousOpeningGeometry(w * factor, w * factor, Shape.RECTANGULAR)
         case w, l if w == 0 and l > 0:
-            return LuminousOpening(l * factor, l * factor, LuminousOpeningShape.RECTANGULAR)
+            return LuminousOpeningGeometry(l * factor, l * factor, Shape.RECTANGULAR)
         case w, l if w < 0 and l < 0:
-            return LuminousOpening(abs(w) * factor, abs(l) * factor, LuminousOpeningShape.ROUND)
+            return LuminousOpeningGeometry(abs(w) * factor, abs(l) * factor, Shape.ROUND)
         case w, l if w < 0 and l == 0:
-            return LuminousOpening(abs(w) * factor, abs(w) * factor, LuminousOpeningShape.ROUND)
+            return LuminousOpeningGeometry(abs(w) * factor, abs(w) * factor, Shape.ROUND)
         case w, l if w == 0 and l < 0:
-            return LuminousOpening(abs(l) * factor, abs(l) * factor, LuminousOpeningShape.ROUND)
+            return LuminousOpeningGeometry(abs(l) * factor, abs(l) * factor, Shape.ROUND)
         case _:
             raise InvalidLuminousOpeningException()
 
@@ -108,7 +108,8 @@ def import_from_file(f: IO):
         v_angles=v_angles,
         h_angles=h_angles,
         c_values=candela_values,
-        luminous_opening=create_luminous_opening(attributes),
+        luminous_opening_geometry=create_luminous_opening(attributes),
+        luminaire_geometry=None,
         lamps=[Lamps(
             number_of_lamps=attributes["numer_of_lamps"],
             lumens_per_lamp=attributes["lumens_per_lamp"] if attributes["lumens_per_lamp"] >= 0 else None,

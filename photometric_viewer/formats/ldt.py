@@ -1,15 +1,25 @@
 from typing import IO
 
-from photometric_viewer.model.photometry import Photometry, LuminousOpening, LuminousOpeningShape, Lamps, \
-    PhotometryMetadata
+from photometric_viewer.model.photometry import Photometry, LuminousOpeningGeometry, Shape, Lamps, \
+    PhotometryMetadata, LuminaireGeometry
 
 
-def _create_luminous_opening(opening_length, opening_width) -> LuminousOpening:
-    return LuminousOpening(
-        length=opening_length,
-        width=opening_width or opening_length,
-        shape=LuminousOpeningShape.RECTANGULAR if opening_width > 0 else LuminousOpeningShape.ROUND
+def _create_luminous_opening(length, width) -> LuminousOpeningGeometry:
+    return LuminousOpeningGeometry(
+        length=length,
+        width=width or length,
+        shape=Shape.RECTANGULAR if width > 0 else Shape.ROUND
     )
+
+
+def _create_luminaire_geometry(length, width, height) -> LuminaireGeometry:
+    return LuminaireGeometry(
+        length=length,
+        width=width or length,
+        height=height,
+        shape=Shape.RECTANGULAR if width > 0 else Shape.ROUND
+    )
+
 
 def import_from_file(f: IO):
     manufacturer = f.readline().strip()
@@ -120,7 +130,8 @@ def import_from_file(f: IO):
         v_angles=gamma_angles,
         h_angles=c_angles,
         c_values=values,
-        luminous_opening=_create_luminous_opening(opening_length, opening_width),
+        luminous_opening_geometry=_create_luminous_opening(opening_length, opening_width),
+        luminaire_geometry=_create_luminaire_geometry(luminaire_length, luminaire_width, luminaire_height),
         lamps=[Lamps(
             number_of_lamps=lamps["number_of_lamps"],
             lumens_per_lamp=lamps["luminous_flux"] / lamps["number_of_lamps"],

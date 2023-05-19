@@ -2,7 +2,7 @@ from gi.repository import Gtk, Adw
 from gi.repository.Gtk import Orientation, PolicyType, ScrolledWindow
 
 from photometric_viewer.gui.general import GeneralLuminaireInformation
-from photometric_viewer.gui.geometry import LuminaireGeometry
+from photometric_viewer.gui.geometry import LuminaireGeometryList
 from photometric_viewer.gui.lamps import LampAndBallast
 from photometric_viewer.model.photometry import Photometry
 from photometric_viewer.gui.diagram import PhotometricDiagram
@@ -15,7 +15,7 @@ class PhotometryContent(Adw.Bin):
         super().__init__(**kwargs)
         self.diagram = PhotometricDiagram()
         self.general_information = GeneralLuminaireInformation()
-        self.geometry = LuminaireGeometry()
+        self.geometry = LuminaireGeometryList()
         self.lamps_and_ballast = LampAndBallast()
         self.properties = LuminaireProperties()
 
