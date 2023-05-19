@@ -31,6 +31,9 @@ class Lamps:
     catalog_number: str | None
     position: str | None
     lumens_per_lamp: float | None
+    wattage: float | None
+    color: str | None
+    cri: int | None
     is_absolute: bool
 
 
@@ -41,13 +44,15 @@ class Ballast:
 
 @dataclass
 class Photometry:
-    lumens: float
+    is_absolute: bool
     v_angles: List[float]
     h_angles: List[float]
+
+    # Values in Candela for absolute photometry, cd/klm othewise
     c_values: Dict[Tuple[float, float], float]
     luminous_opening: LuminousOpening
-    lamps: Lamps
-    ballast: Ballast
+    lamps: List[Lamps]
+    ballast: Ballast | None
     metadata: PhotometryMetadata
 
     def get_values_for_c_angle(self, angle) -> Dict[float, float]:
