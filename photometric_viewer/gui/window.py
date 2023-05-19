@@ -6,9 +6,11 @@ from gi.repository.Gtk import Label, Orientation, ScrolledWindow, PolicyType, Bu
     FileChooserDialog, FileFilter, FileChooserNative
 
 from photometric_viewer.formats.ies import import_from_file
+from photometric_viewer.gui.about import AboutWindow
 from photometric_viewer.gui.content import PhotometryContent
 
 from photometric_viewer.gui.empty import EmptyPage
+from photometric_viewer.gui.menu import ApplicationMenuButton
 from photometric_viewer.gui.source import SourceView
 from photometric_viewer.model.photometry import Photometry
 from photometric_viewer.utils.io import gio_file_stream
@@ -21,6 +23,8 @@ class MainWindow(Adw.Window):
 
         self.set_default_size(550, 700)
         self.set_title(title='Photometric Viewer')
+
+        self.install_action("app.show_about_window", None, self.show_about_dialog)
 
         self.content_bin = Adw.Bin()
         self.content_bin.set_child(EmptyPage())
@@ -37,6 +41,7 @@ class MainWindow(Adw.Window):
         header_bar = Adw.HeaderBar()
         header_bar.set_title_widget(self.switcher_bar)
         header_bar.pack_start(open_button)
+        header_bar.pack_end(ApplicationMenuButton())
         box.append(header_bar)
         box.append(self.content_bin)
 
@@ -90,3 +95,7 @@ class MainWindow(Adw.Window):
         if photometry.metadata.luminaire:
             self.set_title(title=photometry.metadata.luminaire)
         self.display_photometry_content(photometry)
+
+    def show_about_dialog(self, *args):
+        window = AboutWindow()
+        window.show()
