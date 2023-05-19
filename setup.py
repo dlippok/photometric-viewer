@@ -21,4 +21,8 @@ setup(name='photometric-viewer',
             ('share/mime/packages', ['data/desktop/io.github.dlippok.photometric-viewer.mime.xml']),
             ('share/metainfo', ['data/io.github.dlippok.photometric-viewer.metainfo.xml'])
       ],
+      tests_require=[
+            'pytest'
+      ],
+      test_suite="tests",
       zip_safe=False)
