@@ -11,5 +11,5 @@ class GeneralLuminaireInformation(PropertyList):
 
         self.append(self._create_item(name="Catalog Number", value=photometry.metadata.catalog_number))
         self.append(self._create_item(name="Manufacturer", value=photometry.metadata.manufacturer))
-        self.append(self._create_item(name="Description", value=photometry.metadata.luminaire, wrap=True))
+        self.append(self._create_item(name="Description", value=photometry.metadata.luminaire))
 
