@@ -5,6 +5,7 @@ from photometric_viewer.model.photometry import Photometry, PhotometryMetadata, 
     Lamps
 from photometric_viewer.utils.io import read_non_empty_line
 
+
 def _get_n_values(f: IO, n: int):
     raw_values = []
     while n > 0:
@@ -81,13 +82,13 @@ def import_from_file(f: IO):
 
     [ballast_factor, lamp_photometric_factor, input_watts] = _get_n_values(f, 3)
 
-
     v_angles = [float(angle) for angle in _get_n_values(f, attributes["n_v_angles"])]
     h_angles = [float(angle) for angle in _get_n_values(f, attributes["n_h_angles"])]
 
     raw_values = _get_n_values(f, attributes["n_v_angles"] * attributes["n_h_angles"])
 
-    lumens = attributes["lumens_per_lamp"] * attributes["numer_of_lamps"] if attributes["lumens_per_lamp"] >= 0 else None
+    lumens = attributes["lumens_per_lamp"] * attributes["numer_of_lamps"] if attributes[
+                                                                                 "lumens_per_lamp"] >= 0 else None
 
     candela_values = {}
     relative_photomety_divider = lumens / 1000 if lumens else 1
@@ -133,4 +134,3 @@ def import_from_file(f: IO):
             file_source=source
         )
     )
-

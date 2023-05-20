@@ -1,5 +1,3 @@
-import math
-
 import cairo
 from gi.repository import Gtk
 
@@ -24,8 +22,3 @@ class PhotometricDiagram(Gtk.DrawingArea):
     def set_photometry(self, photometry: Photometry):
         self.photometry = photometry
         self.queue_draw()
-
-
-
-
-

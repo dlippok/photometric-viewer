@@ -17,4 +17,3 @@ def read_non_empty_line(f: IO):
             continue
         else:
             return line
-

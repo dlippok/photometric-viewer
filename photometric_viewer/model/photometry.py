@@ -53,7 +53,7 @@ class Photometry:
     v_angles: List[float]
     h_angles: List[float]
 
-    # Values in Candela for absolute photometry, cd/klm othewise
+    # Values in Candela for absolute photometry, cd/klm otherwise
     c_values: Dict[Tuple[float, float], float]
     dff: float | None
     lorl: float | None
