@@ -2,6 +2,8 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Dict, Tuple, List
 
+from photometric_viewer.model.units import LengthUnits
+
 
 @dataclass
 class PhotometryMetadata:
@@ -10,6 +12,7 @@ class PhotometryMetadata:
     manufacturer: str
     additional_properties: Dict[str, str]
     file_source: str
+    file_units: LengthUnits
 
 
 class Shape(Enum):

@@ -2,6 +2,7 @@ from typing import IO
 
 from photometric_viewer.model.photometry import Photometry, LuminousOpeningGeometry, Shape, Lamps, \
     PhotometryMetadata, LuminaireGeometry
+from photometric_viewer.model.units import LengthUnits
 
 
 def _create_luminous_opening(length, width) -> LuminousOpeningGeometry:
@@ -157,6 +158,7 @@ def import_from_file(f: IO):
             luminaire=luminaire_name,
             manufacturer=manufacturer,
             file_source=source,
+            file_units=LengthUnits.METERS,
             additional_properties={
                 "Luminaire type": _get_source_type(light_source_type),
                 "Measurement": measurement,

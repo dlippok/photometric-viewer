@@ -9,6 +9,7 @@ from photometric_viewer.model.photometry import Photometry
 from photometric_viewer.gui.diagram import PhotometricDiagram
 from photometric_viewer.gui.header import Header
 from photometric_viewer.gui.properties import LuminaireProperties
+from photometric_viewer.model.settings import Settings
 
 
 class PhotometryContent(Adw.Bin):
@@ -64,3 +65,6 @@ class PhotometryContent(Adw.Bin):
         self.geometry.set_photometry(photometry)
         self.lamps_and_ballast.set_photometry(photometry)
         self.properties.set_photometry(photometry)
+
+    def update_settings(self, settings: Settings):
+        self.geometry.update_settings(settings)
