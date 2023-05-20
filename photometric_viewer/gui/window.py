@@ -2,13 +2,11 @@ from typing import Optional
 
 from gi.repository import Adw, Gtk, Gio
 from gi.repository.Adw import ViewStackPage
-from gi.repository.Gtk import Label, Orientation, ScrolledWindow, PolicyType, Button, \
-    FileChooserDialog, FileFilter, FileChooserNative
+from gi.repository.Gtk import Orientation, Button, FileChooserDialog, FileFilter, FileChooserNative
 
 from photometric_viewer.formats.common import import_from_file
 from photometric_viewer.gui.about import AboutWindow
 from photometric_viewer.gui.content import PhotometryContent
-
 from photometric_viewer.gui.empty import EmptyPage
 from photometric_viewer.gui.menu import ApplicationMenuButton
 from photometric_viewer.gui.source import SourceView
