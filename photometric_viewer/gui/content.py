@@ -2,8 +2,9 @@ from gi.repository import Gtk, Adw
 from gi.repository.Gtk import Orientation, PolicyType, ScrolledWindow
 
 from photometric_viewer.gui.general import GeneralLuminaireInformation
-from photometric_viewer.gui.geometry import LuminaireGeometryList
+from photometric_viewer.gui.geometry import LuminaireGeometryProperties
 from photometric_viewer.gui.lamps import LampAndBallast
+from photometric_viewer.gui.photometry import LuminairePhotometricProperties
 from photometric_viewer.model.photometry import Photometry
 from photometric_viewer.gui.diagram import PhotometricDiagram
 from photometric_viewer.gui.header import Header
@@ -15,7 +16,8 @@ class PhotometryContent(Adw.Bin):
         super().__init__(**kwargs)
         self.diagram = PhotometricDiagram()
         self.general_information = GeneralLuminaireInformation()
-        self.geometry = LuminaireGeometryList()
+        self.photometric_properties = LuminairePhotometricProperties()
+        self.geometry = LuminaireGeometryProperties()
         self.lamps_and_ballast = LampAndBallast()
         self.properties = LuminaireProperties()
 
@@ -33,6 +35,9 @@ class PhotometryContent(Adw.Bin):
 
         box.append(Header(label="General information", xalign=0))
         box.append(self.general_information)
+
+        box.append(Header(label="Photometric properties", xalign=0))
+        box.append(self.photometric_properties)
 
         box.append(Header(label="Geometry", xalign=0))
         box.append(self.geometry)
@@ -55,6 +60,7 @@ class PhotometryContent(Adw.Bin):
     def set_photometry(self, photometry: Photometry):
         self.diagram.set_photometry(photometry)
         self.general_information.set_photometry(photometry)
+        self.photometric_properties.set_photometry(photometry)
         self.geometry.set_photometry(photometry)
         self.lamps_and_ballast.set_photometry(photometry)
         self.properties.set_photometry(photometry)

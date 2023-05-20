@@ -2,7 +2,7 @@ from typing import IO
 
 from photometric_viewer.formats.exceptions import InvalidLuminousOpeningException
 from photometric_viewer.model.photometry import Photometry, PhotometryMetadata, LuminousOpeningGeometry, Shape, \
-    Lamps, Ballast
+    Lamps
 from photometric_viewer.utils.io import read_non_empty_line
 
 def _get_n_values(f: IO, n: int):
@@ -110,6 +110,8 @@ def import_from_file(f: IO):
         c_values=candela_values,
         luminous_opening_geometry=create_luminous_opening(attributes),
         luminaire_geometry=None,
+        dff=None,
+        lorl=None,
         lamps=[Lamps(
             number_of_lamps=attributes["numer_of_lamps"],
             lumens_per_lamp=attributes["lumens_per_lamp"] if attributes["lumens_per_lamp"] >= 0 else None,
@@ -117,15 +119,12 @@ def import_from_file(f: IO):
             description=metadata.pop("LAMP", None),
             catalog_number=metadata.pop("LAMPCAT", None),
             position=metadata.pop("LAMPPOSITION", None),
+            ballast_catalog_number=metadata.pop("BALLASTCAT", None),
+            ballast_description=metadata.pop("BALLAST", None),
             wattage=None,
             color=None,
-            cri=None
-
+            cri=None,
         )],
-        ballast=Ballast(
-            description=metadata.pop("BALLAST", None),
-            catalog_number=metadata.pop("BALLASTCAT", None),
-        ),
         metadata=PhotometryMetadata(
             catalog_number=metadata.pop("LUMCAT", None),
             luminaire=metadata.pop("LUMINAIRE", None),

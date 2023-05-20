@@ -2,7 +2,7 @@ from photometric_viewer.gui.widgets.common import PropertyList
 from photometric_viewer.model.photometry import Photometry, Shape, LuminousOpeningGeometry, LuminaireGeometry
 
 
-class LuminaireGeometryList(PropertyList):
+class LuminaireGeometryProperties(PropertyList):
     def set_photometry(self, photometry: Photometry):
         items = [i for i in self]
 

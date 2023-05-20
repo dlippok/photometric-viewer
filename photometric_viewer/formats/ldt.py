@@ -21,6 +21,13 @@ def _create_luminaire_geometry(length, width, height) -> LuminaireGeometry:
     )
 
 
+def _get_source_type(light_source_type: int):
+    match light_source_type:
+        case 1: return "Point source with symmetry about the vertical axis"
+        case 2: return "Linear luminaire"
+        case 3: return "Point source with any other symmetry"
+
+
 def import_from_file(f: IO):
     manufacturer = f.readline().strip()
     light_source_type = int(f.readline().strip())
@@ -45,7 +52,7 @@ def import_from_file(f: IO):
     opening_height_c270 = float(f.readline().strip()) / 1000
     dff = float(f.readline().strip())
     lorl = float(f.readline().strip())
-    correction_factor = float(f.readline().strip())
+    conversion_factor = float(f.readline().strip())
     tilt = float(f.readline().strip())
     no_lamp_sets = int(f.readline().strip())
 
@@ -84,13 +91,11 @@ def import_from_file(f: IO):
         for c in c_angles:
             for gamma in gamma_angles:
                 raw_value = float(f.readline().strip())
-                print(c, gamma, raw_value)
                 values[(c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
     elif symmetry == 1:
         for gamma in gamma_angles:
             raw_value = float(f.readline().strip())
             for c in c_angles:
-                print(c, gamma, raw_value)
                 values[(c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
     elif symmetry == 2:
         for c in c_angles:
@@ -130,6 +135,8 @@ def import_from_file(f: IO):
         v_angles=gamma_angles,
         h_angles=c_angles,
         c_values=values,
+        dff=dff,
+        lorl=lorl,
         luminous_opening_geometry=_create_luminous_opening(opening_length, opening_width),
         luminaire_geometry=_create_luminaire_geometry(luminaire_length, luminaire_width, luminaire_height),
         lamps=[Lamps(
@@ -142,17 +149,20 @@ def import_from_file(f: IO):
             description=None,
             catalog_number=None,
             position=None,
+            ballast_catalog_number=None,
+            ballast_description=None
         ) for lamps in lamp_sets],
-        ballast=None,
         metadata=PhotometryMetadata(
             catalog_number=luminaire_catalog_number,
             luminaire=luminaire_name,
             manufacturer=manufacturer,
             file_source=source,
             additional_properties={
+                "Luminaire type": _get_source_type(light_source_type),
                 "Measurement": measurement,
                 "Filename": filename,
                 "Date and user": date_and_user,
+                "Conversion factor for luminous intensities": conversion_factor
 
             }
         )
