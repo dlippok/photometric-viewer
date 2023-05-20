@@ -4,4 +4,8 @@
         <comment>IESNA photometric file</comment>
         <glob pattern="*.ies"/>
     </mime-type>
+    <mime-type type="application/x-eulumdat">
+        <comment>EULUMDAT photometric file</comment>
+        <glob pattern="*.ldt"/>
+    </mime-type>
 </mime-info>

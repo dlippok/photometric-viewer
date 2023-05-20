@@ -2,13 +2,11 @@ from typing import Optional
 
 from gi.repository import Adw, Gtk, Gio
 from gi.repository.Adw import ViewStackPage
-from gi.repository.Gtk import Label, Orientation, ScrolledWindow, PolicyType, Button, \
-    FileChooserDialog, FileFilter, FileChooserNative
+from gi.repository.Gtk import Orientation, Button, FileChooserDialog, FileFilter, FileChooserNative
 
-from photometric_viewer.formats.ies import import_from_file
+from photometric_viewer.formats.common import import_from_file
 from photometric_viewer.gui.about import AboutWindow
 from photometric_viewer.gui.content import PhotometryContent
-
 from photometric_viewer.gui.empty import EmptyPage
 from photometric_viewer.gui.menu import ApplicationMenuButton
 from photometric_viewer.gui.source import SourceView
@@ -45,8 +43,15 @@ class MainWindow(Adw.Window):
         box.append(header_bar)
         box.append(self.content_bin)
 
+        photometric_filter = FileFilter(name="All photometric files")
+        photometric_filter.add_pattern("*.ies")
+        photometric_filter.add_pattern("*.ldt")
+
         ies_filter = FileFilter(name="IESNA (*.ies)")
         ies_filter.add_pattern("*.ies")
+
+        ldt_filter = FileFilter(name="EULUMDAT (*.ldt)")
+        ldt_filter.add_pattern("*.ldt")
 
         all_files_filter = FileFilter(name="All Files")
         all_files_filter.add_pattern("*")
@@ -58,7 +63,9 @@ class MainWindow(Adw.Window):
             transient_for=self
         )
         self.file_chooser.connect("response", self.on_open_response)
+        self.file_chooser.add_filter(photometric_filter)
         self.file_chooser.add_filter(ies_filter)
+        self.file_chooser.add_filter(ldt_filter)
         self.file_chooser.add_filter(all_files_filter)
 
         self.set_content(box)

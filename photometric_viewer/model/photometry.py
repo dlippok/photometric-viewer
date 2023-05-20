@@ -12,16 +12,24 @@ class PhotometryMetadata:
     file_source: str
 
 
-class LuminousOpeningShape(Enum):
+class Shape(Enum):
     RECTANGULAR = 1
     ROUND = 2
 
 
 @dataclass
-class LuminousOpening:
+class LuminousOpeningGeometry:
     width: float
     length: float
-    shape: LuminousOpeningShape
+    shape: Shape
+
+
+@dataclass
+class LuminaireGeometry:
+    width: float
+    length: float
+    height: float
+    shape: Shape
 
 
 @dataclass
@@ -31,23 +39,27 @@ class Lamps:
     catalog_number: str | None
     position: str | None
     lumens_per_lamp: float | None
+    wattage: float | None
+    color: str | None
+    cri: int | None
     is_absolute: bool
+    ballast_description: str | None
+    ballast_catalog_number: str | None
 
-
-@dataclass
-class Ballast:
-    description: str | None
-    catalog_number: str | None
 
 @dataclass
 class Photometry:
-    lumens: float
+    is_absolute: bool
     v_angles: List[float]
     h_angles: List[float]
+
+    # Values in Candela for absolute photometry, cd/klm othewise
     c_values: Dict[Tuple[float, float], float]
-    luminous_opening: LuminousOpening
-    lamps: Lamps
-    ballast: Ballast
+    dff: float | None
+    lorl: float | None
+    luminous_opening_geometry: LuminousOpeningGeometry
+    luminaire_geometry: LuminaireGeometry | None
+    lamps: List[Lamps]
     metadata: PhotometryMetadata
 
     def get_values_for_c_angle(self, angle) -> Dict[float, float]:

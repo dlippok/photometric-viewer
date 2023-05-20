@@ -13,15 +13,18 @@ class LampAndBallast(PropertyList):
         for child in items:
             self.remove(child)
 
-        self.append(self._create_item(name="Number of lamps", value=str(photometry.lamps.number_of_lamps)))
-        self._create_if_exists("Lamp", photometry.lamps.description)
-        self._create_if_exists("Lamp catalog no.", photometry.lamps.catalog_number)
+        for lamp in photometry.lamps:
+            self.append(self._create_item(name="Number of lamps", value=str(lamp.number_of_lamps)))
+            self._create_if_exists("Lamp", lamp.description)
+            self._create_if_exists("Lamp catalog no.", lamp.catalog_number)
+            self._create_if_exists("Color", lamp.color)
+            self._create_if_exists("Color Rendering Index (CRI)", lamp.cri)
+            self._create_if_exists("Wattage", lamp.wattage)
 
-        if not photometry.lamps.is_absolute:
-            self.append(self._create_item(name="Initial rating per lamp", value=f'{photometry.lamps.lumens_per_lamp:.0f}lm'))
+            if not photometry.is_absolute:
+                self.append(self._create_item(name="Initial rating per lamp", value=f'{lamp.lumens_per_lamp:.0f}lm'))
 
-        self._create_if_exists("Lamp position", photometry.lamps.position)
-
-        self._create_if_exists("Ballast", photometry.ballast.description)
-        self._create_if_exists("Ballast catalog no.", photometry.ballast.catalog_number)
+            self._create_if_exists("Lamp position", lamp.position)
+            self._create_if_exists("Ballast", lamp.ballast_description)
+            self._create_if_exists("Ballast catalog no.", lamp.ballast_catalog_number)
 
