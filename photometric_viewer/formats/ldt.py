@@ -146,7 +146,7 @@ def import_from_file(f: IO):
             wattage=lamps["wattage"],
             color=lamps["color"],
             cri=lamps["cri"],
-            description=None,
+            description=lamps["type"],
             catalog_number=None,
             position=None,
             ballast_catalog_number=None,
