@@ -38,6 +38,13 @@ class PropertyList(Gtk.ListBox):
 
         return box
 
+    def add(self, name: str, value: str):
+        self.append(self._create_item(name=name, value=value))
+
+    def add_if_non_empty(self, name: str, value: str):
+        if value:
+            self.append(self._create_item(name=name, value=value))
+
     def on_copy_clicked(self, a, value):
         clipboard: Clipboard = self.get_clipboard()
         provider = ContentProvider.new_for_value(value)
