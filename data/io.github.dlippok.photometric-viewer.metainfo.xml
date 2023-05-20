@@ -3,9 +3,9 @@
     <id>io.github.dlippok.photometric-viewer</id>
     <launchable type="desktop-id">io.github.dlippok.photometric-viewer.desktop</launchable>
     <name>Photometric Viewer</name>
-    <summary>GTK 4 based application for viewing IES photometric files.</summary>
+    <summary>GTK 4 based application for viewing IES and LDT photometric files.</summary>
     <description>
-        <p>Allows viewing light distribution curves and metadata of IESNA photometric files.</p>
+        <p>Allows viewing light distribution curves and metadata of IESNA and EULUMDAT photometric files.</p>
     </description>
     <screenshots>
         <screenshot type="default">

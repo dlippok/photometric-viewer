@@ -52,7 +52,7 @@ class MainWindow(Adw.Window):
         ies_filter = FileFilter(name="IESNA (*.ies)")
         ies_filter.add_pattern("*.ies")
 
-        ldt_filter = FileFilter(name="Eulumdat (*.ldt)")
+        ldt_filter = FileFilter(name="EULUMDAT (*.ldt)")
         ldt_filter.add_pattern("*.ldt")
 
         all_files_filter = FileFilter(name="All Files")

@@ -7,5 +7,6 @@ Terminal=false
 Type=Application
 Categories=GNOME;Graphics;Viewer;DataVisualization;Engineering
 OnlyShowIn=GNOME;XFCE;
-Keywords=Photometry;Photometric;IES;IESNA;Lighting
+Keywords=Photometry;Photometric;IES;IESNA;EULUMDAT;LDT;Lighting
 MimeType=application/x-iesna
+MimeType=application/x-eulumdat
