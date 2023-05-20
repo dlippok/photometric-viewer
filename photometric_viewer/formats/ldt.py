@@ -163,7 +163,6 @@ def import_from_file(f: IO):
                 "Filename": filename,
                 "Date and user": date_and_user,
                 "Conversion factor for luminous intensities": conversion_factor
-
             }
         )
     )

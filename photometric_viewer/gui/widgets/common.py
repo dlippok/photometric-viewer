@@ -1,7 +1,7 @@
 from gi.repository import Gtk
 from gi.repository.Gdk import Clipboard, ContentProvider
 from gi.repository.Gtk import Box, Orientation, Label, SelectionMode
-from gi.repository.Pango import EllipsizeMode, WrapMode
+from gi.repository.Pango import WrapMode
 
 
 class PropertyList(Gtk.ListBox):
@@ -41,7 +41,7 @@ class PropertyList(Gtk.ListBox):
     def add(self, name: str, value: str):
         self.append(self._create_item(name=name, value=value))
 
-    def add_if_non_empty(self, name: str, value: str):
+    def add_if_non_empty(self, name: str, value):
         if value:
             self.append(self._create_item(name=name, value=value))
 

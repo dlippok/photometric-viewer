@@ -1,7 +1,7 @@
 from gi.repository import Adw, Gtk
 
 
-class AboutWindow():
+class AboutWindow:
     def __init__(self):
         self._about_window = Adw.AboutWindow(
             application_name="Photomertic Viewer",
@@ -13,7 +13,6 @@ class AboutWindow():
             copyright="© 2023 Damian Lippok",
             license_type=Gtk.License.MIT_X11
         )
-
 
     def show(self):
         self._about_window.show()

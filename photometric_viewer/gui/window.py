@@ -89,7 +89,7 @@ class MainWindow(Adw.Window):
         self.switcher_bar.set_stack(view_stack)
         self.opened_photometry = photometry
 
-    def on_open_clicked(self, button):
+    def on_open_clicked(self, _):
         self.file_chooser.show()
 
     def on_open_response(self, dialog: FileChooserDialog, response):
@@ -103,6 +103,7 @@ class MainWindow(Adw.Window):
             self.set_title(title=photometry.metadata.luminaire)
         self.display_photometry_content(photometry)
 
-    def show_about_dialog(self, *args):
+    @staticmethod
+    def show_about_dialog(*args):
         window = AboutWindow()
         window.show()

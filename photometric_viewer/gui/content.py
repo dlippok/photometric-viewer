@@ -64,4 +64,3 @@ class PhotometryContent(Adw.Bin):
         self.geometry.set_photometry(photometry)
         self.lamps_and_ballast.set_photometry(photometry)
         self.properties.set_photometry(photometry)
-

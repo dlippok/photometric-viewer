@@ -14,5 +14,5 @@ class LuminairePhotometricProperties(PropertyList):
         for child in items:
             self.remove(child)
 
-        self.append(self._create_item(name="Light output ratio", value=_value_with_unit(photometry.lorl, "%")))
-        self.append(self._create_item(name="Downward flux fraction (DFF)", value=_value_with_unit(photometry.dff, "%")))
+        self.add("Light output ratio", _value_with_unit(photometry.lorl, "%"))
+        self.add("Downward flux fraction (DFF)", _value_with_unit(photometry.dff, "%"))

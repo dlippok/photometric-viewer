@@ -10,4 +10,4 @@ class LuminaireProperties(PropertyList):
             self.remove(child)
 
         for key, value in photometry.metadata.additional_properties.items():
-            self.append(self._create_item(name=key.title().replace("_", " ").strip(), value=value))
+            self.add(key.title().replace("_", " ").strip(), value)
