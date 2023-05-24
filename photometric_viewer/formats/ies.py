@@ -3,6 +3,7 @@ from typing import IO
 from photometric_viewer.formats.exceptions import InvalidLuminousOpeningException
 from photometric_viewer.model.photometry import Photometry, PhotometryMetadata, LuminousOpeningGeometry, Shape, \
     Lamps
+from photometric_viewer.model.units import LengthUnits
 from photometric_viewer.utils.io import read_non_empty_line
 
 
@@ -131,6 +132,7 @@ def import_from_file(f: IO):
             luminaire=metadata.pop("LUMINAIRE", None),
             manufacturer=metadata.pop("MANUFAC", None),
             additional_properties=metadata,
-            file_source=source
+            file_source=source,
+            file_units=LengthUnits.FEET if attributes["luminous_opening_units"] == 1 else LengthUnits.METERS
         )
     )

@@ -39,13 +39,13 @@ class Application(Adw.Application):
     def do_shutdown(self):
         Adw.Application.do_shutdown(self)
 
+
     def do_open(self, *args, **kwargs):
         file: Gio.File = args[0][0]
         with gio_file_stream(file) as f:
             photometry = import_from_file(f)
             self.win.open_photometry(photometry)
         self.props.active_window.present()
-
 
 def run():
     app = Application()
