@@ -64,7 +64,8 @@ class PreferencesWindow(Adw.PreferencesWindow):
             margin_start=16,
             margin_end=16,
             margin_top=16,
-            margin_bottom=16
+            margin_bottom=16,
+            sensitive=not self.settings.length_units_from_file
         )
         self.preferred_units_box.append(Label(label="Preferred length units", hexpand=True, xalign=0))
         self.preferred_units_dropdown: Gtk.DropDown = Gtk.DropDown.new_from_strings([
