@@ -14,13 +14,15 @@ from photometric_viewer.gui.source import SourceView
 from photometric_viewer.model.photometry import Photometry
 from photometric_viewer.model.settings import Settings
 from photometric_viewer.model.units import LengthUnits
+from photometric_viewer.utils.GSettings import GSettings
 from photometric_viewer.utils.io import gio_file_stream
 
 
 class MainWindow(Adw.Window):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.settings = Settings(length_units_from_file=False, length_units=LengthUnits.METERS)
+        self.gsettings = GSettings()
+        self.settings = self.gsettings.load()
         self.opened_photometry: Optional[Photometry] = None
         self.photometry_content = PhotometryContent()
 
@@ -97,6 +99,7 @@ class MainWindow(Adw.Window):
 
     def update_settings(self):
         self.photometry_content.update_settings(self.settings)
+        self.gsettings.save(self.settings)
 
     def on_open_clicked(self, _):
         self.file_chooser.show()
