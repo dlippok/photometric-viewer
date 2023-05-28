@@ -6,7 +6,7 @@ from photometric_viewer.model.photometry import Shape
 from photometric_viewer.model.units import LengthUnits
 
 
-class TestSum(unittest.TestCase):
+class TestIes(unittest.TestCase):
     FILES_PATH = Path(__file__).parent / ".." / "data" / "photometrics" / "ies"
 
     def test_metadata(self):

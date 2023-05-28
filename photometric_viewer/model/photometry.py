@@ -38,16 +38,16 @@ class LuminaireGeometry:
 @dataclass
 class Lamps:
     number_of_lamps: int
-    description: str | None
-    catalog_number: str | None
-    position: str | None
-    lumens_per_lamp: float | None
-    wattage: float | None
-    color: str | None
-    cri: int | None
     is_absolute: bool
-    ballast_description: str | None
-    ballast_catalog_number: str | None
+    description: str | None = None
+    catalog_number: str | None = None
+    position: str | None = None
+    lumens_per_lamp: float | None = None
+    wattage: float | None = None
+    color: str | None = None
+    cri: int | None = None
+    ballast_description: str | None = None
+    ballast_catalog_number: str | None = None
 
 
 @dataclass
