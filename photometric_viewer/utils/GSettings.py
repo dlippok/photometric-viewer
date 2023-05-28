@@ -5,7 +5,7 @@ from photometric_viewer.model.units import LengthUnits
 
 
 class GSettings:
-    SCHEMA_ID = "io.github.dlippok.photometric-viewer"
+    SCHEMA_ID = "io.github.dlippok.photometrics-viewer"
     settings: Gio.Settings | None = None
 
     def __init__(self):

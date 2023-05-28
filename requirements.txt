@@ -1,3 +1,0 @@
-PyGObject~=3.42.1
-setuptools~=67.6.1
-pytest

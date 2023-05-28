@@ -53,7 +53,7 @@ class PreferencesWindow(Adw.PreferencesWindow):
             margin_top=16,
             margin_bottom=16
         )
-        use_units_from_file_box.append(Label(label="Use units from photometric file", hexpand=True, xalign=0))
+        use_units_from_file_box.append(Label(label="Use units from photometrics file", hexpand=True, xalign=0))
         switch = Gtk.Switch(active=self.settings.length_units_from_file)
         switch.connect("state-set", self.length_units_from_file_state_set)
         use_units_from_file_box.append(switch)
