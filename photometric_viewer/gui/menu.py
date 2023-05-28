@@ -8,6 +8,10 @@ class ApplicationMenuButton(Gtk.MenuButton):
         <menu id='app-menu'>
             <section>
                 <item>
+                    <attribute name='label' translatable='yes'>Preferences</attribute>
+                    <attribute name='action'>app.show_preferences</attribute>
+                </item>
+                <item>
                     <attribute name='label' translatable='yes'>About Photometric Viewer</attribute>
                     <attribute name='action'>app.show_about_window</attribute>
                 </item>

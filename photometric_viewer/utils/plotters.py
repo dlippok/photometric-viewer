@@ -5,6 +5,18 @@ from photometric_viewer.model.photometry import Photometry
 from photometric_viewer.utils.coordinates import cartesian_to_screen
 
 
+def _get_max_candela(photometry: Photometry):
+    max_candelas = 0
+
+    for c_angle in [0, 90, 180, 270]:
+        values = photometry.get_values_for_c_angle(c_angle)
+        for angle, candelas in values.items():
+            if candelas > max_candelas:
+                max_candelas = candelas
+
+    return max_candelas
+
+
 class LightDistributionPlotter:
     def __init__(self):
         self.size = 300
@@ -12,17 +24,6 @@ class LightDistributionPlotter:
     def draw(self, context: cairo.Context, photometry: Photometry):
         self._draw_coordinate_system(context, photometry)
         self._draw_curve(context, photometry)
-
-    def _get_max_candela(self, photometry: Photometry):
-        max_candelas = 0
-
-        for c_angle in [0, 90, 180, 270]:
-            values = photometry.get_values_for_c_angle(c_angle)
-            for angle, candelas in values.items():
-                if candelas > max_candelas:
-                    max_candelas = candelas
-
-        return max_candelas
 
     def _draw_coordinate_system(self, context: cairo.Context, photometry: Photometry):
         center = self.size / 2, self.size / 2
@@ -52,9 +53,9 @@ class LightDistributionPlotter:
         self.draw_values(center, context, photometry, radii)
 
     def draw_values(self, center, context, photometry, radii):
-        max_candelas = self._get_max_candela(photometry)
+        max_candelas = _get_max_candela(photometry)
         for n, radius in enumerate(radii):
-            unit = "cd" if photometry.lumens is None else "cd/klm"
+            unit = "cd" if photometry.is_absolute else "cd/klm"
             value = max_candelas * (n + 1) / 3
 
             text = f"{value:.0f} {unit}"
@@ -67,7 +68,7 @@ class LightDistributionPlotter:
         context.set_line_width(1)
         context.set_source_rgba(0.8, 0.8, 0, 0.1)
 
-        max_candelas = self._get_max_candela(photometry)
+        max_candelas = _get_max_candela(photometry)
 
         context.set_dash([])
         self._draw_halfcurve(context, photometry, max_candelas, 0)

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <enum id="io.github.dlippok.photometric-viewer.length-units-enum">
+      <value nick="meters" value="1"/>
+      <value nick="centimeters" value="2"/>
+      <value nick="millimeters" value="3"/>
+      <value nick="feet" value="4"/>
+      <value nick="inches" value="5"/>
+  </enum>
+  <schema id="io.github.dlippok.photometric-viewer" path="/apps/io/github/dlippok/photometric-viewer/">
+      <key type="b" name="length-units-from-file">
+          <default>false</default>
+          <summary>Use length unit from photometric file</summary>
+          <description>Whenever applicable, display length the same units as used in the photometric file instead of the selected ones.</description>
+      </key>
+      <key enum="io.github.dlippok.photometric-viewer.length-units-enum" name="preferred-length-units">
+          <default>'meters'</default>
+          <summary>Preferred units to be used when displaying length values</summary>
+          <description>All length values from the photometric file will be converted to the selected unit when displaying in the UI.</description>
+      </key>
+  </schema>
+</schemalist>
