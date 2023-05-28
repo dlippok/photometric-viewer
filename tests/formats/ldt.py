@@ -83,6 +83,72 @@ class TestLdt(unittest.TestCase):
         self.assertEqual(photometry.lamps[0].lumens_per_lamp, 250)
         self.assertEqual(photometry.lamps[0].number_of_lamps, 2)
 
+    def test_no_symmetry(self):
+        with (self.FILES_PATH / "no_symmetry.ldt").open() as f:
+            photometry = import_from_file(f)
+
+        expected_flux = 500
+
+        raw_values = [
+            2200.0, 2000.2, 1950.0, 1700.1, 1328.4, 1115.1, 900.5, 700.4, 600.3, 501.2, 400.1,
+            398.3, 380.9, 400.2, 390.5, 320.0, 185.0, 100.6, 40.1, 20.0, 15.2, 15.0, 14.0, 11.0,
+            10.8, 10.8, 10.0, 7.0, 4.0, 1.2, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0
+        ]
+
+        gamma_angles = [
+            0.0, 2.5, 5.0, 7.5, 10.0, 12.5, 15.0, 17.5, 20.0, 22.5, 25.0, 27.5, 30.0, 32.5,
+            35.0, 37.5, 40.0, 42.5, 45.0, 47.5, 50.0, 52.5, 55.0, 57.5, 60.0, 62.5, 65.0,
+            67.5, 70.0, 72.5, 75.0, 77.5, 80.0, 82.5, 85.0, 87.5, 90.0
+        ]
+
+        expected_values = {
+            (0.0, gamma): raw_values[i] * (expected_flux / 1000)
+            for i, gamma
+            in enumerate(gamma_angles)
+        } | {
+            (90.0, gamma): raw_values[i] * (expected_flux / 1000) * 1.2
+            for i, gamma
+            in enumerate(gamma_angles)
+        } | {
+            (180.0, gamma): raw_values[i] * (expected_flux / 1000) * 1.3
+            for i, gamma
+            in enumerate(gamma_angles)
+        } | {
+            (270.0, gamma): raw_values[i] * (expected_flux / 1000) * 1.4
+            for i, gamma
+            in enumerate(gamma_angles)
+        }
+
+        for coord, value in expected_values.items():
+            self.assertAlmostEqual(photometry.c_values[coord], value, places=5, msg=f"Invalid value for coord {coord}")
+
+    def test_symmetry_about_vertical_axis(self):
+        with (self.FILES_PATH / "symmetry_about_vertical_axis.ldt").open() as f:
+            photometry = import_from_file(f)
+
+        expected_flux = 500
+
+        raw_values = [
+            2200.0, 2000.2, 1950.0, 1700.1, 1328.4, 1115.1, 900.5, 700.4, 600.3, 501.2, 400.1,
+            398.3, 380.9, 400.2, 390.5, 320.0, 185.0, 100.6, 40.1, 20.0, 15.2, 15.0, 14.0, 11.0,
+            10.8, 10.8, 10.0, 7.0, 4.0, 1.2, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0
+        ]
+
+        gamma_angles = [
+            0.0, 2.5, 5.0, 7.5, 10.0, 12.5, 15.0, 17.5, 20.0, 22.5, 25.0, 27.5, 30.0, 32.5,
+            35.0, 37.5, 40.0, 42.5, 45.0, 47.5, 50.0, 52.5, 55.0, 57.5, 60.0, 62.5, 65.0,
+            67.5, 70.0, 72.5, 75.0, 77.5, 80.0, 82.5, 85.0, 87.5, 90.0
+        ]
+
+        expected_values = {
+            (0.0, gamma): raw_values[i] * (expected_flux / 1000)
+            for i, gamma
+            in enumerate(gamma_angles)
+        }
+
+        for coord, value in expected_values.items():
+            self.assertAlmostEqual(photometry.c_values[coord], value, places=5, msg=f"Invalid value for coord {coord}")
+
     def test_geometries(self):
         with (self.FILES_PATH / "rectangular_luminaire_rectangular_luminous_opening.ldt").open() as f:
             photometry = import_from_file(f)
