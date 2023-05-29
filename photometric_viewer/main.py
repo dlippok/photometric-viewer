@@ -3,7 +3,7 @@ import os
 import gi
 
 from photometric_viewer.formats.ies import import_from_file
-from photometric_viewer.utils.io import gio_file_stream
+from photometric_viewer.utils.gio import gio_file_stream
 
 gi.require_version(namespace='Gtk', version='4.0')
 gi.require_version(namespace='Adw', version='1')
@@ -15,7 +15,7 @@ import sys
 
 class Application(Adw.Application):
     def __init__(self):
-        super().__init__(application_id='io.github.dlippok.photometric-viewer',
+        super().__init__(application_id='io.github.dlippok.photometrics-viewer',
                          flags=Gio.ApplicationFlags.HANDLES_OPEN | Gio.ApplicationFlags.NON_UNIQUE)
         self.win = None
 

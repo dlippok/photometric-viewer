@@ -5,7 +5,7 @@ class AboutWindow:
     def __init__(self):
         self._about_window = Adw.AboutWindow(
             application_name="Photomertic Viewer",
-            application_icon="io.github.dlippok.photometric-viewer",
+            application_icon="io.github.dlippok.photometrics-viewer",
             developer_name="Damian Lippok",
             version="0.2",
             website="https://github.com/dlippok/photometric-viewer",

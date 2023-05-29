@@ -48,4 +48,4 @@ class LampAndBallast(Adw.Bin):
 
             page_name = lamp.description or f"Lamp {n}"
             page = self.view_stack.add_titled(property_list, f"lamp_{n}", page_name)
-            page.set_icon_name("io.github.dlippok.photometric-viewer-symbolic")
+            page.set_icon_name("io.github.dlippok.photometrics-viewer-symbolic")

@@ -12,10 +12,8 @@ from photometric_viewer.gui.menu import ApplicationMenuButton
 from photometric_viewer.gui.settings.settings import PreferencesWindow
 from photometric_viewer.gui.source import SourceView
 from photometric_viewer.model.photometry import Photometry
-from photometric_viewer.model.settings import Settings
-from photometric_viewer.model.units import LengthUnits
 from photometric_viewer.utils.GSettings import GSettings
-from photometric_viewer.utils.io import gio_file_stream
+from photometric_viewer.utils.gio import gio_file_stream
 
 
 class MainWindow(Adw.Window):
@@ -51,7 +49,7 @@ class MainWindow(Adw.Window):
         box.append(header_bar)
         box.append(self.content_bin)
 
-        photometric_filter = FileFilter(name="All photometric files")
+        photometric_filter = FileFilter(name="All photometrics files")
         photometric_filter.add_pattern("*.ies")
         photometric_filter.add_pattern("*.ldt")
 
