@@ -100,7 +100,7 @@ def import_from_file(f: IO):
                 values[(c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
     elif symmetry == 2:
         for c in c_angles:
-            if c <= 180:
+            if c < 180:
                 for gamma in gamma_angles:
                     raw_value = float(f.readline().strip())
                     values[(c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
