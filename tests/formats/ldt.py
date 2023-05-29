@@ -101,22 +101,17 @@ class TestLdt(unittest.TestCase):
             67.5, 70.0, 72.5, 75.0, 77.5, 80.0, 82.5, 85.0, 87.5, 90.0
         ]
 
+        c_angles = [
+            0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180,
+            195, 210, 225, 240, 255, 270, 285, 300, 315, 330, 345
+        ]
+
+        angle_combinations = [(c, gamma) for c in c_angles for gamma in gamma_angles]
+
         expected_values = {
-            (0.0, gamma): raw_values[i] * (expected_flux / 1000)
-            for i, gamma
-            in enumerate(gamma_angles)
-        } | {
-            (90.0, gamma): raw_values[i] * (expected_flux / 1000) * 1.2
-            for i, gamma
-            in enumerate(gamma_angles)
-        } | {
-            (180.0, gamma): raw_values[i] * (expected_flux / 1000) * 1.3
-            for i, gamma
-            in enumerate(gamma_angles)
-        } | {
-            (270.0, gamma): raw_values[i] * (expected_flux / 1000) * 1.4
-            for i, gamma
-            in enumerate(gamma_angles)
+            angle: raw_values[i % len(raw_values)] + i
+            for i, angle
+            in enumerate(angle_combinations)
         }
 
         for coord, value in expected_values.items():
