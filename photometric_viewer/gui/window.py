@@ -49,7 +49,7 @@ class MainWindow(Adw.Window):
         box.append(header_bar)
         box.append(self.content_bin)
 
-        photometric_filter = FileFilter(name="All photometrics files")
+        photometric_filter = FileFilter(name="All photometric files")
         photometric_filter.add_pattern("*.ies")
         photometric_filter.add_pattern("*.ldt")
 

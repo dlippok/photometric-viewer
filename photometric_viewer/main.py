@@ -15,7 +15,7 @@ import sys
 
 class Application(Adw.Application):
     def __init__(self):
-        super().__init__(application_id='io.github.dlippok.photometrics-viewer',
+        super().__init__(application_id='io.github.dlippok.photometric-viewer',
                          flags=Gio.ApplicationFlags.HANDLES_OPEN | Gio.ApplicationFlags.NON_UNIQUE)
         self.win = None
 
