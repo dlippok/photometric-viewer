@@ -144,6 +144,56 @@ class TestLdt(unittest.TestCase):
         for coord, value in expected_values.items():
             self.assertAlmostEqual(photometry.c_values[coord], value, places=5, msg=f"Invalid value for coord {coord}")
 
+    def test_symmetry_to_c90c270(self):
+        with (self.FILES_PATH / "symmetry_to_c90c270.ldt").open() as f:
+            photometry = import_from_file(f)
+
+        raw_values = [
+            2200.0, 2000.2, 1950.0, 1700.1, 1328.4, 1115.1, 900.5, 700.4, 600.3, 501.2, 400.1,
+            398.3, 380.9, 400.2, 390.5, 320.0, 185.0, 100.6, 40.1, 20.0, 15.2, 15.0, 14.0, 11.0,
+            10.8, 10.8, 10.0, 7.0, 4.0, 1.2, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0
+        ]
+
+        gamma_angles = [
+            0.0, 2.5, 5.0, 7.5, 10.0, 12.5, 15.0, 17.5, 20.0, 22.5, 25.0, 27.5, 30.0, 32.5,
+            35.0, 37.5, 40.0, 42.5, 45.0, 47.5, 50.0, 52.5, 55.0, 57.5, 60.0, 62.5, 65.0,
+            67.5, 70.0, 72.5, 75.0, 77.5, 80.0, 82.5, 85.0, 87.5, 90.0
+        ]
+
+        c_angles = [
+            0, 10, 20, 30, 40, 50, 60, 70, 80, 90,
+            100, 110, 120, 130, 140, 150, 160, 170, 180,
+            190, 200, 210, 220, 230, 240, 250, 260, 270,
+            280, 290, 300, 310, 320, 330, 340, 350
+        ]
+
+        angles = [(c, gamma) for c in c_angles for gamma in gamma_angles]
+
+        i = 0
+        for angle in angles:
+            if angle[0] < 90:
+                self.assertAlmostEqual(
+                    photometry.c_values[angle],
+                    photometry.c_values[(180 - angle[0], angle[1])],
+                    places=5,
+                    msg=f"Invalid value for coord {angle}"
+                )
+            elif angle[0] < 270:
+                self.assertAlmostEqual(
+                    photometry.c_values[angle],
+                    raw_values[i % len(raw_values)] + i,
+                    places=5,
+                    msg=f"Invalid value for coord {angle}"
+                )
+                i += 1
+            else:
+                self.assertAlmostEqual(
+                    photometry.c_values[angle],
+                    photometry.c_values[(270 - (270 - angle[0]), angle[1])],
+                    places=5,
+                    msg=f"Invalid value for coord {angle}"
+                )
+
     def test_geometries(self):
         with (self.FILES_PATH / "rectangular_luminaire_rectangular_luminous_opening.ldt").open() as f:
             photometry = import_from_file(f)
