@@ -24,13 +24,12 @@ Next, activate your virtual environment and install all  missing dependencies:
 
 ```shell
 . ./venv/bin/activate
-pip3 install -r requirements.txt
 ```
 
 
 ### Running tests
 ```shell
-python3 -m pytestt
+python3 setup.py test
 ```
 
 ### Starting the application
