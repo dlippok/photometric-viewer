@@ -3,7 +3,7 @@ import os
 import gi
 
 from photometric_viewer.formats.ies import import_from_file
-from photometric_viewer.utils.io import gio_file_stream
+from photometric_viewer.utils.gio import gio_file_stream
 
 gi.require_version(namespace='Gtk', version='4.0')
 gi.require_version(namespace='Adw', version='1')
