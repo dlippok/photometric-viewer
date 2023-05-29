@@ -100,24 +100,23 @@ def import_from_file(f: IO):
                 values[(c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
     elif symmetry == 2:
         for c in c_angles:
-            if c <= 90:
-                for gamma in gamma_angles:
-                    raw_value = float(f.readline().strip())
-                    values[(c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
-                    values[(90-c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
-            if c >= 270:
-                for gamma in gamma_angles:
-                    raw_value = float(f.readline().strip())
-                    values[(c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
-                    values[(270-(c-270), gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
-    elif symmetry == 3:
-        for c in c_angles:
             if c <= 180:
                 for gamma in gamma_angles:
                     raw_value = float(f.readline().strip())
                     values[(c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
-                    if c not in (0, 180):
-                        values[(360-c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
+                    values[(360-c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
+    elif symmetry == 3:
+        for c in c_angles:
+            if 90 <= c <= 180:
+                for gamma in gamma_angles:
+                    raw_value = float(f.readline().strip())
+                    values[(c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
+                    values[(90 - (c - 90), gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
+            if 180 < c <= 270:
+                for gamma in gamma_angles:
+                    raw_value = float(f.readline().strip())
+                    values[(c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
+                    values[(360 - (c - 180), gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
     elif symmetry == 4:
         for c in c_angles:
             if c <= 90:
