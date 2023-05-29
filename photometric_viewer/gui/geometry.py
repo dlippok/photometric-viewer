@@ -27,6 +27,8 @@ class LuminaireGeometryProperties(PropertyList):
             match self.photometry.metadata.file_units:
                 case LengthUnits.METERS:
                     return f"{converted_value:.2f}m"
+                case LengthUnits.MILLIMETERS:
+                    return f"{converted_value:.0f}mm"
                 case LengthUnits.FEET:
                     return f"{converted_value:.2f}ft"
         else:
@@ -35,9 +37,9 @@ class LuminaireGeometryProperties(PropertyList):
                 case LengthUnits.METERS:
                     return f"{converted_value:.2f}m"
                 case LengthUnits.CENTIMETERS:
-                    return f"{converted_value:.2f}cm"
+                    return f"{converted_value:.1f}cm"
                 case LengthUnits.MILLIMETERS:
-                    return f"{converted_value:.2f}mm"
+                    return f"{converted_value:.0f}mm"
                 case LengthUnits.FEET:
                     return f"{converted_value:.2f}ft"
                 case LengthUnits.INCHES:
