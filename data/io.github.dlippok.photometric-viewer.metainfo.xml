@@ -7,13 +7,11 @@
     <description>
         <p>
             Photometric Viewer allow viewing light distribution curves and metadata of IESNA and EULUMDAT photometric
-            files which describe the light distribution of light sources like lamps and luminaires.
+            files which describe the light distribution of light sources like lamps and luminaires and
+            are used mostly for data transfer in the lighting industry and in 3D graphics.
         </p>
         <p>
-            Photometric files are used mostly for data transfer in the lighting industry and in 3D graphics.
-        </p>
-        <p>
-            Photometric viewer displays following information of the opened photometric file:
+            Photometric Viewer displays following information of the opened photometric file:
         </p>
         <ul>
             <li>Light distribution curves</li>
@@ -21,7 +19,6 @@
             <li>Photometric properties (Light Output Ration and Downward Flux Fraction)</li>
             <li>Lamps and ballast information</li>
             <li>Luminaire and luminous opening geometry information</li>
-            <li>Additional properties (Test number, issue date, test laboratory, etc.)</li>
             <li>Additional properties (Test number, issue date, test laboratory, etc.)</li>
             <li>Raw text source of photometric file</li>
         </ul>
