@@ -1,7 +1,7 @@
-name: photometric-viewer # you probably want to 'snapcraft register <name>'
-base: core22 # the base snap is the execution environment for this snap
+name: photometric-viewer
+base: core22
 adopt-info: photometric-viewer
-confinement: strict # use 'strict' once you have the right plugs and slots
+confinement: strict
 
 environment:
   PYTHONPATH: ${SNAP}/lib/python3.10/site-packages:${SNAP}/usr/lib/python3/dist-packages
@@ -19,7 +19,7 @@ apps:
 parts:
   photometric-viewer:
     plugin: python
-    source: https://github.com/dlippok/photometric-viewer.git  # Install from a git repository
+    source: https://github.com/dlippok/photometric-viewer.git
     build-environment:
       - PARTS_PYTHON_VENV_ARGS: --system-site-packages
       - PATH: ${CRAFT_PART_INSTALL}/bin:${PATH}
