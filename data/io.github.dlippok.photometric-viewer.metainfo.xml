@@ -3,14 +3,30 @@
     <id>io.github.dlippok.photometric-viewer</id>
     <launchable type="desktop-id">io.github.dlippok.photometric-viewer.desktop</launchable>
     <name>Photometric Viewer</name>
-    <summary>GTK 4 based application for viewing IES and LDT photometric files.</summary>
+    <summary>Browse content of IES and LDT photometric files</summary>
     <description>
-        <p>Allows viewing light distribution curves and metadata of IESNA and EULUMDAT photometric files.</p>
+        <p>
+            Photometric Viewer allow viewing light distribution curves and metadata of IESNA and EULUMDAT photometric
+            files which describe the light distribution of light sources like lamps and luminaires.
+        </p>
+        <p>
+            Photometric files are used mostly for data transfer in the lighting industry and in 3D graphics.
+        </p>
+        <p>
+            Photometric viewer displays following information of the opened photometric file:
+        </p>
+        <ul>
+            <li>Light distribution curves</li>
+            <li>General information (Catalog Number, Manufacturer, Description, etc.)</li>
+            <li>Photometric properties (Light Output Ration and Downward Flux Fraction)</li>
+            <li>Lamps and ballast information</li>
+            <li>Luminaire and luminous opening geometry information</li>
+            <li>Additional properties (Test number, issue date, test laboratory, etc.)</li>
+            <li>Additional properties (Test number, issue date, test laboratory, etc.)</li>
+            <li>Raw text source of photometric file</li>
+        </ul>
     </description>
     <screenshots>
-        <screenshot type="default">
-            <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Desktop.png</image>
-        </screenshot>
         <screenshot>
             <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Main.png</image>
         </screenshot>
@@ -43,6 +59,11 @@
     </requires>
 
     <releases>
+          <release version="1.0.0" date="2023-06-10">
+            <description>
+                <p>Adds support for EULUMDAT files, introduces extended lamp and geometry information and allows user to select preferred size units.</p>
+            </description>
+        </release>
         <release version="0.2.0" date="2023-05-01">
             <description>
                 <p>Adds support for additional luminaire properties and displaying source text of photometric files.</p>

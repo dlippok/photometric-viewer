@@ -1,11 +1,11 @@
 [Desktop Entry]
 Name=Photometric Viewer
-GenericName=Viewing tool for photometric files
+Comment=Browse content of photometric files
 Exec=photometric-viewer %f
 Icon=io.github.dlippok.photometric-viewer
 Terminal=false
 Type=Application
-Categories=GNOME;Graphics;Viewer;DataVisualization;Engineering
+Categories=GNOME;Science;Utility;Viewer;DataVisualization;Engineering
 OnlyShowIn=GNOME;XFCE;
 Keywords=Photometry;Photometric;IES;IESNA;EULUMDAT;LDT;Lighting
 MimeType=application/x-iesna;application/x-eulumdat
