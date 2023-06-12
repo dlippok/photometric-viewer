@@ -2,9 +2,6 @@ import os
 
 import gi
 
-from photometric_viewer.formats.ies import import_from_file
-from photometric_viewer.utils.gio import gio_file_stream
-
 gi.require_version(namespace='Gtk', version='4.0')
 gi.require_version(namespace='Adw', version='1')
 
@@ -39,13 +36,11 @@ class Application(Adw.Application):
     def do_shutdown(self):
         Adw.Application.do_shutdown(self)
 
-
     def do_open(self, *args, **kwargs):
         file: Gio.File = args[0][0]
-        with gio_file_stream(file) as f:
-            photometry = import_from_file(f)
-            self.win.open_photometry(photometry)
+        self.win.open_file(file)
         self.props.active_window.present()
+
 
 def run():
     app = Application()

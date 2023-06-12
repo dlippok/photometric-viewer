@@ -1,6 +1,6 @@
 from typing import IO
 
-from photometric_viewer.formats.exceptions import InvalidLuminousOpeningException
+from photometric_viewer.formats.exceptions import InvalidLuminousOpeningException, InvalidPhotometricFileFormatException
 from photometric_viewer.model.photometry import Photometry, PhotometryMetadata, LuminousOpeningGeometry, Shape, \
     Lamps
 from photometric_viewer.model.units import LengthUnits
@@ -48,7 +48,9 @@ def create_luminous_opening(attributes):
 
 
 def import_from_file(f: IO):
-    ies_header = read_non_empty_line(f)
+    header = read_non_empty_line(f).strip()
+    if not header.upper().startswith("IESNA"):
+        raise InvalidPhotometricFileFormatException(f"{header} could not be recognized as a valid IESNA file header")
 
     metadata = {}
     next_line = read_non_empty_line(f)
