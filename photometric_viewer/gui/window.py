@@ -1,10 +1,12 @@
+import logging
 from typing import Optional
 
-from gi.repository import Adw, Gtk, Gio
+from gi.repository import Adw, Gtk, Gio, GLib
 from gi.repository.Adw import ViewStackPage
 from gi.repository.Gtk import Orientation, Button, FileChooserDialog, FileFilter, FileChooserNative
 
 from photometric_viewer.formats.common import import_from_file
+from photometric_viewer.formats.exceptions import InvalidPhotometricFileFormatException
 from photometric_viewer.gui.about import AboutWindow
 from photometric_viewer.gui.content import PhotometryContent
 from photometric_viewer.gui.empty import EmptyPage
@@ -20,6 +22,9 @@ class MainWindow(Adw.Window):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.gsettings = GSettings()
+        if self.gsettings.settings == None:
+            self.show_error("Settings schema could not be loaded. Selected settings will be lost on restart")
+
         self.settings = self.gsettings.load()
         self.opened_photometry: Optional[Photometry] = None
         self.photometry_content = PhotometryContent()
@@ -34,6 +39,10 @@ class MainWindow(Adw.Window):
         self.content_bin.set_child(EmptyPage())
         self.content_bin.set_vexpand(True)
 
+        self.banner = Adw.Banner()
+        self.banner.set_button_label("Dismiss")
+        self.banner.connect("button-clicked", self.banner_dismiss_clicked)
+
         open_button = Button(label="Open")
         open_button.connect("clicked", self.on_open_clicked)
 
@@ -47,6 +56,7 @@ class MainWindow(Adw.Window):
         header_bar.pack_start(open_button)
         header_bar.pack_end(ApplicationMenuButton())
         box.append(header_bar)
+        box.append(self.banner)
         box.append(self.content_bin)
 
         photometric_filter = FileFilter(name="All photometric files")
@@ -105,19 +115,40 @@ class MainWindow(Adw.Window):
     def on_open_response(self, dialog: FileChooserDialog, response):
         if response == Gtk.ResponseType.ACCEPT:
             file: Gio.File = dialog.get_file()
+            self.open_file(file)
+
+    def open_file(self, file: Gio.File):
+        self.banner.set_revealed(False)
+        try:
             with gio_file_stream(file) as f:
-                self.open_photometry(import_from_file(f))
-
-    def open_photometry(self, photometry: Photometry):
-        if photometry.metadata.luminaire:
-            self.set_title(title=photometry.metadata.luminaire)
-        self.display_photometry_content(photometry)
-        self.photometry_content.update_settings(self.settings)
-
+                photometry = import_from_file(f)
+                if photometry.metadata.luminaire:
+                    self.set_title(title=photometry.metadata.luminaire)
+                self.display_photometry_content(photometry)
+                self.photometry_content.update_settings(self.settings)
+        except GLib.GError as e:
+            logging.exception("Could not open photometric file")
+            self.show_error(e.message)
+        except InvalidPhotometricFileFormatException as e:
+            logging.exception("Could not open photometric file")
+            self.show_error(f"Invalid content of photometric file {file.get_path()}", str(e))
+        except Exception:
+            logging.exception("Could not open photometric file")
+            self.show_error(f"Could not open {file.get_path()}")
 
     def show_preferences(self, *args):
         window = PreferencesWindow(self.settings, self.update_settings)
         window.show()
+
+    def banner_dismiss_clicked(self, *args):
+        self.banner.set_revealed(False)
+
+    def show_error(self, message: str, details: str | None = None):
+        if details:
+            self.banner.set_title(f"{message}\n{details}")
+        else:
+            self.banner.set_title(message)
+        self.banner.set_revealed(True)
 
     @staticmethod
     def show_about_dialog(*args):

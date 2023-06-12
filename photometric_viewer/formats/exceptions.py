@@ -1,2 +1,9 @@
-class InvalidLuminousOpeningException(Exception):
-    pass
+class InvalidPhotometricFileFormatException(Exception):
+    def __init__(self, message):
+        super().__init__(message)
+
+
+class InvalidLuminousOpeningException(InvalidPhotometricFileFormatException):
+    def __init__(self, value):
+        super().__init__("Invalid values for luminous opening geometry")
+
