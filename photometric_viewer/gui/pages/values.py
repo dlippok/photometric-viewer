@@ -1,7 +1,7 @@
-from gi.repository import Adw, Gtk, Gio, Gdk
+from gi.repository import Adw, Gtk
 from gi.repository.Gtk import ScrolledWindow, PolicyType, Orientation, SelectionMode
 
-from photometric_viewer.gui.widgets.common import PropertyList
+from photometric_viewer.gui.widgets.common.property_list import PropertyList
 from photometric_viewer.model.photometry import Photometry
 
 
@@ -65,7 +65,6 @@ class IntensityValues(Adw.Bin):
             gamma_angle_model.append(str(gamma_angle))
         self.gamma_angle_selection_row.set_model(gamma_angle_model)
 
-
     def on_update_c_angle(self, *args):
         i = self.c_angle_selection_row.get_selected()
         if i == 0:
@@ -88,7 +87,7 @@ class IntensityValues(Adw.Bin):
         values = [
             (angle, v) for angle, v in self.photometry.c_values.items()
             if (self.selected_c_angle is None or angle[0] == self.selected_c_angle)
-               and (self.selected_gamma_angle is None or angle[1] == self.selected_gamma_angle)
+            and (self.selected_gamma_angle is None or angle[1] == self.selected_gamma_angle)
         ]
 
         if len(values) > 200:

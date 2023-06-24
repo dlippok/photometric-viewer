@@ -1,14 +1,14 @@
 from gi.repository import Gtk, Adw
 from gi.repository.Gtk import Orientation, PolicyType, ScrolledWindow
 
-from photometric_viewer.gui.general import GeneralLuminaireInformation
-from photometric_viewer.gui.geometry import LuminaireGeometryProperties
-from photometric_viewer.gui.lamps import LampAndBallast
-from photometric_viewer.gui.photometry import LuminairePhotometricProperties
+from photometric_viewer.gui.widgets.content.general import GeneralLuminaireInformation
+from photometric_viewer.gui.widgets.content.geometry import LuminaireGeometryProperties
+from photometric_viewer.gui.widgets.content.lamps import LampAndBallast
+from photometric_viewer.gui.widgets.content.photometry import LuminairePhotometricProperties
 from photometric_viewer.model.photometry import Photometry
-from photometric_viewer.gui.diagram import PhotometricDiagram
-from photometric_viewer.gui.header import Header
-from photometric_viewer.gui.properties import LuminaireProperties
+from photometric_viewer.gui.widgets.content.diagram import PhotometricDiagram
+from photometric_viewer.gui.widgets.common.header import Header
+from photometric_viewer.gui.widgets.content.properties import LuminaireProperties
 from photometric_viewer.model.settings import Settings
 
 

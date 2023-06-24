@@ -16,7 +16,8 @@ def _get_n_values(f: IO, n: int):
 
         values = line.strip().split(" ")
         for value in values:
-            if value == "": continue
+            if value == "":
+                continue
             raw_values.append(value)
             n -= 1
     return raw_values

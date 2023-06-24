@@ -1,7 +1,7 @@
 from gi.repository import Adw
 from gi.repository.Gtk import Box, Orientation
 
-from photometric_viewer.gui.widgets.common import PropertyList
+from photometric_viewer.gui.widgets.common.property_list import PropertyList
 from photometric_viewer.model.photometry import Photometry
 
 
