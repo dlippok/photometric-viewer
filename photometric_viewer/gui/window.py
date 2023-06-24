@@ -13,7 +13,7 @@ from photometric_viewer.gui.empty import EmptyPage
 from photometric_viewer.gui.menu import ApplicationMenuButton
 from photometric_viewer.gui.settings.settings import PreferencesWindow
 from photometric_viewer.gui.source import SourceView
-from photometric_viewer.gui.vtable import ValuesTable
+from photometric_viewer.gui.values import IntensityValues
 from photometric_viewer.model.photometry import Photometry
 from photometric_viewer.utils.GSettings import GSettings
 from photometric_viewer.utils.gio import gio_file_stream
@@ -40,8 +40,8 @@ class MainWindow(Adw.Window):
         source_page.set_icon_name("view-paged-symbolic")
         source_page.set_visible(False)
 
-        self.values_table = ValuesTable()
-        values_page: ViewStackPage = self.view_stack.add_titled(self.values_table, "values", "Values Table")
+        self.values_table = IntensityValues()
+        values_page: ViewStackPage = self.view_stack.add_titled(self.values_table, "values", "Intensity Values")
         values_page.set_icon_name("view-grid-symbolic")
 
 
@@ -51,6 +51,7 @@ class MainWindow(Adw.Window):
         self.install_action("app.show_about_window", None, self.show_about_dialog)
         self.install_action("app.show_preferences", None, self.show_preferences)
         self.install_action("app.show_source", None, self.show_source)
+        self.action_set_enabled("app.show_source", False)
 
         self.content_bin = Adw.Bin()
         self.content_bin.set_child(EmptyPage())
@@ -111,6 +112,7 @@ class MainWindow(Adw.Window):
         self.content_bin.set_child(self.view_stack)
         self.switcher_bar.set_stack(self.view_stack)
         self.opened_photometry = photometry
+        self.action_set_enabled("app.show_source", True)
 
     def update_settings(self):
         self.photometry_content.update_settings(self.settings)
