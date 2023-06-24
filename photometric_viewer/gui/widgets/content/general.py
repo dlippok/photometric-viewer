@@ -1,4 +1,4 @@
-from photometric_viewer.gui.widgets.common import PropertyList
+from photometric_viewer.gui.widgets.common.property_list import PropertyList
 from photometric_viewer.model.photometry import Photometry
 
 

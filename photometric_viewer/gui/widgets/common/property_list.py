@@ -1,5 +1,4 @@
 from gi.repository import Gtk
-from gi.repository.Gdk import Clipboard, ContentProvider
 from gi.repository.Gtk import Box, Orientation, Label, SelectionMode
 from gi.repository.Pango import WrapMode
 
@@ -10,7 +9,8 @@ class PropertyList(Gtk.ListBox):
         self.set_css_classes(["boxed-list"])
         self.set_selection_mode(SelectionMode.NONE)
 
-    def _create_item(self, name, value: str):
+    @staticmethod
+    def _create_item(name, value: str):
         box = Box(orientation=Orientation.VERTICAL)
         box.set_homogeneous(False)
         box.set_spacing(4)

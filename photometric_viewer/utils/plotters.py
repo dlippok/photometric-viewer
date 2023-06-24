@@ -52,7 +52,8 @@ class LightDistributionPlotter:
 
         self.draw_values(center, context, photometry, radii)
 
-    def draw_values(self, center, context, photometry, radii):
+    @staticmethod
+    def draw_values(center, context, photometry, radii):
         max_candelas = _get_max_candela(photometry)
         for n, radius in enumerate(radii):
             unit = "cd" if photometry.is_absolute else "cd/klm"

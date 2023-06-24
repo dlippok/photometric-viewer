@@ -3,17 +3,18 @@ from typing import Optional
 
 from gi.repository import Adw, Gtk, Gio, GLib
 from gi.repository.Adw import ViewStackPage
-from gi.repository.Gtk import Orientation, Button, FileChooserDialog, FileFilter, FileChooserNative
+from gi.repository.Gtk import Orientation, Button, FileChooserDialog
 
 from photometric_viewer.formats.common import import_from_file
 from photometric_viewer.formats.exceptions import InvalidPhotometricFileFormatException
-from photometric_viewer.gui.about import AboutWindow
-from photometric_viewer.gui.content import PhotometryContent
-from photometric_viewer.gui.empty import EmptyPage
-from photometric_viewer.gui.menu import ApplicationMenuButton
-from photometric_viewer.gui.settings.settings import PreferencesWindow
-from photometric_viewer.gui.source import SourceView
-from photometric_viewer.gui.values import IntensityValues
+from photometric_viewer.gui.dialogs.about import AboutWindow
+from photometric_viewer.gui.dialogs.file_chooser import FileChooser
+from photometric_viewer.gui.dialogs.preferences import PreferencesWindow
+from photometric_viewer.gui.pages.content import PhotometryContent
+from photometric_viewer.gui.pages.empty import EmptyPage
+from photometric_viewer.gui.pages.source import SourceView
+from photometric_viewer.gui.pages.values import IntensityValues
+from photometric_viewer.gui.widgets.app_menu import ApplicationMenuButton
 from photometric_viewer.model.photometry import Photometry
 from photometric_viewer.utils.GSettings import GSettings
 from photometric_viewer.utils.gio import gio_file_stream
@@ -21,9 +22,15 @@ from photometric_viewer.utils.gio import gio_file_stream
 
 class MainWindow(Adw.Window):
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+        super().__init__(
+            title='Photometric Viewer',
+            **kwargs
+        )
+        self.set_default_size(550, 700)
+        self.install_actions()
+
         self.gsettings = GSettings()
-        if self.gsettings.settings == None:
+        if self.gsettings.settings is None:
             self.show_error("Settings schema could not be loaded. Selected settings will be lost on restart")
 
         self.settings = self.gsettings.load()
@@ -43,15 +50,6 @@ class MainWindow(Adw.Window):
         self.values_table = IntensityValues()
         values_page: ViewStackPage = self.view_stack.add_titled(self.values_table, "values", "Intensity Values")
         values_page.set_icon_name("view-grid-symbolic")
-
-
-        self.set_default_size(550, 700)
-        self.set_title(title='Photometric Viewer')
-
-        self.install_action("app.show_about_window", None, self.show_about_dialog)
-        self.install_action("app.show_preferences", None, self.show_preferences)
-        self.install_action("app.show_source", None, self.show_source)
-        self.action_set_enabled("app.show_source", False)
 
         self.content_bin = Adw.Bin()
         self.content_bin.set_child(EmptyPage())
@@ -77,32 +75,16 @@ class MainWindow(Adw.Window):
         box.append(self.banner)
         box.append(self.content_bin)
 
-        photometric_filter = FileFilter(name="All photometric files")
-        photometric_filter.add_pattern("*.ies")
-        photometric_filter.add_pattern("*.ldt")
-
-        ies_filter = FileFilter(name="IESNA (*.ies)")
-        ies_filter.add_pattern("*.ies")
-
-        ldt_filter = FileFilter(name="EULUMDAT (*.ldt)")
-        ldt_filter.add_pattern("*.ldt")
-
-        all_files_filter = FileFilter(name="All Files")
-        all_files_filter.add_pattern("*")
-
-        self.file_chooser = FileChooserNative(
-            action=Gtk.FileChooserAction.OPEN,
-            select_multiple=False,
-            modal=True,
-            transient_for=self
-        )
+        self.file_chooser = FileChooser(transient_for=self)
         self.file_chooser.connect("response", self.on_open_response)
-        self.file_chooser.add_filter(photometric_filter)
-        self.file_chooser.add_filter(ies_filter)
-        self.file_chooser.add_filter(ldt_filter)
-        self.file_chooser.add_filter(all_files_filter)
 
         self.set_content(box)
+
+    def install_actions(self):
+        self.install_action("app.show_about_window", None, self.show_about_dialog)
+        self.install_action("app.show_preferences", None, self.show_preferences)
+        self.install_action("app.show_source", None, self.show_source)
+        self.action_set_enabled("app.show_source", False)
 
     def display_photometry_content(self, photometry: Photometry):
         self.photometry_content.set_photometry(photometry)
@@ -151,7 +133,6 @@ class MainWindow(Adw.Window):
 
     def show_source(self, *args):
         self.view_stack.set_visible_child(self.source_view)
-
 
     def banner_dismiss_clicked(self, *args):
         self.banner.set_revealed(False)

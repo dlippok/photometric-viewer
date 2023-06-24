@@ -4,6 +4,6 @@ class InvalidPhotometricFileFormatException(Exception):
 
 
 class InvalidLuminousOpeningException(InvalidPhotometricFileFormatException):
-    def __init__(self, value):
+    def __init__(self):
         super().__init__("Invalid values for luminous opening geometry")
 
