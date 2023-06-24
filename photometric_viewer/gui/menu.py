@@ -8,6 +8,12 @@ class ApplicationMenuButton(Gtk.MenuButton):
         <menu id='app-menu'>
             <section>
                 <item>
+                    <attribute name='label' translatable='yes'>Show source</attribute>
+                    <attribute name='action'>app.show_source</attribute>
+                </item>
+            </section>
+            <section>
+                <item>
                     <attribute name='label' translatable='yes'>Preferences</attribute>
                     <attribute name='action'>app.show_preferences</attribute>
                 </item>

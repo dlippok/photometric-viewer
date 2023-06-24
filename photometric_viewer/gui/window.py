@@ -13,6 +13,7 @@ from photometric_viewer.gui.empty import EmptyPage
 from photometric_viewer.gui.menu import ApplicationMenuButton
 from photometric_viewer.gui.settings.settings import PreferencesWindow
 from photometric_viewer.gui.source import SourceView
+from photometric_viewer.gui.vtable import ValuesTable
 from photometric_viewer.model.photometry import Photometry
 from photometric_viewer.utils.GSettings import GSettings
 from photometric_viewer.utils.gio import gio_file_stream
@@ -26,14 +27,30 @@ class MainWindow(Adw.Window):
             self.show_error("Settings schema could not be loaded. Selected settings will be lost on restart")
 
         self.settings = self.gsettings.load()
+
+        self.view_stack = Adw.ViewStack()
         self.opened_photometry: Optional[Photometry] = None
+
         self.photometry_content = PhotometryContent()
+        properties_page: ViewStackPage = self.view_stack.add_titled(self.photometry_content, "photometry", "Photometry")
+        properties_page.set_icon_name("view-reveal-symbolic")
+
+        self.source_view = SourceView()
+        source_page: ViewStackPage = self.view_stack.add_titled(self.source_view, "source", "Source")
+        source_page.set_icon_name("view-paged-symbolic")
+        source_page.set_visible(False)
+
+        self.values_table = ValuesTable()
+        values_page: ViewStackPage = self.view_stack.add_titled(self.values_table, "values", "Values Table")
+        values_page.set_icon_name("view-grid-symbolic")
+
 
         self.set_default_size(550, 700)
         self.set_title(title='Photometric Viewer')
 
         self.install_action("app.show_about_window", None, self.show_about_dialog)
         self.install_action("app.show_preferences", None, self.show_preferences)
+        self.install_action("app.show_source", None, self.show_source)
 
         self.content_bin = Adw.Bin()
         self.content_bin.set_child(EmptyPage())
@@ -87,22 +104,12 @@ class MainWindow(Adw.Window):
         self.set_content(box)
 
     def display_photometry_content(self, photometry: Photometry):
-        self.photometry_content = PhotometryContent()
         self.photometry_content.set_photometry(photometry)
+        self.source_view.set_photometry(photometry)
+        self.values_table.set_photometry(photometry)
 
-        source_view = SourceView()
-        source_view.set_photometry(photometry)
-
-        view_stack = Adw.ViewStack()
-
-        properties_page: ViewStackPage = view_stack.add_titled(self.photometry_content, "photometry", "Photometry")
-        properties_page.set_icon_name("view-reveal-symbolic")
-
-        source_page: ViewStackPage = view_stack.add_titled(source_view, "source", "Source")
-        source_page.set_icon_name("view-paged-symbolic")
-
-        self.content_bin.set_child(view_stack)
-        self.switcher_bar.set_stack(view_stack)
+        self.content_bin.set_child(self.view_stack)
+        self.switcher_bar.set_stack(self.view_stack)
         self.opened_photometry = photometry
 
     def update_settings(self):
@@ -139,6 +146,10 @@ class MainWindow(Adw.Window):
     def show_preferences(self, *args):
         window = PreferencesWindow(self.settings, self.update_settings)
         window.show()
+
+    def show_source(self, *args):
+        self.view_stack.set_visible_child(self.source_view)
+
 
     def banner_dismiss_clicked(self, *args):
         self.banner.set_revealed(False)
