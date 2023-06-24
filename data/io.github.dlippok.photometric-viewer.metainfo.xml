@@ -56,7 +56,12 @@
     </requires>
 
     <releases>
-          <release version="1.0.0" date="2023-06-10">
+        <release version="1.0.1" date="2023-06-24">
+            <description>
+                <p>Fix bug that prevents opening IES files by double-clicking them in file explorer.</p>
+            </description>
+        </release>
+        <release version="1.0.0" date="2023-06-10">
             <description>
                 <p>Adds support for EULUMDAT files, introduces extended lamp and geometry information and allows user to select preferred size units.</p>
             </description>
