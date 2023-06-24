@@ -2,7 +2,10 @@
 
 GNOME/GTK application for viewing IES and EULUMDAT photometric files.
 
-![Screenshot](docs/screenshots/Main.png "Screenshot")
+<picture>
+  <source srcset="docs/screenshots/Dark.png" media="(prefers-color-scheme: dark)">
+  <img src="docs/screenshots/Main.png" alt="Screenshot">
+</picture>
 
 <a href='https://flathub.org/apps/io.github.dlippok.photometric-viewer'><img height='60' alt='Download on Flathub' src='https://dl.flathub.org/assets/badges/flathub-badge-en.png'/></a> 
 <a href="https://snapcraft.io/photometric-viewer">
