@@ -23,14 +23,14 @@ class PropertyList(Gtk.ListBox):
         name_label.set_css_classes(["h1"])
 
         value_label = Label(
-            label=value or "Unknown",
+            label=value if (value is not None and value != "") else "Unknown",
             tooltip_text=value,
             hexpand=True,
             xalign=0,
             selectable=True,
             wrap=True,
             wrap_mode=WrapMode.WORD_CHAR,
-            css_classes=[] if value else ["warning"],
+            css_classes=[] if (value is not None and value != "") else ["warning"],
         )
 
         box.append(name_label)
@@ -45,7 +45,8 @@ class PropertyList(Gtk.ListBox):
         if value:
             self.append(self._create_item(name=name, value=value))
 
-    def on_copy_clicked(self, a, value):
-        clipboard: Clipboard = self.get_clipboard()
-        provider = ContentProvider.new_for_value(value)
-        clipboard.set_content(provider)
+    def clear(self):
+        items = [i for i in self]
+
+        for child in items:
+            self.remove(child)
