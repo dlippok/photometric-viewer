@@ -14,11 +14,14 @@ import gettext
 
 APPLICATION_ID = 'io.github.dlippok.photometric-viewer'
 
+LOCALE_DIR = None
+if os.environ.get("container", None) == "flatpak":
+    LOCALE_DIR = "/app/share/locale"
+
+
 locale.setlocale(locale.LC_ALL, '')
-locale.bindtextdomain(APPLICATION_ID, None)
-gettext.install(APPLICATION_ID)
-
-
+locale.bindtextdomain(APPLICATION_ID, LOCALE_DIR)
+gettext.install(APPLICATION_ID, LOCALE_DIR)
 class Application(Adw.Application):
     def __init__(self):
         super().__init__(application_id=APPLICATION_ID,
