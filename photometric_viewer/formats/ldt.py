@@ -4,7 +4,6 @@ from photometric_viewer.model.photometry import Photometry, LuminousOpeningGeome
     PhotometryMetadata, LuminaireGeometry
 from photometric_viewer.model.units import LengthUnits
 
-
 def _create_luminous_opening(length, width) -> LuminousOpeningGeometry:
     return LuminousOpeningGeometry(
         length=length,
@@ -24,9 +23,9 @@ def _create_luminaire_geometry(length, width, height) -> LuminaireGeometry:
 
 def _get_source_type(light_source_type: int):
     match light_source_type:
-        case 1: return "Point source with symmetry about the vertical axis"
-        case 2: return "Linear luminaire"
-        case 3: return "Point source with any other symmetry"
+        case 1: return _("Point source with symmetry about the vertical axis")
+        case 2: return _("Linear luminaire")
+        case 3: return _("Point source with any other symmetry")
 
 
 def import_from_file(f: IO):
@@ -58,7 +57,7 @@ def import_from_file(f: IO):
     no_lamp_sets = int(f.readline().strip())
 
     lamp_sets = []
-    for _ in range(no_lamp_sets):
+    for sets in range(no_lamp_sets):
         no_lamps = int(f.readline().strip())
         lamp_sets.append({
                 "number_of_lamps": abs(no_lamps),
@@ -159,11 +158,11 @@ def import_from_file(f: IO):
             file_source=source,
             file_units=LengthUnits.MILLIMETERS,
             additional_properties={
-                "Luminaire type": _get_source_type(light_source_type),
-                "Measurement": measurement,
-                "Filename": filename,
-                "Date and user": date_and_user,
-                "Conversion factor for luminous intensities": conversion_factor
+                _("Luminaire type"): _get_source_type(light_source_type),
+                _("Measurement"): measurement,
+                _("Filename"): filename,
+                _("Date and user"): date_and_user,
+                _("Conversion factor for luminous intensities"): conversion_factor
             }
         )
     )

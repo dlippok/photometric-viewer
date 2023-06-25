@@ -11,17 +11,17 @@ class FileChooser(FileChooserNative):
             **kwargs
         )
 
-        photometric_filter = FileFilter(name="All photometric files")
+        photometric_filter = FileFilter(name=_("All photometric files"))
         photometric_filter.add_pattern("*.ies")
         photometric_filter.add_pattern("*.ldt")
 
-        ies_filter = FileFilter(name="IESNA (*.ies)")
+        ies_filter = FileFilter(name=_("IESNA (*.ies)"))
         ies_filter.add_pattern("*.ies")
 
-        ldt_filter = FileFilter(name="EULUMDAT (*.ldt)")
+        ldt_filter = FileFilter(name=_("EULUMDAT (*.ldt)"))
         ldt_filter.add_pattern("*.ldt")
 
-        all_files_filter = FileFilter(name="All Files")
+        all_files_filter = FileFilter(name=_("All Files"))
         all_files_filter.add_pattern("*")
 
         self.add_filter(photometric_filter)

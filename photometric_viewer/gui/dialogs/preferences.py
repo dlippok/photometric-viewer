@@ -6,24 +6,6 @@ from photometric_viewer.model.units import LengthUnits
 
 
 class PreferencesWindow(Adw.PreferencesWindow):
-    """
-    <?xml version="1.0"?>
-        <interface>
-        <menu id='app-menu'>
-            <section>
-                <item>
-                    <attribute name='label' translatable='yes'>Preferences</attribute>
-                    <attribute name='action'>app.show_preferences</attribute>
-                </item>
-                <item>
-                    <attribute name='label' translatable='yes'>About Photometric Viewer</attribute>
-                    <attribute name='action'>app.show_about_window</attribute>
-                </item>
-            </section>
-        </menu>
-        </interface>
-    """
-
     def __init__(self, settings: Settings, on_update_settings, **kwargs):
         super().__init__(**kwargs)
         self.set_search_enabled(False)
@@ -33,12 +15,12 @@ class PreferencesWindow(Adw.PreferencesWindow):
 
     def _add_units_page(self):
         page = Adw.PreferencesPage(
-            title="Application Settings",
+            title=_("Application Settings"),
         )
 
         units_group = Adw.PreferencesGroup(
-            title="Units",
-            description="Measurement units displayed in the application"
+            title=_("Units"),
+            description=_("Measurement units displayed in the application")
         )
 
         units_group_list = ListBox(
@@ -53,7 +35,7 @@ class PreferencesWindow(Adw.PreferencesWindow):
             margin_top=16,
             margin_bottom=16
         )
-        use_units_from_file_box.append(Label(label="Use units from photometric file", hexpand=True, xalign=0))
+        use_units_from_file_box.append(Label(label=_("Use units from photometric file"), hexpand=True, xalign=0))
         switch = Gtk.Switch(active=self.settings.length_units_from_file)
         switch.connect("state-set", self.length_units_from_file_state_set)
         use_units_from_file_box.append(switch)
@@ -67,13 +49,13 @@ class PreferencesWindow(Adw.PreferencesWindow):
             margin_bottom=16,
             sensitive=not self.settings.length_units_from_file
         )
-        self.preferred_units_box.append(Label(label="Preferred length units", hexpand=True, xalign=0))
+        self.preferred_units_box.append(Label(label=_("Preferred length units"), hexpand=True, xalign=0))
         self.preferred_units_dropdown: Gtk.DropDown = Gtk.DropDown.new_from_strings([
-            "Meters",
-            "Centimeters",
-            "Millimeters",
-            "Feet",
-            "Inches"
+            _("Meters"),
+            _("Centimeters"),
+            _("Millimeters"),
+            _("Feet"),
+            _("Inches")
         ])
 
         match self.settings.length_units:

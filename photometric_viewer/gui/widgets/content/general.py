@@ -9,6 +9,6 @@ class GeneralLuminaireInformation(PropertyList):
         for child in items:
             self.remove(child)
 
-        self.add_if_non_empty("Catalog Number", photometry.metadata.catalog_number)
-        self.add("Manufacturer", photometry.metadata.manufacturer)
-        self.add("Description", photometry.metadata.luminaire)
+        self.add_if_non_empty(_("Catalog Number"), photometry.metadata.catalog_number)
+        self.add(_("Manufacturer"), photometry.metadata.manufacturer)
+        self.add(_("Description"), photometry.metadata.luminaire)

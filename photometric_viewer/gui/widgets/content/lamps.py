@@ -32,20 +32,20 @@ class LampAndBallast(Adw.Bin):
 
         for n, lamp in enumerate(photometry.lamps):
             property_list = PropertyList()
-            property_list.add("Number of lamps", str(lamp.number_of_lamps))
-            property_list.add_if_non_empty("Lamp", lamp.description)
-            property_list.add_if_non_empty("Lamp catalog no.", lamp.catalog_number)
-            property_list.add_if_non_empty("Color", lamp.color)
-            property_list.add_if_non_empty("Color Rendering Index (CRI)", lamp.cri)
-            property_list.add_if_non_empty("Wattage", lamp.wattage)
+            property_list.add(_("Number of lamps"), str(lamp.number_of_lamps))
+            property_list.add_if_non_empty(_("Lamp"), lamp.description)
+            property_list.add_if_non_empty(_("Lamp catalog no."), lamp.catalog_number)
+            property_list.add_if_non_empty(_("Color"), lamp.color)
+            property_list.add_if_non_empty(_("Color Rendering Index (CRI)"), lamp.cri)
+            property_list.add_if_non_empty(_("Wattage"), lamp.wattage)
 
             if not photometry.is_absolute:
-                property_list.add("Initial rating per lamp", f'{lamp.lumens_per_lamp:.0f}lm')
+                property_list.add(_("Initial rating per lamp"), f'{lamp.lumens_per_lamp:.0f}lm')
 
-            property_list.add_if_non_empty("Lamp position", lamp.position)
-            property_list.add_if_non_empty("Ballast", lamp.ballast_description)
-            property_list.add_if_non_empty("Ballast catalog no.", lamp.ballast_catalog_number)
+            property_list.add_if_non_empty(_("Lamp position"), lamp.position)
+            property_list.add_if_non_empty(_("Ballast"), lamp.ballast_description)
+            property_list.add_if_non_empty(_("Ballast catalog no."), lamp.ballast_catalog_number)
 
-            page_name = lamp.description or f"Lamp {n}"
-            page = self.view_stack.add_titled(property_list, f"lamp_{n}", page_name)
+            page_name = lamp.description or _("Lamp {}").format(n)
+            page = self.view_stack.add_titled(property_list, "lamp_{n}", page_name)
             page.set_icon_name("io.github.dlippok.photometric-viewer-symbolic")

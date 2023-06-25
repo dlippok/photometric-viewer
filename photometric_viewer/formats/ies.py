@@ -51,7 +51,9 @@ def create_luminous_opening(attributes):
 def import_from_file(f: IO):
     header = read_non_empty_line(f).strip()
     if not header.upper().startswith("IESNA"):
-        raise InvalidPhotometricFileFormatException(f"{header} could not be recognized as a valid IESNA file header")
+        raise InvalidPhotometricFileFormatException(
+            _("{} could not be recognized as a valid IESNA file header").format(header)
+        )
 
     metadata = {}
     next_line = read_non_empty_line(f)
