@@ -13,11 +13,12 @@ import sys
 import gettext
 
 APPLICATION_ID = 'io.github.dlippok.photometric-viewer'
-LOCALE_DIR = 'share/locale'
 
 locale.setlocale(locale.LC_ALL, '')
-locale.bindtextdomain(APPLICATION_ID, LOCALE_DIR)
-gettext.install(APPLICATION_ID, LOCALE_DIR)
+locale.bindtextdomain(APPLICATION_ID)
+gettext.install(APPLICATION_ID)
+
+
 class Application(Adw.Application):
     def __init__(self):
         super().__init__(application_id=APPLICATION_ID,
