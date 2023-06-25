@@ -51,9 +51,7 @@ def create_luminous_opening(attributes):
 def import_from_file(f: IO):
     header = read_non_empty_line(f).strip()
     if not header.upper().startswith("IESNA"):
-        raise InvalidPhotometricFileFormatException(
-            _("{} could not be recognized as a valid IESNA file header").format(header)
-        )
+        raise InvalidPhotometricFileFormatException(f"{header} could not be recognized as a valid IESNA file header")
 
     metadata = {}
     next_line = read_non_empty_line(f)
@@ -136,6 +134,7 @@ def import_from_file(f: IO):
             catalog_number=metadata.pop("LUMCAT", None),
             luminaire=metadata.pop("LUMINAIRE", None),
             manufacturer=metadata.pop("MANUFAC", None),
+            date_and_user=metadata.pop("ISSUEDATE", None),
             additional_properties=metadata,
             file_source=source,
             file_units=LengthUnits.FEET if attributes["luminous_opening_units"] == 1 else LengthUnits.METERS

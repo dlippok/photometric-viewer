@@ -5,6 +5,12 @@ from typing import Dict, Tuple, List
 from photometric_viewer.model.units import LengthUnits
 
 
+class LuminaireType(Enum):
+    POINT_SOURCE_WITH_VERTICAL_SYMMETRY = 1
+    LINEAR = 2
+    POINT_SOURCE_WITH_OTHER_SYMMETRY = 3
+
+
 @dataclass
 class PhotometryMetadata:
     luminaire: str
@@ -13,6 +19,11 @@ class PhotometryMetadata:
     additional_properties: Dict[str, str]
     file_source: str
     file_units: LengthUnits
+    luminaire_type: LuminaireType | None = None
+    measurement: str | None = None
+    date_and_user: str | None = None
+    conversion_factor: float | None = None
+    filename: str | None = None
 
 
 class Shape(Enum):

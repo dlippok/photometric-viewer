@@ -46,7 +46,6 @@ class PhotometryContent(Adw.Bin):
         box.append(Header(label=_("Lamps and ballast"), xalign=0))
         box.append(self.lamps_and_ballast)
 
-        box.append(Header(label=_("Additional properties"), xalign=0))
         box.append(self.properties)
 
         clamp = Adw.Clamp()

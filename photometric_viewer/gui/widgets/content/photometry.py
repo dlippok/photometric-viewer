@@ -9,6 +9,9 @@ def _value_with_unit(value, unit):
 
 
 class LuminairePhotometricProperties(PropertyList):
+    def __init__(self):
+        super().__init__()
+
     def set_photometry(self, photometry: Photometry):
         items = [i for i in self]
         for child in items:
@@ -16,3 +19,4 @@ class LuminairePhotometricProperties(PropertyList):
 
         self.add(_("Light output ratio"), _value_with_unit(photometry.lorl, "%"))
         self.add(_("Downward flux fraction (DFF)"), _value_with_unit(photometry.dff, "%"))
+        self.add_if_non_empty(_("Conversion factor for luminous intensities"), photometry.metadata.conversion_factor)
