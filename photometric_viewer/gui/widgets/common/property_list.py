@@ -23,7 +23,7 @@ class PropertyList(Gtk.ListBox):
         name_label.set_css_classes(["h1"])
 
         value_label = Label(
-            label=value if (value is not None and value != "") else "Unknown",
+            label=value if (value is not None and value != "") else _("Unknown"),
             tooltip_text=value,
             hexpand=True,
             xalign=0,

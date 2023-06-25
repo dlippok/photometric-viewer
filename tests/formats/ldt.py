@@ -2,7 +2,7 @@ import unittest
 from pathlib import Path
 
 from photometric_viewer.formats.ldt import import_from_file
-from photometric_viewer.model.photometry import Shape, Lamps, LuminaireGeometry, LuminousOpeningGeometry
+from photometric_viewer.model.photometry import Shape, Lamps, LuminaireGeometry, LuminousOpeningGeometry, LuminaireType
 from photometric_viewer.model.units import LengthUnits
 
 
@@ -19,12 +19,11 @@ class TestLdt(unittest.TestCase):
         self.assertEqual(photometry.metadata.manufacturer, "ACME Inc.")
         self.assertEqual(photometry.metadata.catalog_number, "BD0150")
         self.assertEqual(photometry.lamps[0].description, "LED Module")
-        self.assertEqual(photometry.metadata.additional_properties["Luminaire type"],
-                         "Point source with symmetry about the vertical axis")
-        self.assertEqual(photometry.metadata.additional_properties["Measurement"], "TESTREP1")
-        self.assertEqual(photometry.metadata.additional_properties["Filename"], "BD0150.ldt")
-        self.assertEqual(photometry.metadata.additional_properties["Date and user"], "2023-05-01 Photometric Viewer")
-        self.assertEqual(photometry.metadata.additional_properties["Conversion factor for luminous intensities"], 1.0)
+        self.assertEqual(photometry.metadata.luminaire_type, LuminaireType.POINT_SOURCE_WITH_VERTICAL_SYMMETRY)
+        self.assertEqual(photometry.metadata.measurement, "TESTREP1")
+        self.assertEqual(photometry.metadata.filename, "BD0150.ldt")
+        self.assertEqual(photometry.metadata.date_and_user, "2023-05-01 Photometric Viewer")
+        self.assertEqual(photometry.metadata.conversion_factor, 1.0)
         self.assertEqual(photometry.metadata.file_units, LengthUnits.MILLIMETERS)
 
     def test_relative_photometry(self):

@@ -31,7 +31,7 @@ class MainWindow(Adw.Window):
 
         self.gsettings = GSettings()
         if self.gsettings.settings is None:
-            self.show_error("Settings schema could not be loaded. Selected settings will be lost on restart")
+            self.show_error(_("Settings schema could not be loaded. Selected settings will be lost on restart"))
 
         self.settings = self.gsettings.load()
 
@@ -39,16 +39,16 @@ class MainWindow(Adw.Window):
         self.opened_photometry: Optional[Photometry] = None
 
         self.photometry_content = PhotometryContent()
-        properties_page: ViewStackPage = self.view_stack.add_titled(self.photometry_content, "photometry", "Photometry")
+        properties_page: ViewStackPage = self.view_stack.add_titled(self.photometry_content, "photometry", _("Photometry"))
         properties_page.set_icon_name("view-reveal-symbolic")
 
         self.source_view = SourceView()
-        source_page: ViewStackPage = self.view_stack.add_titled(self.source_view, "source", "Source")
+        source_page: ViewStackPage = self.view_stack.add_titled(self.source_view, "source", _("Source"))
         source_page.set_icon_name("view-paged-symbolic")
         source_page.set_visible(False)
 
         self.values_table = IntensityValues()
-        values_page: ViewStackPage = self.view_stack.add_titled(self.values_table, "values", "Intensity Values")
+        values_page: ViewStackPage = self.view_stack.add_titled(self.values_table, "values", _("Intensity Values"))
         values_page.set_icon_name("view-grid-symbolic")
 
         self.content_bin = Adw.Bin()
@@ -56,10 +56,10 @@ class MainWindow(Adw.Window):
         self.content_bin.set_vexpand(True)
 
         self.banner = Adw.Banner()
-        self.banner.set_button_label("Dismiss")
+        self.banner.set_button_label(_("Dismiss"))
         self.banner.connect("button-clicked", self.banner_dismiss_clicked)
 
-        open_button = Button(label="Open")
+        open_button = Button(label=_("Open"))
         open_button.connect("clicked", self.on_open_clicked)
 
         self.switcher_bar = Adw.ViewSwitcherTitle()
@@ -122,10 +122,10 @@ class MainWindow(Adw.Window):
             self.show_error(e.message)
         except InvalidPhotometricFileFormatException as e:
             logging.exception("Could not open photometric file")
-            self.show_error(f"Invalid content of photometric file {file.get_path()}", str(e))
+            self.show_error(_("Invalid content of photometric file {}").format(file.get_path()), str(e))
         except Exception:
             logging.exception("Could not open photometric file")
-            self.show_error(f"Could not open {file.get_path()}")
+            self.show_error(_("Could not open {}").format(file.get_path()))
 
     def show_preferences(self, *args):
         window = PreferencesWindow(self.settings, self.update_settings)

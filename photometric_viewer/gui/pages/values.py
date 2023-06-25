@@ -18,12 +18,12 @@ class IntensityValues(Adw.Bin):
         self.selection_list.set_css_classes(["boxed-list"])
 
         self.c_angle_selection_row = Adw.ComboRow()
-        self.c_angle_selection_row.set_title("C Plane")
+        self.c_angle_selection_row.set_title(_("C Plane"))
         self.c_angle_selection_row.connect("notify::selected", self.on_update_c_angle)
         self.selection_list.append(self.c_angle_selection_row)
 
         self.gamma_angle_selection_row = Adw.ComboRow()
-        self.gamma_angle_selection_row.set_title("Gamma angle")
+        self.gamma_angle_selection_row.set_title(_("Gamma angle"))
         self.gamma_angle_selection_row.connect("notify::selected", self.on_update_gamma_angle)
         self.selection_list.append(self.gamma_angle_selection_row)
 
@@ -54,13 +54,13 @@ class IntensityValues(Adw.Bin):
         self.show_angle()
 
         c_angle_model = Gtk.StringList()
-        c_angle_model.append("Show all")
+        c_angle_model.append(_("Show all"))
         for c_angle in self.photometry.h_angles:
             c_angle_model.append(str(c_angle))
         self.c_angle_selection_row.set_model(c_angle_model)
 
         gamma_angle_model = Gtk.StringList()
-        gamma_angle_model.append("Show all")
+        gamma_angle_model.append(_("Show all"))
         for gamma_angle in self.photometry.v_angles:
             gamma_angle_model.append(str(gamma_angle))
         self.gamma_angle_selection_row.set_model(gamma_angle_model)
@@ -92,8 +92,8 @@ class IntensityValues(Adw.Bin):
 
         if len(values) > 200:
             self.property_list.add(
-                "Too many values to display",
-                "Select a particular C plane or gamma angle to display the values"
+                _("Too many values to display"),
+                _("Select a particular C plane or gamma angle to display the values")
             )
             return
 

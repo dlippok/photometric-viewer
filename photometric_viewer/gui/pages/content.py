@@ -31,22 +31,21 @@ class PhotometryContent(Adw.Bin):
             margin_end=32
         )
 
-        box.append(Header(label="Photometric diagram", xalign=0))
+        box.append(Header(label=_("Photometric diagram"), xalign=0))
         box.append(self.diagram)
 
-        box.append(Header(label="General information", xalign=0))
+        box.append(Header(label=_("General information"), xalign=0))
         box.append(self.general_information)
 
-        box.append(Header(label="Photometric properties", xalign=0))
+        box.append(Header(label=_("Photometric properties"), xalign=0))
         box.append(self.photometric_properties)
 
-        box.append(Header(label="Geometry", xalign=0))
+        box.append(Header(label=_("Geometry"), xalign=0))
         box.append(self.geometry)
 
-        box.append(Header(label="Lamps and ballast", xalign=0))
+        box.append(Header(label=_("Lamps and ballast"), xalign=0))
         box.append(self.lamps_and_ballast)
 
-        box.append(Header(label="Additional properties", xalign=0))
         box.append(self.properties)
 
         clamp = Adw.Clamp()

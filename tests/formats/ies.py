@@ -16,9 +16,9 @@ class TestIes(unittest.TestCase):
         self.assertEqual(photometry.metadata.luminaire, "Dummy IES file")
         self.assertEqual(photometry.metadata.manufacturer, "ACME Inc.")
         self.assertEqual(photometry.metadata.catalog_number, "BD0150")
+        self.assertEqual(photometry.metadata.date_and_user, "2023-05-01")
         self.assertEqual(photometry.metadata.additional_properties["TEST"], "TESTREP1 ACME Photometrics")
         self.assertEqual(photometry.metadata.additional_properties["TESTLAB"], "ACME Photometrics")
-        self.assertEqual(photometry.metadata.additional_properties["ISSUEDATE"], "2023-05-01")
         self.assertEqual(photometry.metadata.additional_properties["MULTILINE"],
                          "Test multiline metadata\nShould contain three lines\nDivided by LF characters")
         self.assertEqual(photometry.lamps[0].catalog_number, "LED Module")

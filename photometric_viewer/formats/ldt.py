@@ -1,9 +1,8 @@
 from typing import IO
 
 from photometric_viewer.model.photometry import Photometry, LuminousOpeningGeometry, Shape, Lamps, \
-    PhotometryMetadata, LuminaireGeometry
+    PhotometryMetadata, LuminaireGeometry, LuminaireType
 from photometric_viewer.model.units import LengthUnits
-
 
 def _create_luminous_opening(length, width) -> LuminousOpeningGeometry:
     return LuminousOpeningGeometry(
@@ -24,9 +23,9 @@ def _create_luminaire_geometry(length, width, height) -> LuminaireGeometry:
 
 def _get_source_type(light_source_type: int):
     match light_source_type:
-        case 1: return "Point source with symmetry about the vertical axis"
-        case 2: return "Linear luminaire"
-        case 3: return "Point source with any other symmetry"
+        case 1: return LuminaireType.POINT_SOURCE_WITH_VERTICAL_SYMMETRY
+        case 2: return LuminaireType.LINEAR
+        case 3: return LuminaireType.POINT_SOURCE_WITH_OTHER_SYMMETRY
 
 
 def import_from_file(f: IO):
@@ -58,7 +57,7 @@ def import_from_file(f: IO):
     no_lamp_sets = int(f.readline().strip())
 
     lamp_sets = []
-    for _ in range(no_lamp_sets):
+    for sets in range(no_lamp_sets):
         no_lamps = int(f.readline().strip())
         lamp_sets.append({
                 "number_of_lamps": abs(no_lamps),
@@ -158,12 +157,11 @@ def import_from_file(f: IO):
             manufacturer=manufacturer,
             file_source=source,
             file_units=LengthUnits.MILLIMETERS,
-            additional_properties={
-                "Luminaire type": _get_source_type(light_source_type),
-                "Measurement": measurement,
-                "Filename": filename,
-                "Date and user": date_and_user,
-                "Conversion factor for luminous intensities": conversion_factor
-            }
+            luminaire_type=_get_source_type(light_source_type),
+            measurement=measurement,
+            date_and_user=date_and_user,
+            conversion_factor=conversion_factor,
+            filename=filename,
+            additional_properties={}
         )
     )

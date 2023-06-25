@@ -29,7 +29,9 @@ class ApplicationMenuButton(Gtk.MenuButton):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        builder = Gtk.Builder.new_from_string(self.MENU_MODEL, -1)
+        builder: Gtk.Builder = Gtk.Builder()
+        builder.set_translation_domain("io.github.dlippok.photometric-viewer")
+        builder.add_from_string(self.MENU_MODEL)
         menu_model = builder.get_object("app-menu")
         self.set_menu_model(menu_model)
         self.set_icon_name("open-menu-symbolic")
