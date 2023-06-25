@@ -15,7 +15,7 @@ import gettext
 APPLICATION_ID = 'io.github.dlippok.photometric-viewer'
 
 locale.setlocale(locale.LC_ALL, '')
-locale.bindtextdomain(APPLICATION_ID)
+locale.bindtextdomain(APPLICATION_ID, None)
 gettext.install(APPLICATION_ID)
 
 
