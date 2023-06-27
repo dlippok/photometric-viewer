@@ -1,6 +1,6 @@
 # Photometric Viewer
 
-GNOME/GTK application for viewing IES and EULUMDAT photometric files.
+Application for viewing IES and EULUMDAT photometric files under Linux (Gnome/GTK).
 
 <picture>
   <source srcset="docs/screenshots/Dark.png" media="(prefers-color-scheme: dark)">
@@ -24,6 +24,7 @@ Photometic Viewer allows you to see following information from the opened photom
 - Lamps and ballast information
 - Luminaire and luminous opening geometry information
 - Additional properties (Test number, issue date, test laboratory, etc.)
+- Intensity Values for selected C planes and gamma values
 - Raw text source of photometric file
 
 The application uses Libadwaita library for modern design and responsive layout. 
