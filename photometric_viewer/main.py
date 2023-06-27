@@ -14,10 +14,11 @@ import gettext
 
 APPLICATION_ID = 'io.github.dlippok.photometric-viewer'
 
-LOCALE_DIR = None
-if os.environ.get("container", None) == "flatpak":
+LOCALE_DIR = "data/translations"
+if os.environ.get("container") == "flatpak":
     LOCALE_DIR = "/app/share/locale"
-
+elif root:=os.environ.get("SNAP_DATA"):
+    LOCALE_DIR = root + "/share/locale"
 
 locale.setlocale(locale.LC_ALL, '')
 locale.bindtextdomain(APPLICATION_ID, LOCALE_DIR)
