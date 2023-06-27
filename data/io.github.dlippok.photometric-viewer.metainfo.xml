@@ -64,7 +64,7 @@
             <description>
                 <p>Adds support for browsing intensity values in the opened photometric file, includes legend of the photometric curve and introduces German translations for the user interface.</p>
             </description>
-        </release
+        </release>
         <release version="1.0.1" date="2023-06-24">
             <description>
                 <p>Fix bug that prevents opening IES files by double-clicking them in file explorer.</p>
