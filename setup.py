@@ -27,7 +27,7 @@ class InstallCommand(install):
             )
 
 setup(name='photometric-viewer',
-      version='1.0.1',
+      version='1.1.0',
       description='Browse content of IES and LDT photometric files',
       url='http://github.com/dlippok/photoetric-viewer',
       author='Damian Lippok',
@@ -49,8 +49,7 @@ setup(name='photometric-viewer',
           ('share/applications', ['data/desktop/io.github.dlippok.photometric-viewer.desktop']),
           ('share/mime/packages', ['data/desktop/io.github.dlippok.photometric-viewer.mime.xml']),
           ('share/metainfo', ['data/io.github.dlippok.photometric-viewer.metainfo.xml']),
-          ('share/glib-2.0/schemas/', ['data/io.github.dlippok.photometric-viewer.gschema.xml']),
-          # ('share/locale/en/LC_MESSAGES', ['data/translations/en/LC_MESSAGES/io.github.dlippok.photometric-viewer.mo'])
+          ('share/glib-2.0/schemas/', ['data/io.github.dlippok.photometric-viewer.gschema.xml'])
       ],
       test_suite="tests",
       zip_safe=False)
