@@ -17,12 +17,14 @@ APPLICATION_ID = 'io.github.dlippok.photometric-viewer'
 LOCALE_DIR = "data/translations"
 if os.environ.get("container") == "flatpak":
     LOCALE_DIR = "/app/share/locale"
-elif root:=os.environ.get("SNAP"):
+elif root := os.environ.get("SNAP"):
     LOCALE_DIR = root + "/share/locale"
 
 locale.setlocale(locale.LC_ALL, '')
 locale.bindtextdomain(APPLICATION_ID, LOCALE_DIR)
 gettext.install(APPLICATION_ID, LOCALE_DIR)
+
+
 class Application(Adw.Application):
     def __init__(self):
         super().__init__(application_id=APPLICATION_ID,

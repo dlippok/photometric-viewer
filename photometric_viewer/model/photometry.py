@@ -64,11 +64,11 @@ class Lamps:
 @dataclass
 class Photometry:
     is_absolute: bool
-    v_angles: List[float]
-    h_angles: List[float]
+    gamma_angles: List[float]
+    c_planes: List[float]
 
     # Values in Candela for absolute photometry, cd/klm otherwise
-    c_values: Dict[Tuple[float, float], float]
+    intensity_values: Dict[Tuple[float, float], float]
     dff: float | None
     lorl: float | None
     luminous_opening_geometry: LuminousOpeningGeometry
@@ -77,11 +77,11 @@ class Photometry:
     metadata: PhotometryMetadata
 
     def get_values_for_c_angle(self, angle) -> Dict[float, float]:
-        if angle in self.h_angles:
+        if angle in self.c_planes:
             return self._values_for_angle(angle)
-        elif angle < 180 and angle + 180 in self.h_angles:
+        elif angle < 180 and angle + 180 in self.c_planes:
             return self._values_for_angle(angle + 180)
-        elif angle >= 180 and angle - 180 in self.h_angles:
+        elif angle >= 180 and angle - 180 in self.c_planes:
             return self._values_for_angle(angle - 180)
         else:
             return {}
@@ -89,7 +89,7 @@ class Photometry:
     def _values_for_angle(self, angle):
         return {
             angles[1]: candelas
-            for (angles, candelas) in self.c_values.items()
+            for (angles, candelas) in self.intensity_values.items()
             if angles[0] == angle
 
         }
