@@ -80,7 +80,7 @@ class TestIes(unittest.TestCase):
         }
 
         self.assertFalse(photometry.is_absolute)
-        self.assertEqual(photometry.c_values, expected_values)
+        self.assertEqual(photometry.intensity_values, expected_values)
         self.assertEqual(photometry.lamps[0].lumens_per_lamp, expected_flux)
 
     def test_relative_photometry_with_multiplier(self):
@@ -109,7 +109,7 @@ class TestIes(unittest.TestCase):
         }
 
         self.assertFalse(photometry.is_absolute)
-        self.assertEqual(photometry.c_values, expected_values)
+        self.assertEqual(photometry.intensity_values, expected_values)
         self.assertEqual(photometry.lamps[0].lumens_per_lamp, expected_flux)
 
     def test_absolute_photometry(self):
@@ -135,7 +135,7 @@ class TestIes(unittest.TestCase):
         }
 
         self.assertTrue(photometry.is_absolute)
-        self.assertEqual(photometry.c_values, expected_values)
+        self.assertEqual(photometry.intensity_values, expected_values)
         self.assertIsNone(photometry.lamps[0].lumens_per_lamp)
 
     def test_absolute_photometry_with_multiplier(self):
@@ -163,7 +163,7 @@ class TestIes(unittest.TestCase):
         }
 
         self.assertTrue(photometry.is_absolute)
-        self.assertEqual(photometry.c_values, expected_values)
+        self.assertEqual(photometry.intensity_values, expected_values)
         self.assertIsNone(photometry.lamps[0].lumens_per_lamp)
 
 

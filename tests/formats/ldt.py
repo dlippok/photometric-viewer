@@ -49,7 +49,7 @@ class TestLdt(unittest.TestCase):
         }
 
         self.assertFalse(photometry.is_absolute)
-        self.assertEqual(photometry.c_values, expected_values)
+        self.assertEqual(photometry.intensity_values, expected_values)
         self.assertEqual(photometry.lamps[0].lumens_per_lamp, 250)
         self.assertEqual(photometry.lamps[0].number_of_lamps, 2)
 
@@ -78,7 +78,7 @@ class TestLdt(unittest.TestCase):
         }
 
         self.assertTrue(photometry.is_absolute)
-        self.assertEqual(photometry.c_values, expected_values)
+        self.assertEqual(photometry.intensity_values, expected_values)
         self.assertEqual(photometry.lamps[0].lumens_per_lamp, 250)
         self.assertEqual(photometry.lamps[0].number_of_lamps, 2)
 
@@ -112,7 +112,7 @@ class TestLdt(unittest.TestCase):
         }
 
         for coord, value in expected_values.items():
-            self.assertAlmostEqual(photometry.c_values[coord], value, places=5, msg=f"Invalid value for coord {coord}")
+            self.assertAlmostEqual(photometry.intensity_values[coord], value, places=5, msg=f"Invalid value for coord {coord}")
 
     def test_symmetry_about_vertical_axis(self):
         with (self.FILES_PATH / "symmetry_about_vertical_axis.ldt").open() as f:
@@ -143,7 +143,7 @@ class TestLdt(unittest.TestCase):
 
         for i, angle in enumerate(angles):
             self.assertAlmostEqual(
-                photometry.c_values[angle],
+                photometry.intensity_values[angle],
                 raw_values[i % len(raw_values)],
                 places=5,
                 msg=f"Invalid value for coord {angle}"
@@ -177,7 +177,7 @@ class TestLdt(unittest.TestCase):
         for i, angle in enumerate(angles):
             if angle[0] <= 180:
                 self.assertAlmostEqual(
-                    photometry.c_values[angle],
+                    photometry.intensity_values[angle],
                     raw_values[i % len(raw_values)] + i,
                     places=5,
                     msg=f"Invalid directly read value for coord {angle}"
@@ -185,8 +185,8 @@ class TestLdt(unittest.TestCase):
 
                 symmetry_angle = (360-angle[0], angle[1])
                 self.assertAlmostEqual(
-                    photometry.c_values[angle],
-                    photometry.c_values[symmetry_angle],
+                    photometry.intensity_values[angle],
+                    photometry.intensity_values[symmetry_angle],
                     places=5,
                     msg=f"Value for angle {symmetry_angle} not symmetrical to {angle})"
                 )
@@ -220,14 +220,14 @@ class TestLdt(unittest.TestCase):
         for angle in angles:
             if angle[0] < 90:
                 self.assertAlmostEqual(
-                    photometry.c_values[angle],
-                    photometry.c_values[(180 - angle[0], angle[1])],
+                    photometry.intensity_values[angle],
+                    photometry.intensity_values[(180 - angle[0], angle[1])],
                     places=5,
                     msg=f"Invalid value for coord {angle}"
                 )
             elif angle[0] < 270:
                 self.assertAlmostEqual(
-                    photometry.c_values[angle],
+                    photometry.intensity_values[angle],
                     raw_values[i % len(raw_values)] + i,
                     places=5,
                     msg=f"Invalid value for coord {angle}"
@@ -235,8 +235,8 @@ class TestLdt(unittest.TestCase):
                 i += 1
             else:
                 self.assertAlmostEqual(
-                    photometry.c_values[angle],
-                    photometry.c_values[(270 - (270 - angle[0]), angle[1])],
+                    photometry.intensity_values[angle],
+                    photometry.intensity_values[(270 - (270 - angle[0]), angle[1])],
                     places=5,
                     msg=f"Invalid value for coord {angle}"
                 )
@@ -269,7 +269,7 @@ class TestLdt(unittest.TestCase):
         for i, angle in enumerate(angles):
             if angle[0] <= 90:
                 self.assertAlmostEqual(
-                    photometry.c_values[angle],
+                    photometry.intensity_values[angle],
                     raw_values[i % len(raw_values)] + i,
                     places=5,
                     msg=f"Invalid directly read value for coord {angle}"
@@ -277,22 +277,22 @@ class TestLdt(unittest.TestCase):
 
                 symmetry_angle = (180 - angle[0], angle[1])
                 self.assertAlmostEqual(
-                    photometry.c_values[angle],
-                    photometry.c_values[symmetry_angle],
+                    photometry.intensity_values[angle],
+                    photometry.intensity_values[symmetry_angle],
                     places=5,
                     msg=f"Value for angle {symmetry_angle} not symmetrical to {angle})"
                 )
                 symmetry_angle = (180 + angle[0], angle[1])
                 self.assertAlmostEqual(
-                    photometry.c_values[angle],
-                    photometry.c_values[symmetry_angle],
+                    photometry.intensity_values[angle],
+                    photometry.intensity_values[symmetry_angle],
                     places=5,
                     msg=f"Value for angle {symmetry_angle} not symmetrical to {angle})"
                 )
                 symmetry_angle = (360 - angle[0], angle[1])
                 self.assertAlmostEqual(
-                    photometry.c_values[angle],
-                    photometry.c_values[symmetry_angle],
+                    photometry.intensity_values[angle],
+                    photometry.intensity_values[symmetry_angle],
                     places=5,
                     msg=f"Value for angle {symmetry_angle} not symmetrical to {angle})"
                 )

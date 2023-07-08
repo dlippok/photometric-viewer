@@ -2,7 +2,20 @@ from gi.repository import Gtk
 from gi.repository.Gtk import FileChooserNative, FileFilter
 
 
-class FileChooser(FileChooserNative):
+class ExportFileChooser(FileChooserNative):
+    def __init__(self, **kwargs):
+        super().__init__(
+            action=Gtk.FileChooserAction.SAVE,
+            select_multiple=False,
+            modal=True,
+            **kwargs
+        )
+
+        json_filter = FileFilter(name=_("JSON file (Photometric Data)"))
+        json_filter.add_pattern("*.json")
+        self.add_filter(json_filter)
+
+class OpenFileChooser(FileChooserNative):
     def __init__(self, **kwargs):
         super().__init__(
             action=Gtk.FileChooserAction.OPEN,

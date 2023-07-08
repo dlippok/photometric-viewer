@@ -110,9 +110,9 @@ def import_from_file(f: IO):
 
     return Photometry(
         is_absolute=lumens is None,
-        v_angles=v_angles,
-        h_angles=h_angles,
-        c_values=candela_values,
+        gamma_angles=v_angles,
+        c_planes=h_angles,
+        intensity_values=candela_values,
         luminous_opening_geometry=create_luminous_opening(attributes),
         luminaire_geometry=None,
         dff=None,
