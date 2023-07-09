@@ -11,9 +11,33 @@ class ExportFileChooser(FileChooserNative):
             **kwargs
         )
 
-        json_filter = FileFilter(name=_("JSON file (Photometric Data)"))
+    def _add_all_files_filter(self):
+        all_files_filter = FileFilter(name=_("All files"))
+        all_files_filter.add_pattern("*")
+        self.add_filter(all_files_filter)
+
+    @staticmethod
+    def for_json(**kwargs):
+        chooser = ExportFileChooser(**kwargs)
+
+        json_filter = FileFilter(name=_("JSON files"))
         json_filter.add_pattern("*.json")
-        self.add_filter(json_filter)
+        chooser.add_filter(json_filter)
+        chooser._add_all_files_filter()
+
+        return chooser
+
+    @staticmethod
+    def for_csv(**kwargs):
+        chooser = ExportFileChooser(**kwargs)
+
+        csv_filter = FileFilter(name=_("CSV files"))
+        csv_filter.add_pattern("*.csv")
+        chooser.add_filter(csv_filter)
+        chooser._add_all_files_filter()
+
+        return chooser
+
 
 class OpenFileChooser(FileChooserNative):
     def __init__(self, **kwargs):

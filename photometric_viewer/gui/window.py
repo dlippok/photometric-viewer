@@ -1,5 +1,3 @@
-import dataclasses
-import json
 import logging
 from typing import Optional
 
@@ -7,6 +5,7 @@ from gi.repository import Adw, Gtk, Gio, GLib
 from gi.repository.Adw import ViewStackPage
 from gi.repository.Gtk import Orientation, Button, FileChooserDialog
 
+import photometric_viewer.formats.csv
 import photometric_viewer.formats.json
 from photometric_viewer.formats.common import import_from_file
 from photometric_viewer.formats.exceptions import InvalidPhotometricFileFormatException
@@ -29,17 +28,18 @@ class MainWindow(Adw.Window):
             title='Photometric Viewer',
             **kwargs
         )
-        self.set_default_size(800, 700)
+        self.set_default_size(900, 700)
         self.install_actions()
 
         self.gsettings = GSettings()
         if self.gsettings.settings is None:
-            self.show_error(_("Settings schema could not be loaded. Selected settings will be lost on restart"))
+            self.show_banner(_("Settings schema could not be loaded. Selected settings will be lost on restart"))
 
         self.settings = self.gsettings.load()
 
         self.view_stack = Adw.ViewStack()
         self.opened_photometry: Optional[Photometry] = None
+        self.opened_filename: str | None = None
 
         self.photometry_content = PhotometryContent()
         properties_page: ViewStackPage = self.view_stack.add_titled(self.photometry_content, "photometry", _("Photometry"))
@@ -62,11 +62,11 @@ class MainWindow(Adw.Window):
         self.banner.set_button_label(_("Dismiss"))
         self.banner.connect("button-clicked", self.banner_dismiss_clicked)
 
-        open_button = Button(label=_("Open"))
-        open_button.connect("clicked", self.on_open_clicked)
+        open_button = Button(
+            child=Adw.ButtonContent(label=_("Open"), icon_name="document-open-symbolic")
+        )
 
-        self.export_button = Button(label=_("Export"), visible=False)
-        self.export_button.connect("clicked", self.on_export_clicked)
+        open_button.connect("clicked", self.on_open_clicked)
 
         self.switcher_bar = Adw.ViewSwitcherTitle()
         self.switcher_bar.set_title("Photometric Viewer")
@@ -77,7 +77,6 @@ class MainWindow(Adw.Window):
         header_bar.set_title_widget(self.switcher_bar)
         header_bar.pack_start(open_button)
         header_bar.pack_end(ApplicationMenuButton())
-        header_bar.pack_end(self.export_button)
         box.append(header_bar)
         box.append(self.banner)
         box.append(self.content_bin)
@@ -85,8 +84,11 @@ class MainWindow(Adw.Window):
         self.open_file_chooser = OpenFileChooser(transient_for=self)
         self.open_file_chooser.connect("response", self.on_open_response)
 
-        self.export_file_chooser = ExportFileChooser(transient_for=self)
-        self.export_file_chooser.connect("response", self.on_export_response)
+        self.json_export_file_chooser = ExportFileChooser.for_json(transient_for=self)
+        self.json_export_file_chooser.connect("response", self.on_export_json_response)
+
+        self.csv_export_file_chooser = ExportFileChooser.for_csv(transient_for=self)
+        self.csv_export_file_chooser.connect("response", self.on_export_csv_response)
 
         self.set_content(box)
 
@@ -94,7 +96,11 @@ class MainWindow(Adw.Window):
         self.install_action("app.show_about_window", None, self.show_about_dialog)
         self.install_action("app.show_preferences", None, self.show_preferences)
         self.install_action("app.show_source", None, self.show_source)
+        self.install_action("app.export_luminaire_as_json", None, self.show_json_export_file_chooser)
+        self.install_action("app.export_intensities_as_csv", None, self.show_csv_export_file_chooser)
         self.action_set_enabled("app.show_source", False)
+        self.action_set_enabled("app.export_luminaire_as_json", False)
+        self.action_set_enabled("app.export_intensities_as_csv", False)
 
     def display_photometry_content(self, photometry: Photometry):
         self.photometry_content.set_photometry(photometry)
@@ -105,7 +111,8 @@ class MainWindow(Adw.Window):
         self.switcher_bar.set_stack(self.view_stack)
         self.opened_photometry = photometry
         self.action_set_enabled("app.show_source", True)
-        self.export_button.set_visible(True)
+        self.action_set_enabled("app.export_luminaire_as_json", True)
+        self.action_set_enabled("app.export_intensities_as_csv", True)
 
     def update_settings(self):
         self.photometry_content.update_settings(self.settings)
@@ -114,22 +121,34 @@ class MainWindow(Adw.Window):
     def on_open_clicked(self, _):
         self.open_file_chooser.show()
 
-    def on_export_clicked(self, _):
-        self.export_file_chooser.show()
-
     def on_open_response(self, dialog: FileChooserDialog, response):
         if response == Gtk.ResponseType.ACCEPT:
             file: Gio.File = dialog.get_file()
             self.open_file(file)
 
-    def on_export_response(self, dialog: FileChooserDialog, response):
+    def on_export_json_response(self, dialog: FileChooserDialog, response):
         if not self.opened_photometry:
             return
 
-        if response == Gtk.ResponseType.ACCEPT:
-            file: Gio.File = dialog.get_file()
-            data = photometric_viewer.formats.json.export_photometry(self.opened_photometry)
-            write_string(file, data)
+        if response != Gtk.ResponseType.ACCEPT:
+            return
+
+        file: Gio.File = dialog.get_file()
+        data = photometric_viewer.formats.json.export_photometry(self.opened_photometry)
+        write_string(file, data)
+        self.show_banner(_("Exported as {}").format(file.get_basename()))
+
+    def on_export_csv_response(self, dialog: FileChooserDialog, response):
+        if not self.opened_photometry:
+            return
+
+        if response != Gtk.ResponseType.ACCEPT:
+            return
+
+        file: Gio.File = dialog.get_file()
+        data = photometric_viewer.formats.csv.export_photometry(self.opened_photometry)
+        write_string(file, data)
+        self.show_banner(_("Exported as {}").format(file.get_basename()))
 
     def open_file(self, file: Gio.File):
         self.banner.set_revealed(False)
@@ -140,15 +159,16 @@ class MainWindow(Adw.Window):
                     self.set_title(title=photometry.metadata.luminaire)
                 self.display_photometry_content(photometry)
                 self.photometry_content.update_settings(self.settings)
+                self.opened_filename = file.get_basename()
         except GLib.GError as e:
             logging.exception("Could not open photometric file")
-            self.show_error(e.message)
+            self.show_banner(e.message)
         except InvalidPhotometricFileFormatException as e:
             logging.exception("Could not open photometric file")
-            self.show_error(_("Invalid content of photometric file {}").format(file.get_path()), str(e))
+            self.show_banner(_("Invalid content of photometric file {}").format(file.get_path()), str(e))
         except Exception:
             logging.exception("Could not open photometric file")
-            self.show_error(_("Could not open {}").format(file.get_path()))
+            self.show_banner(_("Could not open {}").format(file.get_path()))
 
     def show_preferences(self, *args):
         window = PreferencesWindow(self.settings, self.update_settings)
@@ -157,10 +177,20 @@ class MainWindow(Adw.Window):
     def show_source(self, *args):
         self.view_stack.set_visible_child(self.source_view)
 
+    def show_json_export_file_chooser(self, *args):
+        if not self.json_export_file_chooser.get_current_name():
+            self.json_export_file_chooser.set_current_name(f"{self.opened_filename}.json")
+        self.json_export_file_chooser.show()
+
+    def show_csv_export_file_chooser(self, *args):
+        if not self.csv_export_file_chooser.get_current_name():
+            self.csv_export_file_chooser.set_current_name(f"{self.opened_filename}.csv")
+        self.csv_export_file_chooser.show()
+
     def banner_dismiss_clicked(self, *args):
         self.banner.set_revealed(False)
 
-    def show_error(self, message: str, details: str | None = None):
+    def show_banner(self, message: str, details: str | None = None):
         if details:
             self.banner.set_title(f"{message}\n{details}")
         else:
