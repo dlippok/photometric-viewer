@@ -7,6 +7,8 @@ from gi.repository.Gtk import Orientation, Button, FileChooserDialog
 
 import photometric_viewer.formats.csv
 import photometric_viewer.formats.json
+import photometric_viewer.formats.png
+import photometric_viewer.formats.svg
 from photometric_viewer.formats.common import import_from_file
 from photometric_viewer.formats.exceptions import InvalidPhotometricFileFormatException
 from photometric_viewer.gui.dialogs.about import AboutWindow
@@ -19,7 +21,7 @@ from photometric_viewer.gui.pages.values import IntensityValues
 from photometric_viewer.gui.widgets.app_menu import ApplicationMenuButton
 from photometric_viewer.model.photometry import Photometry
 from photometric_viewer.utils.GSettings import GSettings
-from photometric_viewer.utils.gio import gio_file_stream, write_string
+from photometric_viewer.utils.gio import gio_file_stream, write_string, write_bytes
 
 
 class MainWindow(Adw.Window):
@@ -90,6 +92,9 @@ class MainWindow(Adw.Window):
         self.csv_export_file_chooser = ExportFileChooser.for_csv(transient_for=self)
         self.csv_export_file_chooser.connect("response", self.on_export_csv_response)
 
+        self.ldc_export_file_chooser = ExportFileChooser.for_ldc(transient_for=self)
+        self.ldc_export_file_chooser.connect("response", self.on_export_ldc_response)
+
         self.set_content(box)
 
     def install_actions(self):
@@ -98,9 +103,11 @@ class MainWindow(Adw.Window):
         self.install_action("app.show_source", None, self.show_source)
         self.install_action("app.export_luminaire_as_json", None, self.show_json_export_file_chooser)
         self.install_action("app.export_intensities_as_csv", None, self.show_csv_export_file_chooser)
+        self.install_action("app.export_ldc_as_image", None, self.show_ldc_export_file_chooser)
         self.action_set_enabled("app.show_source", False)
         self.action_set_enabled("app.export_luminaire_as_json", False)
         self.action_set_enabled("app.export_intensities_as_csv", False)
+        self.action_set_enabled("app.export_ldc_as_image", False)
 
     def display_photometry_content(self, photometry: Photometry):
         self.photometry_content.set_photometry(photometry)
@@ -113,6 +120,7 @@ class MainWindow(Adw.Window):
         self.action_set_enabled("app.show_source", True)
         self.action_set_enabled("app.export_luminaire_as_json", True)
         self.action_set_enabled("app.export_intensities_as_csv", True)
+        self.action_set_enabled("app.export_ldc_as_image", True)
 
     def update_settings(self):
         self.photometry_content.update_settings(self.settings)
@@ -148,6 +156,21 @@ class MainWindow(Adw.Window):
         file: Gio.File = dialog.get_file()
         data = photometric_viewer.formats.csv.export_photometry(self.opened_photometry)
         write_string(file, data)
+        self.show_banner(_("Exported as {}").format(file.get_basename()))
+
+    def on_export_ldc_response(self, dialog: FileChooserDialog, response):
+        if not self.opened_photometry:
+            return
+
+        if response != Gtk.ResponseType.ACCEPT:
+            return
+
+        file: Gio.File = dialog.get_file()
+        if file.get_basename().endswith(".svg"):
+            data = photometric_viewer.formats.svg.export_photometry(self.opened_photometry)
+        else:
+            data = photometric_viewer.formats.png.export_photometry(self.opened_photometry)
+        write_bytes(file, data)
         self.show_banner(_("Exported as {}").format(file.get_basename()))
 
     def open_file(self, file: Gio.File):
@@ -186,6 +209,11 @@ class MainWindow(Adw.Window):
         if not self.csv_export_file_chooser.get_current_name():
             self.csv_export_file_chooser.set_current_name(f"{self.opened_filename}.csv")
         self.csv_export_file_chooser.show()
+
+    def show_ldc_export_file_chooser(self, *args):
+        if not self.ldc_export_file_chooser.get_current_name():
+            self.ldc_export_file_chooser.set_current_name(f"{self.opened_filename}.png")
+        self.ldc_export_file_chooser.show()
 
     def banner_dismiss_clicked(self, *args):
         self.banner.set_revealed(False)

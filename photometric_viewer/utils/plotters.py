@@ -48,7 +48,11 @@ class LightDistributionPlotter:
         for angle in [math.pi * x / 4 for x in range(8)]:
             context.move_to(self.size / 2, self.size / 2)
             point = cartesian_to_screen(center, (math.cos(angle) * self.size, math.sin(angle) * self.size))
-            context.line_to(point[0], point[1])
+            point_clipped_to_canvas = (
+                min(self.size, max(0, point[0])),
+                min(self.size, max(1, point[1]))
+            )
+            context.line_to(point_clipped_to_canvas[0], point_clipped_to_canvas[1])
             context.stroke()
 
         self.draw_values(center, context, photometry, radii)

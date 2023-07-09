@@ -38,6 +38,20 @@ class ExportFileChooser(FileChooserNative):
 
         return chooser
 
+    @staticmethod
+    def for_ldc(**kwargs):
+        chooser = ExportFileChooser(**kwargs)
+
+        png_filter = FileFilter(name=_("PNG raster graphics"))
+        png_filter.add_pattern("*.png")
+        chooser.add_filter(png_filter)
+        svg_filter = FileFilter(name=_("SVG vector graphics"))
+        svg_filter.add_pattern("*.svg")
+        chooser.add_filter(svg_filter)
+        chooser._add_all_files_filter()
+
+        return chooser
+
 
 class OpenFileChooser(FileChooserNative):
     def __init__(self, **kwargs):
