@@ -6,6 +6,19 @@ class ApplicationMenuButton(Gtk.MenuButton):
     <?xml version="1.0"?>
         <interface>
         <menu id='app-menu'>
+            <submenu>
+                <attribute name='label' translatable='yes'>Export</attribute>
+                <section>
+                    <item>
+                        <attribute name='label' translatable='yes'>Luminaire data as JSON</attribute>
+                        <attribute name='action'>app.export_luminaire_as_json</attribute>
+                    </item>
+                    <item>
+                        <attribute name='label' translatable='yes'>Intensity values as CSV</attribute>
+                        <attribute name='action'>app.export_intensities_as_csv</attribute>
+                    </item>
+                </section>
+            </submenu>
             <section>
                 <item>
                     <attribute name='label' translatable='yes'>Show source</attribute>
