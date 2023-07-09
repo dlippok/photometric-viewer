@@ -10,12 +10,16 @@ class ApplicationMenuButton(Gtk.MenuButton):
                 <attribute name='label' translatable='yes'>Export</attribute>
                 <section>
                     <item>
-                        <attribute name='label' translatable='yes'>Luminaire data as JSON</attribute>
-                        <attribute name='action'>app.export_luminaire_as_json</attribute>
+                        <attribute name='label' translatable='yes'>Light distribution curve as image</attribute>
+                        <attribute name='action'>app.export_ldc_as_image</attribute>
                     </item>
                     <item>
                         <attribute name='label' translatable='yes'>Intensity values as CSV</attribute>
                         <attribute name='action'>app.export_intensities_as_csv</attribute>
+                    </item>
+                    <item>
+                        <attribute name='label' translatable='yes'>Luminaire data as JSON</attribute>
+                        <attribute name='action'>app.export_luminaire_as_json</attribute>
                     </item>
                 </section>
             </submenu>
