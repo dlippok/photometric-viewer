@@ -34,7 +34,10 @@ ABSOLUTE_PHOTOMETRY_LUMINAIRE = Photometry(
         shape=LuminousOpeningShape.ROUND,
         width=0.3,
         length=0.5,
-        height=0
+        height=0.7,
+        height_c90=0.8,
+        height_c180=0.9,
+        height_c270=1.0,
     ),
     lamps=[
         Lamps(
