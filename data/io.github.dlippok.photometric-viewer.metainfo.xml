@@ -80,6 +80,12 @@
     </requires>
 
     <releases>
+        <release version="1.2.0" date="2023-07-15">
+            <description>
+                <p>Allows exporting luminaire data as JSON, intensity values as CSV and light distribution curves as image files. Adds support for complex luminous openings.</p>
+                <p xml:lang="de">Ermöglicht den Export von Leuchtendaten als JSON, Candela-Werte als CSV und Lichtverteilungskurven als Bilddateien. Fügt Unterstützung für komplexe Lichtöffnungen hinzu.</p>
+            </description>
+        </release>
         <release version="1.1.0" date="2023-06-27">
             <description>
                 <p>Adds support for browsing intensity values in the opened photometric file, includes legend of the photometric curve and introduces German translations for the user interface.</p>

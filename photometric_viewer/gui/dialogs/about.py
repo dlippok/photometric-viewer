@@ -7,7 +7,7 @@ class AboutWindow:
             application_name=_("Photometric Viewer"),
             application_icon="io.github.dlippok.photometric-viewer",
             developer_name="Damian Lippok",
-            version="1.1.0",
+            version="1.2.0",
             website="https://github.com/dlippok/photometric-viewer",
             issue_url="https://github.com/dlippok/photometric-viewer/issues",
             copyright="© 2023 Damian Lippok",
