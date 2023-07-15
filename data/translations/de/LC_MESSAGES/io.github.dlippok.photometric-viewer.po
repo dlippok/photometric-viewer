@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-09 19:33+0200\n"
-"PO-Revision-Date: 2023-07-09 19:34+0200\n"
+"POT-Creation-Date: 2023-07-15 21:25+0200\n"
+"PO-Revision-Date: 2023-07-15 21:34+0200\n"
 "Last-Translator: DaLee <mail.dalee@gmail.com>\n"
 "Language-Team: German <mail.dalee@gmail.com>\n"
 "Language: de\n"
@@ -324,33 +324,86 @@ msgstr "Unterer halbräumlicher Lichtstromanteil"
 msgid "Conversion factor for luminous intensities"
 msgstr "Berechnungsfaktor für Lichtstärken"
 
+#: photometric_viewer/gui/widgets/content/geometry.py:60
 #: photometric_viewer/gui/widgets/content/geometry.py:59
 msgid "Luminaire shape"
 msgstr "Form der Leuchte"
 
+#: photometric_viewer/gui/widgets/content/geometry.py:60
+#: photometric_viewer/gui/widgets/content/geometry.py:68
 #: photometric_viewer/gui/widgets/content/geometry.py:59
 #: photometric_viewer/gui/widgets/content/geometry.py:67
 msgid "Rectangular"
 msgstr "Rechteckig"
 
+#: photometric_viewer/gui/widgets/content/geometry.py:61
 #: photometric_viewer/gui/widgets/content/geometry.py:60
 msgid "Luminaire dimensions"
 msgstr "Abmessungen der Leuchte"
 
-#: photometric_viewer/gui/widgets/content/geometry.py:62
+#: photometric_viewer/gui/widgets/content/geometry.py:63
 #: photometric_viewer/gui/widgets/content/geometry.py:70
+#: photometric_viewer/gui/widgets/content/geometry.py:62
 msgid "Round"
 msgstr "Rund"
 
-#: photometric_viewer/gui/widgets/content/geometry.py:67
+#: photometric_viewer/gui/widgets/content/geometry.py:68
 #: photometric_viewer/gui/widgets/content/geometry.py:70
+#: photometric_viewer/gui/widgets/content/geometry.py:72
+#: photometric_viewer/gui/widgets/content/geometry.py:74
+#: photometric_viewer/gui/widgets/content/geometry.py:76
+#: photometric_viewer/gui/widgets/content/geometry.py:78
+#: photometric_viewer/gui/widgets/content/geometry.py:80
+#: photometric_viewer/gui/widgets/content/geometry.py:82
+#: photometric_viewer/gui/widgets/content/geometry.py:84
+#: photometric_viewer/gui/widgets/content/geometry.py:86
+#: photometric_viewer/gui/widgets/content/geometry.py:67
 msgid "Luminous opening shape"
 msgstr "Form der Lichtaustrittfläche"
 
+#: photometric_viewer/gui/widgets/content/geometry.py:72
+msgid "Sphere"
+msgstr "Kugel"
+
+#: photometric_viewer/gui/widgets/content/geometry.py:74
+msgid "Point"
+msgstr "Punktförmig"
+
+#: photometric_viewer/gui/widgets/content/geometry.py:76
+msgid "Horizontal cylinder oriented along luminaire width"
+msgstr "Horizontaler Zylinder entlang Leuchtenbreite"
+
+#: photometric_viewer/gui/widgets/content/geometry.py:78
+msgid "Horizontal cylinder oriented along luminaire length"
+msgstr "Horizontaler Zylinder entlang Leuchtenlänge"
+
+#: photometric_viewer/gui/widgets/content/geometry.py:80
+msgid "Ellipse oriented along luminaire width"
+msgstr "Ellipse entlang Leuchtenbreite"
+
+#: photometric_viewer/gui/widgets/content/geometry.py:82
+msgid "Ellipse oriented along luminaire length"
+msgstr "Ellipse entlang Leuchtenlänge"
+
+#: photometric_viewer/gui/widgets/content/geometry.py:84
+msgid "Ellipsoid oriented along luminaire width"
+msgstr "Ellipsoid entlang Leuchtenbreite"
+
+#: photometric_viewer/gui/widgets/content/geometry.py:86
+msgid "Ellipsoid oriented along luminaire length"
+msgstr "Ellipsoid entlang Leuchtenlänge"
+
+#: photometric_viewer/gui/widgets/content/geometry.py:92
+#: photometric_viewer/gui/widgets/content/geometry.py:94
+#: photometric_viewer/gui/widgets/content/geometry.py:96
 #: photometric_viewer/gui/widgets/content/geometry.py:68
 #: photometric_viewer/gui/widgets/content/geometry.py:71
 msgid "Luminous opening dimensions"
 msgstr "Abmessungen der Lichtaustrittfläche"
+
+#: photometric_viewer/gui/widgets/content/geometry.py:98
+msgid "Luminous opening height"
+msgstr "Höhe der Lichtaustrittfläche"
 
 #: photometric_viewer/gui/dialogs/file_chooser.py:14
 msgid "Untitled.json"

@@ -2,7 +2,7 @@ import unittest
 from pathlib import Path
 
 from photometric_viewer.formats.ies import import_from_file
-from photometric_viewer.model.photometry import Shape
+from photometric_viewer.model.photometry import Shape, LuminousOpeningShape, LuminousOpeningGeometry
 from photometric_viewer.model.units import LengthUnits
 
 
@@ -30,22 +30,166 @@ class TestIes(unittest.TestCase):
     def test_opening_geometry_rectangular(self):
         with (self.FILES_PATH / "rectangular_opening.ies").open() as f:
             photometry = import_from_file(f)
-        self.assertEqual(photometry.luminous_opening_geometry.width, 0.12)
-        self.assertEqual(photometry.luminous_opening_geometry.length, 0.34)
-        self.assertEqual(photometry.luminous_opening_geometry.shape, Shape.RECTANGULAR)
+
+        expected_opening = LuminousOpeningGeometry(
+            width=0.12,
+            length=0.34,
+            height=0.0,
+            shape=LuminousOpeningShape.RECTANGULAR
+        )
+
+        self.assertEqual(photometry.luminous_opening_geometry, expected_opening)
+
+    def test_opening_geometry_point(self):
+        with (self.FILES_PATH / "point_opening.ies").open() as f:
+            photometry = import_from_file(f)
+
+        expected_opening = LuminousOpeningGeometry(
+            width=0.0,
+            length=0.0,
+            height=0.0,
+            shape=LuminousOpeningShape.POINT
+        )
+
+        self.assertEqual(photometry.luminous_opening_geometry, expected_opening)
+
+    def test_opening_geometry_rectangular_with_height(self):
+        with (self.FILES_PATH / "rectangular_opening_with_height.ies").open() as f:
+            photometry = import_from_file(f)
+
+        expected_opening = LuminousOpeningGeometry(
+            width=0.12,
+            length=0.34,
+            height=0.56,
+            shape=LuminousOpeningShape.RECTANGULAR
+        )
+
+        self.assertEqual(photometry.luminous_opening_geometry, expected_opening)
 
     def test_opening_geometry_round(self):
         with (self.FILES_PATH / "round_opening.ies").open() as f:
             photometry = import_from_file(f)
-        self.assertEqual(photometry.luminous_opening_geometry.width, 0.12)
-        self.assertEqual(photometry.luminous_opening_geometry.length, 0.12)
-        self.assertEqual(photometry.luminous_opening_geometry.shape, Shape.ROUND)
+
+        expected_opening = LuminousOpeningGeometry(
+            width=0.12,
+            length=0.12,
+            height=0.0,
+            shape=LuminousOpeningShape.ROUND
+        )
+
+        self.assertEqual(photometry.luminous_opening_geometry, expected_opening)
+
+    def test_opening_geometry_round_with_height(self):
+        with (self.FILES_PATH / "round_opening_with_height.ies").open() as f:
+            photometry = import_from_file(f)
+
+        expected_opening = LuminousOpeningGeometry(
+            width=0.12,
+            length=0.12,
+            height=0.34,
+            shape=LuminousOpeningShape.ROUND
+        )
+
+        self.assertEqual(photometry.luminous_opening_geometry, expected_opening)
+
+    def test_opening_geometry_sphere(self):
+        with (self.FILES_PATH / "sphere_opening.ies").open() as f:
+            photometry = import_from_file(f)
+
+        expected_opening = LuminousOpeningGeometry(
+            width=0.12,
+            length=0.12,
+            height=0.12,
+            shape=LuminousOpeningShape.SPHERE
+        )
+
+        self.assertEqual(photometry.luminous_opening_geometry, expected_opening)
+
+    def test_opening_geometry_horizontal_cylinder_along_width(self):
+        with (self.FILES_PATH / "horizontal_cylinder_opening_along_width.ies").open() as f:
+            photometry = import_from_file(f)
+
+        expected_opening = LuminousOpeningGeometry(
+            width=0.12,
+            length=0.12,
+            height=0.34,
+            shape=LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_WIDTH
+        )
+
+        self.assertEqual(photometry.luminous_opening_geometry, expected_opening)
+
+    def test_opening_geometry_ellipse_along_width(self):
+        with (self.FILES_PATH / "ellipse_opening_along_width.ies").open() as f:
+            photometry = import_from_file(f)
+
+        expected_opening = LuminousOpeningGeometry(
+            width=0.12,
+            length=0.34,
+            height=0.56,
+            shape=LuminousOpeningShape.ELLIPSE_ALONG_WIDTH
+        )
+
+        self.assertEqual(photometry.luminous_opening_geometry, expected_opening)
+
+    def test_opening_geometry_ellipse_along_length(self):
+        with (self.FILES_PATH / "ellipse_opening_along_length.ies").open() as f:
+            photometry = import_from_file(f)
+
+        expected_opening = LuminousOpeningGeometry(
+            width=0.12,
+            length=0.34,
+            height=0.56,
+            shape=LuminousOpeningShape.ELLIPSE_ALONG_LENGTH
+        )
+
+        self.assertEqual(photometry.luminous_opening_geometry, expected_opening)
+
+    def test_opening_geometry_ellipsoid_along_width(self):
+        with (self.FILES_PATH / "ellipsoid_opening_along_width.ies").open() as f:
+            photometry = import_from_file(f)
+
+        expected_opening = LuminousOpeningGeometry(
+            width=0.12,
+            length=0.34,
+            height=0.56,
+            shape=LuminousOpeningShape.ELLIPSOID_ALONG_WIDTH
+        )
+
+        self.assertEqual(photometry.luminous_opening_geometry, expected_opening)
+
+    def test_opening_geometry_ellipsoid_along_length(self):
+        with (self.FILES_PATH / "ellipsoid_opening_along_length.ies").open() as f:
+            photometry = import_from_file(f)
+
+        expected_opening = LuminousOpeningGeometry(
+            width=0.12,
+            length=0.34,
+            height=0.56,
+            shape=LuminousOpeningShape.ELLIPSOID_ALONG_LENGTH
+        )
+
+        self.assertEqual(photometry.luminous_opening_geometry, expected_opening)
+
+    def test_opening_geometry_horizontal_cylinder_along_length(self):
+        with (self.FILES_PATH / "horizontal_cylinder_opening_along_length.ies").open() as f:
+            photometry = import_from_file(f)
+
+        expected_opening = LuminousOpeningGeometry(
+            width=0.12,
+            length=0.12,
+            height=0.34,
+            shape=LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_LENGTH
+        )
+
+        self.assertEqual(photometry.luminous_opening_geometry, expected_opening)
 
     def test_opening_geometry_metric_units(self):
         with (self.FILES_PATH / "metric_units.ies").open() as f:
             photometry = import_from_file(f)
+
         self.assertEqual(photometry.luminous_opening_geometry.width, 0.12)
         self.assertEqual(photometry.luminous_opening_geometry.length, 0.34)
+        self.assertEqual(photometry.luminous_opening_geometry.height, 0.56)
         self.assertEqual(photometry.metadata.file_units, LengthUnits.METERS)
 
     def test_opening_geometry_imperial_units(self):
@@ -53,6 +197,7 @@ class TestIes(unittest.TestCase):
             photometry = import_from_file(f)
         self.assertAlmostEqual(photometry.luminous_opening_geometry.width, 0.036576, places=6)
         self.assertAlmostEqual(photometry.luminous_opening_geometry.length, 0.103632, places=6)
+        self.assertAlmostEqual(photometry.luminous_opening_geometry.height, 0.170688, places=6)
         self.assertEqual(photometry.metadata.file_units, LengthUnits.FEET)
 
     def test_relative_photometry(self):

@@ -1,14 +1,19 @@
 from typing import IO
 
 from photometric_viewer.model.photometry import Photometry, LuminousOpeningGeometry, Shape, Lamps, \
-    PhotometryMetadata, LuminaireGeometry, LuminaireType
+    PhotometryMetadata, LuminaireGeometry, LuminaireType, LuminousOpeningShape
 from photometric_viewer.model.units import LengthUnits
 
-def _create_luminous_opening(length, width) -> LuminousOpeningGeometry:
+
+def _create_luminous_opening(length, width, height_c0, height_c90, height_c180, height_c270) -> LuminousOpeningGeometry:
     return LuminousOpeningGeometry(
         length=length,
         width=width or length,
-        shape=Shape.RECTANGULAR if width > 0 else Shape.ROUND
+        height=height_c0,
+        height_c90=height_c90,
+        height_c180=height_c180,
+        height_c270=height_c270,
+        shape=LuminousOpeningShape.RECTANGULAR if width > 0 else LuminousOpeningShape.ROUND
     )
 
 
@@ -17,7 +22,7 @@ def _create_luminaire_geometry(length, width, height) -> LuminaireGeometry:
         length=length,
         width=width or length,
         height=height,
-        shape=Shape.RECTANGULAR if width > 0 else Shape.ROUND
+        shape=Shape.RECTANGULAR if width > 0 else Shape.ROUND,
     )
 
 
@@ -136,7 +141,14 @@ def import_from_file(f: IO):
         intensity_values=values,
         dff=dff,
         lorl=lorl,
-        luminous_opening_geometry=_create_luminous_opening(opening_length, opening_width),
+        luminous_opening_geometry=_create_luminous_opening(
+            opening_length,
+            opening_width,
+            opening_height_c0,
+            opening_height_c90,
+            opening_height_c180,
+            opening_height_c270
+        ),
         luminaire_geometry=_create_luminaire_geometry(luminaire_length, luminaire_width, luminaire_height),
         lamps=[Lamps(
             number_of_lamps=lamps["number_of_lamps"],

@@ -31,11 +31,28 @@ class Shape(Enum):
     ROUND = 2
 
 
+class LuminousOpeningShape(Enum):
+    POINT = 1
+    RECTANGULAR = 2
+    ROUND = 3
+    SPHERE = 4
+    HORIZONTAL_CYLINDER_ALONG_LENGTH = 5
+    HORIZONTAL_CYLINDER_ALONG_WIDTH = 6
+    ELLIPSE_ALONG_LENGTH = 7
+    ELLIPSE_ALONG_WIDTH = 8
+    ELLIPSOID_ALONG_LENGTH = 9
+    ELLIPSOID_ALONG_WIDTH = 10
+
+
 @dataclass
 class LuminousOpeningGeometry:
     width: float
     length: float
-    shape: Shape
+    height: float
+    shape: LuminousOpeningShape
+    height_c90: float | None = None
+    height_c180: float | None = None
+    height_c270: float | None = None
 
 
 @dataclass
