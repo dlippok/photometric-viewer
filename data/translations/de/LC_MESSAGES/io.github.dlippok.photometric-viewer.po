@@ -405,13 +405,13 @@ msgid "About Photometric Viewer"
 msgstr "Über Photometric Viewer"
 
 #: photometric_viewer/gui/widgets/app_menu.py
-msgid "Light distribution curve as image"
-msgstr "Lichtverteilungskurve als Bild"
+msgid "Light distribution curve"
+msgstr "Lichtverteilungskurve"
 
 #: photometric_viewer/gui/widgets/app_menu.py
-msgid "Intensity values as CSV"
-msgstr "Lichtstärken als CSV"
+msgid "Intensity values"
+msgstr "Lichtstärken"
 
 #: photometric_viewer/gui/widgets/app_menu.py
-msgid "Luminaire data as JSON"
-msgstr "Leuchtendaten als JSON"
+msgid "Luminaire data"
+msgstr "Leuchtendaten"
