@@ -27,7 +27,7 @@ from photometric_viewer.utils.gio import gio_file_stream, write_string, write_by
 class MainWindow(Adw.Window):
     def __init__(self, **kwargs):
         super().__init__(
-            title='Photometric Viewer',
+            title=_('Photometric Viewer'),
             **kwargs
         )
         self.set_default_size(900, 700)
@@ -70,7 +70,7 @@ class MainWindow(Adw.Window):
         open_button.connect("clicked", self.on_open_clicked)
 
         self.switcher_bar = Adw.ViewSwitcherTitle()
-        self.switcher_bar.set_title("Photometric Viewer")
+        self.switcher_bar.set_title(_("Photometric Viewer"))
         self.switcher_bar.set_visible(True)
 
         box = Gtk.Box(orientation=Orientation.VERTICAL)

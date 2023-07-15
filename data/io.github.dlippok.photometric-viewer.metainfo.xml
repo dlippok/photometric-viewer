@@ -3,6 +3,7 @@
     <id>io.github.dlippok.photometric-viewer</id>
     <launchable type="desktop-id">io.github.dlippok.photometric-viewer.desktop</launchable>
     <name>Photometric Viewer</name>
+    <name xml:lang="de">Photometriebetrachter</name>
     <summary>Browse content of IES and LDT photometric files</summary>
     <summary xml:lang="de">Öffne IES- und LDT-Photometriedateien</summary>
     <description>

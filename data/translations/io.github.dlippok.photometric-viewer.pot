@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-15 21:25+0200\n"
+"POT-Creation-Date: 2023-07-15 23:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,11 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: photometric_viewer/gui/dialogs/about.py:7
+#: photometric_viewer/gui/window.py:30 photometric_viewer/gui/window.py:73
+msgid "Photometric Viewer"
+msgstr ""
 
 #: photometric_viewer/gui/dialogs/preferences.py:18
 msgid "Application Settings"
@@ -165,29 +170,33 @@ msgid ""
 "restart"
 msgstr ""
 
-#: photometric_viewer/gui/window.py:47 photometric_viewer/gui/window.py:45
-#: photometric_viewer/gui/window.py:44 photometric_viewer/gui/window.py:42
+#: photometric_viewer/gui/window.py:46 photometric_viewer/gui/window.py:47
+#: photometric_viewer/gui/window.py:45 photometric_viewer/gui/window.py:44
+#: photometric_viewer/gui/window.py:42
 msgid "Photometry"
 msgstr ""
 
-#: photometric_viewer/gui/window.py:51 photometric_viewer/gui/window.py:49
-#: photometric_viewer/gui/window.py:48 photometric_viewer/gui/window.py:46
+#: photometric_viewer/gui/window.py:50 photometric_viewer/gui/window.py:51
+#: photometric_viewer/gui/window.py:49 photometric_viewer/gui/window.py:48
+#: photometric_viewer/gui/window.py:46
 msgid "Source"
 msgstr ""
 
-#: photometric_viewer/gui/window.py:56 photometric_viewer/gui/window.py:54
-#: photometric_viewer/gui/window.py:53 photometric_viewer/gui/window.py:51
+#: photometric_viewer/gui/window.py:55 photometric_viewer/gui/window.py:56
+#: photometric_viewer/gui/window.py:54 photometric_viewer/gui/window.py:53
+#: photometric_viewer/gui/window.py:51
 msgid "Intensity Values"
 msgstr ""
 
-#: photometric_viewer/gui/window.py:64 photometric_viewer/gui/window.py:62
-#: photometric_viewer/gui/window.py:61 photometric_viewer/gui/window.py:59
+#: photometric_viewer/gui/window.py:63 photometric_viewer/gui/window.py:64
+#: photometric_viewer/gui/window.py:62 photometric_viewer/gui/window.py:61
+#: photometric_viewer/gui/window.py:59
 msgid "Dismiss"
 msgstr ""
 
-#: photometric_viewer/gui/window.py:68 photometric_viewer/gui/window.py:66
-#: photometric_viewer/gui/window.py:65 photometric_viewer/gui/window.py:64
-#: photometric_viewer/gui/window.py:62
+#: photometric_viewer/gui/window.py:67 photometric_viewer/gui/window.py:68
+#: photometric_viewer/gui/window.py:66 photometric_viewer/gui/window.py:65
+#: photometric_viewer/gui/window.py:64 photometric_viewer/gui/window.py:62
 msgid "Open"
 msgstr ""
 
@@ -197,15 +206,15 @@ msgstr ""
 msgid "Exported as {}"
 msgstr ""
 
-#: photometric_viewer/gui/window.py:191 photometric_viewer/gui/window.py:168
-#: photometric_viewer/gui/window.py:165 photometric_viewer/gui/window.py:158
-#: photometric_viewer/gui/window.py:125
+#: photometric_viewer/gui/window.py:196 photometric_viewer/gui/window.py:191
+#: photometric_viewer/gui/window.py:168 photometric_viewer/gui/window.py:165
+#: photometric_viewer/gui/window.py:158 photometric_viewer/gui/window.py:125
 msgid "Invalid content of photometric file {}"
 msgstr ""
 
-#: photometric_viewer/gui/window.py:194 photometric_viewer/gui/window.py:171
-#: photometric_viewer/gui/window.py:168 photometric_viewer/gui/window.py:161
-#: photometric_viewer/gui/window.py:128
+#: photometric_viewer/gui/window.py:199 photometric_viewer/gui/window.py:194
+#: photometric_viewer/gui/window.py:171 photometric_viewer/gui/window.py:168
+#: photometric_viewer/gui/window.py:161 photometric_viewer/gui/window.py:128
 msgid "Could not open {}"
 msgstr ""
 
@@ -401,6 +410,10 @@ msgstr ""
 
 #: photometric_viewer/gui/widgets/content/geometry.py:98
 msgid "Luminous opening height"
+msgstr ""
+
+#: photometric_viewer/gui/dialogs/about.py:7
+msgid "Photomertic Viewer"
 msgstr ""
 
 #: photometric_viewer/gui/dialogs/file_chooser.py:14
