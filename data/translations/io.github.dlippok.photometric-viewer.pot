@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-09 19:33+0200\n"
+"POT-Creation-Date: 2023-07-15 21:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -322,32 +322,85 @@ msgstr ""
 msgid "Conversion factor for luminous intensities"
 msgstr ""
 
+#: photometric_viewer/gui/widgets/content/geometry.py:60
 #: photometric_viewer/gui/widgets/content/geometry.py:59
 msgid "Luminaire shape"
 msgstr ""
 
+#: photometric_viewer/gui/widgets/content/geometry.py:60
+#: photometric_viewer/gui/widgets/content/geometry.py:68
 #: photometric_viewer/gui/widgets/content/geometry.py:59
 #: photometric_viewer/gui/widgets/content/geometry.py:67
 msgid "Rectangular"
 msgstr ""
 
+#: photometric_viewer/gui/widgets/content/geometry.py:61
 #: photometric_viewer/gui/widgets/content/geometry.py:60
 msgid "Luminaire dimensions"
 msgstr ""
 
-#: photometric_viewer/gui/widgets/content/geometry.py:62
+#: photometric_viewer/gui/widgets/content/geometry.py:63
 #: photometric_viewer/gui/widgets/content/geometry.py:70
+#: photometric_viewer/gui/widgets/content/geometry.py:62
 msgid "Round"
 msgstr ""
 
-#: photometric_viewer/gui/widgets/content/geometry.py:67
+#: photometric_viewer/gui/widgets/content/geometry.py:68
 #: photometric_viewer/gui/widgets/content/geometry.py:70
+#: photometric_viewer/gui/widgets/content/geometry.py:72
+#: photometric_viewer/gui/widgets/content/geometry.py:74
+#: photometric_viewer/gui/widgets/content/geometry.py:76
+#: photometric_viewer/gui/widgets/content/geometry.py:78
+#: photometric_viewer/gui/widgets/content/geometry.py:80
+#: photometric_viewer/gui/widgets/content/geometry.py:82
+#: photometric_viewer/gui/widgets/content/geometry.py:84
+#: photometric_viewer/gui/widgets/content/geometry.py:86
+#: photometric_viewer/gui/widgets/content/geometry.py:67
 msgid "Luminous opening shape"
 msgstr ""
 
+#: photometric_viewer/gui/widgets/content/geometry.py:72
+msgid "Sphere"
+msgstr ""
+
+#: photometric_viewer/gui/widgets/content/geometry.py:74
+msgid "Point"
+msgstr ""
+
+#: photometric_viewer/gui/widgets/content/geometry.py:76
+msgid "Horizontal cylinder oriented along luminaire width"
+msgstr ""
+
+#: photometric_viewer/gui/widgets/content/geometry.py:78
+msgid "Horizontal cylinder oriented along luminaire length"
+msgstr ""
+
+#: photometric_viewer/gui/widgets/content/geometry.py:80
+msgid "Ellipse oriented along luminaire width"
+msgstr ""
+
+#: photometric_viewer/gui/widgets/content/geometry.py:82
+msgid "Ellipse oriented along luminaire length"
+msgstr ""
+
+#: photometric_viewer/gui/widgets/content/geometry.py:84
+msgid "Ellipsoid oriented along luminaire width"
+msgstr ""
+
+#: photometric_viewer/gui/widgets/content/geometry.py:86
+msgid "Ellipsoid oriented along luminaire length"
+msgstr ""
+
+#: photometric_viewer/gui/widgets/content/geometry.py:92
+#: photometric_viewer/gui/widgets/content/geometry.py:94
+#: photometric_viewer/gui/widgets/content/geometry.py:96
 #: photometric_viewer/gui/widgets/content/geometry.py:68
 #: photometric_viewer/gui/widgets/content/geometry.py:71
 msgid "Luminous opening dimensions"
+msgstr ""
+
+#: photometric_viewer/gui/widgets/content/geometry.py:98
+msgid "Luminous opening height"
 msgstr ""
 
 #: photometric_viewer/gui/dialogs/file_chooser.py:14
