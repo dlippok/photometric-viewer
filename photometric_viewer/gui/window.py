@@ -142,7 +142,7 @@ class MainWindow(Adw.Window):
             return
 
         file: Gio.File = dialog.get_file()
-        data = photometric_viewer.formats.json.export_photometry(self.opened_photometry)
+        data = photometric_viewer.formats.format_json.export_photometry(self.opened_photometry)
         write_string(file, data)
         self.show_banner(_("Exported as {}").format(file.get_basename()))
 
