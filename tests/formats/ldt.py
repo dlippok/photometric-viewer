@@ -2,7 +2,8 @@ import unittest
 from pathlib import Path
 
 from photometric_viewer.formats.ldt import import_from_file
-from photometric_viewer.model.photometry import Shape, Lamps, LuminaireGeometry, LuminousOpeningGeometry, LuminaireType
+from photometric_viewer.model.photometry import Shape, Lamps, LuminaireGeometry, LuminousOpeningGeometry, LuminaireType, \
+    LuminousOpeningShape
 from photometric_viewer.model.units import LengthUnits
 
 
@@ -309,7 +310,29 @@ class TestLdt(unittest.TestCase):
             self.assertEqual(photometry.luminous_opening_geometry, LuminousOpeningGeometry(
                 length=0.05,
                 width=0.04,
+                height=0,
+                height_c90=0,
+                height_c180=0,
+                height_c270=0,
+                shape=LuminousOpeningShape.RECTANGULAR
+            ))
+
+        with (self.FILES_PATH / "rectangular_luminaire_rectangular_luminous_opening_with_heights.ldt").open() as f:
+            photometry = import_from_file(f)
+            self.assertEqual(photometry.luminaire_geometry, LuminaireGeometry(
+                length=0.12,
+                width=0.06,
+                height=0.03,
                 shape=Shape.RECTANGULAR
+            ))
+            self.assertEqual(photometry.luminous_opening_geometry, LuminousOpeningGeometry(
+                length=0.05,
+                width=0.04,
+                height=0.011,
+                height_c90=0.012,
+                height_c180=0.013,
+                height_c270=0.014,
+                shape=LuminousOpeningShape.RECTANGULAR
             ))
 
         with (self.FILES_PATH / "rectangular_luminaire_round_luminous_opening.ldt").open() as f:
@@ -323,7 +346,29 @@ class TestLdt(unittest.TestCase):
             self.assertEqual(photometry.luminous_opening_geometry, LuminousOpeningGeometry(
                 length=0.05,
                 width=0.05,
-                shape=Shape.ROUND
+                height=0,
+                height_c90=0,
+                height_c180=0,
+                height_c270=0,
+                shape=LuminousOpeningShape.ROUND
+            ))
+
+        with (self.FILES_PATH / "rectangular_luminaire_round_luminous_opening_with_heights.ldt").open() as f:
+            photometry = import_from_file(f)
+            self.assertEqual(photometry.luminaire_geometry, LuminaireGeometry(
+                length=0.12,
+                width=0.06,
+                height=0.03,
+                shape=Shape.RECTANGULAR
+            ))
+            self.assertEqual(photometry.luminous_opening_geometry, LuminousOpeningGeometry(
+                length=0.05,
+                width=0.05,
+                height=0.011,
+                height_c90=0.012,
+                height_c180=0.013,
+                height_c270=0.014,
+                shape=LuminousOpeningShape.ROUND
             ))
 
         with (self.FILES_PATH / "round_luminaire_rectangular_luminous_opening.ldt").open() as f:
@@ -337,7 +382,11 @@ class TestLdt(unittest.TestCase):
             self.assertEqual(photometry.luminous_opening_geometry, LuminousOpeningGeometry(
                 length=0.05,
                 width=0.04,
-                shape=Shape.RECTANGULAR
+                height=0,
+                height_c90=0,
+                height_c180=0,
+                height_c270=0,
+                shape=LuminousOpeningShape.RECTANGULAR
             ))
 
         with (self.FILES_PATH / "round_luminaire_round_luminous_opening.ldt").open() as f:
@@ -351,7 +400,11 @@ class TestLdt(unittest.TestCase):
             self.assertEqual(photometry.luminous_opening_geometry, LuminousOpeningGeometry(
                 length=0.05,
                 width=0.05,
-                shape=Shape.ROUND
+                height=0,
+                height_c90=0,
+                height_c180=0,
+                height_c270=0,
+                shape=LuminousOpeningShape.ROUND
             ))
 
     def test_multiple_lamp_sets(self):

@@ -1,7 +1,7 @@
 import copy
 
 from photometric_viewer.model.photometry import Photometry, LuminaireGeometry, Shape, LuminousOpeningGeometry, Lamps, \
-    PhotometryMetadata, LuminaireType
+    PhotometryMetadata, LuminaireType, LuminousOpeningShape
 from photometric_viewer.model.units import LengthUnits
 
 ABSOLUTE_PHOTOMETRY_LUMINAIRE = Photometry(
@@ -31,9 +31,10 @@ ABSOLUTE_PHOTOMETRY_LUMINAIRE = Photometry(
         height=0.15
     ),
     luminous_opening_geometry=LuminousOpeningGeometry(
-        shape=Shape.ROUND,
+        shape=LuminousOpeningShape.ROUND,
         width=0.3,
-        length=0.5
+        length=0.5,
+        height=0
     ),
     lamps=[
         Lamps(

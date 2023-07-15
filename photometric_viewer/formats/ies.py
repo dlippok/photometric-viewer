@@ -2,7 +2,7 @@ from typing import IO
 
 from photometric_viewer.formats.exceptions import InvalidLuminousOpeningException, InvalidPhotometricFileFormatException
 from photometric_viewer.model.photometry import Photometry, PhotometryMetadata, LuminousOpeningGeometry, Shape, \
-    Lamps
+    Lamps, LuminousOpeningShape
 from photometric_viewer.model.units import LengthUnits
 from photometric_viewer.utils.io import read_non_empty_line
 
@@ -24,26 +24,46 @@ def _get_n_values(f: IO, n: int):
 
 
 def create_luminous_opening(attributes):
-    factor = 0
+    f = 0 # Factor for unit conversion (internally always stored in meters)
     match attributes["luminous_opening_units"]:
         case 1:
-            factor = 0.3048
+            f = 0.3048
         case 2:
-            factor = 1
+            f = 1
 
-    match (attributes["luminous_opening_width"], attributes["luminous_opening_length"]):
-        case w, l if w > 0 and l > 0:
-            return LuminousOpeningGeometry(w * factor, l * factor, Shape.RECTANGULAR)
-        case w, l if w > 0 and l == 0:
-            return LuminousOpeningGeometry(w * factor, w * factor, Shape.RECTANGULAR)
-        case w, l if w == 0 and l > 0:
-            return LuminousOpeningGeometry(l * factor, l * factor, Shape.RECTANGULAR)
-        case w, l if w < 0 and l < 0:
-            return LuminousOpeningGeometry(abs(w) * factor, abs(l) * factor, Shape.ROUND)
-        case w, l if w < 0 and l == 0:
-            return LuminousOpeningGeometry(abs(w) * factor, abs(w) * factor, Shape.ROUND)
-        case w, l if w == 0 and l < 0:
-            return LuminousOpeningGeometry(abs(l) * factor, abs(l) * factor, Shape.ROUND)
+    match (
+        attributes["luminous_opening_width"],
+        attributes["luminous_opening_length"],
+        attributes["luminous_opening_height"]
+    ):
+        case 0, 0, 0:
+            return LuminousOpeningGeometry(0, 0, 0, shape=LuminousOpeningShape.POINT)
+        case w, l, h if w > 0 and l > 0 and h >= 0:
+            return LuminousOpeningGeometry(w * f, l * f, h * f, LuminousOpeningShape.RECTANGULAR)
+        case w, l, h if w > 0 and l == 0 and h >= 0:
+            return LuminousOpeningGeometry(w * f, w * f, h * f, LuminousOpeningShape.RECTANGULAR)
+        case w, l, h if w == 0 and l > 0 and h >= 0:
+            return LuminousOpeningGeometry(l * f, l * f, h * f, LuminousOpeningShape.RECTANGULAR)
+        case w, l, h if w < 0 and l < 0 and h >= 0:
+            return LuminousOpeningGeometry(abs(w) * f, abs(l) * f, h * f, LuminousOpeningShape.ROUND)
+        case w, l, h if w < 0 and l == 0 and h >= 0:
+            return LuminousOpeningGeometry(abs(w) * f, abs(w) * f, h * f, LuminousOpeningShape.ROUND)
+        case w, l, h if w == 0 and l < 0 and h >= 0:
+            return LuminousOpeningGeometry(abs(l) * f, abs(l) * f, h * f, LuminousOpeningShape.ROUND)
+        case w, 0, h if w == h and w < 0:
+            return LuminousOpeningGeometry(abs(w) * f, abs(w) * f, abs(w) * f, LuminousOpeningShape.SPHERE)
+        case 0, l, h if l > 0 and h < 0:
+            return LuminousOpeningGeometry(abs(l) * f, abs(l) * f, abs(h) * f, LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_LENGTH)
+        case w, 0, h if w > 0 and h < 0:
+            return LuminousOpeningGeometry(abs(w) * f, abs(w) * f, abs(h) * f, LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_WIDTH)
+        case w, l, h if w < 0 and l > 0 and h > 0:
+            return LuminousOpeningGeometry(abs(w) * f, abs(l) * f, abs(h) * f, LuminousOpeningShape.ELLIPSE_ALONG_LENGTH)
+        case w, l, h if w > 0 and l < 0 and h > 0:
+            return LuminousOpeningGeometry(abs(w) * f, abs(l) * f, abs(h) * f, LuminousOpeningShape.ELLIPSE_ALONG_WIDTH)
+        case w, l, h if w < 0 and l > 0 and h < 0:
+            return LuminousOpeningGeometry(abs(w) * f, abs(l) * f, abs(h) * f, LuminousOpeningShape.ELLIPSOID_ALONG_LENGTH)
+        case w, l, h if w > 0 and l < 0 and h < 0:
+            return LuminousOpeningGeometry(abs(w) * f, abs(l) * f, abs(h) * f, LuminousOpeningShape.ELLIPSOID_ALONG_WIDTH)
         case _:
             raise InvalidLuminousOpeningException()
 

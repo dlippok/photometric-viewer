@@ -1,7 +1,7 @@
 import json
 import unittest
 
-import photometric_viewer.formats.json
+import photometric_viewer.formats.format_json
 from photometric_viewer.model.photometry import Photometry, LuminaireType
 from tests.formats.fixtures.photometry import ABSOLUTE_PHOTOMETRY_LUMINAIRE, TWO_LAMPS_LUMINAIRE, \
     LUMINAIRE_WITHOUT_LUMINAIRE_GEOMETRY
@@ -9,7 +9,7 @@ from tests.formats.fixtures.photometry import ABSOLUTE_PHOTOMETRY_LUMINAIRE, TWO
 
 class TestJson(unittest.TestCase):
     def test_geometry_with_luminaire(self):
-        output = photometric_viewer.formats.json.export_photometry(ABSOLUTE_PHOTOMETRY_LUMINAIRE)
+        output = photometric_viewer.formats.format_json.export_photometry(ABSOLUTE_PHOTOMETRY_LUMINAIRE)
         deserialized_output = json.loads(output)
 
         expected_geometry = {
@@ -28,7 +28,7 @@ class TestJson(unittest.TestCase):
         self.assertEqual(deserialized_output["geometry"], expected_geometry)
 
     def test_geometry_without_luminaire(self):
-        output = photometric_viewer.formats.json.export_photometry(LUMINAIRE_WITHOUT_LUMINAIRE_GEOMETRY)
+        output = photometric_viewer.formats.format_json.export_photometry(LUMINAIRE_WITHOUT_LUMINAIRE_GEOMETRY)
         deserialized_output = json.loads(output)
 
         expected_geometry = {
@@ -42,7 +42,7 @@ class TestJson(unittest.TestCase):
         self.assertEqual(deserialized_output["geometry"], expected_geometry)
 
     def test_photometry(self):
-        output = photometric_viewer.formats.json.export_photometry(ABSOLUTE_PHOTOMETRY_LUMINAIRE)
+        output = photometric_viewer.formats.format_json.export_photometry(ABSOLUTE_PHOTOMETRY_LUMINAIRE)
         deserialized_output = json.loads(output)
 
         expected_photometry = {
@@ -69,7 +69,7 @@ class TestJson(unittest.TestCase):
         self.assertEqual(deserialized_output["photometry"], expected_photometry)
 
     def test_single_lamp(self):
-        output = photometric_viewer.formats.json.export_photometry(ABSOLUTE_PHOTOMETRY_LUMINAIRE)
+        output = photometric_viewer.formats.format_json.export_photometry(ABSOLUTE_PHOTOMETRY_LUMINAIRE)
         deserialized_output = json.loads(output)
 
         expected_lamps = [
@@ -90,7 +90,7 @@ class TestJson(unittest.TestCase):
         self.assertEqual(deserialized_output["lamp_sets"], expected_lamps)
 
     def test_multiple_lamps(self):
-        output = photometric_viewer.formats.json.export_photometry(TWO_LAMPS_LUMINAIRE)
+        output = photometric_viewer.formats.format_json.export_photometry(TWO_LAMPS_LUMINAIRE)
         deserialized_output = json.loads(output)
 
         expected_lamps = [
@@ -126,7 +126,7 @@ class TestJson(unittest.TestCase):
 
     def test_metadata(self):
         photometry = ABSOLUTE_PHOTOMETRY_LUMINAIRE
-        output = photometric_viewer.formats.json.export_photometry(photometry)
+        output = photometric_viewer.formats.format_json.export_photometry(photometry)
         deserialized_output = json.loads(output)
 
         expected_metadata = {

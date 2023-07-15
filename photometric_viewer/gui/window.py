@@ -6,7 +6,7 @@ from gi.repository.Adw import ViewStackPage
 from gi.repository.Gtk import Orientation, Button, FileChooserDialog
 
 import photometric_viewer.formats.csv
-import photometric_viewer.formats.json
+import photometric_viewer.formats.format_json
 import photometric_viewer.formats.png
 import photometric_viewer.formats.svg
 from photometric_viewer.formats.common import import_from_file
