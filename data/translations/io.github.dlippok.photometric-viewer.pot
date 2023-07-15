@@ -401,13 +401,13 @@ msgid "About Photometric Viewer"
 msgstr ""
 
 #: photometric_viewer/gui/widgets/app_menu.py
-msgid "Light distribution curve as image"
+msgid "Light distribution curve"
 msgstr ""
 
 #: photometric_viewer/gui/widgets/app_menu.py
-msgid "Intensity values as CSV"
+msgid "Intensity values"
 msgstr ""
 
 #: photometric_viewer/gui/widgets/app_menu.py
-msgid "Luminaire data as JSON"
+msgid "Luminaire data"
 msgstr ""
