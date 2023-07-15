@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-15 21:25+0200\n"
-"PO-Revision-Date: 2023-07-15 21:34+0200\n"
+"POT-Creation-Date: 2023-07-15 23:29+0200\n"
+"PO-Revision-Date: 2023-07-15 23:29+0200\n"
 "Last-Translator: DaLee <mail.dalee@gmail.com>\n"
 "Language-Team: German <mail.dalee@gmail.com>\n"
 "Language: de\n"
@@ -15,6 +15,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Gtranslator 42.0\n"
+
+#: photometric_viewer/gui/dialogs/about.py:7
+#: photometric_viewer/gui/window.py:30 photometric_viewer/gui/window.py:73
+msgid "Photometric Viewer"
+msgstr "Photometriebetrachter"
 
 #: photometric_viewer/gui/dialogs/preferences.py:18
 msgid "Application Settings"
@@ -167,29 +172,33 @@ msgstr ""
 "Schema für Einstellungen könnte nicht geladen werden. Eingestellte Werte "
 "werden nach dem Programmende verworfen"
 
-#: photometric_viewer/gui/window.py:47 photometric_viewer/gui/window.py:45
-#: photometric_viewer/gui/window.py:44 photometric_viewer/gui/window.py:42
+#: photometric_viewer/gui/window.py:46 photometric_viewer/gui/window.py:47
+#: photometric_viewer/gui/window.py:45 photometric_viewer/gui/window.py:44
+#: photometric_viewer/gui/window.py:42
 msgid "Photometry"
 msgstr "Photometrie"
 
-#: photometric_viewer/gui/window.py:51 photometric_viewer/gui/window.py:49
-#: photometric_viewer/gui/window.py:48 photometric_viewer/gui/window.py:46
+#: photometric_viewer/gui/window.py:50 photometric_viewer/gui/window.py:51
+#: photometric_viewer/gui/window.py:49 photometric_viewer/gui/window.py:48
+#: photometric_viewer/gui/window.py:46
 msgid "Source"
 msgstr "Quelle"
 
-#: photometric_viewer/gui/window.py:56 photometric_viewer/gui/window.py:54
-#: photometric_viewer/gui/window.py:53 photometric_viewer/gui/window.py:51
+#: photometric_viewer/gui/window.py:55 photometric_viewer/gui/window.py:56
+#: photometric_viewer/gui/window.py:54 photometric_viewer/gui/window.py:53
+#: photometric_viewer/gui/window.py:51
 msgid "Intensity Values"
 msgstr "Lichtstärken"
 
-#: photometric_viewer/gui/window.py:64 photometric_viewer/gui/window.py:62
-#: photometric_viewer/gui/window.py:61 photometric_viewer/gui/window.py:59
+#: photometric_viewer/gui/window.py:63 photometric_viewer/gui/window.py:64
+#: photometric_viewer/gui/window.py:62 photometric_viewer/gui/window.py:61
+#: photometric_viewer/gui/window.py:59
 msgid "Dismiss"
 msgstr "Schließen"
 
-#: photometric_viewer/gui/window.py:68 photometric_viewer/gui/window.py:66
-#: photometric_viewer/gui/window.py:65 photometric_viewer/gui/window.py:64
-#: photometric_viewer/gui/window.py:62
+#: photometric_viewer/gui/window.py:67 photometric_viewer/gui/window.py:68
+#: photometric_viewer/gui/window.py:66 photometric_viewer/gui/window.py:65
+#: photometric_viewer/gui/window.py:64 photometric_viewer/gui/window.py:62
 msgid "Open"
 msgstr "Öffnen"
 
@@ -199,15 +208,15 @@ msgstr "Öffnen"
 msgid "Exported as {}"
 msgstr "Exportiert als {}"
 
-#: photometric_viewer/gui/window.py:191 photometric_viewer/gui/window.py:168
-#: photometric_viewer/gui/window.py:165 photometric_viewer/gui/window.py:158
-#: photometric_viewer/gui/window.py:125
+#: photometric_viewer/gui/window.py:196 photometric_viewer/gui/window.py:191
+#: photometric_viewer/gui/window.py:168 photometric_viewer/gui/window.py:165
+#: photometric_viewer/gui/window.py:158 photometric_viewer/gui/window.py:125
 msgid "Invalid content of photometric file {}"
 msgstr "Ungültiger Inhalt in der Photometriedatei {}"
 
-#: photometric_viewer/gui/window.py:194 photometric_viewer/gui/window.py:171
-#: photometric_viewer/gui/window.py:168 photometric_viewer/gui/window.py:161
-#: photometric_viewer/gui/window.py:128
+#: photometric_viewer/gui/window.py:199 photometric_viewer/gui/window.py:194
+#: photometric_viewer/gui/window.py:171 photometric_viewer/gui/window.py:168
+#: photometric_viewer/gui/window.py:161 photometric_viewer/gui/window.py:128
 msgid "Could not open {}"
 msgstr "Datei {} könnte nich geöffnet werden"
 
@@ -405,6 +414,10 @@ msgstr "Abmessungen der Lichtaustrittfläche"
 msgid "Luminous opening height"
 msgstr "Höhe der Lichtaustrittfläche"
 
+#: photometric_viewer/gui/dialogs/about.py:7
+msgid "Photomertic Viewer"
+msgstr "Photometriebetrachter"
+
 #: photometric_viewer/gui/dialogs/file_chooser.py:14
 msgid "Untitled.json"
 msgstr "Unbenannt.json"
@@ -455,7 +468,7 @@ msgstr "Einstellungen"
 
 #: photometric_viewer/gui/widgets/app_menu.py
 msgid "About Photometric Viewer"
-msgstr "Über Photometric Viewer"
+msgstr "Über Photometriebetrachter"
 
 #: photometric_viewer/gui/widgets/app_menu.py
 msgid "Light distribution curve"
