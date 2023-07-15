@@ -4,24 +4,43 @@
     <launchable type="desktop-id">io.github.dlippok.photometric-viewer.desktop</launchable>
     <name>Photometric Viewer</name>
     <summary>Browse content of IES and LDT photometric files</summary>
+    <summary xml:lang="de">Öffne IES- und LDT-Photometriedateien</summary>
     <description>
         <p>
             Photometric Viewer allow viewing light distribution curves and metadata of IESNA and EULUMDAT photometric
             files which describe the light distribution of light sources like lamps and luminaires and
             are used mostly for data transfer in the lighting industry and in 3D graphics.
         </p>
+        <p xml:lang="de">
+            Betrachter für Lichtverteilungskurven und Metadaten von IESNA und EULUMDAT Photometriedateien.
+            Photometriedateien beschreiben die Lichtverteilung von Lampen und Leuchten und werden vor allem
+            für Datentransfer in der Leuchtenindustrire und 3D-Grafik eingesetzt.
+        </p>
         <p>
             Photometric Viewer displays following information of the opened photometric file:
+        </p>
+        <p xml:lang="de">
+            Photometriebetrachter zeigt folgende Informationen über die Photometiredatei an:
         </p>
         <ul>
             <li>Light distribution curves</li>
             <li>General information (Catalog Number, Manufacturer, Description, etc.)</li>
-            <li>Photometric properties (Light Output Ration and Downward Flux Fraction)</li>
+            <li>Photometric properties (Light Output Ratio and Downward Flux Fraction)</li>
             <li>Lamps and ballast information</li>
             <li>Luminaire and luminous opening geometry information</li>
             <li>Additional properties (Test number, issue date, test laboratory, etc.)</li>
-            <li>Intensity Values for selected C planes and gamma values</li>
+            <li>Intensity Values for selected C planes and gamma angles</li>
             <li>Raw text source of photometric file</li>
+        </ul>
+        <ul xml:lang="de">
+            <li>Lichtverteilungskurve</li>
+            <li>Allgemeine Informationen (Katalognummer, Hersteller, Beschreibung, usw.)</li>
+            <li>Photometishce Eigenschaften</li>
+            <li>Information über Lampen und Vorschaltgeräte</li>
+            <li>Abmessungen der Leuchte und der Lichtaustrittfläche</li>
+            <li>Zusätzliche Informationen (Testnummer, Datum, Photometrisches Labor, usw.)</li>
+            <li>Candela-Werte für ausgewählte C-Ebenen und Gammawinkel</li>
+            <li>Textinhalt der Photometriedatei</li>
         </ul>
     </description>
     <screenshots>
@@ -63,21 +82,25 @@
         <release version="1.1.0" date="2023-06-27">
             <description>
                 <p>Adds support for browsing intensity values in the opened photometric file, includes legend of the photometric curve and introduces German translations for the user interface.</p>
+                <p xml:lang="de">Ermöglicht Anzeigen von Candela-Werten, fügt eine Legende der Lichtverteilungskurve hinzu und führt deutsche Übersetzungen für die Benutzeroberfläche ein.</p>
             </description>
         </release>
         <release version="1.0.1" date="2023-06-24">
             <description>
                 <p>Fix bug that prevents opening IES files by double-clicking them in file explorer.</p>
+                <p xml:lang="de">Behebt einen Fehlers, der das Öffnen von IES-Dateien durch Doppelklicken im Datei-Explorer verhindert.</p>
             </description>
         </release>
         <release version="1.0.0" date="2023-06-10">
             <description>
                 <p>Adds support for EULUMDAT files, introduces extended lamp and geometry information and allows user to select preferred size units.</p>
+                <p xml:lang="de">Erlaubt das Öffnen von EULUMDAT-Dateien, fügt zusätzliche Informationen zur Lampen- und Leuchtengeometrie und erlaubt dem Benutzer, Längeneinheiten für die Anzeige auszuwählen.</p>
             </description>
         </release>
         <release version="0.2.0" date="2023-05-01">
             <description>
                 <p>Adds support for additional luminaire properties and displaying source text of photometric files.</p>
+                <p xml:lang="de">Fügt neue Leuchteneigenschaften hinzu und ermöglicht die Anzeige der Quelle der Photometriedatei.</p>
             </description>
         </release>
         <release version="0.1.0" date="2023-04-07"/>

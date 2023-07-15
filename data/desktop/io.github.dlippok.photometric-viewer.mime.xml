@@ -2,10 +2,12 @@
 <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
     <mime-type type="application/x-iesna">
         <comment>IESNA photometric file</comment>
+        <comment xml:lang="de">IESNA Photometriedatei</comment>
         <glob pattern="*.ies"/>
     </mime-type>
     <mime-type type="application/x-eulumdat">
         <comment>EULUMDAT photometric file</comment>
+        <comment xml:lang="de">EULUMDAT Photometriedatei</comment>
         <glob pattern="*.ldt"/>
     </mime-type>
 </mime-info>
