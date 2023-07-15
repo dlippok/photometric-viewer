@@ -41,7 +41,6 @@ class MainWindow(Adw.Window):
 
         self.view_stack = Adw.ViewStack()
         self.opened_photometry: Optional[Photometry] = None
-        self.opened_filename: str | None = None
 
         self.photometry_content = PhotometryContent()
         properties_page: ViewStackPage = self.view_stack.add_titled(self.photometry_content, "photometry", _("Photometry"))
@@ -117,6 +116,7 @@ class MainWindow(Adw.Window):
         self.content_bin.set_child(self.view_stack)
         self.switcher_bar.set_stack(self.view_stack)
         self.opened_photometry = photometry
+
         self.action_set_enabled("app.show_source", True)
         self.action_set_enabled("app.export_luminaire_as_json", True)
         self.action_set_enabled("app.export_intensities_as_csv", True)
@@ -182,7 +182,12 @@ class MainWindow(Adw.Window):
                     self.set_title(title=photometry.metadata.luminaire)
                 self.display_photometry_content(photometry)
                 self.photometry_content.update_settings(self.settings)
-                self.opened_filename = file.get_basename()
+
+                opened_filename = file.get_basename()
+                self.json_export_file_chooser.set_current_name(f"{opened_filename}.json")
+                self.csv_export_file_chooser.set_current_name(f"{opened_filename}.csv")
+                self.ldc_export_file_chooser.set_current_name(f"{opened_filename}.png")
+
         except GLib.GError as e:
             logging.exception("Could not open photometric file")
             self.show_banner(e.message)
@@ -201,18 +206,12 @@ class MainWindow(Adw.Window):
         self.view_stack.set_visible_child(self.source_view)
 
     def show_json_export_file_chooser(self, *args):
-        if not self.json_export_file_chooser.get_current_name():
-            self.json_export_file_chooser.set_current_name(f"{self.opened_filename}.json")
         self.json_export_file_chooser.show()
 
     def show_csv_export_file_chooser(self, *args):
-        if not self.csv_export_file_chooser.get_current_name():
-            self.csv_export_file_chooser.set_current_name(f"{self.opened_filename}.csv")
         self.csv_export_file_chooser.show()
 
     def show_ldc_export_file_chooser(self, *args):
-        if not self.ldc_export_file_chooser.get_current_name():
-            self.ldc_export_file_chooser.set_current_name(f"{self.opened_filename}.png")
         self.ldc_export_file_chooser.show()
 
     def banner_dismiss_clicked(self, *args):
