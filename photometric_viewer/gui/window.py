@@ -34,8 +34,6 @@ class MainWindow(Adw.Window):
         self.install_actions()
 
         self.gsettings = GSettings()
-        if self.gsettings.settings is None:
-            self.show_banner(_("Settings schema could not be loaded. Selected settings will be lost on restart"))
 
         self.settings = self.gsettings.load()
 
@@ -95,6 +93,9 @@ class MainWindow(Adw.Window):
         self.ldc_export_file_chooser.connect("response", self.on_export_ldc_response)
 
         self.set_content(box)
+
+        if self.gsettings.settings is None:
+            self.show_banner(_("Settings schema could not be loaded. Selected settings will be lost on restart"))
 
     def install_actions(self):
         self.install_action("app.show_about_window", None, self.show_about_dialog)
