@@ -2,7 +2,9 @@ import cairo
 from gi.repository import Gtk
 
 from photometric_viewer.model.photometry import Photometry
-from photometric_viewer.utils.plotters import LightDistributionPlotter
+from photometric_viewer.model.settings import Settings
+from photometric_viewer.utils.plotters import LightDistributionPlotter, DiagramStyle, SnapValueAnglesTo, \
+    DisplayHalfSpaces
 
 
 class PhotometricDiagram(Gtk.DrawingArea):
@@ -21,4 +23,10 @@ class PhotometricDiagram(Gtk.DrawingArea):
 
     def set_photometry(self, photometry: Photometry):
         self.photometry = photometry
+        self.queue_draw()
+
+    def update_settings(self, settings: Settings):
+        self.plotter.settings.style = DiagramStyle(settings.diagram_style.value)
+        self.plotter.settings.snap_value_angles_to = SnapValueAnglesTo(settings.snap_value_angles_to.value)
+        self.plotter.settings.display_half_spaces = DisplayHalfSpaces(settings.display_half_spaces.value)
         self.queue_draw()

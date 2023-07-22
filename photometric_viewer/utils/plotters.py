@@ -97,12 +97,10 @@ class LightDistributionPlotter:
         if type(self.settings.snap_value_angles_to) == int:
             return self.settings.snap_value_angles_to
 
-        if self.settings.style == DiagramStyle.SIMPLE:
-            round_values = [60, 120, 240, 360, 600, 1200, 2400, 3600, 6000, 2400, 3600, 12000, 24000, 36000]
-        else:
-            round_values = [50, 80, 100, 200, 400,
-                            500, 800, 1000, 2000, 4000,
-                            5000, 8000, 10000, 20000, 40000]
+        round_values = [30, 60, 90, 100,
+                        300, 600, 900, 1000,
+                        3000, 6000, 9000, 10000,
+                        30000, 60000, 90000, 100000]
 
         last_round_value = 0
         for round_value in round_values:
