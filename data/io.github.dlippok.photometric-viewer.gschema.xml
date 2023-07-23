@@ -1,22 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-  <enum id="io.github.dlippok.photometric-viewer.length-units-enum">
-      <value nick="meters" value="1"/>
-      <value nick="centimeters" value="2"/>
-      <value nick="millimeters" value="3"/>
-      <value nick="feet" value="4"/>
-      <value nick="inches" value="5"/>
-  </enum>
-  <schema id="io.github.dlippok.photometric-viewer" path="/apps/io/github/dlippok/photometric-viewer/">
-      <key type="b" name="length-units-from-file">
-          <default>false</default>
-          <summary>Use length unit from photometric file</summary>
-          <description>Whenever applicable, display length the same units as used in the photometric file instead of the selected ones.</description>
-      </key>
-      <key enum="io.github.dlippok.photometric-viewer.length-units-enum" name="preferred-length-units">
-          <default>'meters'</default>
-          <summary>Preferred units to be used when displaying length values</summary>
-          <description>All length values from the photometric file will be converted to the selected unit when displaying in the UI.</description>
-      </key>
-  </schema>
+    <enum id="io.github.dlippok.photometric-viewer.length-units-enum">
+        <value nick="meters" value="1"/>
+        <value nick="centimeters" value="2"/>
+        <value nick="millimeters" value="3"/>
+        <value nick="feet" value="4"/>
+        <value nick="inches" value="5"/>
+    </enum>
+    <enum id="io.github.dlippok.photometric-viewer.diagram-style-enum">
+        <value nick="simple" value="1"/>
+        <value nick="detailed" value="2"/>
+    </enum>
+    <enum id="io.github.dlippok.photometric-viewer.snap-value-angles-to-enum">
+        <value nick="max-value" value="1"/>
+        <value nick="round-number" value="2"/>
+    </enum>
+    <enum id="io.github.dlippok.photometric-viewer.display-half-spaces-enum">
+        <value nick="both" value="1"/>
+        <value nick="only-relevant" value="2"/>
+    </enum>
+    <schema id="io.github.dlippok.photometric-viewer" path="/apps/io/github/dlippok/photometric-viewer/">
+        <key type="b" name="length-units-from-file">
+            <default>false</default>
+            <summary>Use length unit from photometric file</summary>
+            <description>Whenever applicable, display length the same units as used in the photometric file instead of the selected ones.</description>
+        </key>
+        <key enum="io.github.dlippok.photometric-viewer.length-units-enum" name="preferred-length-units">
+            <default>'meters'</default>
+            <summary>Preferred units to be used when displaying length values</summary>
+            <description>All length values from the photometric file will be converted to the selected unit when displaying in the UI.</description>
+        </key>
+        <key enum="io.github.dlippok.photometric-viewer.diagram-style-enum" name="diagram-style">
+            <default>'simple'</default>
+            <summary>Style of the displayed diagram</summary>
+            <description>Configures amount of details showed in the diagram.</description>
+        </key>
+        <key enum="io.github.dlippok.photometric-viewer.snap-value-angles-to-enum" name="snap-value-angles-to">
+            <default>'max-value'</default>
+            <summary>Snap values to</summary>
+            <description>Configures whether the guides with intensity values should be scaled to max value or the closest round number.</description>
+        </key>
+        <key enum="io.github.dlippok.photometric-viewer.display-half-spaces-enum" name="display-half-spaces">
+            <default>'only-relevant'</default>
+            <summary>Display half spaces</summary>
+            <description>Decides whether only the relevant half space or full 180 degrees of gamma values should be displayed.</description>
+        </key>
+        <key type="s" name="diagram-theme">
+            <default>'Adwaita'</default>
+            <summary>Scheme of the photometric diagram</summary>
+            <description>Name of the scheme to use. If scheme with the specified name is not found, default will be used.</description>
+        </key>
+    </schema>
 </schemalist>
