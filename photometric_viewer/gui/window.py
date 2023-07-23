@@ -67,18 +67,21 @@ class MainWindow(Adw.Window):
 
         open_button.connect("clicked", self.on_open_clicked)
 
-        self.switcher_bar = Adw.ViewSwitcherTitle()
-        self.switcher_bar.set_title(_("Photometric Viewer"))
-        self.switcher_bar.set_visible(True)
+        self.switcher_title = Adw.ViewSwitcherTitle()
+        self.switcher_title.set_title(_("Photometric Viewer"))
+        self.switcher_title.connect("notify::title-visible", self.on_title_visible_changed)
+
+        self.switcher_bar = Adw.ViewSwitcherBar()
 
         box = Gtk.Box(orientation=Orientation.VERTICAL)
         header_bar = Adw.HeaderBar()
-        header_bar.set_title_widget(self.switcher_bar)
+        header_bar.set_title_widget(self.switcher_title)
         header_bar.pack_start(open_button)
         header_bar.pack_end(ApplicationMenuButton())
         box.append(header_bar)
         box.append(self.banner)
         box.append(self.content_bin)
+        box.append(self.switcher_bar)
 
         self.open_file_chooser = OpenFileChooser(transient_for=self)
         self.open_file_chooser.connect("response", self.on_open_response)
@@ -115,8 +118,13 @@ class MainWindow(Adw.Window):
         self.values_table.set_photometry(photometry)
 
         self.content_bin.set_child(self.view_stack)
+        self.switcher_title.set_stack(self.view_stack)
         self.switcher_bar.set_stack(self.view_stack)
         self.opened_photometry = photometry
+
+        if photometry.metadata.luminaire:
+            self.set_title(title=photometry.metadata.luminaire)
+            self.switcher_title.set_subtitle(photometry.metadata.luminaire)
 
         self.action_set_enabled("app.show_source", True)
         self.action_set_enabled("app.export_luminaire_as_json", True)
@@ -174,13 +182,16 @@ class MainWindow(Adw.Window):
         write_bytes(file, data)
         self.show_banner(_("Exported as {}").format(file.get_basename()))
 
+    def on_title_visible_changed(self, *args):
+        title_visible = self.switcher_title.get_title_visible()
+        self.switcher_bar.set_reveal(title_visible)
+
     def open_file(self, file: Gio.File):
         self.banner.set_revealed(False)
         try:
             with gio_file_stream(file) as f:
                 photometry = import_from_file(f)
-                if photometry.metadata.luminaire:
-                    self.set_title(title=photometry.metadata.luminaire)
+
                 self.display_photometry_content(photometry)
                 self.photometry_content.update_settings(self.settings)
 
