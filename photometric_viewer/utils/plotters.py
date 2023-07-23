@@ -1,7 +1,7 @@
 import math
 from dataclasses import dataclass
 from enum import Enum
-from typing import Tuple
+from typing import Tuple, List
 
 import cairo
 from photometric_viewer.model.photometry import Photometry
@@ -24,22 +24,28 @@ class DisplayHalfSpaces(Enum):
     ONLY_RELEVANT = 2
 
 @dataclass
-class LightDistributionPlotterSettings:
-    style: DiagramStyle = DiagramStyle.DETAILED
+class LightDistributionPlotterTheme:
     background_color: Tuple[float, float, float, float] | None = None
-    coordinate_line_width = 1
-    coordinate_color = (0.6, 0.6, 0.6, 1)
-    text_color = (0.6, 0.6, 0.6, 1)
+    coordinate_line_width: float = 1
+    coordinate_line_dash: List[float] = (4,)
+    coordinate_color: Tuple[float, float, float, float] = (0.6, 0.6, 0.6, 1)
+    text_color: Tuple[float, float, float, float] = (0.6, 0.6, 0.6, 1)
     curve_line_width: float = 2
     c0_stroke: Tuple[float, float, float, float] = (0.8, 0.8, 0, 0.4)
     c0_fill: Tuple[float, float, float, float] | None = (0.8, 0.8, 0, 0.2)
-    c0_dash: Tuple[float] = ()
+    c0_dash: List[float] = ()
     c180_stroke: Tuple[float, float, float, float] = (0.8, 0.8, 0.0, 0.4)
     c180_fill: Tuple[float, float, float, float] | None = (0.8, 0.8, 0, 0.2)
-    c180_dash: Tuple[float] = (2,)
+    c180_dash: List[float] = (2,)
+
+
+@dataclass
+class LightDistributionPlotterSettings:
+    style: DiagramStyle = DiagramStyle.DETAILED
     show_legend: bool = True
     snap_value_angles_to: SnapValueAnglesTo | int = SnapValueAnglesTo.ROUND_NUMBER
     display_half_spaces: DisplayHalfSpaces = DisplayHalfSpaces.ONLY_RELEVANT
+    theme: LightDistributionPlotterTheme = None
 
 
 
@@ -52,8 +58,8 @@ class LightDistributionPlotter:
     def draw(self, context: cairo.Context, photometry: Photometry):
         self.center = self._get_center(photometry)
         self._draw_background(context)
-        self._draw_coordinate_system(context, photometry)
         self._draw_curve(context, photometry)
+        self._draw_coordinate_system(context, photometry)
         self._draw_legend(context)
 
     def _get_center(self, photometry: Photometry):
@@ -110,21 +116,21 @@ class LightDistributionPlotter:
         return last_round_value
 
     def _draw_background(self, context: cairo.Context):
-        if self.settings.background_color is None:
+        if self.settings.theme.background_color is None:
             return
         context.set_source_rgba(
-            self.settings.background_color[0],
-            self.settings.background_color[1],
-            self.settings.background_color[2],
-            self.settings.background_color[3]
+            self.settings.theme.background_color[0],
+            self.settings.theme.background_color[1],
+            self.settings.theme.background_color[2],
+            self.settings.theme.background_color[3]
         )
         context.rectangle(0, 0, self.size, self.size)
         context.fill()
 
     def _draw_coordinate_system(self, context: cairo.Context, photometry: Photometry):
-        context.set_line_width(self.settings.coordinate_line_width)
-        context.set_dash([4])
-        r, g, b, a = self.settings.coordinate_color
+        context.set_line_width(self.settings.theme.coordinate_line_width)
+        context.set_dash(self.settings.theme.coordinate_line_dash)
+        r, g, b, a = self.settings.theme.coordinate_color
         context.set_source_rgba(r, g, b, a)
 
         if self.center[1] == self.size / 2:
@@ -169,7 +175,7 @@ class LightDistributionPlotter:
         self.draw_values(self.center, context, photometry, radii)
 
     def draw_values(self, center, context, photometry, radii):
-        r, g, b, a = self.settings.text_color
+        r, g, b, a = self.settings.theme.text_color
         context.set_source_rgba(r, g, b, a)
 
         max_candelas = self._get_max_candela(photometry)
@@ -188,16 +194,16 @@ class LightDistributionPlotter:
             context.show_text(text)
 
     def _draw_curve(self, context: cairo.Context, photometry: Photometry):
-        context.set_line_width(self.settings.curve_line_width)
+        context.set_line_width(self.settings.theme.curve_line_width)
         max_candelas = self._get_max_candela(photometry)
 
-        context.set_dash(self.settings.c0_dash)
-        self._draw_halfcurve(context, photometry, max_candelas, 0, self.settings.c0_stroke, self.settings.c0_fill)
-        self._draw_halfcurve(context, photometry, max_candelas, 180, self.settings.c0_stroke, self.settings.c0_fill)
+        context.set_dash(self.settings.theme.c0_dash)
+        self._draw_halfcurve(context, photometry, max_candelas, 0, self.settings.theme.c0_stroke, self.settings.theme.c0_fill)
+        self._draw_halfcurve(context, photometry, max_candelas, 180, self.settings.theme.c0_stroke, self.settings.theme.c0_fill)
 
-        context.set_dash(self.settings.c180_dash)
-        self._draw_halfcurve(context, photometry, max_candelas, 90, self.settings.c180_stroke, self.settings.c180_fill)
-        self._draw_halfcurve(context, photometry, max_candelas, 270, self.settings.c180_stroke, self.settings.c180_fill)
+        context.set_dash(self.settings.theme.c180_dash)
+        self._draw_halfcurve(context, photometry, max_candelas, 90, self.settings.theme.c180_stroke, self.settings.theme.c180_fill)
+        self._draw_halfcurve(context, photometry, max_candelas, 270, self.settings.theme.c180_stroke, self.settings.theme.c180_fill)
 
     def _draw_halfcurve(
             self,
@@ -245,11 +251,11 @@ class LightDistributionPlotter:
         if not self.settings.show_legend:
             return
 
-        context.set_line_width(self.settings.curve_line_width)
+        context.set_line_width(self.settings.theme.curve_line_width)
 
         context.new_path()
-        context.set_dash(self.settings.c0_dash)
-        r, g, b, a = self.settings.c0_stroke
+        context.set_dash(self.settings.theme.c0_dash)
+        r, g, b, a = self.settings.theme.c0_stroke
         context.set_source_rgba(r, g, b, a)
         context.move_to(self.size - 100, self.size - 20)
         context.line_to(self.size - 100 + 15, self.size - 20)
@@ -257,15 +263,15 @@ class LightDistributionPlotter:
 
         context.new_path()
         context.move_to(self.size - 100 + 18, self.size - 17)
-        r, g, b, a = self.settings.text_color
+        r, g, b, a = self.settings.theme.text_color
         context.set_source_rgba(r, g, b, a)
         context.show_text("C0-C180")
         context.stroke()
 
         context.new_path()
-        context.set_dash(self.settings.c180_dash)
+        context.set_dash(self.settings.theme.c180_dash)
 
-        r, g, b, a = self.settings.c180_stroke
+        r, g, b, a = self.settings.theme.c180_stroke
         context.set_source_rgba(r, g, b, a)
         context.move_to(self.size - 100, self.size - 8)
         context.line_to(self.size - 100 + 15, self.size - 8)
@@ -273,7 +279,7 @@ class LightDistributionPlotter:
 
         context.new_path()
         context.move_to(self.size - 100 + 18, self.size - 5)
-        r, g, b, a = self.settings.text_color
+        r, g, b, a = self.settings.theme.text_color
         context.set_source_rgba(r, g, b, a)
         context.show_text("C90-C270")
         context.stroke()

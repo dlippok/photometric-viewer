@@ -3,6 +3,7 @@ from gi.repository.Gtk import ListBox, Box, Orientation, Label, SelectionMode, T
 
 from photometric_viewer.model.settings import Settings, DiagramStyle, SnapValueAnglesTo, DisplayHalfSpaces
 from photometric_viewer.model.units import LengthUnits
+from photometric_viewer.utils import plotter_themes
 
 
 class PreferencesWindow(Adw.PreferencesWindow):
@@ -93,6 +94,24 @@ class PreferencesWindow(Adw.PreferencesWindow):
             selection_mode=SelectionMode.NONE
         )
 
+        self.diagram_theme_box = Box(
+            orientation=Orientation.HORIZONTAL,
+            spacing=4,
+            margin_start=16,
+            margin_end=16,
+            margin_top=16,
+            margin_bottom=16,
+            sensitive=not self.settings.length_units_from_file
+        )
+        self.diagram_theme_box.append(Label(label=_("Theme"), hexpand=True, xalign=0))
+        self.diagram_theme_dropdown: Gtk.DropDown = Gtk.DropDown.new_from_strings([t.name for t in plotter_themes.THEMES])
+        for n, theme in enumerate(plotter_themes.THEMES):
+            if theme.name == self.settings.diagram_theme:
+                self.diagram_theme_dropdown.set_selected(n)
+        self.diagram_theme_dropdown.connect("notify::selected", self.diagram_theme_changed)
+        self.diagram_theme_box.append(self.diagram_theme_dropdown)
+        curve_settings_list.append(self.diagram_theme_box)
+
         curve_style_box = Box(
             orientation=Orientation.HORIZONTAL,
             spacing=4,
@@ -124,6 +143,7 @@ class PreferencesWindow(Adw.PreferencesWindow):
         curve_style_box.append(Label(label=_("Style"), hexpand=True, xalign=0))
         curve_style_box.append(curve_style_buttons_box)
         curve_settings_list.append(curve_style_box)
+
 
         snap_values_box = Box(
             orientation=Orientation.HORIZONTAL,
@@ -189,6 +209,8 @@ class PreferencesWindow(Adw.PreferencesWindow):
         display_half_spaces_box.append(display_half_spaces_buttons_box)
         curve_settings_list.append(display_half_spaces_box)
 
+
+
         curve_settings_group.add(curve_settings_list)
 
         self.page.add(curve_settings_group)
@@ -241,6 +263,11 @@ class PreferencesWindow(Adw.PreferencesWindow):
         if widget.get_active():
             self.settings.display_half_spaces = DisplayHalfSpaces.ONLY_RELEVANT
             self.update()
+
+    def diagram_theme_changed(self, *args):
+        selected = self.diagram_theme_dropdown.get_selected()
+        self.settings.diagram_theme = plotter_themes.THEMES[selected].name
+        self.update()
 
     def update(self):
         self.on_update_settings()

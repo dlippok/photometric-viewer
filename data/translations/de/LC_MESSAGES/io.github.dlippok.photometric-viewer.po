@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-22 22:33+0200\n"
-"PO-Revision-Date: 2023-07-22 22:39+0200\n"
+"POT-Creation-Date: 2023-07-23 18:49+0200\n"
+"PO-Revision-Date: 2023-07-23 18:51+0200\n"
 "Last-Translator: DaLee <mail.dalee@gmail.com>\n"
 "Language-Team: German - Germany <mail.dalee@gmail.com>\n"
 "Language: de_DE\n"
@@ -39,6 +39,7 @@ msgstr ""
 "Wählen Sie eine C-Ebene oder einen Gamma-Winkel um die Werte anzuzeigen"
 
 #: photometric_viewer/gui/pages/content.py:34
+#: photometric_viewer/gui/dialogs/preferences.py:88
 #: photometric_viewer/gui/dialogs/preferences.py:87
 msgid "Photometric diagram"
 msgstr "Lichtverteilungskurve"
@@ -73,92 +74,116 @@ msgstr "Öffnen Sie eine Photometriedatei, um diese hier anzuzeigen"
 msgid "Photometric Viewer"
 msgstr "Photometriebetrachter"
 
+#: photometric_viewer/gui/dialogs/preferences.py:13
 #: photometric_viewer/gui/dialogs/preferences.py:12
 #: photometric_viewer/gui/dialogs/preferences.py:18
 msgid "Application Settings"
 msgstr "Einstellungen"
 
+#: photometric_viewer/gui/dialogs/preferences.py:25
 #: photometric_viewer/gui/dialogs/preferences.py:24
 #: photometric_viewer/gui/dialogs/preferences.py:22
 msgid "Units"
 msgstr "Einheiten"
 
+#: photometric_viewer/gui/dialogs/preferences.py:26
 #: photometric_viewer/gui/dialogs/preferences.py:25
 #: photometric_viewer/gui/dialogs/preferences.py:23
 msgid "Measurement units displayed in the application"
 msgstr "Längeneinheiten für Anzeige in der Applikation"
 
+#: photometric_viewer/gui/dialogs/preferences.py:41
 #: photometric_viewer/gui/dialogs/preferences.py:40
 #: photometric_viewer/gui/dialogs/preferences.py:38
 msgid "Use units from photometric file"
 msgstr "Benutze Einheiten aus der Photometriedatei"
 
+#: photometric_viewer/gui/dialogs/preferences.py:55
 #: photometric_viewer/gui/dialogs/preferences.py:54
 #: photometric_viewer/gui/dialogs/preferences.py:52
 msgid "Preferred length units"
 msgstr "Bevorzugte Längeneinheiten"
 
+#: photometric_viewer/gui/dialogs/preferences.py:57
 #: photometric_viewer/gui/dialogs/preferences.py:56
 #: photometric_viewer/gui/dialogs/preferences.py:54
 msgid "Meters"
 msgstr "Meter"
 
+#: photometric_viewer/gui/dialogs/preferences.py:58
 #: photometric_viewer/gui/dialogs/preferences.py:57
 #: photometric_viewer/gui/dialogs/preferences.py:55
 msgid "Centimeters"
 msgstr "Zentimeter"
 
+#: photometric_viewer/gui/dialogs/preferences.py:59
 #: photometric_viewer/gui/dialogs/preferences.py:58
 #: photometric_viewer/gui/dialogs/preferences.py:56
 msgid "Millimeters"
 msgstr "Millimeter"
 
+#: photometric_viewer/gui/dialogs/preferences.py:60
 #: photometric_viewer/gui/dialogs/preferences.py:59
 #: photometric_viewer/gui/dialogs/preferences.py:57
 msgid "Feet"
 msgstr "Fuß"
 
+#: photometric_viewer/gui/dialogs/preferences.py:61
 #: photometric_viewer/gui/dialogs/preferences.py:60
 #: photometric_viewer/gui/dialogs/preferences.py:58
 msgid "Inches"
 msgstr "Zoll"
 
+#: photometric_viewer/gui/dialogs/preferences.py:89
 #: photometric_viewer/gui/dialogs/preferences.py:88
 msgid "Apperance of light distribution diagram"
 msgstr "Aussehen der Lichtverteilungskurve"
 
+#: photometric_viewer/gui/dialogs/preferences.py:106
+msgid "Theme"
+msgstr "Design"
+
+#: photometric_viewer/gui/dialogs/preferences.py:129
 #: photometric_viewer/gui/dialogs/preferences.py:110
 msgid "Simple"
 msgstr "Einfach"
 
+#: photometric_viewer/gui/dialogs/preferences.py:135
 #: photometric_viewer/gui/dialogs/preferences.py:116
 msgid "Detailed"
 msgstr "Detaliert"
 
+#: photometric_viewer/gui/dialogs/preferences.py:143
 #: photometric_viewer/gui/dialogs/preferences.py:124
 msgid "Style"
 msgstr "Stil"
 
+#: photometric_viewer/gui/dialogs/preferences.py:162
 #: photometric_viewer/gui/dialogs/preferences.py:142
 msgid "Max value"
 msgstr "Größter Wert"
 
+#: photometric_viewer/gui/dialogs/preferences.py:168
 #: photometric_viewer/gui/dialogs/preferences.py:148
 msgid "Round number"
 msgstr "Runde Zahl"
 
+#: photometric_viewer/gui/dialogs/preferences.py:176
 #: photometric_viewer/gui/dialogs/preferences.py:156
 msgid "Snap guides to"
 msgstr "Richte Hilfslinien an"
 
+#: photometric_viewer/gui/dialogs/preferences.py:194
 #: photometric_viewer/gui/dialogs/preferences.py:174
 msgid "Both"
 msgstr "Beide"
 
+#: photometric_viewer/gui/dialogs/preferences.py:200
 #: photometric_viewer/gui/dialogs/preferences.py:180
 msgid "Only relevant"
 msgstr "Nur relevante"
 
+#: photometric_viewer/gui/dialogs/preferences.py:208
 #: photometric_viewer/gui/dialogs/preferences.py:188
 msgid "Display half spaces"
 msgstr "Halbräume"

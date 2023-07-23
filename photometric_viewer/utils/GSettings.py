@@ -26,6 +26,7 @@ class GSettings:
         self.settings.set_enum("diagram-style", settings.diagram_style.value)
         self.settings.set_enum("display-half-spaces", settings.display_half_spaces.value)
         self.settings.set_enum("snap-value-angles-to", settings.snap_value_angles_to.value)
+        self.settings.set_string("diagram-theme", settings.diagram_theme)
 
     def load(self):
         if not self.settings:
@@ -36,5 +37,6 @@ class GSettings:
             length_units=LengthUnits(self.settings.get_enum("preferred-length-units")),
             diagram_style=DiagramStyle(self.settings.get_enum("diagram-style")),
             display_half_spaces=DisplayHalfSpaces(self.settings.get_enum("display-half-spaces")),
-            snap_value_angles_to=SnapValueAnglesTo(self.settings.get_enum("snap-value-angles-to"))
+            snap_value_angles_to=SnapValueAnglesTo(self.settings.get_enum("snap-value-angles-to")),
+            diagram_theme=self.settings.get_string("diagram-theme")
         )

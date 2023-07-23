@@ -45,5 +45,10 @@
             <summary>Display half spaces</summary>
             <description>Decides whether only the relevant half space or full 180 degrees of gamma values should be displayed.</description>
         </key>
+        <key type="s" name="diagram-theme">
+            <default>'Adwaita'</default>
+            <summary>Scheme of the photometric diagram</summary>
+            <description>Name of the scheme to use. If scheme with the specified name is not found, default will be used.</description>
+        </key>
     </schema>
 </schemalist>
