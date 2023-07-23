@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-23 18:49+0200\n"
+"POT-Creation-Date: 2023-07-23 23:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -464,32 +464,34 @@ msgstr ""
 msgid "Open"
 msgstr ""
 
-#: photometric_viewer/gui/window.py:98 photometric_viewer/gui/window.py:38
-#: photometric_viewer/gui/window.py:36 photometric_viewer/gui/window.py:34
+#: photometric_viewer/gui/window.py:109 photometric_viewer/gui/window.py:98
+#: photometric_viewer/gui/window.py:38 photometric_viewer/gui/window.py:36
+#: photometric_viewer/gui/window.py:34
 msgid ""
 "Settings schema could not be loaded. Selected settings will be lost on "
 "restart"
 msgstr ""
 
-#: photometric_viewer/gui/window.py:148 photometric_viewer/gui/window.py:160
-#: photometric_viewer/gui/window.py:175 photometric_viewer/gui/window.py:147
-#: photometric_viewer/gui/window.py:159 photometric_viewer/gui/window.py:174
-#: photometric_viewer/gui/window.py:139 photometric_viewer/gui/window.py:151
-#: photometric_viewer/gui/window.py:149
+#: photometric_viewer/gui/window.py:165 photometric_viewer/gui/window.py:177
+#: photometric_viewer/gui/window.py:192 photometric_viewer/gui/window.py:148
+#: photometric_viewer/gui/window.py:160 photometric_viewer/gui/window.py:175
+#: photometric_viewer/gui/window.py:147 photometric_viewer/gui/window.py:159
+#: photometric_viewer/gui/window.py:174 photometric_viewer/gui/window.py:139
+#: photometric_viewer/gui/window.py:151 photometric_viewer/gui/window.py:149
 msgid "Exported as {}"
 msgstr ""
 
-#: photometric_viewer/gui/window.py:197 photometric_viewer/gui/window.py:196
-#: photometric_viewer/gui/window.py:191 photometric_viewer/gui/window.py:168
-#: photometric_viewer/gui/window.py:165 photometric_viewer/gui/window.py:158
-#: photometric_viewer/gui/window.py:125
+#: photometric_viewer/gui/window.py:221 photometric_viewer/gui/window.py:197
+#: photometric_viewer/gui/window.py:196 photometric_viewer/gui/window.py:191
+#: photometric_viewer/gui/window.py:168 photometric_viewer/gui/window.py:165
+#: photometric_viewer/gui/window.py:158 photometric_viewer/gui/window.py:125
 msgid "Invalid content of photometric file {}"
 msgstr ""
 
-#: photometric_viewer/gui/window.py:200 photometric_viewer/gui/window.py:199
-#: photometric_viewer/gui/window.py:194 photometric_viewer/gui/window.py:171
-#: photometric_viewer/gui/window.py:168 photometric_viewer/gui/window.py:161
-#: photometric_viewer/gui/window.py:128
+#: photometric_viewer/gui/window.py:224 photometric_viewer/gui/window.py:200
+#: photometric_viewer/gui/window.py:199 photometric_viewer/gui/window.py:194
+#: photometric_viewer/gui/window.py:171 photometric_viewer/gui/window.py:168
+#: photometric_viewer/gui/window.py:161 photometric_viewer/gui/window.py:128
 msgid "Could not open {}"
 msgstr ""
 
