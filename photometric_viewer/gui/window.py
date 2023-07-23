@@ -1,9 +1,9 @@
 import logging
 from typing import Optional
 
-from gi.repository import Adw, Gtk, Gio, GLib
+from gi.repository import Adw, Gtk, Gio, GLib, Gdk
 from gi.repository.Adw import ViewStackPage
-from gi.repository.Gtk import Orientation, Button, FileChooserDialog
+from gi.repository.Gtk import Orientation, Button, FileChooserDialog, DropTarget
 
 import photometric_viewer.formats.csv
 import photometric_viewer.formats.format_json
@@ -97,6 +97,14 @@ class MainWindow(Adw.Window):
 
         self.set_content(box)
 
+        self.drop_target = DropTarget(
+            actions=Gdk.DragAction.COPY
+        )
+        self.drop_target.set_gtypes([Gio.File])
+
+        self.drop_target.connect("drop", self.on_drop)
+        self.add_controller(self.drop_target)
+
         if self.gsettings.settings is None:
             self.show_banner(_("Settings schema could not be loaded. Selected settings will be lost on restart"))
 
@@ -130,6 +138,7 @@ class MainWindow(Adw.Window):
         self.action_set_enabled("app.export_luminaire_as_json", True)
         self.action_set_enabled("app.export_intensities_as_csv", True)
         self.action_set_enabled("app.export_ldc_as_image", True)
+
 
     def update_settings(self):
         self.photometry_content.update_settings(self.settings)
@@ -185,6 +194,10 @@ class MainWindow(Adw.Window):
     def on_title_visible_changed(self, *args):
         title_visible = self.switcher_title.get_title_visible()
         self.switcher_bar.set_reveal(title_visible)
+
+    def on_drop(self, target, file, *args):
+        self.open_file(file)
+        return True
 
     def open_file(self, file: Gio.File):
         self.banner.set_revealed(False)
