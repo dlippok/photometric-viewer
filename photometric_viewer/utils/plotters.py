@@ -97,10 +97,10 @@ class LightDistributionPlotter:
         if type(self.settings.snap_value_angles_to) == int:
             return self.settings.snap_value_angles_to
 
-        round_values = [30, 60, 90, 100,
-                        300, 600, 900, 1000,
-                        3000, 6000, 9000, 10000,
-                        30000, 60000, 90000, 100000]
+        round_values = [30, 48, 60, 90, 100,
+                        300, 480, 600, 900, 1000,
+                        3000, 4800, 6000, 9000, 10000,
+                        30000, 48000, 60000, 90000, 100000]
 
         last_round_value = 0
         for round_value in round_values:
