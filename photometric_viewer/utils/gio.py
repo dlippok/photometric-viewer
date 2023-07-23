@@ -3,9 +3,17 @@ import io
 from gi.repository import Gio, GLib
 
 
+def _detect_encoding(contents):
+    if b'\xae' in contents:
+        return "windows-1252"
+
+    return "utf-8"
+
+
 def gio_file_stream(file: Gio.File):
     _, contents, _ = file.load_contents()
-    return io.TextIOWrapper(io.BytesIO(contents), encoding="utf-8")
+    encoding = _detect_encoding(contents)
+    return io.TextIOWrapper(io.BytesIO(contents), encoding=encoding)
 
 
 def write_string(file: Gio.File, data: str):
