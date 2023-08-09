@@ -4,10 +4,12 @@ from gi.repository import Gio, GLib
 
 
 def _detect_encoding(contents):
-    if b'\xae' in contents:
+    wrapper = io.TextIOWrapper(io.BytesIO(contents), encoding="utf-8")
+    try:
+        wrapper.readline()
+        return "utf-8"
+    except UnicodeDecodeError:
         return "windows-1252"
-
-    return "utf-8"
 
 
 def gio_file_stream(file: Gio.File):
