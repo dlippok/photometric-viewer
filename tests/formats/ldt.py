@@ -417,7 +417,7 @@ class TestLdt(unittest.TestCase):
                 description="Single Lamp",
                 lumens_per_lamp=500.0,
                 color="3000",
-                cri=100,
+                cri="100",
                 wattage=15.0,
                 is_absolute=False
             ),
@@ -426,7 +426,7 @@ class TestLdt(unittest.TestCase):
                 description="Double Lamp",
                 lumens_per_lamp=600.0,
                 color="3000",
-                cri=100,
+                cri="100",
                 wattage=30.0,
                 is_absolute=False
             ),
@@ -435,7 +435,7 @@ class TestLdt(unittest.TestCase):
                 description="Single Alternative Lamp",
                 lumens_per_lamp=500.0,
                 color="5000",
-                cri=90,
+                cri="90",
                 wattage=15.0,
                 is_absolute=False
             )

@@ -37,7 +37,6 @@ class PhotometryContent(Adw.Bin):
         box.append(Header(label=_("General information"), xalign=0))
         box.append(self.general_information)
 
-        box.append(Header(label=_("Photometric properties"), xalign=0))
         box.append(self.photometric_properties)
 
         box.append(Header(label=_("Geometry"), xalign=0))

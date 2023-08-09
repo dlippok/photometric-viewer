@@ -73,7 +73,7 @@ class Lamps:
     lumens_per_lamp: float | None = None
     wattage: float | None = None
     color: str | None = None
-    cri: int | None = None
+    cri: str | None = None
     ballast_description: str | None = None
     ballast_catalog_number: str | None = None
 

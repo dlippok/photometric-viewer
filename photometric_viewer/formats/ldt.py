@@ -69,7 +69,7 @@ def import_from_file(f: IO):
                 "type": f.readline().strip(),
                 "luminous_flux": float(f.readline().strip()),
                 "color": f.readline().strip(),
-                "cri": int(f.readline().strip()),
+                "cri": f.readline().strip(),
                 "wattage": float(f.readline().strip())
             }
         )
