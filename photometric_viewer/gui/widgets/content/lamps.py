@@ -3,6 +3,7 @@ import re
 from gi.repository import Adw
 from gi.repository.Gtk import Box, Orientation
 
+from photometric_viewer.gui.widgets.common.gauge import Gauge
 from photometric_viewer.gui.widgets.common.property_list import PropertyList
 from photometric_viewer.gui.widgets.content.temperature import ColorTemperatureGauge
 from photometric_viewer.model.photometry import Photometry
@@ -41,7 +42,16 @@ class LampAndBallast(Adw.Bin):
 
             self._add_color_widget(property_list, lamp.color)
 
-            property_list.add_if_non_empty(_("Color Rendering Index (CRI)"), lamp.cri)
+            if lamp.cri and lamp.cri.isnumeric():
+                property_list.append(Gauge(
+                    name=_("Color Rendering Index (CRI)"),
+                    min_value=0, max_value=100,
+                    value=float(lamp.cri),
+                    display=lamp.cri
+                ))
+            else:
+                property_list.add_if_non_empty(_("Color Rendering Index (CRI)"), lamp.cri)
+
             property_list.add_if_non_empty(_("Wattage"), lamp.wattage)
 
             if not photometry.is_absolute:
