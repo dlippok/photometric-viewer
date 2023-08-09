@@ -59,10 +59,15 @@ class LampAndBallast(Adw.Bin):
         if not color:
             return
 
-        color_temp_regex = re.compile("^(\\d+)\\s*K?$")
+        color_temp_regex = re.compile("^(\\d\\d\\d\\d\\d?)\\s*K?$")
         color_temp_match = color_temp_regex.match(color)
+
+        cri_temp_regex = re.compile("^(\\d)(\\d\\d)$")
+        cri_temp_match = cri_temp_regex.match(color)
 
         if color_temp_match:
             property_list.append(ColorTemperatureGauge(int(color_temp_match.groups()[0])))
+        elif cri_temp_match:
+            property_list.append(ColorTemperatureGauge(int(cri_temp_match.groups()[1]) * 100))
         else:
             property_list.add(_("Color"), color)
