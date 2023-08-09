@@ -8,8 +8,6 @@ from photometric_viewer.model.photometry import Photometry
 from photometric_viewer.utils.coordinates import cartesian_to_screen
 
 
-
-
 class DiagramStyle(Enum):
     SIMPLE = 1
     DETAILED = 2
@@ -19,9 +17,11 @@ class SnapValueAnglesTo(Enum):
     MAX_VALUE = 1
     ROUND_NUMBER = 2
 
+
 class DisplayHalfSpaces(Enum):
     BOTH = 1
     ONLY_RELEVANT = 2
+
 
 @dataclass
 class LightDistributionPlotterTheme:
@@ -48,11 +48,10 @@ class LightDistributionPlotterSettings:
     theme: LightDistributionPlotterTheme = None
 
 
-
 class LightDistributionPlotter:
     def __init__(self, settings: LightDistributionPlotterSettings = LightDistributionPlotterSettings()):
         self.size = 300
-        self.center = 150
+        self.center = (150, 150)
         self.settings = settings
 
     def draw(self, context: cairo.Context, photometry: Photometry):
@@ -76,14 +75,14 @@ class LightDistributionPlotter:
                     max_lower_half = candelas
                 if angle >= 135 and candelas > max_upper_half:
                     max_upper_half = candelas
-                if angle >= 45 and angle < 135 and candelas > max_other:
+                if 45 <= angle < 135 and candelas > max_other:
                     max_other = candelas
 
         if max_other > max_upper_half and max_other > max_lower_half:
             return self.size / 2, self.size / 2
-        elif max_upper_half < 0.25 * max_lower_half:
+        elif max_upper_half < 0.1 * max_lower_half:
             return self.size / 2, self.size * 0.1
-        elif max_upper_half > 0.75 * max_lower_half:
+        elif max_lower_half < 0.1 * max_upper_half:
             return self.size / 2, self.size * 0.9
         else:
             return self.size / 2, self.size * 0.5
@@ -174,7 +173,7 @@ class LightDistributionPlotter:
 
         self.draw_values(self.center, context, photometry, radii)
 
-    def draw_values(self, center, context, photometry, radii):
+    def draw_values(self, center, context, photometry, radii: List[int]):
         r, g, b, a = self.settings.theme.text_color
         context.set_source_rgba(r, g, b, a)
 
@@ -186,24 +185,25 @@ class LightDistributionPlotter:
             text = f"{value:.0f} {unit}"
             extents = context.text_extents(text)
             if center[1] > 0.5 * self.size:
-                first_value_point = cartesian_to_screen(center, (-(extents.width / 2), radius - 15))
+                first_value_point = cartesian_to_screen(center, (-(extents.width / 2), float(radius - 15)))
             else:
-                first_value_point = cartesian_to_screen(center, (-(extents.width / 2), -radius - 15))
+                first_value_point = cartesian_to_screen(center, (-(extents.width / 2), float(-radius - 15)))
 
             context.move_to(first_value_point[0], first_value_point[1])
             context.show_text(text)
 
     def _draw_curve(self, context: cairo.Context, photometry: Photometry):
-        context.set_line_width(self.settings.theme.curve_line_width)
+        theme = self.settings.theme
+        context.set_line_width(theme.curve_line_width)
         max_candelas = self._get_max_candela(photometry)
 
         context.set_dash(self.settings.theme.c0_dash)
-        self._draw_halfcurve(context, photometry, max_candelas, 0, self.settings.theme.c0_stroke, self.settings.theme.c0_fill)
-        self._draw_halfcurve(context, photometry, max_candelas, 180, self.settings.theme.c0_stroke, self.settings.theme.c0_fill)
+        self._draw_halfcurve(context, photometry, max_candelas, 0, theme.c0_stroke, theme.c0_fill)
+        self._draw_halfcurve(context, photometry, max_candelas, 180, theme.c0_stroke, theme.c0_fill)
 
         context.set_dash(self.settings.theme.c180_dash)
-        self._draw_halfcurve(context, photometry, max_candelas, 90, self.settings.theme.c180_stroke, self.settings.theme.c180_fill)
-        self._draw_halfcurve(context, photometry, max_candelas, 270, self.settings.theme.c180_stroke, self.settings.theme.c180_fill)
+        self._draw_halfcurve(context, photometry, max_candelas, 90, theme.c180_stroke, theme.c180_fill)
+        self._draw_halfcurve(context, photometry, max_candelas, 270, theme.c180_stroke, theme.c180_fill)
 
     def _draw_halfcurve(
             self,
