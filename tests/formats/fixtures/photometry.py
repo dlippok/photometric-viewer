@@ -49,7 +49,7 @@ ABSOLUTE_PHOTOMETRY_LUMINAIRE = Photometry(
             lumens_per_lamp=1200,
             wattage=80,
             color="6000K",
-            cri=95,
+            cri="95",
             ballast_description="Test Ballast",
             ballast_catalog_number="BL2500"
         )
@@ -84,7 +84,7 @@ TWO_LAMPS_LUMINAIRE.lamps = [
         lumens_per_lamp=1200,
         wattage=80,
         color="6000K",
-        cri=95,
+        cri="95",
         ballast_description="Test Ballast",
         ballast_catalog_number="BL2501"
     ),
@@ -97,7 +97,7 @@ TWO_LAMPS_LUMINAIRE.lamps = [
         lumens_per_lamp=1100,
         wattage=75,
         color="6500K",
-        cri=90,
+        cri="90",
         ballast_description="Test Ballast 2",
         ballast_catalog_number="BL2502"
     ),
