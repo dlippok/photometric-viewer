@@ -1,7 +1,10 @@
+import re
+
 from gi.repository import Adw
 from gi.repository.Gtk import Box, Orientation
 
 from photometric_viewer.gui.widgets.common.property_list import PropertyList
+from photometric_viewer.gui.widgets.content.temperature import ColorTemperatureGauge
 from photometric_viewer.model.photometry import Photometry
 
 
@@ -35,7 +38,9 @@ class LampAndBallast(Adw.Bin):
             property_list.add(_("Number of lamps"), str(lamp.number_of_lamps))
             property_list.add_if_non_empty(_("Lamp"), lamp.description)
             property_list.add_if_non_empty(_("Lamp catalog no."), lamp.catalog_number)
-            property_list.add_if_non_empty(_("Color"), lamp.color)
+
+            self._add_color_widget(property_list, lamp.color)
+
             property_list.add_if_non_empty(_("Color Rendering Index (CRI)"), lamp.cri)
             property_list.add_if_non_empty(_("Wattage"), lamp.wattage)
 
@@ -49,3 +54,15 @@ class LampAndBallast(Adw.Bin):
             page_name = lamp.description or _("Lamp {}").format(n)
             page = self.view_stack.add_titled(property_list, "lamp_{n}", page_name)
             page.set_icon_name("io.github.dlippok.photometric-viewer-symbolic")
+
+    def _add_color_widget(self, property_list: PropertyList, color: str | None):
+        if not color:
+            return
+
+        color_temp_regex = re.compile("^(\\d+)\\s*K?$")
+        color_temp_match = color_temp_regex.match(color)
+
+        if color_temp_match:
+            property_list.append(ColorTemperatureGauge(int(color_temp_match.groups()[0])))
+        else:
+            property_list.add(_("Color"), color)

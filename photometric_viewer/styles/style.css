@@ -21,6 +21,19 @@
    background-color: @window_bg_color;
 }
 
+.small {
+    font-size: 0.8em;
+}
+
 .unknown_value {
     color: @shade_color;
+}
+
+.temperature-bar {
+    background: linear-gradient(90deg, rgba(255,229,94,0.8) 0%, rgba(255,255,255,0.8) 50%, rgba(87,243,255,0.8) 100%);
+    color: black;
+    border-radius: 25px;
+    padding-left: 3px;
+    padding-right: 3px;
+
 }
