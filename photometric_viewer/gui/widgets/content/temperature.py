@@ -34,7 +34,7 @@ class ColorTemperatureGauge(Box):
 
         self.color_temperature = color_temperature
 
-        name_label = Label(label="Color temperature", hexpand=True, xalign=0)
+        name_label = Label(label=_("Color temperature"), hexpand=True, xalign=0)
         name_label.set_css_classes(["h1"])
         self.append(name_label)
 
@@ -46,9 +46,9 @@ class ColorTemperatureGauge(Box):
         self.append(self.temp_bar)
 
         label_box = Box(orientation=Orientation.HORIZONTAL, homogeneous=True)
-        label_box.append(Label(label="Warm White\n(< 3300 K)", xalign=0, css_classes=["dim-label", "small"]))
-        label_box.append(Label(label="Neutral White\n(3300 K ... 5300 K)", xalign=0.5, css_classes=["dim-label", "small"]))
-        label_box.append(Label(label="Cold White\n(> 5300 K)", xalign=1, css_classes=["dim-label", "small"]))
+        label_box.append(Label(label=_("Warm White\n(< 3300 K)"), xalign=0, css_classes=["dim-label", "small"]))
+        label_box.append(Label(label=_("Neutral White\n(3300 K ... 5300 K)"), xalign=0.5, css_classes=["dim-label", "small"]))
+        label_box.append(Label(label=_("Cold White\n(> 5300 K)"), xalign=1, css_classes=["dim-label", "small"]))
 
         self.append(label_box)
 
