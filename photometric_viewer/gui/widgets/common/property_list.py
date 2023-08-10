@@ -19,7 +19,7 @@ class PropertyList(Gtk.ListBox):
         box.set_margin_top(16)
         box.set_margin_bottom(16)
 
-        name_label = Label(label=name, hexpand=True, xalign=0)
+        name_label = Label(label=name, hexpand=True, xalign=0, wrap=True, wrap_mode=WrapMode.WORD_CHAR)
         name_label.set_css_classes(["h1"])
 
         value_label = Label(

@@ -7,41 +7,42 @@ msgstr ""
 "Project-Id-Version: 1.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-08-10 13:10+0200\n"
-"PO-Revision-Date: 2023-08-09 21:53+0200\n"
+"PO-Revision-Date: 2023-08-10 13:10+0200\n"
 "Last-Translator: Damian Lippok <mail.dalee@gmail.com>\n"
-"Language-Team: German <mail.dalee@gmail.com>\n"
-"Language: de\n"
+"Language-Team: Polish <mail.dalee@gmail.com>\n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2)\n"
 "X-Generator: Gtranslator 42.0\n"
 
 #: photometric_viewer/gui/dialogs/about.py:7
 #: photometric_viewer/gui/window.py:30 photometric_viewer/gui/window.py:71
 #: photometric_viewer/gui/window.py:73
 msgid "Photometric Viewer"
-msgstr "Photometriebetrachter"
+msgstr "Photometric Viewer"
 
 #: photometric_viewer/gui/dialogs/file_chooser.py:15
 msgid "All files"
-msgstr "Alle Dateien"
+msgstr "Wszystkie pliki"
 
 #: photometric_viewer/gui/dialogs/file_chooser.py:23
 msgid "JSON files"
-msgstr "JSON-Dateien"
+msgstr "Pliki JSON"
 
 #: photometric_viewer/gui/dialogs/file_chooser.py:34
 msgid "CSV files"
-msgstr "CSV-Dateien"
+msgstr "Pliki CSV"
 
 #: photometric_viewer/gui/dialogs/file_chooser.py:45
 msgid "PNG raster graphics"
-msgstr "PNG-Rastergrafik"
+msgstr "Grafika rastrowa PNG"
 
 #: photometric_viewer/gui/dialogs/file_chooser.py:48
 msgid "SVG vector graphics"
-msgstr "SVG-Vektorgrafik"
+msgstr "Grafika wektorowa SVG"
 
 #: photometric_viewer/gui/dialogs/file_chooser.py:65
 #: photometric_viewer/gui/dialogs/file_chooser.py:51
@@ -49,7 +50,7 @@ msgstr "SVG-Vektorgrafik"
 #: photometric_viewer/gui/dialogs/file_chooser.py:32
 #: photometric_viewer/gui/dialogs/file_chooser.py:14
 msgid "All photometric files"
-msgstr "Alle Photometriedateien"
+msgstr "Wszystkie pliki fotometryczne"
 
 #: photometric_viewer/gui/dialogs/file_chooser.py:69
 #: photometric_viewer/gui/dialogs/file_chooser.py:55
@@ -73,243 +74,242 @@ msgstr "EULUMDAT (*.ldt)"
 #: photometric_viewer/gui/dialogs/file_chooser.py:42
 #: photometric_viewer/gui/dialogs/file_chooser.py:24
 msgid "All Files"
-msgstr "Alle Dateien"
+msgstr "Wszystkie pliki"
 
 #: photometric_viewer/gui/dialogs/preferences.py:13
 #: photometric_viewer/gui/dialogs/preferences.py:12
 #: photometric_viewer/gui/dialogs/preferences.py:18
 msgid "Application Settings"
-msgstr "Einstellungen"
+msgstr "Ustawienia aplikacji"
 
 #: photometric_viewer/gui/dialogs/preferences.py:25
 #: photometric_viewer/gui/dialogs/preferences.py:24
 #: photometric_viewer/gui/dialogs/preferences.py:22
 msgid "Units"
-msgstr "Einheiten"
+msgstr "Jednostki"
 
 #: photometric_viewer/gui/dialogs/preferences.py:26
 #: photometric_viewer/gui/dialogs/preferences.py:25
 #: photometric_viewer/gui/dialogs/preferences.py:23
 msgid "Measurement units displayed in the application"
-msgstr "Längeneinheiten für Anzeige in der Applikation"
+msgstr "Jednostki miary w aplikacji"
 
 #: photometric_viewer/gui/dialogs/preferences.py:41
 #: photometric_viewer/gui/dialogs/preferences.py:40
 #: photometric_viewer/gui/dialogs/preferences.py:38
 msgid "Use units from photometric file"
-msgstr "Benutze Einheiten aus der Photometriedatei"
+msgstr "Użyj jednostek z pliku"
 
 #: photometric_viewer/gui/dialogs/preferences.py:55
 #: photometric_viewer/gui/dialogs/preferences.py:54
 #: photometric_viewer/gui/dialogs/preferences.py:52
 msgid "Preferred length units"
-msgstr "Bevorzugte Längeneinheiten"
+msgstr "Preferowane jednostki miary"
 
 #: photometric_viewer/gui/dialogs/preferences.py:57
 #: photometric_viewer/gui/dialogs/preferences.py:56
 #: photometric_viewer/gui/dialogs/preferences.py:54
 msgid "Meters"
-msgstr "Meter"
+msgstr "Metry"
 
 #: photometric_viewer/gui/dialogs/preferences.py:58
 #: photometric_viewer/gui/dialogs/preferences.py:57
 #: photometric_viewer/gui/dialogs/preferences.py:55
 msgid "Centimeters"
-msgstr "Zentimeter"
+msgstr "Centymetry"
 
 #: photometric_viewer/gui/dialogs/preferences.py:59
 #: photometric_viewer/gui/dialogs/preferences.py:58
 #: photometric_viewer/gui/dialogs/preferences.py:56
 msgid "Millimeters"
-msgstr "Millimeter"
+msgstr "Milimetry"
 
 #: photometric_viewer/gui/dialogs/preferences.py:60
 #: photometric_viewer/gui/dialogs/preferences.py:59
 #: photometric_viewer/gui/dialogs/preferences.py:57
 msgid "Feet"
-msgstr "Fuß"
+msgstr "Stopy"
 
 #: photometric_viewer/gui/dialogs/preferences.py:61
 #: photometric_viewer/gui/dialogs/preferences.py:60
 #: photometric_viewer/gui/dialogs/preferences.py:58
 msgid "Inches"
-msgstr "Zoll"
+msgstr "Cale"
 
 #: photometric_viewer/gui/dialogs/preferences.py:88
 #: photometric_viewer/gui/pages/content.py:34
 #: photometric_viewer/gui/dialogs/preferences.py:87
 msgid "Photometric diagram"
-msgstr "Lichtverteilungskurve"
+msgstr "Krzywa światłości"
 
 #: photometric_viewer/gui/dialogs/preferences.py:89
 #: photometric_viewer/gui/dialogs/preferences.py:88
 msgid "Apperance of light distribution diagram"
-msgstr "Aussehen der Lichtverteilungskurve"
+msgstr "Wygląd krzywej światłości"
 
 #: photometric_viewer/gui/dialogs/preferences.py:106
 msgid "Theme"
-msgstr "Design"
+msgstr "Motyw"
 
 #: photometric_viewer/gui/dialogs/preferences.py:129
 #: photometric_viewer/gui/dialogs/preferences.py:110
 msgid "Simple"
-msgstr "Einfach"
+msgstr "Prosty"
 
 #: photometric_viewer/gui/dialogs/preferences.py:135
 #: photometric_viewer/gui/dialogs/preferences.py:116
 msgid "Detailed"
-msgstr "Detaliert"
+msgstr "Szczegółowy"
 
 #: photometric_viewer/gui/dialogs/preferences.py:143
 #: photometric_viewer/gui/dialogs/preferences.py:124
 msgid "Style"
-msgstr "Stil"
+msgstr "Styl"
 
 #: photometric_viewer/gui/dialogs/preferences.py:162
 #: photometric_viewer/gui/dialogs/preferences.py:142
 msgid "Max value"
-msgstr "Größter Wert"
+msgstr "Wartość maksymalna"
 
 #: photometric_viewer/gui/dialogs/preferences.py:168
 #: photometric_viewer/gui/dialogs/preferences.py:148
 msgid "Round number"
-msgstr "Runde Zahl"
+msgstr "Okrągła liczba"
 
 #: photometric_viewer/gui/dialogs/preferences.py:176
 #: photometric_viewer/gui/dialogs/preferences.py:156
 msgid "Snap guides to"
-msgstr "Richte Hilfslinien an"
+msgstr "Pozycja linii pomocniczych"
 
 #: photometric_viewer/gui/dialogs/preferences.py:194
 #: photometric_viewer/gui/dialogs/preferences.py:174
 msgid "Both"
-msgstr "Beide"
+msgstr "Obie"
 
 #: photometric_viewer/gui/dialogs/preferences.py:200
 #: photometric_viewer/gui/dialogs/preferences.py:180
 msgid "Only relevant"
-msgstr "Nur relevante"
+msgstr "Tylko znaczące"
 
 #: photometric_viewer/gui/dialogs/preferences.py:208
 #: photometric_viewer/gui/dialogs/preferences.py:188
 msgid "Display half spaces"
-msgstr "Halbräume"
+msgstr "Wyśwetl półprzestrzeń"
 
 #: photometric_viewer/gui/pages/empty.py:10
 msgid "No content"
-msgstr "Kein Inhalt"
+msgstr "Brak treści"
 
 #: photometric_viewer/gui/pages/empty.py:11
 msgid "Open photometric file to display it here"
-msgstr "Öffnen Sie eine Photometriedatei, um diese hier anzuzeigen"
+msgstr "Otwórz plik fotometryczny aby zobaczyć tutaj jego zawartość."
 
 #: photometric_viewer/gui/pages/values.py:21
 msgid "C Plane"
-msgstr "C-Ebene"
+msgstr "Płaszczyzna"
 
 #: photometric_viewer/gui/pages/values.py:26
 msgid "Gamma angle"
-msgstr "Gamma-Winkel"
+msgstr "Kąt gamma"
 
 #: photometric_viewer/gui/pages/values.py:57
 #: photometric_viewer/gui/pages/values.py:63
 msgid "Show all"
-msgstr "Alle anzeigen"
+msgstr "Pokaż wszystkie"
 
 #: photometric_viewer/gui/pages/values.py:95
 msgid "Too many values to display"
-msgstr "Zu viele Werte für die Anzeige"
+msgstr "Zbyt wiele wartości do wyświetlenia"
 
 #: photometric_viewer/gui/pages/values.py:96
 msgid "Select a particular C plane or gamma angle to display the values"
-msgstr ""
-"Wählen Sie eine C-Ebene oder einen Gamma-Winkel um die Werte anzuzeigen"
+msgstr "Wybierz płaszczyznę lub kąt gamma aby zobaczyć wartości"
 
 #: photometric_viewer/gui/pages/content.py:37
 msgid "General information"
-msgstr "Allgemeine Informationen"
+msgstr "Podstawowe informacje"
 
 #: photometric_viewer/gui/pages/content.py:42
 #: photometric_viewer/gui/pages/content.py:43
 msgid "Geometry"
-msgstr "Geometrie"
+msgstr "Wymiary"
 
 #: photometric_viewer/gui/pages/content.py:45
 #: photometric_viewer/gui/pages/content.py:46
 msgid "Lamps and ballast"
-msgstr "Lampen und Vorschaltgeräte"
+msgstr "Lampy i stateczniki"
 
 #: photometric_viewer/gui/widgets/common/property_list.py:26
 msgid "Unknown"
-msgstr "Unbekannt"
+msgstr "Nieznany"
 
 #: photometric_viewer/gui/widgets/content/general.py:15
 #: photometric_viewer/gui/widgets/content/general.py:12
 msgid "Catalog Number"
-msgstr "Katalognummer"
+msgstr "Numer katalogowy"
 
 #: photometric_viewer/gui/widgets/content/general.py:16
 #: photometric_viewer/gui/widgets/content/general.py:13
 msgid "Manufacturer"
-msgstr "Hersteller"
+msgstr "Producent"
 
 #: photometric_viewer/gui/widgets/content/general.py:17
 #: photometric_viewer/gui/widgets/content/general.py:14
 msgid "Description"
-msgstr "Beschreibung"
+msgstr "Opis"
 
 #: photometric_viewer/gui/widgets/content/general.py:18
 #: photometric_viewer/formats/ldt.py:162
 msgid "Measurement"
-msgstr "Messung"
+msgstr "Pomiar"
 
 #: photometric_viewer/gui/widgets/content/general.py:19
 #: photometric_viewer/formats/ldt.py:164
 msgid "Date and user"
-msgstr "Datum und Benutzer"
+msgstr "Data i użytkownik"
 
 #: photometric_viewer/gui/widgets/content/general.py:20
 #: photometric_viewer/formats/ldt.py:161
 msgid "Luminaire type"
-msgstr "Typ der Leuchte"
+msgstr "Typ oprawy"
 
 #: photometric_viewer/gui/widgets/content/general.py:26
 #: photometric_viewer/formats/ldt.py:26
 msgid "Point source with symmetry about the vertical axis"
-msgstr "Punktquelle mit Symmetrie zur vertikalen Achse"
+msgstr "Źródło punktowe z symetrią wokół osi poziomej"
 
 #: photometric_viewer/gui/widgets/content/general.py:28
 #: photometric_viewer/formats/ldt.py:27
 msgid "Linear luminaire"
-msgstr "Linienquelle"
+msgstr "Oprawa liniowa"
 
 #: photometric_viewer/gui/widgets/content/general.py:30
 #: photometric_viewer/formats/ldt.py:28
 msgid "Point source with any other symmetry"
-msgstr "Punktquelle mit anderer Symmetrie"
+msgstr "Źródło punktowe z inną symetrią"
 
 #: photometric_viewer/gui/widgets/content/geometry.py:60
 #: photometric_viewer/gui/widgets/content/geometry.py:59
 msgid "Luminaire shape"
-msgstr "Form der Leuchte"
+msgstr "Kształt oprawy"
 
 #: photometric_viewer/gui/widgets/content/geometry.py:60
 #: photometric_viewer/gui/widgets/content/geometry.py:68
 #: photometric_viewer/gui/widgets/content/geometry.py:59
 #: photometric_viewer/gui/widgets/content/geometry.py:67
 msgid "Rectangular"
-msgstr "Rechteckig"
+msgstr "Prostokątny"
 
 #: photometric_viewer/gui/widgets/content/geometry.py:61
 #: photometric_viewer/gui/widgets/content/geometry.py:60
 msgid "Luminaire dimensions"
-msgstr "Abmessungen der Leuchte"
+msgstr "Wymiary oprawy"
 
 #: photometric_viewer/gui/widgets/content/geometry.py:63
 #: photometric_viewer/gui/widgets/content/geometry.py:70
 #: photometric_viewer/gui/widgets/content/geometry.py:62
 msgid "Round"
-msgstr "Rund"
+msgstr "Okrągły"
 
 #: photometric_viewer/gui/widgets/content/geometry.py:68
 #: photometric_viewer/gui/widgets/content/geometry.py:70
@@ -323,39 +323,39 @@ msgstr "Rund"
 #: photometric_viewer/gui/widgets/content/geometry.py:86
 #: photometric_viewer/gui/widgets/content/geometry.py:67
 msgid "Luminous opening shape"
-msgstr "Form der Lichtaustrittfläche"
+msgstr "Kształt powierzchni świecącej"
 
 #: photometric_viewer/gui/widgets/content/geometry.py:72
 msgid "Sphere"
-msgstr "Kugel"
+msgstr "Kula"
 
 #: photometric_viewer/gui/widgets/content/geometry.py:74
 msgid "Point"
-msgstr "Punktförmig"
+msgstr "Punkt"
 
 #: photometric_viewer/gui/widgets/content/geometry.py:76
 msgid "Horizontal cylinder oriented along luminaire width"
-msgstr "Horizontaler Zylinder entlang Leuchtenbreite"
+msgstr "Poziomy walec wzdłuż szerokości oprawy"
 
 #: photometric_viewer/gui/widgets/content/geometry.py:78
 msgid "Horizontal cylinder oriented along luminaire length"
-msgstr "Horizontaler Zylinder entlang Leuchtenlänge"
+msgstr "Poziomy walec wzdłuż długości oprawy"
 
 #: photometric_viewer/gui/widgets/content/geometry.py:80
 msgid "Ellipse oriented along luminaire width"
-msgstr "Ellipse entlang Leuchtenbreite"
+msgstr "Elipsa wzdłuż szerokości oprawy"
 
 #: photometric_viewer/gui/widgets/content/geometry.py:82
 msgid "Ellipse oriented along luminaire length"
-msgstr "Ellipse entlang Leuchtenlänge"
+msgstr "Elipsa wzdłuż długości oprawy"
 
 #: photometric_viewer/gui/widgets/content/geometry.py:84
 msgid "Ellipsoid oriented along luminaire width"
-msgstr "Ellipsoid entlang Leuchtenbreite"
+msgstr "Elipsoida wzdłuż szerokości oprawy"
 
 #: photometric_viewer/gui/widgets/content/geometry.py:86
 msgid "Ellipsoid oriented along luminaire length"
-msgstr "Ellipsoid entlang Leuchtenlänge"
+msgstr "Elipsoida wzdłuż długości oprawy"
 
 #: photometric_viewer/gui/widgets/content/geometry.py:92
 #: photometric_viewer/gui/widgets/content/geometry.py:94
@@ -363,162 +363,162 @@ msgstr "Ellipsoid entlang Leuchtenlänge"
 #: photometric_viewer/gui/widgets/content/geometry.py:68
 #: photometric_viewer/gui/widgets/content/geometry.py:71
 msgid "Luminous opening dimensions"
-msgstr "Abmessungen der Lichtaustrittfläche"
+msgstr "Wymiary powierzchni świecącej"
 
 #: photometric_viewer/gui/widgets/content/geometry.py:98
 msgid "Luminous opening height"
-msgstr "Höhe der Lichtaustrittfläche"
+msgstr "Wysokość powierzchni świecącej"
 
 #: photometric_viewer/gui/widgets/content/properties.py:16
 #: photometric_viewer/gui/pages/content.py:49
 msgid "Additional properties"
-msgstr "Zusätzliche Informationen"
+msgstr "Dodatkowe parametry"
 
 #: photometric_viewer/gui/widgets/content/lamps.py:39
 #: photometric_viewer/gui/widgets/content/lamps.py:35
 msgid "Number of lamps"
-msgstr "Anzahl der Lampen"
+msgstr "Liczba lamp"
 
 #: photometric_viewer/gui/widgets/content/lamps.py:40
 #: photometric_viewer/gui/widgets/content/lamps.py:36
 msgid "Lamp"
-msgstr "Lampe"
+msgstr "Lampa"
 
 #: photometric_viewer/gui/widgets/content/lamps.py:41
 #: photometric_viewer/gui/widgets/content/lamps.py:37
 msgid "Lamp catalog no."
-msgstr "Katalognummer der Lampe"
+msgstr "Numer katalogowy lampy"
 
 #: photometric_viewer/gui/widgets/content/lamps.py:47
 #: photometric_viewer/gui/widgets/content/lamps.py:53
 #: photometric_viewer/gui/widgets/content/lamps.py:39
 msgid "Color Rendering Index (CRI)"
-msgstr "Farbwiedergabeindex"
+msgstr "Współczynnik oddawania barw (CRI)"
 
 #: photometric_viewer/gui/widgets/content/lamps.py:55
 #: photometric_viewer/gui/widgets/content/lamps.py:40
 msgid "Wattage"
-msgstr "Leistung"
+msgstr "Moc"
 
 #: photometric_viewer/gui/widgets/content/lamps.py:58
 #: photometric_viewer/gui/widgets/content/lamps.py:43
 msgid "Initial rating per lamp"
-msgstr "Ursprünglicher Lichtstrom pro Lampe"
+msgstr "Strumień świetlny na lampę"
 
 #: photometric_viewer/gui/widgets/content/lamps.py:60
 #: photometric_viewer/gui/widgets/content/lamps.py:45
 msgid "Lamp position"
-msgstr "Position der Lampe"
+msgstr "Pozycja lampy"
 
 #: photometric_viewer/gui/widgets/content/lamps.py:61
 #: photometric_viewer/gui/widgets/content/lamps.py:46
 msgid "Ballast"
-msgstr "Vorschaltgerät"
+msgstr "Statecznik"
 
 #: photometric_viewer/gui/widgets/content/lamps.py:62
 #: photometric_viewer/gui/widgets/content/lamps.py:47
 msgid "Ballast catalog no."
-msgstr "Katalognummer des Vorschaltgerätes"
+msgstr "Numer katalogowy statecznika"
 
 #: photometric_viewer/gui/widgets/content/lamps.py:64
 #: photometric_viewer/gui/widgets/content/lamps.py:49
 msgid "Lamp {}"
-msgstr "Lampe {}"
+msgstr "Lampa {}"
 
 #: photometric_viewer/gui/widgets/content/lamps.py:83
 #: photometric_viewer/gui/widgets/content/lamps.py:38
 msgid "Color"
-msgstr "Lichtfarbe"
+msgstr "Kolor"
 
 #: photometric_viewer/gui/widgets/content/photometry.py:23
 #: photometric_viewer/gui/pages/content.py:40
 msgid "Photometric properties"
-msgstr "Photometrische Eigenschaften"
+msgstr "Właściwości fotometryczne"
 
 #: photometric_viewer/gui/widgets/content/photometry.py:34
 #: photometric_viewer/gui/widgets/content/photometry.py:20
 #: photometric_viewer/gui/widgets/content/photometry.py:17
 msgid "Light output ratio"
-msgstr "Leuchtenbetriebswirkungsgrad"
+msgstr "Sprawność oprawy"
 
 #: photometric_viewer/gui/widgets/content/photometry.py:46
 #: photometric_viewer/gui/widgets/content/photometry.py:21
 #: photometric_viewer/gui/widgets/content/photometry.py:18
 msgid "Downward flux fraction (DFF)"
-msgstr "Unterer halbräumlicher Lichtstromanteil"
+msgstr "Współczynnik strumienia świetlnego w dolnej półprzestrzeni (DFF)"
 
 #: photometric_viewer/gui/widgets/content/photometry.py:57
 #: photometric_viewer/gui/widgets/content/photometry.py:22
 #: photometric_viewer/formats/ldt.py:165
 msgid "Conversion factor for luminous intensities"
-msgstr "Berechnungsfaktor für Lichtstärken"
+msgstr "Faktor konwersji światłości"
 
 #: photometric_viewer/gui/widgets/content/temperature.py:19
 msgid "Low Pressure Sodium Lamp"
-msgstr "Natriumdampf-Niederdrucklampe"
+msgstr "Niskociśnieniowa lampa sodowa"
 
 #: photometric_viewer/gui/widgets/content/temperature.py:20
 msgid "Sodium Lamp"
-msgstr "Natriumdampflampe"
+msgstr "Lampa sodowa"
 
 #: photometric_viewer/gui/widgets/content/temperature.py:21
 msgid "Incandescent lamp 40 W"
-msgstr "Glühlampe 40 W"
+msgstr "Żarówka 40 W"
 
 #: photometric_viewer/gui/widgets/content/temperature.py:22
 msgid "Incandescent lamp 60 W"
-msgstr "Glühlampe 60 W"
+msgstr "Żarówka 60 W"
 
 #: photometric_viewer/gui/widgets/content/temperature.py:23
 msgid "Incandescent lamp 100 W"
-msgstr "Glühlampe 100 W"
+msgstr "Żarówka 100 W"
 
 #: photometric_viewer/gui/widgets/content/temperature.py:24
 msgid "Warm white compact fluorescent and LED lamps"
-msgstr "Kompakte Leuchtstofflampe und LEDs (Warmweiß)"
+msgstr "Świetlówka kompaktowa lub lampa LED of ciepłej temperaturze barwowej"
 
 #: photometric_viewer/gui/widgets/content/temperature.py:25
 msgid "Halogen incandescent lamp"
-msgstr "Halogenlampe"
+msgstr "Żarówka halogenowa"
 
 #: photometric_viewer/gui/widgets/content/temperature.py:26
 msgid "Studio CP light"
-msgstr "Fotolampe"
+msgstr "Lampa fotograficzna"
 
 #: photometric_viewer/gui/widgets/content/temperature.py:27
 msgid "Neutral white fluorescent lamp"
-msgstr "Neutralweiß-Leuchtstofflampe"
+msgstr "Świetlówka o neutralnej temperaturze barwowej"
 
 #: photometric_viewer/gui/widgets/content/temperature.py:28
 msgid "Sunrise/Sunset"
-msgstr "Sonnenaufgang/Sonnenuntergang"
+msgstr "Wschód/zachód słońca"
 
 #: photometric_viewer/gui/widgets/content/temperature.py:29
 msgid "Morning/Afternoon"
-msgstr "Morgen-/Abendsonne"
+msgstr "Poranek/Wieczór"
 
 #: photometric_viewer/gui/widgets/content/temperature.py:30
 msgid "Noon"
-msgstr "Mittagssonne"
+msgstr "Południe"
 
 #: photometric_viewer/gui/widgets/content/temperature.py:31
 msgid "Xenon lamp"
-msgstr "Xenonlampe"
+msgstr "Lampa ksenonowa"
 
 #: photometric_viewer/gui/widgets/content/temperature.py:32
 msgid "Overcast sky"
-msgstr "Bedeckter Himmel"
+msgstr "Zachmurzone niebo"
 
 #: photometric_viewer/gui/widgets/content/temperature.py:37
 msgid "Color temperature"
-msgstr "Farbtemperatur"
+msgstr "Temperatura barwowa"
 
 #: photometric_viewer/gui/widgets/content/temperature.py:49
 msgid ""
 "Warm White\n"
 "(< 3300 K)"
 msgstr ""
-"Warmweiß\n"
+"Ciepła\n"
 "(< 3300 K)"
 
 #: photometric_viewer/gui/widgets/content/temperature.py:50
@@ -526,7 +526,7 @@ msgid ""
 "Neutral White\n"
 "(3300 K ... 5300 K)"
 msgstr ""
-"Neutralweiß\n"
+"Neutralna\n"
 "(3300 K ... 5300 K)"
 
 #: photometric_viewer/gui/widgets/content/temperature.py:51
@@ -534,46 +534,46 @@ msgid ""
 "Cold White\n"
 "(> 5300 K)"
 msgstr ""
-"Kaltweiß\n"
+"Zimna\n"
 "(> 5300 K)"
 
 #: photometric_viewer/gui/widgets/content/temperature.py:61
 msgid "Common light temperatures"
-msgstr "Typische Farbtemperaturen"
+msgstr "Popularne temperatury barwowe"
 
 #: photometric_viewer/gui/widgets/content/temperature.py:112
 msgid "Similar to: {} ({})"
-msgstr "Ähnlich wie: {} ({})"
+msgstr "Podobna do: {} ({})"
 
 #: photometric_viewer/gui/window.py:44 photometric_viewer/gui/window.py:46
 #: photometric_viewer/gui/window.py:47 photometric_viewer/gui/window.py:45
 #: photometric_viewer/gui/window.py:42
 msgid "Photometry"
-msgstr "Photometrie"
+msgstr "Fotometria"
 
 #: photometric_viewer/gui/window.py:48 photometric_viewer/gui/window.py:50
 #: photometric_viewer/gui/window.py:51 photometric_viewer/gui/window.py:49
 #: photometric_viewer/gui/window.py:46
 msgid "Source"
-msgstr "Quelle"
+msgstr "Żródło"
 
 #: photometric_viewer/gui/window.py:53 photometric_viewer/gui/window.py:55
 #: photometric_viewer/gui/window.py:56 photometric_viewer/gui/window.py:54
 #: photometric_viewer/gui/window.py:51
 msgid "Intensity Values"
-msgstr "Lichtstärken"
+msgstr "Wartości światłości"
 
 #: photometric_viewer/gui/window.py:61 photometric_viewer/gui/window.py:63
 #: photometric_viewer/gui/window.py:64 photometric_viewer/gui/window.py:62
 #: photometric_viewer/gui/window.py:59
 msgid "Dismiss"
-msgstr "Schließen"
+msgstr "Zamknij"
 
 #: photometric_viewer/gui/window.py:65 photometric_viewer/gui/window.py:67
 #: photometric_viewer/gui/window.py:68 photometric_viewer/gui/window.py:66
 #: photometric_viewer/gui/window.py:64 photometric_viewer/gui/window.py:62
 msgid "Open"
-msgstr "Öffnen"
+msgstr "Otwórz"
 
 #: photometric_viewer/gui/window.py:109 photometric_viewer/gui/window.py:98
 #: photometric_viewer/gui/window.py:38 photometric_viewer/gui/window.py:36
@@ -582,8 +582,8 @@ msgid ""
 "Settings schema could not be loaded. Selected settings will be lost on "
 "restart"
 msgstr ""
-"Schema für Einstellungen könnte nicht geladen werden. Eingestellte Werte "
-"werden nach dem Programmende verworfen"
+"Nie można wczytać schematu ustawień. Wybrane ustawienia zostaną utracone po "
+"zamknięciu programu."
 
 #: photometric_viewer/gui/window.py:165 photometric_viewer/gui/window.py:177
 #: photometric_viewer/gui/window.py:192 photometric_viewer/gui/window.py:148
@@ -592,86 +592,84 @@ msgstr ""
 #: photometric_viewer/gui/window.py:174 photometric_viewer/gui/window.py:139
 #: photometric_viewer/gui/window.py:151 photometric_viewer/gui/window.py:149
 msgid "Exported as {}"
-msgstr "Exportiert als {}"
+msgstr "Wyeksportowano jako {}"
 
 #: photometric_viewer/gui/window.py:221 photometric_viewer/gui/window.py:197
 #: photometric_viewer/gui/window.py:196 photometric_viewer/gui/window.py:191
 #: photometric_viewer/gui/window.py:168 photometric_viewer/gui/window.py:165
 #: photometric_viewer/gui/window.py:158 photometric_viewer/gui/window.py:125
 msgid "Invalid content of photometric file {}"
-msgstr "Ungültiger Inhalt in der Photometriedatei {}"
+msgstr "Niepoprawna zawartość pliku fotometrycznego {}"
 
 #: photometric_viewer/gui/window.py:224 photometric_viewer/gui/window.py:200
 #: photometric_viewer/gui/window.py:199 photometric_viewer/gui/window.py:194
 #: photometric_viewer/gui/window.py:171 photometric_viewer/gui/window.py:168
 #: photometric_viewer/gui/window.py:161 photometric_viewer/gui/window.py:128
 msgid "Could not open {}"
-msgstr "Datei {} könnte nich geöffnet werden"
+msgstr "Nie można otworzyć pliku {}"
 
 #: photometric_viewer/gui/dialogs/about.py:7
 msgid "Photomertic Viewer"
-msgstr "Photometriebetrachter"
+msgstr "Photomertic Viewer"
 
 #: photometric_viewer/gui/dialogs/file_chooser.py:14
 msgid "Untitled.json"
-msgstr "Unbenannt.json"
+msgstr "Bez nazwy.json"
 
 #: photometric_viewer/gui/dialogs/file_chooser.py:16
 #: photometric_viewer/gui/dialogs/file_chooser.py:14
 msgid "JSON file (Photometric Data)"
-msgstr "JSON-Datei (Photometiedaten)"
+msgstr "Plik JSON (Dane fotometryczne)"
 
 #: photometric_viewer/gui/dialogs/file_chooser.py:20
 #: photometric_viewer/gui/dialogs/file_chooser.py:18
 msgid "CSV file (Intensity Values)"
-msgstr "CSV-Datei (Lichtstärken)"
+msgstr "Plik CSV (Wartości światłości)"
 
 #: photometric_viewer/gui/window.py:72 photometric_viewer/gui/window.py:67
 msgid "Export as"
-msgstr "Exportieren als"
+msgstr "Eksportuj jako"
 
 #: photometric_viewer/gui/window.py:145 photometric_viewer/gui/window.py:139
 msgid "Cannot export as \"{}\". Format is not supported"
-msgstr ""
-"Export konnte nicht durchgeführt werden. Dateiformat \"{}\" wird nicht "
-"unterstützt."
+msgstr "Nie można wyeksportować jako \"{}\". Format pliku jest nieobsługiwany"
 
 #: photometric_viewer/gui/window.py:67
 msgid "Export"
-msgstr "Exportieren"
+msgstr "Eksportuj"
 
 #: photometric_viewer/formats/ies.py:55
 msgid "{} could not be recognized as a valid IESNA file header"
-msgstr "{} ist kein gültiger Header einer IESNA-Datei"
+msgstr "{} nie jest prawidłowym nagłówkiem pliku IESNA"
 
 #: photometric_viewer/formats/exceptions.py:8
 msgid "Invalid values for luminous opening geometry"
-msgstr "Ungültiger Wert für Geometrie der Lichtaustrittfläche"
+msgstr "Niepopeawne wartości dla rozmiarów powierzchni świecącej"
 
 #: photometric_viewer/formats/ldt.py:163
 msgid "Filename"
-msgstr "Dateiname"
+msgstr "Nazwa pliku"
 
 #: photometric_viewer/gui/widgets/app_menu.py
 msgid "Show source"
-msgstr "Quelle anzeigen"
+msgstr "Pokaż źródło"
 
 #: photometric_viewer/gui/widgets/app_menu.py
 msgid "Preferences"
-msgstr "Einstellungen"
+msgstr "Ustawienia"
 
 #: photometric_viewer/gui/widgets/app_menu.py
 msgid "About Photometric Viewer"
-msgstr "Über Photometriebetrachter"
+msgstr "O programie"
 
 #: photometric_viewer/gui/widgets/app_menu.py
 msgid "Light distribution curve"
-msgstr "Lichtverteilungskurve"
+msgstr "Krzywa światłości"
 
 #: photometric_viewer/gui/widgets/app_menu.py
 msgid "Intensity values"
-msgstr "Lichtstärken"
+msgstr "Wartości światłości"
 
 #: photometric_viewer/gui/widgets/app_menu.py
 msgid "Luminaire data"
-msgstr "Leuchtendaten"
+msgstr "Dane oprawy oświetleniowej"
