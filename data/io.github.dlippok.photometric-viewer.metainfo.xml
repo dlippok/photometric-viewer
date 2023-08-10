@@ -6,6 +6,7 @@
     <name xml:lang="de">Photometriebetrachter</name>
     <summary>Browse content of IES and LDT photometric files</summary>
     <summary xml:lang="de">Öffne IES- und LDT-Photometriedateien</summary>
+    <summary xml:lang="pl">Przeglądaj zawartość plików fotometrzcznych IES i LDT</summary>
     <description>
         <p>
             Photometric Viewer allow viewing light distribution curves and metadata of IESNA and EULUMDAT photometric
@@ -17,11 +18,19 @@
             Photometriedateien beschreiben die Lichtverteilung von Lampen und Leuchten und werden vor allem
             für Datentransfer in der Leuchtenindustrire und 3D-Grafik eingesetzt.
         </p>
+        <p xml:lang="pl">
+            Przeglądarka krzywych fotometrycznych i metadanych plików IESNA i EULUMDAT.
+            Pliki fotometryczne zawierają informację o lampach i oprawach oświetleniowych i są używane głównie do
+            transferu danych w przemyśle oświetleniowym i grafice 3D.
+        </p>
         <p>
             Photometric Viewer displays following information of the opened photometric file:
         </p>
         <p xml:lang="de">
             Photometriebetrachter zeigt folgende Informationen über die Photometiredatei an:
+        </p>
+        <p xml:lang="pl">
+            Aplikacja pozwala zobaczyć następujące informacje zawarte w plikach fotometrycznych:
         </p>
         <ul>
             <li>Light distribution curves</li>
@@ -42,6 +51,16 @@
             <li>Zusätzliche Informationen (Testnummer, Datum, Photometrisches Labor, usw.)</li>
             <li>Candela-Werte für ausgewählte C-Ebenen und Gammawinkel</li>
             <li>Textinhalt der Photometriedatei</li>
+        </ul>
+        <ul xml:lang="pl">
+            <li>Krzywe fotometrzyczne</li>
+            <li>Podstawowe informacje (numer katalogowy, producent, opis, itd.)</li>
+            <li>Właściwości fotometryczne</li>
+            <li>Informacje o lampach i statecznikach</li>
+            <li>Wymiary oprawy oświetleniowej i powierzchni świecącej</li>
+            <li>Dodatkowe informacje (numer pomiaru, data, laboratorium, itd.)</li>
+            <li>Wartości światłości dla wybranych płaszczyzn i kontów gamma</li>
+            <li>Żródło pliku fotometrycznego</li>
         </ul>
     </description>
     <screenshots>
@@ -84,36 +103,42 @@
             <description>
                 <p>Lets the user configure appearance of photometric diagram, allows opening files via Drag and Drop and fixes various minor bugs.</p>
                 <p xml:lang="de">Ermöglicht Konfiguration der Lichtverteulungskurve, fügt Support von Drag-and-Drop hinzu und behebt diverse kleinere Fehler.</p>
+                <p xml:lang="pl">Pozwala na konfigurację wyglądu krzywej światłości, umożliwia otwieranie plików przez opuszczenie ich w oknie programu i poprawia drobne błędy.</p>
             </description>
         </release>
         <release version="1.2.0" date="2023-07-15">
             <description>
                 <p>Allows exporting luminaire data as JSON, intensity values as CSV and light distribution curves as image files. Adds support for complex luminous openings.</p>
                 <p xml:lang="de">Ermöglicht den Export von Leuchtendaten als JSON, Candela-Werte als CSV und Lichtverteilungskurven als Bilddateien. Fügt Unterstützung für komplexe Lichtöffnungen hinzu.</p>
+                <p xml:lang="pl">Umożliwia eksport danych opraw jako JSON, wartości światłości jako CSV oraz krzywych światłości jako plik graficzny. Wprowadza obsługę skomplikowanych geometrii powierzchni świecących.</p>
             </description>
         </release>
         <release version="1.1.0" date="2023-06-27">
             <description>
                 <p>Adds support for browsing intensity values in the opened photometric file, includes legend of the photometric curve and introduces German translations for the user interface.</p>
                 <p xml:lang="de">Ermöglicht Anzeigen von Candela-Werten, fügt eine Legende der Lichtverteilungskurve hinzu und führt deutsche Übersetzungen für die Benutzeroberfläche ein.</p>
+                <p xml:lang="pl">Umożliwia wyświetlanie wartości światłości, dodaje legende do wyświetlanej krzywej oraz tłumaczenie w języku Niemeckim.</p>
             </description>
         </release>
         <release version="1.0.1" date="2023-06-24">
             <description>
                 <p>Fix bug that prevents opening IES files by double-clicking them in file explorer.</p>
                 <p xml:lang="de">Behebt einen Fehlers, der das Öffnen von IES-Dateien durch Doppelklicken im Datei-Explorer verhindert.</p>
+                <p xml:lang="pl">Poprawia błąd uniemożliwiający otwieranie plików IES z poziomu przeglądarki plików.</p>
             </description>
         </release>
         <release version="1.0.0" date="2023-06-10">
             <description>
                 <p>Adds support for EULUMDAT files, introduces extended lamp and geometry information and allows user to select preferred size units.</p>
                 <p xml:lang="de">Erlaubt das Öffnen von EULUMDAT-Dateien, fügt zusätzliche Informationen zur Lampen- und Leuchtengeometrie und erlaubt dem Benutzer, Längeneinheiten für die Anzeige auszuwählen.</p>
+                <p xml:lang="pl">Wprowadza możliwość otwierania plików EULUMDAT, dodaje informacje o geometrii oprawy i pozwala użytkownikowi wybrać wyświetlane jednostki miar.</p>
             </description>
         </release>
         <release version="0.2.0" date="2023-05-01">
             <description>
                 <p>Adds support for additional luminaire properties and displaying source text of photometric files.</p>
                 <p xml:lang="de">Fügt neue Leuchteneigenschaften hinzu und ermöglicht die Anzeige der Quelle der Photometriedatei.</p>
+                <p xml:lang="pl">Dodaje nowe właściwości i umożliwia pokazanie kodu źródłowego pliku.</p>
             </description>
         </release>
         <release version="0.1.0" date="2023-04-07"/>

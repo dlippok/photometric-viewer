@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-09 21:52+0200\n"
+"POT-Creation-Date: 2023-08-10 13:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -195,20 +195,6 @@ msgstr ""
 msgid "Display half spaces"
 msgstr ""
 
-#: photometric_viewer/gui/pages/content.py:37
-msgid "General information"
-msgstr ""
-
-#: photometric_viewer/gui/pages/content.py:42
-#: photometric_viewer/gui/pages/content.py:43
-msgid "Geometry"
-msgstr ""
-
-#: photometric_viewer/gui/pages/content.py:45
-#: photometric_viewer/gui/pages/content.py:46
-msgid "Lamps and ballast"
-msgstr ""
-
 #: photometric_viewer/gui/pages/empty.py:10
 msgid "No content"
 msgstr ""
@@ -236,6 +222,20 @@ msgstr ""
 
 #: photometric_viewer/gui/pages/values.py:96
 msgid "Select a particular C plane or gamma angle to display the values"
+msgstr ""
+
+#: photometric_viewer/gui/pages/content.py:37
+msgid "General information"
+msgstr ""
+
+#: photometric_viewer/gui/pages/content.py:42
+#: photometric_viewer/gui/pages/content.py:43
+msgid "Geometry"
+msgstr ""
+
+#: photometric_viewer/gui/pages/content.py:45
+#: photometric_viewer/gui/pages/content.py:46
+msgid "Lamps and ballast"
 msgstr ""
 
 #: photometric_viewer/gui/widgets/common/property_list.py:26
@@ -368,6 +368,11 @@ msgstr ""
 msgid "Luminous opening height"
 msgstr ""
 
+#: photometric_viewer/gui/widgets/content/properties.py:16
+#: photometric_viewer/gui/pages/content.py:49
+msgid "Additional properties"
+msgstr ""
+
 #: photometric_viewer/gui/widgets/content/lamps.py:39
 #: photometric_viewer/gui/widgets/content/lamps.py:35
 msgid "Number of lamps"
@@ -445,11 +450,6 @@ msgstr ""
 #: photometric_viewer/gui/widgets/content/photometry.py:22
 #: photometric_viewer/formats/ldt.py:165
 msgid "Conversion factor for luminous intensities"
-msgstr ""
-
-#: photometric_viewer/gui/widgets/content/properties.py:16
-#: photometric_viewer/gui/pages/content.py:49
-msgid "Additional properties"
 msgstr ""
 
 #: photometric_viewer/gui/widgets/content/temperature.py:19

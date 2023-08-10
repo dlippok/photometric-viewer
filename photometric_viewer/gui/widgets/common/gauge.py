@@ -1,4 +1,6 @@
 from gi.repository.Gtk import Orientation, Box, Label, Expander, LevelBar
+from gi.repository.Pango import WrapMode
+
 
 class Gauge(Box):
     def __init__(self, name: str, value: float, min_value: float, max_value: float, display=None, **kwargs):
@@ -13,7 +15,7 @@ class Gauge(Box):
             **kwargs
         )
 
-        name_label = Label(label=name, hexpand=True, xalign=0)
+        name_label = Label(label=name, hexpand=True, xalign=0, wrap=True, wrap_mode=WrapMode.WORD_CHAR)
         name_label.set_css_classes(["h1"])
         self.append(name_label)
 

@@ -1,4 +1,4 @@
-from gi.repository.Gtk import Orientation, Box, Label, Expander
+from gi.repository.Gtk import Orientation, Box, Label, Expander, Justification
 from gi.repository.Pango import WrapMode
 
 
@@ -46,9 +46,26 @@ class ColorTemperatureGauge(Box):
         self.append(self.temp_bar)
 
         label_box = Box(orientation=Orientation.HORIZONTAL, homogeneous=True)
-        label_box.append(Label(label=_("Warm White\n(< 3300 K)"), xalign=0, css_classes=["dim-label", "small"]))
-        label_box.append(Label(label=_("Neutral White\n(3300 K ... 5300 K)"), xalign=0.5, css_classes=["dim-label", "small"]))
-        label_box.append(Label(label=_("Cold White\n(> 5300 K)"), xalign=1, css_classes=["dim-label", "small"]))
+        label_box.append(Label(
+            label=_("Warm White\n(< 3300 K)"),
+            xalign=0,
+            css_classes=["dim-label", "small"],
+            justify=Justification.LEFT
+        ))
+
+        label_box.append(Label(
+            label=_("Neutral White\n(3300 K ... 5300 K)"),
+            xalign=0.5,
+            css_classes=["dim-label", "small"],
+            justify=Justification.CENTER
+        ))
+
+        label_box.append(Label(
+            label=_("Cold White\n(> 5300 K)"),
+            xalign=1,
+            css_classes=["dim-label", "small"],
+            justify=Justification.RIGHT
+        ))
 
         self.append(label_box)
 
