@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 from typing import Dict, Tuple, List
 
@@ -9,6 +9,14 @@ class LuminaireType(Enum):
     POINT_SOURCE_WITH_VERTICAL_SYMMETRY = 1
     LINEAR = 2
     POINT_SOURCE_WITH_OTHER_SYMMETRY = 3
+
+
+class Symmetry(Enum):
+    NONE = 0
+    TO_VERTICAL_AXIS = 1
+    TO_C0_C180 = 2
+    TO_C90_C270 = 3
+    TO_C0_C180_C90_C270 = 4
 
 
 @dataclass
@@ -24,6 +32,8 @@ class PhotometryMetadata:
     date_and_user: str | None = None
     conversion_factor: float | None = None
     filename: str | None = None
+    symmetry: Symmetry = Symmetry.NONE
+    direct_ratios_for_room_indices: List[float] | None = None
 
 
 class Shape(Enum):

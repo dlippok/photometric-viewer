@@ -1,7 +1,8 @@
-from typing import IO
+from enum import Enum
+from typing import IO, List, Callable, Dict, Tuple
 
 from photometric_viewer.model.photometry import Photometry, LuminousOpeningGeometry, Shape, Lamps, \
-    PhotometryMetadata, LuminaireGeometry, LuminaireType, LuminousOpeningShape
+    PhotometryMetadata, LuminaireGeometry, LuminaireType, LuminousOpeningShape, Symmetry
 from photometric_viewer.model.units import LengthUnits
 
 
@@ -36,7 +37,7 @@ def _get_source_type(light_source_type: int):
 def import_from_file(f: IO):
     manufacturer = f.readline().strip()
     light_source_type = int(f.readline().strip())
-    symmetry = int(f.readline().strip())
+    symmetry = Symmetry(int(f.readline().strip()))
     n_c_angles = int(f.readline().strip())
     c_angle_interval = float(f.readline().strip())
     values_per_c_plane = int(f.readline().strip())
@@ -92,24 +93,24 @@ def import_from_file(f: IO):
 
     values = {}
 
-    if symmetry == 0:
+    if symmetry == Symmetry.NONE:
         for c in c_angles:
             for gamma in gamma_angles:
                 raw_value = float(f.readline().strip())
                 values[(c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
-    elif symmetry == 1:
+    elif symmetry == Symmetry.TO_VERTICAL_AXIS:
         for gamma in gamma_angles:
             raw_value = float(f.readline().strip())
             for c in c_angles:
                 values[(c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
-    elif symmetry == 2:
+    elif symmetry == Symmetry.TO_C0_C180:
         for c in c_angles:
             if c <= 180:
                 for gamma in gamma_angles:
                     raw_value = float(f.readline().strip())
                     values[(c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
                     values[(360-c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
-    elif symmetry == 3:
+    elif symmetry == Symmetry.TO_C90_C270:
         for c in c_angles:
             if 90 <= c <= 180:
                 for gamma in gamma_angles:
@@ -121,7 +122,7 @@ def import_from_file(f: IO):
                     raw_value = float(f.readline().strip())
                     values[(c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
                     values[(360 - (c - 180), gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
-    elif symmetry == 4:
+    elif symmetry == Symmetry.TO_C0_C180_C90_C270:
         for c in c_angles:
             if c <= 90:
                 for gamma in gamma_angles:
@@ -174,6 +175,160 @@ def import_from_file(f: IO):
             date_and_user=date_and_user,
             conversion_factor=conversion_factor,
             filename=filename,
-            additional_properties={}
+            additional_properties={},
+            symmetry=Symmetry(symmetry)
         )
     )
+
+
+def _write_line(f: IO, value: str, max_len: int = 0):
+    if not value:
+        f.write("\r\n")
+    elif 0 < max_len < len(value):
+        normalized_value = value.replace("\r\n", " ").replace("\r", " ").replace("\n", " ")
+        f.write(normalized_value[0:max_len] + "\r\n")
+    else:
+        f.write(value + "\r\n")
+
+
+def _write_enum(f: IO, value: Enum | None, default: str = "0"):
+    if value:
+        f.write(str(value.value) + "\r\n")
+    else:
+        f.write(default + "\r\n")
+
+
+def _write_size(f: IO, value: float | int | None, default: float | int = 0):
+    if value is not None:
+        f.write(str(value * 1000) + "\r\n")
+    else:
+        f.write(str(default * 1000) + "\r\n")
+
+
+def _write_number(f: IO, value: float | int | None, default: float | int = 0):
+    if value is not None:
+        f.write(str(round(value, ndigits=3)) + "\r\n")
+    else:
+        f.write(str(default) + "\r\n")
+
+
+def _write_numbers(f: IO, values: List[float] | List[int] | None, default: List[float] | List[int]):
+    if values is not None:
+        for value in values:
+            f.write(str(value) + "\r\n")
+    else:
+        for value in default:
+            f.write(str(value) + "\r\n")
+
+def _write_gamma_values(f: IO, photometry: Photometry, c_plane_predicate: Callable[[float], bool]):
+    for c_plane in photometry.c_planes:
+        if not c_plane_predicate(c_plane):
+            continue
+        for gamma_angle in photometry.gamma_angles:
+            intensity = photometry.intensity_values[(c_plane, gamma_angle)]
+            if photometry.is_absolute:
+                lamp = photometry.lamps[0]
+                if lamp.lumens_per_lamp:
+                    _write_number(f, intensity / (lamp.lumens_per_lamp * lamp.number_of_lamps) * 1000)
+                else:
+                    _write_number(f, intensity)
+            else:
+                _write_number(f, intensity)
+
+
+def export_to_file(f: IO, photometry: Photometry):
+    _write_line(f, photometry.metadata.manufacturer, max_len=78)
+    _write_enum(f, photometry.metadata.luminaire_type, "0")
+    _write_enum(f, photometry.metadata.symmetry, "0")
+    _write_line(f, str(len(photometry.c_planes)))
+    _write_line(f, "0")
+    _write_line(f, str(len(photometry.gamma_angles)))
+    _write_line(f, "0")
+    _write_line(f, photometry.metadata.measurement, max_len=78)
+    _write_line(f, photometry.metadata.luminaire, max_len=78)
+    _write_line(f, photometry.metadata.catalog_number, max_len=78)
+    _write_line(f, photometry.metadata.filename)
+    _write_line(f, photometry.metadata.date_and_user, max_len=78)
+
+    if photometry.luminaire_geometry:
+        _write_size(f, photometry.luminaire_geometry.length)
+        if photometry.luminaire_geometry.shape == Shape.RECTANGULAR:
+            _write_size(f, photometry.luminaire_geometry.width)
+        else:
+            _write_size(f, 0)
+        _write_size(f, photometry.luminaire_geometry.height)
+    else:
+        _write_line(f, str(photometry.luminous_opening_geometry.length * 1000), max_len=4)
+        if photometry.luminous_opening_geometry.shape == LuminousOpeningShape.RECTANGULAR:
+            _write_size(f, photometry.luminous_opening_geometry.width)
+        else:
+            _write_size(f, 0)
+        _write_size(f, photometry.luminous_opening_geometry.height)
+
+    opening = photometry.luminous_opening_geometry
+    _write_size(f, opening.length)
+
+    match photometry.luminous_opening_geometry.shape:
+        case LuminousOpeningShape.RECTANGULAR:
+            _write_size(f, opening.width)
+        case LuminousOpeningShape.ELLIPSE_ALONG_LENGTH:
+            _write_size(f, opening.width)
+        case LuminousOpeningShape.ELLIPSE_ALONG_WIDTH:
+            _write_size(f, opening.width)
+        case LuminousOpeningShape.ELLIPSOID_ALONG_LENGTH:
+            _write_size(f, opening.width)
+        case LuminousOpeningShape.ELLIPSOID_ALONG_WIDTH:
+            _write_size(f, opening.width)
+        case _:
+            _write_size(f, 0)
+
+    _write_size(f, opening.height)
+    _write_size(f, opening.height_c90, default=opening.height)
+    _write_size(f, opening.height_c180, default=opening.height)
+    _write_size(f, opening.height_c270, default=opening.height)
+
+    _write_number(f, photometry.dff, 100)
+    _write_number(f, photometry.lorl, 100)
+    _write_number(f, photometry.metadata.conversion_factor, 1)
+    _write_number(f, 0)
+    _write_number(f, len(photometry.lamps))
+    for lamp in photometry.lamps:
+        if photometry.is_absolute:
+            _write_number(f, -lamp.number_of_lamps)
+        else:
+            _write_number(f, lamp.number_of_lamps)
+        _write_line(f, lamp.description)
+        if lamp.lumens_per_lamp:
+            _write_number(f, lamp.lumens_per_lamp * lamp.number_of_lamps)
+        else:
+            _write_number(f, 1000)
+        _write_line(f, lamp.color)
+        _write_line(f, lamp.cri)
+        _write_number(f, lamp.wattage)
+
+    ratios_for_room_indices = [0 for _ in range(10)]
+    if photometry.metadata.direct_ratios_for_room_indices:
+        for i, ratio in photometry.metadata.direct_ratios_for_room_indices:
+            if i < len(ratios_for_room_indices):
+                ratios_for_room_indices[i] = ratio
+
+    for ratio in ratios_for_room_indices:
+        _write_number(f, ratio)
+
+    for c_plane in photometry.c_planes:
+        _write_number(f, c_plane)
+
+    for gamma_angle in photometry.gamma_angles:
+        _write_number(f, gamma_angle)
+
+    match photometry.metadata.symmetry:
+        case Symmetry.NONE:
+            _write_gamma_values(f, photometry, lambda _: True)
+        case Symmetry.TO_VERTICAL_AXIS:
+            _write_gamma_values(f, photometry, lambda c: c == 0)
+        case Symmetry.TO_C0_C180:
+            _write_gamma_values(f, photometry, lambda c: c <= 180)
+        case Symmetry.TO_C90_C270:
+            _write_gamma_values(f, photometry, lambda c: 90 <= c <= 270)
+        case Symmetry.TO_C0_C180_C90_C270:
+            _write_gamma_values(f, photometry, lambda c: c <= 90)

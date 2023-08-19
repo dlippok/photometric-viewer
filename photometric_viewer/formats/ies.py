@@ -122,7 +122,7 @@ def import_from_file(f: IO):
             raw_value = float(raw_values[n])
             multiplying_factor = attributes["multiplying_factor"]
             value = raw_value * multiplying_factor * float(ballast_factor) * float(lamp_photometric_factor)
-            candela_values[(h_angle, v_angle)] = value / relative_photomety_divider
+            candela_values[(h_angle, v_angle)] = round(value / relative_photomety_divider, ndigits=2)
             n += 1
 
     f.seek(0)
@@ -160,3 +160,4 @@ def import_from_file(f: IO):
             file_units=LengthUnits.FEET if attributes["luminous_opening_units"] == 1 else LengthUnits.METERS
         )
     )
+
