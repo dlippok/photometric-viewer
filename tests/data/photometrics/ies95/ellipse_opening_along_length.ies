@@ -1,11 +1,12 @@
 IESNA:LM-63-1995
+[TEST] photometric viewer test file
 [TESTLAB] ACME Photometrics
 [MANUFAC] ACME Inc.
 [LUMCAT] BD0150
 [LUMINAIRE] Dummy IES file.
 [MORE] Can be used for example for testing the software, create screenshots, etc.
 [MORE] Licensed under MIT License
-[ISSUEDATE] 2023-05-01
+[DATE] 2023-05-01
 [LAMPCAT] LED Module
 [LAMP] Generic 15W LED module
 [BALLAST] BC15345

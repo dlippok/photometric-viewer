@@ -8,6 +8,15 @@ from photometric_viewer.model.units import LengthUnits
 
 
 def _create_luminous_opening(length, width, height_c0, height_c90, height_c180, height_c270) -> LuminousOpeningGeometry:
+    shape = None
+    match length, width:
+        case 0, 0:
+            shape = LuminousOpeningShape.POINT
+        case l, 0:
+            shape = LuminousOpeningShape.ROUND
+        case l, w:
+            shape = LuminousOpeningShape.RECTANGULAR
+
     return LuminousOpeningGeometry(
         length=length,
         width=width or length,
@@ -15,7 +24,7 @@ def _create_luminous_opening(length, width, height_c0, height_c90, height_c180, 
         height_c90=height_c90,
         height_c180=height_c180,
         height_c270=height_c270,
-        shape=LuminousOpeningShape.RECTANGULAR if width > 0 else LuminousOpeningShape.ROUND
+        shape=shape
     )
 
 
@@ -110,7 +119,8 @@ def import_from_file(f: IO):
                 for gamma in gamma_angles:
                     raw_value = float(f.readline().strip())
                     values[(c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
-                    values[(360-c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
+                    if c != 0:
+                        values[(360-c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
     elif symmetry == Symmetry.TO_C90_C270:
         for c in c_angles:
             if 90 <= c <= 180:
@@ -129,9 +139,10 @@ def import_from_file(f: IO):
                 for gamma in gamma_angles:
                     raw_value = float(f.readline().strip())
                     values[(c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
-                    values[(360-c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
-                    values[(180-c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
                     values[(180+c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
+                    if c != 0:
+                        values[(360-c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
+                        values[(180-c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
 
     f.seek(0)
     source = f.read()

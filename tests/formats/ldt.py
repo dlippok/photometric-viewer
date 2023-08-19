@@ -2,9 +2,10 @@ import io
 import unittest
 from pathlib import Path
 
+from photometric_viewer.formats import ies
 from photometric_viewer.formats.ldt import import_from_file, export_to_file
 from photometric_viewer.model.photometry import Shape, Lamps, LuminaireGeometry, LuminousOpeningGeometry, LuminaireType, \
-    LuminousOpeningShape
+    LuminousOpeningShape, Symmetry
 from photometric_viewer.model.units import LengthUnits
 
 
@@ -185,13 +186,14 @@ class TestLdt(unittest.TestCase):
                     msg=f"Invalid directly read value for coord {angle}"
                 )
 
-                symmetry_angle = (360-angle[0], angle[1])
-                self.assertAlmostEqual(
-                    photometry.intensity_values[angle],
-                    photometry.intensity_values[symmetry_angle],
-                    places=5,
-                    msg=f"Value for angle {symmetry_angle} not symmetrical to {angle})"
-                )
+                if angle[0] > 0:
+                    symmetry_angle = (360-angle[0], angle[1])
+                    self.assertAlmostEqual(
+                        photometry.intensity_values[angle],
+                        photometry.intensity_values[symmetry_angle],
+                        places=5,
+                        msg=f"Value for angle {symmetry_angle} not symmetrical to {angle})"
+                    )
 
     def test_symmetry_to_c90c270(self):
         with (self.FILES_PATH / "symmetry_to_c90c270.ldt").open() as f:
@@ -291,13 +293,15 @@ class TestLdt(unittest.TestCase):
                     places=5,
                     msg=f"Value for angle {symmetry_angle} not symmetrical to {angle})"
                 )
-                symmetry_angle = (360 - angle[0], angle[1])
-                self.assertAlmostEqual(
-                    photometry.intensity_values[angle],
-                    photometry.intensity_values[symmetry_angle],
-                    places=5,
-                    msg=f"Value for angle {symmetry_angle} not symmetrical to {angle})"
-                )
+
+                if angle[0] > 0:
+                    symmetry_angle = (360 - angle[0], angle[1])
+                    self.assertAlmostEqual(
+                        photometry.intensity_values[angle],
+                        photometry.intensity_values[symmetry_angle],
+                        places=5,
+                        msg=f"Value for angle {symmetry_angle} not symmetrical to {angle})"
+                    )
 
     def test_geometries(self):
         with (self.FILES_PATH / "rectangular_luminaire_rectangular_luminous_opening.ldt").open() as f:
@@ -460,6 +464,38 @@ class TestLdt(unittest.TestCase):
                 reimported_photometry.metadata.file_source = ""
 
                 self.assertEqual(photometry, reimported_photometry)
+
+    def test_export_ies(self):
+        self.maxDiff = None
+
+        for path in self.FILES_PATH.iterdir():
+            with(self.subTest(path=path)):
+                with path.open() as f:
+                    photometry = import_from_file(f)
+
+                with io.StringIO() as f:
+                    ies.export_to_file(f, photometry)
+                    exported_value = f.getvalue()
+
+                with io.StringIO(exported_value) as f:
+                    reimported_photometry = ies.import_from_file(f)
+
+                self.assertEqual(photometry.is_absolute, reimported_photometry.is_absolute)
+
+                if photometry.is_absolute:
+                    photometry.lamps[0].lumens_per_lamp = None
+
+                self.assertEqual(photometry.lamps[0], reimported_photometry.lamps[0])
+                self.assertEqual(photometry.c_planes, reimported_photometry.c_planes)
+                self.assertEqual(photometry.gamma_angles, reimported_photometry.gamma_angles)
+
+                photometry.luminous_opening_geometry.height_c90 = None
+                photometry.luminous_opening_geometry.height_c180 = None
+                photometry.luminous_opening_geometry.height_c270 = None
+                self.assertEqual(photometry.luminous_opening_geometry, reimported_photometry.luminous_opening_geometry)
+
+                self.assertEqual(photometry.intensity_values, reimported_photometry.intensity_values)
+
 
 
 if __name__ == '__main__':
