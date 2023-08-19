@@ -1,6 +1,7 @@
 from enum import Enum
-from typing import IO, List, Callable, Dict, Tuple
+from typing import IO, List, Callable
 
+from datetime import datetime
 from photometric_viewer.model.photometry import Photometry, LuminousOpeningGeometry, Shape, Lamps, \
     PhotometryMetadata, LuminaireGeometry, LuminaireType, LuminousOpeningShape, Symmetry
 from photometric_viewer.model.units import LengthUnits
@@ -248,7 +249,8 @@ def export_to_file(f: IO, photometry: Photometry):
     _write_line(f, photometry.metadata.luminaire, max_len=78)
     _write_line(f, photometry.metadata.catalog_number, max_len=78)
     _write_line(f, photometry.metadata.filename)
-    _write_line(f, photometry.metadata.date_and_user, max_len=78)
+    date_and_user = photometry.metadata.date_and_user or datetime.today().strftime("%Y-%m-%d") + " exported by Photometric Viewer"
+    _write_line(f, date_and_user, max_len=78)
 
     if photometry.luminaire_geometry:
         _write_size(f, photometry.luminaire_geometry.length)

@@ -52,6 +52,19 @@ class ExportFileChooser(FileChooserNative):
 
         return chooser
 
+    @staticmethod
+    def for_ldt(**kwargs):
+        chooser = ExportFileChooser(**kwargs)
+
+        file_filter = FileFilter(name=_("EULUMDAT file"))
+        file_filter.add_pattern("*.ldt")
+        chooser.add_filter(file_filter)
+        chooser._add_all_files_filter()
+
+        return chooser
+
+
+
 
 class OpenFileChooser(FileChooserNative):
     def __init__(self, **kwargs):
