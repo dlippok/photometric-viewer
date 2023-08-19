@@ -329,9 +329,6 @@ class TestIes(unittest.TestCase):
                 with io.StringIO(exported_value) as f:
                     reimported_photometry = ldt.import_from_file(f)
 
-                print(photometry)
-                print(reimported_photometry)
-
                 self.assertEqual(photometry.is_absolute, reimported_photometry.is_absolute)
                 self.assertEqual(photometry.gamma_angles, reimported_photometry.gamma_angles)
                 self.assertEqual(photometry.c_planes, reimported_photometry.c_planes)
@@ -344,8 +341,6 @@ class TestIes(unittest.TestCase):
                 self.assertEqual(photometry.lamps[0].is_absolute, reimported_photometry.lamps[0].is_absolute)
                 self.assertEqual(photometry.lamps[0].description, reimported_photometry.lamps[0].description)
 
-                print(photometry.metadata)
-                print(reimported_photometry.metadata)
                 self.assertEqual(photometry.metadata.luminaire.replace("\n", " ")[0:78], reimported_photometry.metadata.luminaire)
                 self.assertEqual(photometry.metadata.catalog_number, reimported_photometry.metadata.catalog_number)
 

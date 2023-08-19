@@ -177,7 +177,8 @@ def import_from_file(f: IO):
             conversion_factor=conversion_factor,
             filename=filename,
             additional_properties={},
-            symmetry=Symmetry(symmetry)
+            symmetry=Symmetry(symmetry),
+            direct_ratios_for_room_indices=ratios_for_room_indexes
         )
     )
 
@@ -206,9 +207,9 @@ def _write_size(f: IO, value: float | int | None, default: float | int = 0):
         f.write(str(default * 1000) + "\r\n")
 
 
-def _write_number(f: IO, value: float | int | None, default: float | int = 0):
+def _write_number(f: IO, value: float | int | None, default: float | int = 0, ndigits: int = 3):
     if value is not None:
-        f.write(str(round(value, ndigits=3)) + "\r\n")
+        f.write(str(round(value, ndigits=ndigits)) + "\r\n")
     else:
         f.write(str(default) + "\r\n")
 
@@ -310,12 +311,12 @@ def export_to_file(f: IO, photometry: Photometry):
 
     ratios_for_room_indices = [0 for _ in range(10)]
     if photometry.metadata.direct_ratios_for_room_indices:
-        for i, ratio in photometry.metadata.direct_ratios_for_room_indices:
+        for i, ratio in enumerate(photometry.metadata.direct_ratios_for_room_indices):
             if i < len(ratios_for_room_indices):
                 ratios_for_room_indices[i] = ratio
 
     for ratio in ratios_for_room_indices:
-        _write_number(f, ratio)
+        _write_number(f, ratio, ndigits=5)
 
     for c_plane in photometry.c_planes:
         _write_number(f, c_plane)
