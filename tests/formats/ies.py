@@ -1,8 +1,10 @@
+import io
 import unittest
 from pathlib import Path
 
+from photometric_viewer.formats import ldt
 from photometric_viewer.formats.ies import import_from_file
-from photometric_viewer.model.photometry import Shape, LuminousOpeningShape, LuminousOpeningGeometry
+from photometric_viewer.model.photometry import LuminousOpeningShape, LuminousOpeningGeometry
 from photometric_viewer.model.units import LengthUnits
 
 
@@ -248,7 +250,7 @@ class TestIes(unittest.TestCase):
         ]
 
         expected_values = {
-            (0, gamma): raw_values[i] / (expected_flux / 1000) * multiplier
+            (0, gamma): round(raw_values[i] / (expected_flux / 1000) * multiplier, ndigits=2)
             for i, gamma
             in enumerate(gamma_angles)
         }
@@ -284,6 +286,8 @@ class TestIes(unittest.TestCase):
         self.assertIsNone(photometry.lamps[0].lumens_per_lamp)
 
     def test_absolute_photometry_with_multiplier(self):
+        self.maxDiff = None
+
         with (self.FILES_PATH / "absolute_photometry_with_multiplier.ies").open() as f:
             photometry = import_from_file(f)
 
@@ -302,7 +306,7 @@ class TestIes(unittest.TestCase):
         ]
 
         expected_values = {
-            (0, gamma): raw_values[i] * multiplier
+            (0, gamma): round(raw_values[i] * multiplier, ndigits=2)
             for i, gamma
             in enumerate(gamma_angles)
         }
@@ -310,6 +314,35 @@ class TestIes(unittest.TestCase):
         self.assertTrue(photometry.is_absolute)
         self.assertEqual(photometry.intensity_values, expected_values)
         self.assertIsNone(photometry.lamps[0].lumens_per_lamp)
+
+    def test_export_ldt(self):
+        self.maxDiff = None
+        for path in self.FILES_PATH.iterdir():
+            with(self.subTest(path=path)):
+                with path.open() as f:
+                    photometry = import_from_file(f)
+
+                with io.StringIO() as f:
+                    ldt.export_to_file(f, photometry)
+                    exported_value = f.getvalue()
+
+                with io.StringIO(exported_value) as f:
+                    reimported_photometry = ldt.import_from_file(f)
+
+                self.assertEqual(photometry.is_absolute, reimported_photometry.is_absolute)
+                self.assertEqual(photometry.gamma_angles, reimported_photometry.gamma_angles)
+                self.assertEqual(photometry.c_planes, reimported_photometry.c_planes)
+                self.assertEqual(photometry.intensity_values, reimported_photometry.intensity_values)
+
+                self.assertEqual(photometry.luminous_opening_geometry.width, reimported_photometry.luminous_opening_geometry.width)
+                self.assertEqual(photometry.luminous_opening_geometry.length, reimported_photometry.luminous_opening_geometry.length)
+                self.assertEqual(photometry.luminous_opening_geometry.height, reimported_photometry.luminous_opening_geometry.height)
+
+                self.assertEqual(photometry.lamps[0].is_absolute, reimported_photometry.lamps[0].is_absolute)
+                self.assertEqual(photometry.lamps[0].description, reimported_photometry.lamps[0].description)
+
+                self.assertEqual(photometry.metadata.luminaire.replace("\n", " ")[0:78], reimported_photometry.metadata.luminaire)
+                self.assertEqual(photometry.metadata.catalog_number, reimported_photometry.metadata.catalog_number)
 
 
 if __name__ == '__main__':

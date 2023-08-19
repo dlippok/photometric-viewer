@@ -1,3 +1,4 @@
+import io
 import logging
 from typing import Optional
 
@@ -9,6 +10,7 @@ import photometric_viewer.formats.csv
 import photometric_viewer.formats.format_json
 import photometric_viewer.formats.png
 import photometric_viewer.formats.svg
+from photometric_viewer.formats import ldt
 from photometric_viewer.formats.common import import_from_file
 from photometric_viewer.formats.exceptions import InvalidPhotometricFileFormatException
 from photometric_viewer.gui.dialogs.about import AboutWindow
@@ -95,6 +97,9 @@ class MainWindow(Adw.Window):
         self.ldc_export_file_chooser = ExportFileChooser.for_ldc(transient_for=self)
         self.ldc_export_file_chooser.connect("response", self.on_export_ldc_response)
 
+        self.ldt_export_file_chooser = ExportFileChooser.for_ldt(transient_for=self)
+        self.ldt_export_file_chooser.connect("response", self.on_export_ldt_response)
+
         self.set_content(box)
 
         self.drop_target = DropTarget(
@@ -115,10 +120,12 @@ class MainWindow(Adw.Window):
         self.install_action("app.export_luminaire_as_json", None, self.show_json_export_file_chooser)
         self.install_action("app.export_intensities_as_csv", None, self.show_csv_export_file_chooser)
         self.install_action("app.export_ldc_as_image", None, self.show_ldc_export_file_chooser)
+        self.install_action("app.export_as_ldt", None, self.show_ldt_export_file_chooser)
         self.action_set_enabled("app.show_source", False)
         self.action_set_enabled("app.export_luminaire_as_json", False)
         self.action_set_enabled("app.export_intensities_as_csv", False)
         self.action_set_enabled("app.export_ldc_as_image", False)
+        self.action_set_enabled("app.export_as_ldt", False)
 
     def display_photometry_content(self, photometry: Photometry):
         self.photometry_content.set_photometry(photometry)
@@ -138,6 +145,7 @@ class MainWindow(Adw.Window):
         self.action_set_enabled("app.export_luminaire_as_json", True)
         self.action_set_enabled("app.export_intensities_as_csv", True)
         self.action_set_enabled("app.export_ldc_as_image", True)
+        self.action_set_enabled("app.export_as_ldt", True)
 
 
     def update_settings(self):
@@ -191,6 +199,20 @@ class MainWindow(Adw.Window):
         write_bytes(file, data)
         self.show_banner(_("Exported as {}").format(file.get_basename()))
 
+    def on_export_ldt_response(self, dialog: FileChooserDialog, response):
+        if not self.opened_photometry:
+            return
+
+        if response != Gtk.ResponseType.ACCEPT:
+            return
+
+        file: Gio.File = dialog.get_file()
+
+        with io.StringIO() as f:
+            ldt.export_to_file(f, self.opened_photometry)
+            write_string(file, f.getvalue())
+        self.show_banner(_("Exported as {}").format(file.get_basename()))
+
     def on_title_visible_changed(self, *args):
         title_visible = self.switcher_title.get_title_visible()
         self.switcher_bar.set_reveal(title_visible)
@@ -212,6 +234,7 @@ class MainWindow(Adw.Window):
                 self.json_export_file_chooser.set_current_name(f"{opened_filename}.json")
                 self.csv_export_file_chooser.set_current_name(f"{opened_filename}.csv")
                 self.ldc_export_file_chooser.set_current_name(f"{opened_filename}.png")
+                self.ldt_export_file_chooser.set_current_name(f"{opened_filename}_exported.ldt")
 
         except GLib.GError as e:
             logging.exception("Could not open photometric file")
@@ -238,6 +261,9 @@ class MainWindow(Adw.Window):
 
     def show_ldc_export_file_chooser(self, *args):
         self.ldc_export_file_chooser.show()
+
+    def show_ldt_export_file_chooser(self, *args):
+        self.ldt_export_file_chooser.show()
 
     def banner_dismiss_clicked(self, *args):
         self.banner.set_revealed(False)

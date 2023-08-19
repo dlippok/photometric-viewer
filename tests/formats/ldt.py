@@ -1,7 +1,8 @@
+import io
 import unittest
 from pathlib import Path
 
-from photometric_viewer.formats.ldt import import_from_file
+from photometric_viewer.formats.ldt import import_from_file, export_to_file
 from photometric_viewer.model.photometry import Shape, Lamps, LuminaireGeometry, LuminousOpeningGeometry, LuminaireType, \
     LuminousOpeningShape
 from photometric_viewer.model.units import LengthUnits
@@ -441,6 +442,24 @@ class TestLdt(unittest.TestCase):
             )
         ]
         self.assertEqual(photometry.lamps, expected_lamp_sets)
+
+    def test_export_ldt(self):
+        for path in self.FILES_PATH.iterdir():
+            with(self.subTest(path=path)):
+                with path.open() as f:
+                    photometry = import_from_file(f)
+
+                with io.StringIO() as f:
+                    export_to_file(f, photometry)
+                    exported_value = f.getvalue()
+
+                with io.StringIO(exported_value) as f:
+                    reimported_photometry = import_from_file(f)
+
+                photometry.metadata.file_source = ""
+                reimported_photometry.metadata.file_source = ""
+
+                self.assertEqual(photometry, reimported_photometry)
 
 
 if __name__ == '__main__':
