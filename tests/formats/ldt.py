@@ -5,7 +5,7 @@ from pathlib import Path
 from photometric_viewer.formats import ies
 from photometric_viewer.formats.ldt import import_from_file, export_to_file
 from photometric_viewer.model.photometry import Shape, Lamps, LuminaireGeometry, LuminousOpeningGeometry, LuminaireType, \
-    LuminousOpeningShape, Symmetry
+    LuminousOpeningShape
 from photometric_viewer.model.units import LengthUnits
 
 
@@ -474,7 +474,7 @@ class TestLdt(unittest.TestCase):
                     photometry = import_from_file(f)
 
                 with io.StringIO() as f:
-                    ies.export_to_file(f, photometry)
+                    ies.export_to_file(f, photometry, additional_keywords={})
                     exported_value = f.getvalue()
 
                 with io.StringIO(exported_value) as f:

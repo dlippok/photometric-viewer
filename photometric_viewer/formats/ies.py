@@ -200,8 +200,8 @@ def import_from_file(f: IO):
             ballast_catalog_number=metadata.pop("BALLASTCAT", None),
             ballast_description=metadata.pop("BALLAST", None),
             wattage=float(input_watts),
-            color=metadata.pop("LAMPCOLOR", None),
-            cri=metadata.pop("LAMPCRI", None),
+            color=metadata.pop("COLORTEMP", None),
+            cri=metadata.pop("CRI", None),
         )],
         metadata=PhotometryMetadata(
             catalog_number=metadata.pop("LUMCAT", None),
@@ -246,7 +246,7 @@ def _write_luminous_opening_geometry(f, photometry: Photometry):
     f.write("\r\n")
 
 
-def export_to_file(f: IO, photometry: Photometry):
+def export_to_file(f: IO, photometry: Photometry, additional_keywords: Dict[str, str]):
     f.write("IESNA: LM-63-2002\r\n")
 
     first_lamp_set = photometry.lamps[0]
@@ -260,21 +260,15 @@ def export_to_file(f: IO, photometry: Photometry):
         "LAMP": first_lamp_set.description,
         "LAMPCAT": first_lamp_set.catalog_number,
         "LAMPPOSITION": first_lamp_set.position,
-        "LAMPCOLOR": first_lamp_set.color,
-        "LAMPCRI": first_lamp_set.cri,
+        "COLORTEMP": first_lamp_set.color,
+        "CRI": first_lamp_set.cri,
         "BALLASTCAT": first_lamp_set.ballast_catalog_number,
         "BALLAST": photometry.lamps[0].ballast_description
-    }
-    export_keywords = {
-        "_EXPORT_TOOL": "Photometric Viewer",
-        "_EXPORT_TOOL_URL": "https://github.com/dlippok/photometric-viewer",
-        "_EXPORT_TOOL_ISSUE_TRACKER": "https://github.com/dlippok/photometric-viewer/issues",
-        "_EXPORT_TIMESTAMP": datetime.datetime.now().isoformat()
     }
 
     _write_keywords(
         f,
-        keywords=standard_keywords | photometry.metadata.additional_properties | export_keywords
+        keywords=standard_keywords | photometry.metadata.additional_properties | additional_keywords
     )
 
     f.write("TILT=NONE\r\n")

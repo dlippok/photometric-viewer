@@ -329,7 +329,7 @@ class TestIes(unittest.TestCase):
                     photometry = import_from_file(f)
 
                 with io.StringIO() as f:
-                    ies.export_to_file(f, photometry)
+                    ies.export_to_file(f, photometry, additional_keywords={})
                     exported_value = f.getvalue()
 
                 with io.StringIO(exported_value) as f:
@@ -341,11 +341,6 @@ class TestIes(unittest.TestCase):
                 # Ellipses and ellipsoids are not supported and exported as rectangles instead
                 if photometry.luminous_opening_geometry.shape in UNSUPPORTED_EXPORT_SHAPES:
                     photometry.luminous_opening_geometry.shape = LuminousOpeningShape.RECTANGULAR
-
-                del reimported_photometry.metadata.additional_properties["_EXPORT_TOOL"]
-                del reimported_photometry.metadata.additional_properties["_EXPORT_TOOL_URL"]
-                del reimported_photometry.metadata.additional_properties["_EXPORT_TOOL_ISSUE_TRACKER"]
-                del reimported_photometry.metadata.additional_properties["_EXPORT_TIMESTAMP"]
 
                 self.assertEqual(photometry, reimported_photometry)
 

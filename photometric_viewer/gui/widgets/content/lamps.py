@@ -52,7 +52,7 @@ class LampAndBallast(Adw.Bin):
             else:
                 property_list.add_if_non_empty(_("Color Rendering Index (CRI)"), lamp.cri)
 
-            property_list.add_if_non_empty(_("Wattage"), lamp.wattage)
+            property_list.add_if_non_empty(_("Wattage"), f"{lamp.wattage} W",)
 
             if not photometry.is_absolute:
                 property_list.add(_("Initial rating per lamp"), f'{lamp.lumens_per_lamp:.0f}lm')

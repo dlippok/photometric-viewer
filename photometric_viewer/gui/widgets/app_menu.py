@@ -14,6 +14,10 @@ class ApplicationMenuButton(Gtk.MenuButton):
                         <attribute name='action'>app.export_as_ldt</attribute>
                     </item>
                     <item>
+                        <attribute name='label' translatable='yes'>As IESNA</attribute>
+                        <attribute name='action'>app.export_as_ies</attribute>
+                    </item>
+                    <item>
                         <attribute name='label' translatable='yes'>Light distribution curve</attribute>
                         <attribute name='action'>app.export_ldc_as_image</attribute>
                     </item>
