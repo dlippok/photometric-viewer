@@ -60,8 +60,8 @@ class LuminaireGeometryProperties(PropertyList):
                 self.add(_("Luminaire shape"), _("Rectangular"))
                 self.add(_("Luminaire dimensions"), f"{self._convert(w)} x {self._convert(l)} x {self._convert(h)}")
             case LuminaireGeometry(w, l, h, Shape.ROUND):
-                self.add("Luminaire shape", _("Round"))
-                self.add("Luminaire dimensions", f"{self._convert(w)} x {self._convert(l)} x {self._convert(h)}")
+                self.add(_("Luminaire shape"), _("Round"))
+                self.add(_("Luminaire dimensions"), f"{self._convert(w)} x {self._convert(l)} x {self._convert(h)}")
 
         match self.photometry.luminous_opening_geometry.shape:
             case LuminousOpeningShape.RECTANGULAR:
