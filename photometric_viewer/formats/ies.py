@@ -1,4 +1,5 @@
-from typing import IO
+import datetime
+from typing import IO, Dict
 
 from photometric_viewer.formats.exceptions import InvalidLuminousOpeningException, InvalidPhotometricFileFormatException
 from photometric_viewer.model.photometry import Photometry, PhotometryMetadata, LuminousOpeningGeometry, Shape, \
@@ -6,6 +7,17 @@ from photometric_viewer.model.photometry import Photometry, PhotometryMetadata, 
 from photometric_viewer.model.units import LengthUnits
 from photometric_viewer.utils.io import read_non_empty_line
 
+_LUMEN_PER_LAMPS_ABSOLUTE = -1
+_LUMEN_PER_LAMPS_1000 = 1000
+
+_DEFAULT_MULTIPLIER = 1.0
+_PHOTOMETRIC_TYPE_C = 1
+_UNIT_TYPE_FEET = 1
+_UNIT_TYPE_METERS = 2
+_DEFAULT_BALLAST_FACTOR = 1.0
+_FUTURE_USE = 1
+
+_VALUES_PER_LINE = 12
 
 def _get_n_values(f: IO, n: int):
     raw_values = []
@@ -23,19 +35,8 @@ def _get_n_values(f: IO, n: int):
     return raw_values
 
 
-def create_luminous_opening(attributes):
-    f = 0 # Factor for unit conversion (internally always stored in meters)
-    match attributes["luminous_opening_units"]:
-        case 1:
-            f = 0.3048
-        case 2:
-            f = 1
-
-    match (
-        attributes["luminous_opening_width"],
-        attributes["luminous_opening_length"],
-        attributes["luminous_opening_height"]
-    ):
+def create_luminous_opening_for_iesna95(w, l, h, f):
+    match (w, l, h):
         case 0, 0, 0:
             return LuminousOpeningGeometry(0, 0, 0, shape=LuminousOpeningShape.POINT)
         case w, l, h if w > 0 and l > 0 and h >= 0:
@@ -53,19 +54,69 @@ def create_luminous_opening(attributes):
         case w, 0, h if w == h and w < 0:
             return LuminousOpeningGeometry(abs(w) * f, abs(w) * f, abs(w) * f, LuminousOpeningShape.SPHERE)
         case 0, l, h if l > 0 and h < 0:
-            return LuminousOpeningGeometry(abs(l) * f, abs(l) * f, abs(h) * f, LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_LENGTH)
+            return LuminousOpeningGeometry(abs(l) * f, abs(l) * f, abs(h) * f,
+                                           LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_LENGTH)
         case w, 0, h if w > 0 and h < 0:
-            return LuminousOpeningGeometry(abs(w) * f, abs(w) * f, abs(h) * f, LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_WIDTH)
+            return LuminousOpeningGeometry(abs(w) * f, abs(w) * f, abs(h) * f,
+                                           LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_WIDTH)
         case w, l, h if w < 0 and l > 0 and h > 0:
-            return LuminousOpeningGeometry(abs(w) * f, abs(l) * f, abs(h) * f, LuminousOpeningShape.ELLIPSE_ALONG_LENGTH)
+            return LuminousOpeningGeometry(abs(w) * f, abs(l) * f, abs(h) * f,
+                                           LuminousOpeningShape.ELLIPSE_ALONG_LENGTH)
         case w, l, h if w > 0 and l < 0 and h > 0:
             return LuminousOpeningGeometry(abs(w) * f, abs(l) * f, abs(h) * f, LuminousOpeningShape.ELLIPSE_ALONG_WIDTH)
         case w, l, h if w < 0 and l > 0 and h < 0:
-            return LuminousOpeningGeometry(abs(w) * f, abs(l) * f, abs(h) * f, LuminousOpeningShape.ELLIPSOID_ALONG_LENGTH)
+            return LuminousOpeningGeometry(abs(w) * f, abs(l) * f, abs(h) * f,
+                                           LuminousOpeningShape.ELLIPSOID_ALONG_LENGTH)
         case w, l, h if w > 0 and l < 0 and h < 0:
-            return LuminousOpeningGeometry(abs(w) * f, abs(l) * f, abs(h) * f, LuminousOpeningShape.ELLIPSOID_ALONG_WIDTH)
+            return LuminousOpeningGeometry(abs(w) * f, abs(l) * f, abs(h) * f,
+                                           LuminousOpeningShape.ELLIPSOID_ALONG_WIDTH)
         case _:
             raise InvalidLuminousOpeningException()
+
+def create_luminous_opening_for_iesna02(w, l, h, f):
+    if w == 0 and l == 0 and h == 0:
+        shape = LuminousOpeningShape.POINT
+    elif w > 0 and l > 0 and h == 0:
+        shape = LuminousOpeningShape.RECTANGULAR
+    elif w > 0 and l > 0 and h > 0:
+        shape = LuminousOpeningShape.RECTANGULAR
+    elif w < 0 and l < 0 and h >= 0:
+        shape = LuminousOpeningShape.ROUND
+    elif w < 0 and l < 0 and h < 0:
+        shape = LuminousOpeningShape.SPHERE
+    elif w < 0 and l > 0 and h < 0:
+        shape = LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_WIDTH
+    elif w > 0 and l < 0 and h < 0:
+        shape = LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_LENGTH
+    elif w < 0 and l == 0 and h < 0:
+        shape = LuminousOpeningShape.ELLIPSE_ALONG_LENGTH
+    else:
+        raise InvalidLuminousOpeningException()
+
+    return LuminousOpeningGeometry(abs(w) * f, abs(l) * f, abs(h) * f, shape)
+
+def create_luminous_opening(attributes):
+    f = 0  # Factor for unit conversion (internally always stored in meters)
+    if attributes["luminous_opening_units"] == _UNIT_TYPE_FEET:
+            f = 0.3048
+    else:
+            f = 1
+
+    match attributes["header"].replace(" ", ""):
+        case "IESNA:LM-63-2002":
+            return create_luminous_opening_for_iesna02(
+                attributes["luminous_opening_width"],
+                attributes["luminous_opening_length"],
+                attributes["luminous_opening_height"],
+                f
+            )
+        case _:
+            return create_luminous_opening_for_iesna95(
+                attributes["luminous_opening_width"],
+                attributes["luminous_opening_length"],
+                attributes["luminous_opening_height"],
+                f
+            )
 
 
 def import_from_file(f: IO):
@@ -92,6 +143,7 @@ def import_from_file(f: IO):
 
     raw_attributes = _get_n_values(f, 10)
     attributes = {
+        "header": header,
         "numer_of_lamps": int(raw_attributes[0]),
         "lumens_per_lamp": float(raw_attributes[1]),
         "multiplying_factor": float(raw_attributes[2]),
@@ -128,6 +180,7 @@ def import_from_file(f: IO):
     f.seek(0)
     source = f.read()
 
+    date = metadata.pop("ISSUEDATE", None) or metadata.pop("DATE", None)
     return Photometry(
         is_absolute=lumens is None,
         gamma_angles=v_angles,
@@ -146,18 +199,128 @@ def import_from_file(f: IO):
             position=metadata.pop("LAMPPOSITION", None),
             ballast_catalog_number=metadata.pop("BALLASTCAT", None),
             ballast_description=metadata.pop("BALLAST", None),
-            wattage=None,
-            color=None,
-            cri=None,
+            wattage=float(input_watts),
+            color=metadata.pop("COLORTEMP", None),
+            cri=metadata.pop("CRI", None),
         )],
         metadata=PhotometryMetadata(
             catalog_number=metadata.pop("LUMCAT", None),
             luminaire=metadata.pop("LUMINAIRE", None),
             manufacturer=metadata.pop("MANUFAC", None),
-            date_and_user=metadata.pop("ISSUEDATE", None),
+            date_and_user=date,
             additional_properties=metadata,
             file_source=source,
             file_units=LengthUnits.FEET if attributes["luminous_opening_units"] == 1 else LengthUnits.METERS
         )
     )
+
+
+def _write_keywords(f: IO, keywords: Dict[str, str]):
+    for k, v in keywords.items():
+        if not v: continue
+        value = v.replace("\n", "\n[MORE] ")
+        f.write(f"[{k}] {value}\r\n")
+
+
+def _write_luminous_opening_geometry(f, photometry: Photometry):
+    is_feet = photometry.metadata.file_units == LengthUnits.FEET
+    multiplier = 3.2808 if is_feet else 1
+
+    luminous_opening_geometry = photometry.luminous_opening_geometry
+    match luminous_opening_geometry:
+        case LuminousOpeningGeometry(_, _, _, shape=LuminousOpeningShape.POINT):
+            f.write("0 0 0 ")
+        case LuminousOpeningGeometry(w, l, h, shape=LuminousOpeningShape.RECTANGULAR):
+            f.write(f"{w*multiplier:.3f} {l*multiplier:.3f} {h*multiplier:.3f} ")
+        case LuminousOpeningGeometry(w, l, h, shape=LuminousOpeningShape.ROUND):
+            f.write(f"{-w*multiplier:.3f} {-l*multiplier:.3f} {h*multiplier:.3f} ")
+        case LuminousOpeningGeometry(w, l, h, shape=LuminousOpeningShape.SPHERE):
+            f.write(f"{-w*multiplier:.3f} {-l*multiplier:.3f} {-h*multiplier:.3f} ")
+        case LuminousOpeningGeometry(w, l, h, shape=LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_LENGTH):
+            f.write(f"{w*multiplier:.3f} {-l*multiplier:.3f} {-h*multiplier:.3f} ")
+        case LuminousOpeningGeometry(w, l, h, shape=LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_WIDTH):
+            f.write(f"{-w*multiplier:.3f} {l*multiplier:.3f} {-h*multiplier:.3f} ")
+        case LuminousOpeningGeometry(w, l, h, shape=_):
+            f.write(f"{w*multiplier:.3f} {l*multiplier:.3f} {h*multiplier:.3f} ")
+
+    f.write("\r\n")
+
+
+def export_to_file(f: IO, photometry: Photometry, additional_keywords: Dict[str, str]):
+    f.write("IESNA: LM-63-2002\r\n")
+
+    first_lamp_set = photometry.lamps[0]
+    standard_keywords = {
+        "TEST": "Unknown",
+        "TESTLAB": "Unknown",
+        "LUMCAT": photometry.metadata.catalog_number,
+        "LUMINAIRE": photometry.metadata.luminaire,
+        "MANUFAC": photometry.metadata.manufacturer,
+        "ISSUEDATE": photometry.metadata.date_and_user,
+        "LAMP": first_lamp_set.description,
+        "LAMPCAT": first_lamp_set.catalog_number,
+        "LAMPPOSITION": first_lamp_set.position,
+        "COLORTEMP": first_lamp_set.color,
+        "CRI": first_lamp_set.cri,
+        "BALLASTCAT": first_lamp_set.ballast_catalog_number,
+        "BALLAST": photometry.lamps[0].ballast_description
+    }
+
+    _write_keywords(
+        f,
+        keywords=standard_keywords | photometry.metadata.additional_properties | additional_keywords
+    )
+
+    f.write("TILT=NONE\r\n")
+
+    f.write(f"{photometry.lamps[0].number_of_lamps} ")
+
+    if photometry.is_absolute:
+        f.write(f"{_LUMEN_PER_LAMPS_ABSOLUTE} ")
+    elif first_lamp_set.lumens_per_lamp:
+        f.write(f"{first_lamp_set.lumens_per_lamp} ")
+    else:
+        f.write(f"{_LUMEN_PER_LAMPS_1000} ")
+
+    f.write(f"{_DEFAULT_MULTIPLIER} ")
+    f.write(f"{len(photometry.gamma_angles)} ")
+    f.write(f"{len(photometry.c_planes)} ")
+    f.write(f"{_PHOTOMETRIC_TYPE_C} ")
+
+    if photometry.metadata.file_units == LengthUnits.FEET:
+        f.write(f"{_UNIT_TYPE_FEET} ")
+    else:
+        f.write(f"{_UNIT_TYPE_METERS} ")
+
+    _write_luminous_opening_geometry(f, photometry)
+
+    f.write(f"{_DEFAULT_BALLAST_FACTOR} ")
+    f.write(f"{_FUTURE_USE} ")
+    f.write(f"{first_lamp_set.wattage or 0}\r\n")
+
+    for i, gamma in enumerate(photometry.gamma_angles):
+        f.write(f"{gamma} ")
+        if (i+1) % _VALUES_PER_LINE == 0 or (i+1) == len(photometry.gamma_angles):
+            f.write("\r\n")
+
+    for i, c in enumerate(photometry.c_planes):
+        f.write(f"{c} ")
+        if (i+1) % _VALUES_PER_LINE == 0 or (i+1) == len(photometry.c_planes):
+            f.write("\r\n")
+
+    i = 0
+    for c in photometry.c_planes:
+        for gamma in photometry.gamma_angles:
+            intensity = photometry.intensity_values[c, gamma]
+            if photometry.is_absolute:
+                intensity *= 1
+            elif first_lamp_set.lumens_per_lamp and first_lamp_set.lumens_per_lamp > 0:
+                intensity *= first_lamp_set.number_of_lamps * first_lamp_set.lumens_per_lamp / 1000
+
+            f.write(f"{intensity} ")
+            if (i+1) % _VALUES_PER_LINE == 0:
+                f.write("\r\n")
+            i += 1
+
+
 

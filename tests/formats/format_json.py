@@ -2,7 +2,7 @@ import json
 import unittest
 
 import photometric_viewer.formats.format_json
-from photometric_viewer.model.photometry import Photometry, LuminaireType
+from photometric_viewer.model.photometry import LuminaireType
 from tests.formats.fixtures.photometry import ABSOLUTE_PHOTOMETRY_LUMINAIRE, TWO_LAMPS_LUMINAIRE, \
     LUMINAIRE_WITHOUT_LUMINAIRE_GEOMETRY
 

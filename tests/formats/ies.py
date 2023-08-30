@@ -2,14 +2,20 @@ import io
 import unittest
 from pathlib import Path
 
-from photometric_viewer.formats import ldt
+from photometric_viewer.formats import ldt, ies
 from photometric_viewer.formats.ies import import_from_file
 from photometric_viewer.model.photometry import LuminousOpeningShape, LuminousOpeningGeometry
 from photometric_viewer.model.units import LengthUnits
 
+UNSUPPORTED_EXPORT_SHAPES = {
+    LuminousOpeningShape.ELLIPSE_ALONG_LENGTH,
+    LuminousOpeningShape.ELLIPSE_ALONG_WIDTH,
+    LuminousOpeningShape.ELLIPSOID_ALONG_LENGTH,
+    LuminousOpeningShape.ELLIPSOID_ALONG_WIDTH
+}
 
 class TestIes(unittest.TestCase):
-    FILES_PATH = Path(__file__).parent / ".." / "data" / "photometrics" / "ies"
+    FILES_PATH = Path(__file__).parent / ".." / "data" / "photometrics" / "ies95"
 
     def test_metadata(self):
         with (self.FILES_PATH / "label_lines.ies").open() as f:
@@ -314,6 +320,29 @@ class TestIes(unittest.TestCase):
         self.assertTrue(photometry.is_absolute)
         self.assertEqual(photometry.intensity_values, expected_values)
         self.assertIsNone(photometry.lamps[0].lumens_per_lamp)
+
+    def test_export_ies(self):
+        self.maxDiff = None
+        for path in self.FILES_PATH.iterdir():
+            with(self.subTest(path=path)):
+                with path.open() as f:
+                    photometry = import_from_file(f)
+
+                with io.StringIO() as f:
+                    ies.export_to_file(f, photometry, additional_keywords={})
+                    exported_value = f.getvalue()
+
+                with io.StringIO(exported_value) as f:
+                    reimported_photometry = import_from_file(f)
+
+                photometry.metadata.file_source = ""
+                reimported_photometry.metadata.file_source = ""
+
+                # Ellipses and ellipsoids are not supported and exported as rectangles instead
+                if photometry.luminous_opening_geometry.shape in UNSUPPORTED_EXPORT_SHAPES:
+                    photometry.luminous_opening_geometry.shape = LuminousOpeningShape.RECTANGULAR
+
+                self.assertEqual(photometry, reimported_photometry)
 
     def test_export_ldt(self):
         self.maxDiff = None
