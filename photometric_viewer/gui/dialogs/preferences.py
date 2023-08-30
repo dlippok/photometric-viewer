@@ -1,5 +1,7 @@
+import locale
+
 from gi.repository import Adw, Gtk
-from gi.repository.Gtk import ListBox, Box, Orientation, Label, SelectionMode, ToggleButton
+from gi.repository.Gtk import ListBox, Box, Orientation, Label, SelectionMode, ToggleButton, SpinButton, Adjustment
 
 from photometric_viewer.model.settings import Settings, DiagramStyle, SnapValueAnglesTo, DisplayHalfSpaces
 from photometric_viewer.model.units import LengthUnits
@@ -17,16 +19,16 @@ class PreferencesWindow(Adw.PreferencesWindow):
         self.set_search_enabled(False)
         self.settings = settings
         self.on_update_settings = on_update_settings
-        self._add_units_settings_group()
+        self._add_locale_settings_group()
         self._add_curve_settings_group()
 
-    def _add_units_settings_group(self):
-        units_group = Adw.PreferencesGroup(
-            title=_("Units"),
-            description=_("Measurement units displayed in the application")
+    def _add_locale_settings_group(self):
+        locale_settings_group = Adw.PreferencesGroup(
+            title=_("Local settings"),
+            description=_("Preferred units of measurement and display settings related to your local area")
         )
 
-        units_group_list = ListBox(
+        locale_settings_list = ListBox(
             css_classes=["boxed-list"],
             selection_mode=SelectionMode.NONE
         )
@@ -77,11 +79,37 @@ class PreferencesWindow(Adw.PreferencesWindow):
 
         self.preferred_units_box.append(self.preferred_units_dropdown)
 
-        units_group_list.append(use_units_from_file_box)
-        units_group_list.append(self.preferred_units_box)
-        units_group.add(units_group_list)
+        electricity_price_box = Box(
+            orientation=Orientation.HORIZONTAL,
+            spacing=4,
+            margin_start=16,
+            margin_end=16,
+            margin_top=16,
+            margin_bottom=16
+        )
 
-        self.page.add(units_group)
+        electricity_price_box.append(Label(label=_("Electricity price per kWh"), hexpand=True, xalign=0))
+
+        electricity_price_spin_button = SpinButton(
+            adjustment=Adjustment(
+                lower=0,
+                upper=100000,
+                step_increment=0.05,
+                value=self.settings.electricity_price_per_kwh,
+                page_size=0,
+            )
+        )
+        electricity_price_spin_button.set_value(self.settings.electricity_price_per_kwh)
+        electricity_price_spin_button.set_digits(2)
+        electricity_price_spin_button.connect("value-changed", self.price_per_kwh_changed)
+        electricity_price_box.append(electricity_price_spin_button)
+
+        locale_settings_list.append(use_units_from_file_box)
+        locale_settings_list.append(self.preferred_units_box)
+        locale_settings_list.append(electricity_price_box)
+        locale_settings_group.add(locale_settings_list)
+
+        self.page.add(locale_settings_group)
 
     def _add_curve_settings_group(self):
         curve_settings_group = Adw.PreferencesGroup(
@@ -209,8 +237,6 @@ class PreferencesWindow(Adw.PreferencesWindow):
         display_half_spaces_box.append(display_half_spaces_buttons_box)
         curve_settings_list.append(display_half_spaces_box)
 
-
-
         curve_settings_group.add(curve_settings_list)
 
         self.page.add(curve_settings_group)
@@ -227,6 +253,10 @@ class PreferencesWindow(Adw.PreferencesWindow):
                 self.settings.length_units = LengthUnits.FEET
             case 4:
                 self.settings.length_units = LengthUnits.INCHES
+        self.update()
+
+    def price_per_kwh_changed(self, spin_button: SpinButton, *args):
+        self.settings.electricity_price_per_kwh = spin_button.get_value()
         self.update()
 
     def length_units_from_file_state_set(self, widget, state, *args):

@@ -1,4 +1,5 @@
 import re
+from typing import List
 
 from gi.repository import Adw
 from gi.repository.Gtk import Box, Orientation
@@ -6,12 +7,15 @@ from gi.repository.Gtk import Box, Orientation
 from photometric_viewer.gui.widgets.common.gauge import Gauge
 from photometric_viewer.gui.widgets.common.property_list import PropertyList
 from photometric_viewer.gui.widgets.content.temperature import ColorTemperatureGauge
+from photometric_viewer.gui.widgets.content.wattage import WattageBox
 from photometric_viewer.model.photometry import Photometry
+from photometric_viewer.model.settings import Settings
 
 
 class LampAndBallast(Adw.Bin):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
         self.view_stack = Adw.ViewStack()
 
         switcher_bar = Adw.ViewSwitcherBar(
@@ -26,11 +30,14 @@ class LampAndBallast(Adw.Bin):
         )
         box.append(self.view_stack)
         box.append(switcher_bar)
+
+        self.wattage_boxes: List[WattageBox] = []
         self.set_child(box)
 
     def set_photometry(self, photometry: Photometry):
         items = [i for i in self.view_stack]
 
+        self.wattage_boxes = []
         for child in items:
             self.view_stack.remove(child)
 
@@ -52,7 +59,10 @@ class LampAndBallast(Adw.Bin):
             else:
                 property_list.add_if_non_empty(_("Color Rendering Index (CRI)"), lamp.cri)
 
-            property_list.add_if_non_empty(_("Wattage"), f"{lamp.wattage} W",)
+            if lamp.wattage:
+                wattage_box = WattageBox(lamp.wattage)
+                property_list.append(wattage_box)
+                self.wattage_boxes.append(wattage_box)
 
             if not photometry.is_absolute:
                 property_list.add(_("Initial rating per lamp"), f'{lamp.lumens_per_lamp:.0f}lm')
@@ -81,3 +91,8 @@ class LampAndBallast(Adw.Bin):
             property_list.append(ColorTemperatureGauge(int(cri_temp_match.groups()[1]) * 100))
         else:
             property_list.add(_("Color"), color)
+
+    def update_settings(self, settings: Settings):
+        for wattage_box in self.wattage_boxes:
+            wattage_box.update_settings(settings)
+
