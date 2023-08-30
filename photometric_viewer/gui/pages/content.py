@@ -66,4 +66,5 @@ class PhotometryContent(Adw.Bin):
 
     def update_settings(self, settings: Settings):
         self.diagram.update_settings(settings)
+        self.lamps_and_ballast.update_settings(settings)
         self.geometry.update_settings(settings)

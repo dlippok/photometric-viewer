@@ -22,6 +22,7 @@ class DisplayHalfSpaces(Enum):
 class Settings:
     length_units_from_file: bool = False
     length_units: LengthUnits | None = LengthUnits.METERS
+    electricity_price_per_kwh: float = 0.25
     diagram_style: DiagramStyle = DiagramStyle.SIMPLE
     snap_value_angles_to: SnapValueAnglesTo = SnapValueAnglesTo.MAX_VALUE
     display_half_spaces: DisplayHalfSpaces = DisplayHalfSpaces.ONLY_RELEVANT

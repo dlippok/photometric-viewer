@@ -30,6 +30,11 @@
             <summary>Preferred units to be used when displaying length values</summary>
             <description>All length values from the photometric file will be converted to the selected unit when displaying in the UI.</description>
         </key>
+        <key type="d" name="electricity-price-per-kwh">
+            <default>0.25</default>
+            <summary>Electricity price per kWh</summary>
+            <description>Default price of electricity per kWh in your local currency</description>
+        </key>
         <key enum="io.github.dlippok.photometric-viewer.diagram-style-enum" name="diagram-style">
             <default>'simple'</default>
             <summary>Style of the displayed diagram</summary>

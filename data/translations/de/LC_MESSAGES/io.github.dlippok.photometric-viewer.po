@@ -18,10 +18,152 @@ msgstr ""
 "X-Generator: Gtranslator 42.0\n"
 
 #: photometric_viewer/gui/dialogs/about.py:7
+#: photometric_viewer/gui/window.py:32 photometric_viewer/gui/window.py:73
 #: photometric_viewer/gui/window.py:30 photometric_viewer/gui/window.py:71
-#: photometric_viewer/gui/window.py:73
 msgid "Photometric Viewer"
 msgstr "Photometriebetrachter"
+
+#: photometric_viewer/gui/dialogs/preferences.py:15
+#: photometric_viewer/gui/dialogs/preferences.py:13
+#: photometric_viewer/gui/dialogs/preferences.py:12
+#: photometric_viewer/gui/dialogs/preferences.py:18
+msgid "Application Settings"
+msgstr "Einstellungen"
+
+#: photometric_viewer/gui/dialogs/preferences.py:27
+msgid "Local settings"
+msgstr "Lokale Einstellungen"
+
+#: photometric_viewer/gui/dialogs/preferences.py:28
+msgid ""
+"Preferred units of measurement and display settings related to your local "
+"area"
+msgstr "Bevorzugte Längeneinheiten und Einstellungen zu deinem Standort"
+
+#: photometric_viewer/gui/dialogs/preferences.py:43
+#: photometric_viewer/gui/dialogs/preferences.py:41
+#: photometric_viewer/gui/dialogs/preferences.py:40
+#: photometric_viewer/gui/dialogs/preferences.py:38
+msgid "Use units from photometric file"
+msgstr "Benutze Einheiten aus der Photometriedatei"
+
+#: photometric_viewer/gui/dialogs/preferences.py:57
+#: photometric_viewer/gui/dialogs/preferences.py:55
+#: photometric_viewer/gui/dialogs/preferences.py:54
+#: photometric_viewer/gui/dialogs/preferences.py:52
+msgid "Preferred length units"
+msgstr "Bevorzugte Längeneinheiten"
+
+#: photometric_viewer/gui/dialogs/preferences.py:59
+#: photometric_viewer/gui/dialogs/preferences.py:57
+#: photometric_viewer/gui/dialogs/preferences.py:56
+#: photometric_viewer/gui/dialogs/preferences.py:54
+msgid "Meters"
+msgstr "Meter"
+
+#: photometric_viewer/gui/dialogs/preferences.py:60
+#: photometric_viewer/gui/dialogs/preferences.py:58
+#: photometric_viewer/gui/dialogs/preferences.py:57
+#: photometric_viewer/gui/dialogs/preferences.py:55
+msgid "Centimeters"
+msgstr "Zentimeter"
+
+#: photometric_viewer/gui/dialogs/preferences.py:61
+#: photometric_viewer/gui/dialogs/preferences.py:59
+#: photometric_viewer/gui/dialogs/preferences.py:58
+#: photometric_viewer/gui/dialogs/preferences.py:56
+msgid "Millimeters"
+msgstr "Millimeter"
+
+#: photometric_viewer/gui/dialogs/preferences.py:62
+#: photometric_viewer/gui/dialogs/preferences.py:60
+#: photometric_viewer/gui/dialogs/preferences.py:59
+#: photometric_viewer/gui/dialogs/preferences.py:57
+msgid "Feet"
+msgstr "Fuß"
+
+#: photometric_viewer/gui/dialogs/preferences.py:63
+#: photometric_viewer/gui/dialogs/preferences.py:61
+#: photometric_viewer/gui/dialogs/preferences.py:60
+#: photometric_viewer/gui/dialogs/preferences.py:58
+msgid "Inches"
+msgstr "Zoll"
+
+#: photometric_viewer/gui/dialogs/preferences.py:91
+msgid "Electricity price per kWh"
+msgstr "Strompreis pro kWh"
+
+#: photometric_viewer/gui/dialogs/preferences.py:116
+#: photometric_viewer/gui/pages/content.py:34
+#: photometric_viewer/gui/dialogs/preferences.py:88
+#: photometric_viewer/gui/dialogs/preferences.py:87
+msgid "Photometric diagram"
+msgstr "Lichtverteilungskurve"
+
+#: photometric_viewer/gui/dialogs/preferences.py:117
+#: photometric_viewer/gui/dialogs/preferences.py:89
+#: photometric_viewer/gui/dialogs/preferences.py:88
+msgid "Apperance of light distribution diagram"
+msgstr "Aussehen der Lichtverteilungskurve"
+
+#: photometric_viewer/gui/dialogs/preferences.py:134
+#: photometric_viewer/gui/dialogs/preferences.py:106
+msgid "Theme"
+msgstr "Design"
+
+#: photometric_viewer/gui/dialogs/preferences.py:157
+#: photometric_viewer/gui/dialogs/preferences.py:129
+#: photometric_viewer/gui/dialogs/preferences.py:110
+msgid "Simple"
+msgstr "Einfach"
+
+#: photometric_viewer/gui/dialogs/preferences.py:163
+#: photometric_viewer/gui/dialogs/preferences.py:135
+#: photometric_viewer/gui/dialogs/preferences.py:116
+msgid "Detailed"
+msgstr "Detaliert"
+
+#: photometric_viewer/gui/dialogs/preferences.py:171
+#: photometric_viewer/gui/dialogs/preferences.py:143
+#: photometric_viewer/gui/dialogs/preferences.py:124
+msgid "Style"
+msgstr "Stil"
+
+#: photometric_viewer/gui/dialogs/preferences.py:190
+#: photometric_viewer/gui/dialogs/preferences.py:162
+#: photometric_viewer/gui/dialogs/preferences.py:142
+msgid "Max value"
+msgstr "Größter Wert"
+
+#: photometric_viewer/gui/dialogs/preferences.py:196
+#: photometric_viewer/gui/dialogs/preferences.py:168
+#: photometric_viewer/gui/dialogs/preferences.py:148
+msgid "Round number"
+msgstr "Runde Zahl"
+
+#: photometric_viewer/gui/dialogs/preferences.py:204
+#: photometric_viewer/gui/dialogs/preferences.py:176
+#: photometric_viewer/gui/dialogs/preferences.py:156
+msgid "Snap guides to"
+msgstr "Richte Hilfslinien an"
+
+#: photometric_viewer/gui/dialogs/preferences.py:222
+#: photometric_viewer/gui/dialogs/preferences.py:194
+#: photometric_viewer/gui/dialogs/preferences.py:174
+msgid "Both"
+msgstr "Beide"
+
+#: photometric_viewer/gui/dialogs/preferences.py:228
+#: photometric_viewer/gui/dialogs/preferences.py:200
+#: photometric_viewer/gui/dialogs/preferences.py:180
+msgid "Only relevant"
+msgstr "Nur relevante"
+
+#: photometric_viewer/gui/dialogs/preferences.py:236
+#: photometric_viewer/gui/dialogs/preferences.py:208
+#: photometric_viewer/gui/dialogs/preferences.py:188
+msgid "Display half spaces"
+msgstr "Halbräume"
 
 #: photometric_viewer/gui/dialogs/file_chooser.py:15
 msgid "All files"
@@ -43,6 +185,11 @@ msgstr "PNG-Rastergrafik"
 msgid "SVG vector graphics"
 msgstr "SVG-Vektorgrafik"
 
+#: photometric_viewer/gui/dialogs/file_chooser.py:59
+msgid "EULUMDAT file"
+msgstr "EULUMDAT"
+
+#: photometric_viewer/gui/dialogs/file_chooser.py:78
 #: photometric_viewer/gui/dialogs/file_chooser.py:65
 #: photometric_viewer/gui/dialogs/file_chooser.py:51
 #: photometric_viewer/gui/dialogs/file_chooser.py:34
@@ -51,6 +198,7 @@ msgstr "SVG-Vektorgrafik"
 msgid "All photometric files"
 msgstr "Alle Photometriedateien"
 
+#: photometric_viewer/gui/dialogs/file_chooser.py:82
 #: photometric_viewer/gui/dialogs/file_chooser.py:69
 #: photometric_viewer/gui/dialogs/file_chooser.py:55
 #: photometric_viewer/gui/dialogs/file_chooser.py:38
@@ -59,6 +207,7 @@ msgstr "Alle Photometriedateien"
 msgid "IESNA (*.ies)"
 msgstr "IESNA (*.ies)"
 
+#: photometric_viewer/gui/dialogs/file_chooser.py:85
 #: photometric_viewer/gui/dialogs/file_chooser.py:72
 #: photometric_viewer/gui/dialogs/file_chooser.py:58
 #: photometric_viewer/gui/dialogs/file_chooser.py:41
@@ -67,6 +216,7 @@ msgstr "IESNA (*.ies)"
 msgid "EULUMDAT (*.ldt)"
 msgstr "EULUMDAT (*.ldt)"
 
+#: photometric_viewer/gui/dialogs/file_chooser.py:88
 #: photometric_viewer/gui/dialogs/file_chooser.py:75
 #: photometric_viewer/gui/dialogs/file_chooser.py:61
 #: photometric_viewer/gui/dialogs/file_chooser.py:44
@@ -74,126 +224,6 @@ msgstr "EULUMDAT (*.ldt)"
 #: photometric_viewer/gui/dialogs/file_chooser.py:24
 msgid "All Files"
 msgstr "Alle Dateien"
-
-#: photometric_viewer/gui/dialogs/preferences.py:13
-#: photometric_viewer/gui/dialogs/preferences.py:12
-#: photometric_viewer/gui/dialogs/preferences.py:18
-msgid "Application Settings"
-msgstr "Einstellungen"
-
-#: photometric_viewer/gui/dialogs/preferences.py:25
-#: photometric_viewer/gui/dialogs/preferences.py:24
-#: photometric_viewer/gui/dialogs/preferences.py:22
-msgid "Units"
-msgstr "Einheiten"
-
-#: photometric_viewer/gui/dialogs/preferences.py:26
-#: photometric_viewer/gui/dialogs/preferences.py:25
-#: photometric_viewer/gui/dialogs/preferences.py:23
-msgid "Measurement units displayed in the application"
-msgstr "Längeneinheiten für Anzeige in der Applikation"
-
-#: photometric_viewer/gui/dialogs/preferences.py:41
-#: photometric_viewer/gui/dialogs/preferences.py:40
-#: photometric_viewer/gui/dialogs/preferences.py:38
-msgid "Use units from photometric file"
-msgstr "Benutze Einheiten aus der Photometriedatei"
-
-#: photometric_viewer/gui/dialogs/preferences.py:55
-#: photometric_viewer/gui/dialogs/preferences.py:54
-#: photometric_viewer/gui/dialogs/preferences.py:52
-msgid "Preferred length units"
-msgstr "Bevorzugte Längeneinheiten"
-
-#: photometric_viewer/gui/dialogs/preferences.py:57
-#: photometric_viewer/gui/dialogs/preferences.py:56
-#: photometric_viewer/gui/dialogs/preferences.py:54
-msgid "Meters"
-msgstr "Meter"
-
-#: photometric_viewer/gui/dialogs/preferences.py:58
-#: photometric_viewer/gui/dialogs/preferences.py:57
-#: photometric_viewer/gui/dialogs/preferences.py:55
-msgid "Centimeters"
-msgstr "Zentimeter"
-
-#: photometric_viewer/gui/dialogs/preferences.py:59
-#: photometric_viewer/gui/dialogs/preferences.py:58
-#: photometric_viewer/gui/dialogs/preferences.py:56
-msgid "Millimeters"
-msgstr "Millimeter"
-
-#: photometric_viewer/gui/dialogs/preferences.py:60
-#: photometric_viewer/gui/dialogs/preferences.py:59
-#: photometric_viewer/gui/dialogs/preferences.py:57
-msgid "Feet"
-msgstr "Fuß"
-
-#: photometric_viewer/gui/dialogs/preferences.py:61
-#: photometric_viewer/gui/dialogs/preferences.py:60
-#: photometric_viewer/gui/dialogs/preferences.py:58
-msgid "Inches"
-msgstr "Zoll"
-
-#: photometric_viewer/gui/dialogs/preferences.py:88
-#: photometric_viewer/gui/pages/content.py:34
-#: photometric_viewer/gui/dialogs/preferences.py:87
-msgid "Photometric diagram"
-msgstr "Lichtverteilungskurve"
-
-#: photometric_viewer/gui/dialogs/preferences.py:89
-#: photometric_viewer/gui/dialogs/preferences.py:88
-msgid "Apperance of light distribution diagram"
-msgstr "Aussehen der Lichtverteilungskurve"
-
-#: photometric_viewer/gui/dialogs/preferences.py:106
-msgid "Theme"
-msgstr "Design"
-
-#: photometric_viewer/gui/dialogs/preferences.py:129
-#: photometric_viewer/gui/dialogs/preferences.py:110
-msgid "Simple"
-msgstr "Einfach"
-
-#: photometric_viewer/gui/dialogs/preferences.py:135
-#: photometric_viewer/gui/dialogs/preferences.py:116
-msgid "Detailed"
-msgstr "Detaliert"
-
-#: photometric_viewer/gui/dialogs/preferences.py:143
-#: photometric_viewer/gui/dialogs/preferences.py:124
-msgid "Style"
-msgstr "Stil"
-
-#: photometric_viewer/gui/dialogs/preferences.py:162
-#: photometric_viewer/gui/dialogs/preferences.py:142
-msgid "Max value"
-msgstr "Größter Wert"
-
-#: photometric_viewer/gui/dialogs/preferences.py:168
-#: photometric_viewer/gui/dialogs/preferences.py:148
-msgid "Round number"
-msgstr "Runde Zahl"
-
-#: photometric_viewer/gui/dialogs/preferences.py:176
-#: photometric_viewer/gui/dialogs/preferences.py:156
-msgid "Snap guides to"
-msgstr "Richte Hilfslinien an"
-
-#: photometric_viewer/gui/dialogs/preferences.py:194
-#: photometric_viewer/gui/dialogs/preferences.py:174
-msgid "Both"
-msgstr "Beide"
-
-#: photometric_viewer/gui/dialogs/preferences.py:200
-#: photometric_viewer/gui/dialogs/preferences.py:180
-msgid "Only relevant"
-msgstr "Nur relevante"
-
-#: photometric_viewer/gui/dialogs/preferences.py:208
-#: photometric_viewer/gui/dialogs/preferences.py:188
-msgid "Display half spaces"
-msgstr "Halbräume"
 
 #: photometric_viewer/gui/pages/empty.py:10
 msgid "No content"
@@ -374,62 +404,6 @@ msgstr "Höhe der Lichtaustrittfläche"
 msgid "Additional properties"
 msgstr "Zusätzliche Informationen"
 
-#: photometric_viewer/gui/widgets/content/lamps.py:39
-#: photometric_viewer/gui/widgets/content/lamps.py:35
-msgid "Number of lamps"
-msgstr "Anzahl der Lampen"
-
-#: photometric_viewer/gui/widgets/content/lamps.py:40
-#: photometric_viewer/gui/widgets/content/lamps.py:36
-msgid "Lamp"
-msgstr "Lampe"
-
-#: photometric_viewer/gui/widgets/content/lamps.py:41
-#: photometric_viewer/gui/widgets/content/lamps.py:37
-msgid "Lamp catalog no."
-msgstr "Katalognummer der Lampe"
-
-#: photometric_viewer/gui/widgets/content/lamps.py:47
-#: photometric_viewer/gui/widgets/content/lamps.py:53
-#: photometric_viewer/gui/widgets/content/lamps.py:39
-msgid "Color Rendering Index (CRI)"
-msgstr "Farbwiedergabeindex"
-
-#: photometric_viewer/gui/widgets/content/lamps.py:55
-#: photometric_viewer/gui/widgets/content/lamps.py:40
-msgid "Wattage"
-msgstr "Leistung"
-
-#: photometric_viewer/gui/widgets/content/lamps.py:58
-#: photometric_viewer/gui/widgets/content/lamps.py:43
-msgid "Initial rating per lamp"
-msgstr "Ursprünglicher Lichtstrom pro Lampe"
-
-#: photometric_viewer/gui/widgets/content/lamps.py:60
-#: photometric_viewer/gui/widgets/content/lamps.py:45
-msgid "Lamp position"
-msgstr "Position der Lampe"
-
-#: photometric_viewer/gui/widgets/content/lamps.py:61
-#: photometric_viewer/gui/widgets/content/lamps.py:46
-msgid "Ballast"
-msgstr "Vorschaltgerät"
-
-#: photometric_viewer/gui/widgets/content/lamps.py:62
-#: photometric_viewer/gui/widgets/content/lamps.py:47
-msgid "Ballast catalog no."
-msgstr "Katalognummer des Vorschaltgerätes"
-
-#: photometric_viewer/gui/widgets/content/lamps.py:64
-#: photometric_viewer/gui/widgets/content/lamps.py:49
-msgid "Lamp {}"
-msgstr "Lampe {}"
-
-#: photometric_viewer/gui/widgets/content/lamps.py:83
-#: photometric_viewer/gui/widgets/content/lamps.py:38
-msgid "Color"
-msgstr "Lichtfarbe"
-
 #: photometric_viewer/gui/widgets/content/photometry.py:23
 #: photometric_viewer/gui/pages/content.py:40
 msgid "Photometric properties"
@@ -513,6 +487,7 @@ msgstr "Bedeckter Himmel"
 msgid "Color temperature"
 msgstr "Farbtemperatur"
 
+#: photometric_viewer/gui/widgets/content/temperature.py:50
 #: photometric_viewer/gui/widgets/content/temperature.py:49
 msgid ""
 "Warm White\n"
@@ -521,6 +496,7 @@ msgstr ""
 "Warmweiß\n"
 "(< 3300 K)"
 
+#: photometric_viewer/gui/widgets/content/temperature.py:57
 #: photometric_viewer/gui/widgets/content/temperature.py:50
 msgid ""
 "Neutral White\n"
@@ -529,6 +505,7 @@ msgstr ""
 "Neutralweiß\n"
 "(3300 K ... 5300 K)"
 
+#: photometric_viewer/gui/widgets/content/temperature.py:64
 #: photometric_viewer/gui/widgets/content/temperature.py:51
 msgid ""
 "Cold White\n"
@@ -537,47 +514,133 @@ msgstr ""
 "Kaltweiß\n"
 "(> 5300 K)"
 
+#: photometric_viewer/gui/widgets/content/temperature.py:78
 #: photometric_viewer/gui/widgets/content/temperature.py:61
 msgid "Common light temperatures"
 msgstr "Typische Farbtemperaturen"
 
+#: photometric_viewer/gui/widgets/content/temperature.py:129
 #: photometric_viewer/gui/widgets/content/temperature.py:112
 msgid "Similar to: {} ({})"
 msgstr "Ähnlich wie: {} ({})"
 
-#: photometric_viewer/gui/window.py:44 photometric_viewer/gui/window.py:46
+#: photometric_viewer/gui/widgets/content/lamps.py:46
+#: photometric_viewer/gui/widgets/content/lamps.py:39
+#: photometric_viewer/gui/widgets/content/lamps.py:35
+msgid "Number of lamps"
+msgstr "Anzahl der Lampen"
+
+#: photometric_viewer/gui/widgets/content/lamps.py:47
+#: photometric_viewer/gui/widgets/content/lamps.py:40
+#: photometric_viewer/gui/widgets/content/lamps.py:36
+msgid "Lamp"
+msgstr "Lampe"
+
+#: photometric_viewer/gui/widgets/content/lamps.py:48
+#: photometric_viewer/gui/widgets/content/lamps.py:41
+#: photometric_viewer/gui/widgets/content/lamps.py:37
+msgid "Lamp catalog no."
+msgstr "Katalognummer der Lampe"
+
+#: photometric_viewer/gui/widgets/content/lamps.py:54
+#: photometric_viewer/gui/widgets/content/lamps.py:60
+#: photometric_viewer/gui/widgets/content/lamps.py:47
+#: photometric_viewer/gui/widgets/content/lamps.py:53
+#: photometric_viewer/gui/widgets/content/lamps.py:39
+msgid "Color Rendering Index (CRI)"
+msgstr "Farbwiedergabeindex"
+
+#: photometric_viewer/gui/widgets/content/lamps.py:68
+#: photometric_viewer/gui/widgets/content/lamps.py:58
+#: photometric_viewer/gui/widgets/content/lamps.py:43
+msgid "Initial rating per lamp"
+msgstr "Ursprünglicher Lichtstrom pro Lampe"
+
+#: photometric_viewer/gui/widgets/content/lamps.py:70
+#: photometric_viewer/gui/widgets/content/lamps.py:60
+#: photometric_viewer/gui/widgets/content/lamps.py:45
+msgid "Lamp position"
+msgstr "Position der Lampe"
+
+#: photometric_viewer/gui/widgets/content/lamps.py:71
+#: photometric_viewer/gui/widgets/content/lamps.py:61
+#: photometric_viewer/gui/widgets/content/lamps.py:46
+msgid "Ballast"
+msgstr "Vorschaltgerät"
+
+#: photometric_viewer/gui/widgets/content/lamps.py:72
+#: photometric_viewer/gui/widgets/content/lamps.py:62
+#: photometric_viewer/gui/widgets/content/lamps.py:47
+msgid "Ballast catalog no."
+msgstr "Katalognummer des Vorschaltgerätes"
+
+#: photometric_viewer/gui/widgets/content/lamps.py:74
+#: photometric_viewer/gui/widgets/content/lamps.py:64
+#: photometric_viewer/gui/widgets/content/lamps.py:49
+msgid "Lamp {}"
+msgstr "Lampe {}"
+
+#: photometric_viewer/gui/widgets/content/lamps.py:93
+#: photometric_viewer/gui/widgets/content/lamps.py:83
+#: photometric_viewer/gui/widgets/content/lamps.py:38
+msgid "Color"
+msgstr "Lichtfarbe"
+
+#: photometric_viewer/gui/widgets/content/wattage.py:26
+#: photometric_viewer/gui/widgets/content/lamps.py:55
+#: photometric_viewer/gui/widgets/content/lamps.py:40
+msgid "Wattage"
+msgstr "Leistung"
+
+#: photometric_viewer/gui/widgets/content/wattage.py:40
+msgid "Power consumption"
+msgstr "Stromverbrauch"
+
+#: photometric_viewer/gui/widgets/content/wattage.py:59
+msgid "Utilization (hours per day)"
+msgstr "Betriebsdauer (Stunden pro Tag)"
+
+#: photometric_viewer/gui/widgets/content/wattage.py:75
+msgid "Annual power consumption"
+msgstr "Stromverbrauch pro Jahr"
+
+#: photometric_viewer/gui/widgets/content/wattage.py:81
+msgid "Annual cost of operation"
+msgstr "Betriebskosten pro Jahr"
+
+#: photometric_viewer/gui/window.py:46 photometric_viewer/gui/window.py:44
 #: photometric_viewer/gui/window.py:47 photometric_viewer/gui/window.py:45
 #: photometric_viewer/gui/window.py:42
 msgid "Photometry"
 msgstr "Photometrie"
 
-#: photometric_viewer/gui/window.py:48 photometric_viewer/gui/window.py:50
+#: photometric_viewer/gui/window.py:50 photometric_viewer/gui/window.py:48
 #: photometric_viewer/gui/window.py:51 photometric_viewer/gui/window.py:49
 #: photometric_viewer/gui/window.py:46
 msgid "Source"
 msgstr "Quelle"
 
-#: photometric_viewer/gui/window.py:53 photometric_viewer/gui/window.py:55
+#: photometric_viewer/gui/window.py:55 photometric_viewer/gui/window.py:53
 #: photometric_viewer/gui/window.py:56 photometric_viewer/gui/window.py:54
 #: photometric_viewer/gui/window.py:51
 msgid "Intensity Values"
 msgstr "Lichtstärken"
 
-#: photometric_viewer/gui/window.py:61 photometric_viewer/gui/window.py:63
+#: photometric_viewer/gui/window.py:63 photometric_viewer/gui/window.py:61
 #: photometric_viewer/gui/window.py:64 photometric_viewer/gui/window.py:62
 #: photometric_viewer/gui/window.py:59
 msgid "Dismiss"
 msgstr "Schließen"
 
-#: photometric_viewer/gui/window.py:65 photometric_viewer/gui/window.py:67
+#: photometric_viewer/gui/window.py:67 photometric_viewer/gui/window.py:65
 #: photometric_viewer/gui/window.py:68 photometric_viewer/gui/window.py:66
 #: photometric_viewer/gui/window.py:64 photometric_viewer/gui/window.py:62
 msgid "Open"
 msgstr "Öffnen"
 
-#: photometric_viewer/gui/window.py:109 photometric_viewer/gui/window.py:98
-#: photometric_viewer/gui/window.py:38 photometric_viewer/gui/window.py:36
-#: photometric_viewer/gui/window.py:34
+#: photometric_viewer/gui/window.py:114 photometric_viewer/gui/window.py:109
+#: photometric_viewer/gui/window.py:98 photometric_viewer/gui/window.py:38
+#: photometric_viewer/gui/window.py:36 photometric_viewer/gui/window.py:34
 msgid ""
 "Settings schema could not be loaded. Selected settings will be lost on "
 "restart"
@@ -585,6 +648,8 @@ msgstr ""
 "Schema für Einstellungen könnte nicht geladen werden. Eingestellte Werte "
 "werden nach dem Programmende verworfen"
 
+#: photometric_viewer/gui/window.py:173 photometric_viewer/gui/window.py:185
+#: photometric_viewer/gui/window.py:200 photometric_viewer/gui/window.py:214
 #: photometric_viewer/gui/window.py:165 photometric_viewer/gui/window.py:177
 #: photometric_viewer/gui/window.py:192 photometric_viewer/gui/window.py:148
 #: photometric_viewer/gui/window.py:160 photometric_viewer/gui/window.py:175
@@ -594,19 +659,33 @@ msgstr ""
 msgid "Exported as {}"
 msgstr "Exportiert als {}"
 
-#: photometric_viewer/gui/window.py:221 photometric_viewer/gui/window.py:197
-#: photometric_viewer/gui/window.py:196 photometric_viewer/gui/window.py:191
-#: photometric_viewer/gui/window.py:168 photometric_viewer/gui/window.py:165
-#: photometric_viewer/gui/window.py:158 photometric_viewer/gui/window.py:125
+#: photometric_viewer/gui/window.py:244 photometric_viewer/gui/window.py:221
+#: photometric_viewer/gui/window.py:197 photometric_viewer/gui/window.py:196
+#: photometric_viewer/gui/window.py:191 photometric_viewer/gui/window.py:168
+#: photometric_viewer/gui/window.py:165 photometric_viewer/gui/window.py:158
+#: photometric_viewer/gui/window.py:125
 msgid "Invalid content of photometric file {}"
 msgstr "Ungültiger Inhalt in der Photometriedatei {}"
 
-#: photometric_viewer/gui/window.py:224 photometric_viewer/gui/window.py:200
-#: photometric_viewer/gui/window.py:199 photometric_viewer/gui/window.py:194
-#: photometric_viewer/gui/window.py:171 photometric_viewer/gui/window.py:168
-#: photometric_viewer/gui/window.py:161 photometric_viewer/gui/window.py:128
+#: photometric_viewer/gui/window.py:247 photometric_viewer/gui/window.py:224
+#: photometric_viewer/gui/window.py:200 photometric_viewer/gui/window.py:199
+#: photometric_viewer/gui/window.py:194 photometric_viewer/gui/window.py:171
+#: photometric_viewer/gui/window.py:168 photometric_viewer/gui/window.py:161
+#: photometric_viewer/gui/window.py:128
 msgid "Could not open {}"
 msgstr "Datei {} könnte nich geöffnet werden"
+
+#: photometric_viewer/gui/dialogs/preferences.py:25
+#: photometric_viewer/gui/dialogs/preferences.py:24
+#: photometric_viewer/gui/dialogs/preferences.py:22
+msgid "Units"
+msgstr "Einheiten"
+
+#: photometric_viewer/gui/dialogs/preferences.py:26
+#: photometric_viewer/gui/dialogs/preferences.py:25
+#: photometric_viewer/gui/dialogs/preferences.py:23
+msgid "Measurement units displayed in the application"
+msgstr "Längeneinheiten für Anzeige in der Applikation"
 
 #: photometric_viewer/gui/dialogs/about.py:7
 msgid "Photomertic Viewer"
