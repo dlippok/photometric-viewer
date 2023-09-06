@@ -3,11 +3,12 @@ import io
 import cairo
 
 from photometric_viewer.model.photometry import Photometry
-from photometric_viewer.utils.plotters import LightDistributionPlotter
+from photometric_viewer.utils import plotter_themes
+from photometric_viewer.utils.plotters import LightDistributionPlotter, LightDistributionPlotterSettings
 
 
 def export_photometry(photometry: Photometry):
-    plotter = LightDistributionPlotter()
+    plotter = LightDistributionPlotter(settings=LightDistributionPlotterSettings(theme=plotter_themes.THEMES[0].plotter_theme))
     bytes_io = io.BytesIO()
     surface = cairo.SVGSurface(bytes_io, 1000,  1000)
     plotter.size = 1000

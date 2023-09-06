@@ -1,9 +1,10 @@
 import math
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 from typing import Tuple, List
 
 import cairo
+
 from photometric_viewer.model.photometry import Photometry
 from photometric_viewer.utils.coordinates import cartesian_to_screen
 
@@ -43,16 +44,20 @@ class LightDistributionPlotterTheme:
 class LightDistributionPlotterSettings:
     style: DiagramStyle = DiagramStyle.DETAILED
     show_legend: bool = True
+    show_values: bool = True
     snap_value_angles_to: SnapValueAnglesTo | int = SnapValueAnglesTo.ROUND_NUMBER
     display_half_spaces: DisplayHalfSpaces = DisplayHalfSpaces.ONLY_RELEVANT
-    theme: LightDistributionPlotterTheme = None
+    theme: LightDistributionPlotterTheme = field(default_factory=lambda : LightDistributionPlotterTheme())
 
 
 class LightDistributionPlotter:
-    def __init__(self, settings: LightDistributionPlotterSettings = LightDistributionPlotterSettings()):
+    def __init__(self, settings: LightDistributionPlotterSettings = None):
         self.size = 300
         self.center = (150, 150)
-        self.settings = settings
+        if settings is not None:
+            self.settings = settings
+        else:
+            self.settings = LightDistributionPlotterSettings()
 
     def draw(self, context: cairo.Context, photometry: Photometry):
         self.center = self._get_center(photometry)
@@ -174,6 +179,9 @@ class LightDistributionPlotter:
         self.draw_values(self.center, context, photometry, radii)
 
     def draw_values(self, center, context, photometry, radii: List[int]):
+        if not self.settings.show_values:
+            return
+
         r, g, b, a = self.settings.theme.text_color
         context.set_source_rgba(r, g, b, a)
 

@@ -1,6 +1,6 @@
 from photometric_viewer.gui.widgets.common.property_list import PropertyList
 from photometric_viewer.model.photometry import Photometry, Shape, LuminousOpeningGeometry, LuminaireGeometry, \
-    LuminousOpeningShape
+    LuminousOpeningShape, LuminaireType
 from photometric_viewer.model.settings import Settings
 from photometric_viewer.model.units import LengthUnits, length_factor
 
@@ -98,3 +98,18 @@ class LuminaireGeometryProperties(PropertyList):
                     _("Luminous opening height"),
                     f"C0:\t\t{self._convert(h0)}\nC90:\t{self._convert(h90)}\nC180:\t{self._convert(h180)}\nC270:\t{self._convert(h270)}"
                 )
+
+        self.add_if_non_empty(_("Luminaire type"), self._display_liminaire_type(self.photometry.metadata.luminaire_type))
+
+
+    @staticmethod
+    def _display_liminaire_type(luminaire_type: LuminaireType | None):
+        match luminaire_type:
+            case LuminaireType.POINT_SOURCE_WITH_VERTICAL_SYMMETRY:
+                return _("Point source with symmetry about the vertical axis")
+            case LuminaireType.LINEAR:
+                return _("Linear luminaire")
+            case LuminaireType.POINT_SOURCE_WITH_OTHER_SYMMETRY:
+                return _("Point source with any other symmetry")
+            case None:
+                return None

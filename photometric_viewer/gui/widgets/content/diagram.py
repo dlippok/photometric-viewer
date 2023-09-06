@@ -21,6 +21,9 @@ class PhotometricDiagram(Gtk.DrawingArea):
         self.plotter = LightDistributionPlotter()
 
     def on_draw(self, _, context: cairo.Context, width, height):
+        self.plotter.settings.show_legend = width > 220
+        self.plotter.settings.show_values = width > 160
+
         self.set_content_height(width)
         self.set_name("photometric_diagram")
         self.plotter.size = width

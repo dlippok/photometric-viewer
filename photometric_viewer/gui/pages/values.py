@@ -30,16 +30,16 @@ class IntensityValues(Adw.Bin):
         box = Gtk.Box(
             orientation=Orientation.VERTICAL,
             spacing=16,
-            margin_top=32,
-            margin_bottom=32,
-            margin_start=32,
-            margin_end=32
+            margin_top=16,
+            margin_bottom=16,
+            margin_start=16,
+            margin_end=16
         )
 
         box.append(self.selection_list)
         box.append(self.property_list)
 
-        clamp = Adw.Clamp()
+        clamp = Adw.Clamp(maximum_size=800)
         clamp.set_child(box)
 
         scrolled_window = ScrolledWindow()
