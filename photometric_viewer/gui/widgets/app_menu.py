@@ -6,37 +6,6 @@ class ApplicationMenuButton(Gtk.MenuButton):
     <?xml version="1.0"?>
         <interface>
         <menu id='app-menu'>
-            <submenu>
-                <attribute name='label' translatable='yes'>Export</attribute>
-                <section>
-                    <item>
-                        <attribute name='label' translatable='yes'>As EULUMDAT</attribute>
-                        <attribute name='action'>app.export_as_ldt</attribute>
-                    </item>
-                    <item>
-                        <attribute name='label' translatable='yes'>As IESNA</attribute>
-                        <attribute name='action'>app.export_as_ies</attribute>
-                    </item>
-                    <item>
-                        <attribute name='label' translatable='yes'>Light distribution curve</attribute>
-                        <attribute name='action'>app.export_ldc_as_image</attribute>
-                    </item>
-                    <item>
-                        <attribute name='label' translatable='yes'>Intensity values</attribute>
-                        <attribute name='action'>app.export_intensities_as_csv</attribute>
-                    </item>
-                    <item>
-                        <attribute name='label' translatable='yes'>Luminaire data</attribute>
-                        <attribute name='action'>app.export_luminaire_as_json</attribute>
-                    </item>
-                </section>
-            </submenu>
-            <section>
-                <item>
-                    <attribute name='label' translatable='yes'>Show source</attribute>
-                    <attribute name='action'>app.show_source</attribute>
-                </item>
-            </section>
             <section>
                 <item>
                     <attribute name='label' translatable='yes'>Preferences</attribute>
