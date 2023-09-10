@@ -72,7 +72,7 @@ class LampAndBallast(Adw.Bin):
             property_list.add_if_non_empty(_("Ballast catalog no."), lamp.ballast_catalog_number)
 
             page_name = lamp.description or _("Lamp {}").format(n)
-            page = self.view_stack.add_titled(property_list, "lamp_{n}", page_name)
+            page = self.view_stack.add_titled(property_list, f"lamp_{n}", page_name)
             page.set_icon_name("io.github.dlippok.photometric-viewer-symbolic")
 
     def _add_color_widget(self, property_list: PropertyList, color: str | None):

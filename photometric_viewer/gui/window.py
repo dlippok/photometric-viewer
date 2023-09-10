@@ -64,27 +64,32 @@ class MainWindow(Adw.Window):
         self.banner.set_button_label(_("Dismiss"))
         self.banner.connect("button-clicked", self.banner_dismiss_clicked)
 
-        open_button = Button(
+        self.open_button = Button(
             child=Adw.ButtonContent(label=_("Open"), icon_name="document-open-symbolic")
         )
+        self.open_button.connect("clicked", self.on_open_clicked)
 
-        open_button.connect("clicked", self.on_open_clicked)
+        self.back_button = Button(
+            child=Adw.ButtonContent(label=_("Back"), icon_name="go-previous-symbolic"),
+            visible=False
+        )
+        self.back_button.connect("clicked", self.on_back_clicked)
 
-        self.switcher_title = Adw.ViewSwitcherTitle()
-        self.switcher_title.set_title(_("Photometric Viewer"))
-        self.switcher_title.connect("notify::title-visible", self.on_title_visible_changed)
-
-        self.switcher_bar = Adw.ViewSwitcherBar()
+        self.window_title = Adw.WindowTitle()
+        self.window_title.set_title(_("Photometric Viewer"))
 
         box = Gtk.Box(orientation=Orientation.VERTICAL)
+
         header_bar = Adw.HeaderBar()
-        header_bar.set_title_widget(self.switcher_title)
-        header_bar.pack_start(open_button)
+        header_bar.set_title_widget(self.window_title)
+        header_bar.pack_start(self.open_button)
+        header_bar.pack_start(self.back_button)
+
         header_bar.pack_end(ApplicationMenuButton())
+
         box.append(header_bar)
         box.append(self.banner)
         box.append(self.content_bin)
-        box.append(self.switcher_bar)
 
         self.open_file_chooser = OpenFileChooser(transient_for=self)
         self.open_file_chooser.connect("response", self.on_open_response)
@@ -120,12 +125,14 @@ class MainWindow(Adw.Window):
     def install_actions(self):
         self.install_action("app.show_about_window", None, self.show_about_dialog)
         self.install_action("app.show_preferences", None, self.show_preferences)
+        self.install_action("app.show_intensity_values", None, self.show_intensity_values)
         self.install_action("app.show_source", None, self.show_source)
         self.install_action("app.export_luminaire_as_json", None, self.show_json_export_file_chooser)
         self.install_action("app.export_intensities_as_csv", None, self.show_csv_export_file_chooser)
         self.install_action("app.export_ldc_as_image", None, self.show_ldc_export_file_chooser)
         self.install_action("app.export_as_ldt", None, self.show_ldt_export_file_chooser)
         self.install_action("app.export_as_ies", None, self.show_ies_export_file_chooser)
+        self.action_set_enabled("app.show_intensity_values", False)
         self.action_set_enabled("app.show_source", False)
         self.action_set_enabled("app.export_luminaire_as_json", False)
         self.action_set_enabled("app.export_intensities_as_csv", False)
@@ -139,20 +146,9 @@ class MainWindow(Adw.Window):
         self.values_table.set_photometry(photometry)
 
         self.content_bin.set_child(self.view_stack)
-        self.switcher_title.set_stack(self.view_stack)
-        self.switcher_bar.set_stack(self.view_stack)
         self.opened_photometry = photometry
 
-        if photometry.metadata.luminaire:
-            self.set_title(title=photometry.metadata.luminaire)
-            self.switcher_title.set_subtitle(photometry.metadata.luminaire)
 
-        self.action_set_enabled("app.show_source", True)
-        self.action_set_enabled("app.export_luminaire_as_json", True)
-        self.action_set_enabled("app.export_intensities_as_csv", True)
-        self.action_set_enabled("app.export_ldc_as_image", True)
-        self.action_set_enabled("app.export_as_ldt", True)
-        self.action_set_enabled("app.export_as_ies", True)
 
 
     def update_settings(self):
@@ -161,6 +157,9 @@ class MainWindow(Adw.Window):
 
     def on_open_clicked(self, _):
         self.open_file_chooser.show()
+
+    def on_back_clicked(self, _):
+        self.open_page(self.photometry_content)
 
     def on_open_response(self, dialog: FileChooserDialog, response):
         if response == Gtk.ResponseType.ACCEPT:
@@ -243,12 +242,19 @@ class MainWindow(Adw.Window):
         self.show_banner(_("Exported as {}").format(file.get_basename()))
 
     def on_title_visible_changed(self, *args):
-        title_visible = self.switcher_title.get_title_visible()
+        title_visible = self.window_title.get_title_visible()
         self.switcher_bar.set_reveal(title_visible)
 
     def on_drop(self, target, file, *args):
         self.open_file(file)
         return True
+
+    def open_page(self, page):
+        self.view_stack.set_visible_child(page)
+        is_start_page = (page == self.photometry_content) or self.opened_photometry is None
+        self.back_button.set_visible(not is_start_page)
+        self.open_button.set_visible(is_start_page)
+
 
     def open_file(self, file: Gio.File):
         self.banner.set_revealed(False)
@@ -259,12 +265,24 @@ class MainWindow(Adw.Window):
                 self.display_photometry_content(photometry)
                 self.photometry_content.update_settings(self.settings)
 
+                self.set_title(title=file.get_basename())
+                self.window_title.set_subtitle(file.get_basename())
+
+                self.action_set_enabled("app.show_intensity_values", True)
+                self.action_set_enabled("app.show_source", True)
+                self.action_set_enabled("app.export_luminaire_as_json", True)
+                self.action_set_enabled("app.export_intensities_as_csv", True)
+                self.action_set_enabled("app.export_ldc_as_image", True)
+                self.action_set_enabled("app.export_as_ldt", True)
+                self.action_set_enabled("app.export_as_ies", True)
+
                 opened_filename = file.get_basename()
                 self.json_export_file_chooser.set_current_name(f"{opened_filename}.json")
                 self.csv_export_file_chooser.set_current_name(f"{opened_filename}.csv")
                 self.ldc_export_file_chooser.set_current_name(f"{opened_filename}.png")
                 self.ldt_export_file_chooser.set_current_name(f"{opened_filename}_exported.ldt")
                 self.ies_export_file_chooser.set_current_name(f"{opened_filename}_exported.ies")
+                self.open_page(self.photometry_content)
 
         except GLib.GError as e:
             logging.exception("Could not open photometric file")
@@ -281,7 +299,10 @@ class MainWindow(Adw.Window):
         window.show()
 
     def show_source(self, *args):
-        self.view_stack.set_visible_child(self.source_view)
+        self.open_page(self.source_view)
+
+    def show_intensity_values(self, *args):
+        self.open_page(self.values_table)
 
     def show_json_export_file_chooser(self, *args):
         self.json_export_file_chooser.show()

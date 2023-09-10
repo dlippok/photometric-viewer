@@ -2,6 +2,7 @@ from gi.repository.Gtk import Box, Orientation, Label, Align
 from gi.repository.Pango import WrapMode
 
 from photometric_viewer.gui.widgets.content.diagram import PhotometricDiagram
+from photometric_viewer.gui.widgets.content.header_buttons import HeaderButtons
 from photometric_viewer.model.photometry import Photometry
 from photometric_viewer.model.settings import Settings
 
@@ -26,7 +27,7 @@ class LuminaireHeader(Box):
             wrap_mode=WrapMode.WORD_CHAR,
             selectable=True,
 
-            css_classes=["title-3"]
+            css_classes=["title-2"]
 
         )
         self.manufacturer_label = Label(
@@ -35,7 +36,7 @@ class LuminaireHeader(Box):
             wrap=True,
             wrap_mode=WrapMode.WORD_CHAR,
             selectable=True,
-            css_classes=["title-4"]
+            css_classes=["title-3"]
         )
         self.description_label = Label(
             xalign=0,
@@ -65,6 +66,8 @@ class LuminaireHeader(Box):
         properties_box.append(self.date_label)
         properties_box.append(self.measurement_label)
         properties_box.append(self.description_label)
+        properties_box.append(HeaderButtons())
+
 
         self.append(self.diagram)
         self.append(properties_box)
