@@ -23,6 +23,7 @@ from photometric_viewer.gui.pages.source import SourceView
 from photometric_viewer.gui.pages.values import IntensityValues
 from photometric_viewer.gui.widgets.app_menu import ApplicationMenuButton
 from photometric_viewer.model.photometry import Photometry
+from photometric_viewer.utils import calc
 from photometric_viewer.utils.GSettings import GSettings
 from photometric_viewer.utils.gio import gio_file_stream, write_string, write_bytes
 

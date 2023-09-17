@@ -1,6 +1,9 @@
+import math
 import unittest
 
-from photometric_viewer.utils.calc import annual_power_consumption, energy_cost
+from photometric_viewer.utils.calc import annual_power_consumption, energy_cost, calculate_photometric_properties, \
+    CalculatedPhotometricProperties
+from tests.fixtures.photometry import *
 
 
 class TestPowerConsumption(unittest.TestCase):
@@ -55,3 +58,56 @@ class TestEnergyCost(unittest.TestCase):
     def test_energy_cost_with_negative_price(self):
         with self.assertRaises(ValueError):
             energy_cost(power_consumption_kwh=1, price_kwh=-0.25)
+
+
+class TestPhotometricProperties(unittest.TestCase):
+    def test_uniform_radiating_sources(self):
+        """
+        Test uniform radiating light sources
+        """
+        EXPECTED_FLUX = 1000 * 4 * math.pi
+        cases = [
+            {
+                "title": "Equidistant uniform radiating source",
+                "source": UNIFORM_RADIATING_SOURCE,
+                "expected": CalculatedPhotometricProperties(flux_luminaire=EXPECTED_FLUX, lor=1, dff=0.5)
+            },
+            {
+                "title": "Equidistant downward radiating source",
+                "source": DOWNWARD_RADIATING_SOURCE,
+                "expected": CalculatedPhotometricProperties(flux_luminaire=EXPECTED_FLUX, lor=1, dff=1)
+            },
+            {
+                "title": "Equidistant upward radiating source",
+                "source": UPWARD_RADIATING_SOURCE,
+                "expected": CalculatedPhotometricProperties(flux_luminaire=EXPECTED_FLUX, lor=1, dff=0)
+            },
+            {
+                "title": "Non equidistant uniform radiating source",
+                "source": NON_EQUIDISTANT_UNIFORM_RADIATING_SOURCE,
+                "expected": CalculatedPhotometricProperties(flux_luminaire=EXPECTED_FLUX, lor=1, dff=0.5)
+            },
+            {
+                "title": "Non equidistant downward radiating source",
+                "source": NON_EQUIDISTANT_DOWNWARD_RADIATING_SOURCE,
+                "expected": CalculatedPhotometricProperties(flux_luminaire=EXPECTED_FLUX, lor=1, dff=1)
+            },
+            {
+                "title": "Non equidistant upward radiating source",
+                "source": NON_EQUIDISTANT_UPWARD_RADIATING_SOURCE,
+                "expected": CalculatedPhotometricProperties(flux_luminaire=EXPECTED_FLUX, lor=1, dff=0)
+            },
+            {
+                "title": "LOR 50 equidistant upward radiating source",
+                "source": LOR_50_UNIFORM_RADIATING_SOURCE,
+                "expected": CalculatedPhotometricProperties(flux_luminaire=1000, lor=0.5, dff=0.5)
+            }
+        ]
+
+        for case in cases:
+            with(self.subTest(case=case, msg=case["title"])):
+                properties = calculate_photometric_properties(case["source"], case["source"].lamps[0])
+                self.assertAlmostEqual(properties.flux_luminaire, case["expected"].flux_luminaire)
+                self.assertAlmostEqual(properties.lor, case["expected"].lor)
+                self.assertAlmostEqual(properties.dff, case["expected"].dff)
+

@@ -26,7 +26,7 @@ class PhotometryContent(Adw.Bin):
             margin_top=50,
             margin_bottom=50,
             margin_start=16,
-            margin_end=16
+            margin_end=16,
         )
 
         box.append(self.header)
