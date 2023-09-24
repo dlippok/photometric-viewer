@@ -1,9 +1,11 @@
 from gi.repository.Gtk import Orientation, Box, Label, Expander, LevelBar
 from gi.repository.Pango import WrapMode
 
+from photometric_viewer.gui.widgets.common import badges
+
 
 class Gauge(Box):
-    def __init__(self, name: str, value: float, min_value: float, max_value: float, display=None, **kwargs):
+    def __init__(self, name: str, value: float, min_value: float, max_value: float, display=None, calculated: bool = False, **kwargs):
         super().__init__(
             orientation=Orientation.VERTICAL,
             homogeneous=False,
@@ -15,9 +17,15 @@ class Gauge(Box):
             **kwargs
         )
 
+        name_box = Box(orientation=Orientation.HORIZONTAL)
         name_label = Label(label=name, hexpand=True, xalign=0, wrap=True, wrap_mode=WrapMode.WORD_CHAR)
         name_label.set_css_classes(["h1"])
-        self.append(name_label)
+        name_box.append(name_label)
+
+        if calculated:
+            name_box.append(badges.calculated())
+
+        self.append(name_box)
 
         try:
             if min_value <= value <= max_value:

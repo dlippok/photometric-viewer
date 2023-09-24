@@ -103,6 +103,7 @@ class Photometry:
     lamps: List[Lamps]
     metadata: PhotometryMetadata
 
+
     def get_values_for_c_angle(self, angle) -> Dict[float, float]:
         if angle in self.c_planes:
             return self._values_for_angle(angle)
