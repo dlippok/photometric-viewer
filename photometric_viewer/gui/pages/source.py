@@ -4,7 +4,7 @@ from gi.repository.Gtk import ScrolledWindow, PolicyType
 from photometric_viewer.model.photometry import Photometry
 
 
-class SourceView(Adw.Bin):
+class SourceViewPage(Adw.Bin):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 

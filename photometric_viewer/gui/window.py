@@ -17,10 +17,11 @@ from photometric_viewer.formats.exceptions import InvalidPhotometricFileFormatEx
 from photometric_viewer.gui.dialogs.about import AboutWindow
 from photometric_viewer.gui.dialogs.file_chooser import OpenFileChooser, ExportFileChooser
 from photometric_viewer.gui.dialogs.preferences import PreferencesWindow
-from photometric_viewer.gui.pages.content import PhotometryContent
+from photometric_viewer.gui.pages.content import PhotometryContentPage
 from photometric_viewer.gui.pages.empty import EmptyPage
-from photometric_viewer.gui.pages.source import SourceView
-from photometric_viewer.gui.pages.values import IntensityValues
+from photometric_viewer.gui.pages.ldc_export import LdcExportPage
+from photometric_viewer.gui.pages.source import SourceViewPage
+from photometric_viewer.gui.pages.values import IntensityValuesPage
 from photometric_viewer.gui.widgets.app_menu import ApplicationMenuButton
 from photometric_viewer.model.photometry import Photometry
 from photometric_viewer.utils import calc
@@ -44,18 +45,17 @@ class MainWindow(Adw.Window):
         self.view_stack = Adw.ViewStack()
         self.opened_photometry: Optional[Photometry] = None
 
-        self.photometry_content = PhotometryContent()
-        properties_page: ViewStackPage = self.view_stack.add_titled(self.photometry_content, "photometry", _("Photometry"))
-        properties_page.set_icon_name("view-reveal-symbolic")
+        self.photometry_content_page = PhotometryContentPage()
+        self.view_stack.add_titled(self.photometry_content_page, "photometry", _("Photometry"))
 
-        self.source_view = SourceView()
-        source_page: ViewStackPage = self.view_stack.add_titled(self.source_view, "source", _("Source"))
-        source_page.set_icon_name("view-paged-symbolic")
-        source_page.set_visible(False)
+        self.source_view_page = SourceViewPage()
+        self.view_stack.add_titled(self.source_view_page, "source", _("Source"))
 
-        self.values_table = IntensityValues()
-        values_page: ViewStackPage = self.view_stack.add_titled(self.values_table, "values", _("Intensity Values"))
-        values_page.set_icon_name("view-grid-symbolic")
+        self.values_table_page = IntensityValuesPage()
+        self.view_stack.add_titled(self.values_table_page, "values", _("Intensity Values"))
+
+        self.ldc_export_page = LdcExportPage()
+        self.view_stack.add_titled(self.ldc_export_page, "ldc_export", _("LDC Export"))
 
         self.content_bin = Adw.Bin()
         self.content_bin.set_child(EmptyPage())
@@ -142,9 +142,9 @@ class MainWindow(Adw.Window):
         self.action_set_enabled("app.export_as_ies", False)
 
     def display_photometry_content(self, photometry: Photometry):
-        self.photometry_content.set_photometry(photometry)
-        self.source_view.set_photometry(photometry)
-        self.values_table.set_photometry(photometry)
+        self.photometry_content_page.set_photometry(photometry)
+        self.source_view_page.set_photometry(photometry)
+        self.values_table_page.set_photometry(photometry)
 
         self.content_bin.set_child(self.view_stack)
         self.opened_photometry = photometry
@@ -153,14 +153,14 @@ class MainWindow(Adw.Window):
 
 
     def update_settings(self):
-        self.photometry_content.update_settings(self.settings)
+        self.photometry_content_page.update_settings(self.settings)
         self.gsettings.save(self.settings)
 
     def on_open_clicked(self, _):
         self.open_file_chooser.show()
 
     def on_back_clicked(self, _):
-        self.open_page(self.photometry_content)
+        self.open_page(self.photometry_content_page)
 
     def on_open_response(self, dialog: FileChooserDialog, response):
         if response == Gtk.ResponseType.ACCEPT:
@@ -252,7 +252,7 @@ class MainWindow(Adw.Window):
 
     def open_page(self, page):
         self.view_stack.set_visible_child(page)
-        is_start_page = (page == self.photometry_content) or self.opened_photometry is None
+        is_start_page = (page == self.photometry_content_page) or self.opened_photometry is None
         self.back_button.set_visible(not is_start_page)
         self.open_button.set_visible(is_start_page)
 
@@ -264,7 +264,7 @@ class MainWindow(Adw.Window):
                 photometry = import_from_file(f)
 
                 self.display_photometry_content(photometry)
-                self.photometry_content.update_settings(self.settings)
+                self.photometry_content_page.update_settings(self.settings)
 
                 self.set_title(title=file.get_basename())
                 self.window_title.set_subtitle(file.get_basename())
@@ -283,7 +283,7 @@ class MainWindow(Adw.Window):
                 self.ldc_export_file_chooser.set_current_name(f"{opened_filename}.png")
                 self.ldt_export_file_chooser.set_current_name(f"{opened_filename}_exported.ldt")
                 self.ies_export_file_chooser.set_current_name(f"{opened_filename}_exported.ies")
-                self.open_page(self.photometry_content)
+                self.open_page(self.photometry_content_page)
 
         except GLib.GError as e:
             logging.exception("Could not open photometric file")
@@ -300,10 +300,10 @@ class MainWindow(Adw.Window):
         window.show()
 
     def show_source(self, *args):
-        self.open_page(self.source_view)
+        self.open_page(self.source_view_page)
 
     def show_intensity_values(self, *args):
-        self.open_page(self.values_table)
+        self.open_page(self.values_table_page)
 
     def show_json_export_file_chooser(self, *args):
         self.json_export_file_chooser.show()

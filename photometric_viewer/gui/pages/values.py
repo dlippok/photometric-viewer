@@ -5,7 +5,7 @@ from photometric_viewer.gui.widgets.common.property_list import PropertyList
 from photometric_viewer.model.photometry import Photometry
 
 
-class IntensityValues(Adw.Bin):
+class IntensityValuesPage(Adw.Bin):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.photometry = None
