@@ -5,7 +5,7 @@ from photometric_viewer.model.photometry import Photometry
 from photometric_viewer.model.settings import Settings
 from photometric_viewer.utils import plotter_themes
 from photometric_viewer.utils.plotters import LightDistributionPlotter, DiagramStyle, SnapValueAnglesTo, \
-    DisplayHalfSpaces, LightDistributionPlotterSettings
+    DisplayHalfSpaces
 
 
 class PhotometricDiagram(Gtk.DrawingArea):
@@ -21,6 +21,9 @@ class PhotometricDiagram(Gtk.DrawingArea):
         self.plotter = LightDistributionPlotter()
 
     def on_draw(self, _, context: cairo.Context, width, height):
+        if self.photometry is None:
+            return
+
         self.plotter.settings.show_legend = width > 220
         self.plotter.settings.show_values = width > 160
 
