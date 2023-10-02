@@ -58,7 +58,6 @@ class LuminairePhotometricProperties(Box):
                 str(photometry.metadata.conversion_factor)
             )
 
-
         if photometry.is_absolute:
             lamp = photometry.lamps[0]
 
@@ -72,5 +71,3 @@ class LuminairePhotometricProperties(Box):
                 _value_with_unit(flux_luminaire, "lm"),
                 is_calculated=lamp.lumens_per_lamp is None
             )
-            print("Calculated:", lamp.lumens_per_lamp is None)
-

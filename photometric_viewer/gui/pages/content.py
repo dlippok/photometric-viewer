@@ -11,7 +11,7 @@ from photometric_viewer.model.photometry import Photometry
 from photometric_viewer.model.settings import Settings
 
 
-class PhotometryContent(Adw.Bin):
+class PhotometryContentPage(Adw.Bin):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.header = LuminaireHeader()

@@ -4,7 +4,6 @@ from datetime import datetime
 from typing import Optional
 
 from gi.repository import Adw, Gtk, Gio, GLib, Gdk
-from gi.repository.Adw import ViewStackPage
 from gi.repository.Gtk import Orientation, Button, FileChooserDialog, DropTarget
 
 import photometric_viewer.formats.csv
@@ -17,15 +16,15 @@ from photometric_viewer.formats.exceptions import InvalidPhotometricFileFormatEx
 from photometric_viewer.gui.dialogs.about import AboutWindow
 from photometric_viewer.gui.dialogs.file_chooser import OpenFileChooser, ExportFileChooser
 from photometric_viewer.gui.dialogs.preferences import PreferencesWindow
-from photometric_viewer.gui.pages.content import PhotometryContent
+from photometric_viewer.gui.pages.content import PhotometryContentPage
 from photometric_viewer.gui.pages.empty import EmptyPage
-from photometric_viewer.gui.pages.source import SourceView
-from photometric_viewer.gui.pages.values import IntensityValues
+from photometric_viewer.gui.pages.ldc_export import LdcExportPage
+from photometric_viewer.gui.pages.source import SourceViewPage
+from photometric_viewer.gui.pages.values import IntensityValuesPage
 from photometric_viewer.gui.widgets.app_menu import ApplicationMenuButton
 from photometric_viewer.model.photometry import Photometry
-from photometric_viewer.utils import calc
 from photometric_viewer.utils.GSettings import GSettings
-from photometric_viewer.utils.gio import gio_file_stream, write_string, write_bytes
+from photometric_viewer.utils.gio import gio_file_stream, write_string
 
 
 class MainWindow(Adw.Window):
@@ -44,18 +43,17 @@ class MainWindow(Adw.Window):
         self.view_stack = Adw.ViewStack()
         self.opened_photometry: Optional[Photometry] = None
 
-        self.photometry_content = PhotometryContent()
-        properties_page: ViewStackPage = self.view_stack.add_titled(self.photometry_content, "photometry", _("Photometry"))
-        properties_page.set_icon_name("view-reveal-symbolic")
+        self.photometry_content_page = PhotometryContentPage()
+        self.view_stack.add_titled(self.photometry_content_page, "photometry", _("Photometry"))
 
-        self.source_view = SourceView()
-        source_page: ViewStackPage = self.view_stack.add_titled(self.source_view, "source", _("Source"))
-        source_page.set_icon_name("view-paged-symbolic")
-        source_page.set_visible(False)
+        self.source_view_page = SourceViewPage()
+        self.view_stack.add_titled(self.source_view_page, "source", _("Source"))
 
-        self.values_table = IntensityValues()
-        values_page: ViewStackPage = self.view_stack.add_titled(self.values_table, "values", _("Intensity Values"))
-        values_page.set_icon_name("view-grid-symbolic")
+        self.values_table_page = IntensityValuesPage()
+        self.view_stack.add_titled(self.values_table_page, "values", _("Intensity Values"))
+
+        self.ldc_export_page = LdcExportPage(on_exported=self.on_export_ldc_response, transient_for=self)
+        self.view_stack.add_titled(self.ldc_export_page, "ldc_export", _("LDC Export"))
 
         self.content_bin = Adw.Bin()
         self.content_bin.set_child(EmptyPage())
@@ -81,7 +79,7 @@ class MainWindow(Adw.Window):
 
         box = Gtk.Box(orientation=Orientation.VERTICAL)
 
-        header_bar = Adw.HeaderBar()
+        header_bar = Adw.HeaderBar(css_classes=["flat"])
         header_bar.set_title_widget(self.window_title)
         header_bar.pack_start(self.open_button)
         header_bar.pack_start(self.back_button)
@@ -100,9 +98,6 @@ class MainWindow(Adw.Window):
 
         self.csv_export_file_chooser = ExportFileChooser.for_csv(transient_for=self)
         self.csv_export_file_chooser.connect("response", self.on_export_csv_response)
-
-        self.ldc_export_file_chooser = ExportFileChooser.for_ldc(transient_for=self)
-        self.ldc_export_file_chooser.connect("response", self.on_export_ldc_response)
 
         self.ldt_export_file_chooser = ExportFileChooser.for_ldt(transient_for=self)
         self.ldt_export_file_chooser.connect("response", self.on_export_ldt_response)
@@ -130,7 +125,7 @@ class MainWindow(Adw.Window):
         self.install_action("app.show_source", None, self.show_source)
         self.install_action("app.export_luminaire_as_json", None, self.show_json_export_file_chooser)
         self.install_action("app.export_intensities_as_csv", None, self.show_csv_export_file_chooser)
-        self.install_action("app.export_ldc_as_image", None, self.show_ldc_export_file_chooser)
+        self.install_action("app.export_ldc_as_image", None, self.show_ldc_export_page)
         self.install_action("app.export_as_ldt", None, self.show_ldt_export_file_chooser)
         self.install_action("app.export_as_ies", None, self.show_ies_export_file_chooser)
         self.action_set_enabled("app.show_intensity_values", False)
@@ -142,9 +137,10 @@ class MainWindow(Adw.Window):
         self.action_set_enabled("app.export_as_ies", False)
 
     def display_photometry_content(self, photometry: Photometry):
-        self.photometry_content.set_photometry(photometry)
-        self.source_view.set_photometry(photometry)
-        self.values_table.set_photometry(photometry)
+        self.photometry_content_page.set_photometry(photometry)
+        self.source_view_page.set_photometry(photometry)
+        self.values_table_page.set_photometry(photometry)
+        self.ldc_export_page.set_photometry(photometry)
 
         self.content_bin.set_child(self.view_stack)
         self.opened_photometry = photometry
@@ -153,14 +149,14 @@ class MainWindow(Adw.Window):
 
 
     def update_settings(self):
-        self.photometry_content.update_settings(self.settings)
+        self.photometry_content_page.update_settings(self.settings)
         self.gsettings.save(self.settings)
 
     def on_open_clicked(self, _):
         self.open_file_chooser.show()
 
     def on_back_clicked(self, _):
-        self.open_page(self.photometry_content)
+        self.open_page(self.photometry_content_page)
 
     def on_open_response(self, dialog: FileChooserDialog, response):
         if response == Gtk.ResponseType.ACCEPT:
@@ -191,20 +187,9 @@ class MainWindow(Adw.Window):
         write_string(file, data)
         self.show_banner(_("Exported as {}").format(file.get_basename()))
 
-    def on_export_ldc_response(self, dialog: FileChooserDialog, response):
-        if not self.opened_photometry:
-            return
-
-        if response != Gtk.ResponseType.ACCEPT:
-            return
-
-        file: Gio.File = dialog.get_file()
-        if file.get_basename().endswith(".svg"):
-            data = photometric_viewer.formats.svg.export_photometry(self.opened_photometry)
-        else:
-            data = photometric_viewer.formats.png.export_photometry(self.opened_photometry)
-        write_bytes(file, data)
-        self.show_banner(_("Exported as {}").format(file.get_basename()))
+    def on_export_ldc_response(self, filename):
+        self.open_page(self.photometry_content_page)
+        self.show_banner(_("Exported as {}").format(filename))
 
     def on_export_ldt_response(self, dialog: FileChooserDialog, response):
         if not self.opened_photometry:
@@ -252,7 +237,7 @@ class MainWindow(Adw.Window):
 
     def open_page(self, page):
         self.view_stack.set_visible_child(page)
-        is_start_page = (page == self.photometry_content) or self.opened_photometry is None
+        is_start_page = (page == self.photometry_content_page) or self.opened_photometry is None
         self.back_button.set_visible(not is_start_page)
         self.open_button.set_visible(is_start_page)
 
@@ -264,7 +249,7 @@ class MainWindow(Adw.Window):
                 photometry = import_from_file(f)
 
                 self.display_photometry_content(photometry)
-                self.photometry_content.update_settings(self.settings)
+                self.photometry_content_page.update_settings(self.settings)
 
                 self.set_title(title=file.get_basename())
                 self.window_title.set_subtitle(file.get_basename())
@@ -280,10 +265,9 @@ class MainWindow(Adw.Window):
                 opened_filename = file.get_basename()
                 self.json_export_file_chooser.set_current_name(f"{opened_filename}.json")
                 self.csv_export_file_chooser.set_current_name(f"{opened_filename}.csv")
-                self.ldc_export_file_chooser.set_current_name(f"{opened_filename}.png")
                 self.ldt_export_file_chooser.set_current_name(f"{opened_filename}_exported.ldt")
                 self.ies_export_file_chooser.set_current_name(f"{opened_filename}_exported.ies")
-                self.open_page(self.photometry_content)
+                self.open_page(self.photometry_content_page)
 
         except GLib.GError as e:
             logging.exception("Could not open photometric file")
@@ -300,10 +284,10 @@ class MainWindow(Adw.Window):
         window.show()
 
     def show_source(self, *args):
-        self.open_page(self.source_view)
+        self.open_page(self.source_view_page)
 
     def show_intensity_values(self, *args):
-        self.open_page(self.values_table)
+        self.open_page(self.values_table_page)
 
     def show_json_export_file_chooser(self, *args):
         self.json_export_file_chooser.show()
@@ -319,6 +303,9 @@ class MainWindow(Adw.Window):
 
     def show_ies_export_file_chooser(self, *args):
         self.ies_export_file_chooser.show()
+
+    def show_ldc_export_page(self, *args):
+        self.open_page(self.ldc_export_page)
 
     def banner_dismiss_clicked(self, *args):
         self.banner.set_revealed(False)
