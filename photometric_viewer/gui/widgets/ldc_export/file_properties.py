@@ -6,7 +6,8 @@ from gi.repository import Adw, Gtk
 from gi.repository.Gtk import ListBox, SelectionMode, Button, Box
 
 from photometric_viewer.utils import plotter_themes
-from photometric_viewer.utils.plotters import LightDistributionPlotterSettings
+from photometric_viewer.utils.plotters import LightDistributionPlotterSettings, SnapValueAnglesTo, DisplayHalfSpaces, \
+    DiagramStyle
 
 MIN_LDC_SIZE = 50
 MAX_LDC_SIZE = 10000
@@ -25,6 +26,12 @@ class ThemeVariant(Enum):
 class Background(Enum):
     SOLID = 0
     TRANSPARENT = 1
+
+
+class SnapValuesTo(Enum):
+    MAX_VALUE = 0
+    ROUND_NUMBER = 1
+
 
 @dataclass
 class LdcExportFileProperties:
@@ -61,11 +68,6 @@ class LdcExportFilePropertiesBox(ListBox):
         self.file_type_row.connect("notify::selected", lambda *args: self.update())
         self.append(self.file_type_row)
 
-        expander_row = Adw.ExpanderRow(
-            title=_("Curve Appearance"),
-        )
-        self.append(expander_row)
-
         self.curve_background = Adw.ComboRow(
                 title=_("Background"),
                 model=Gtk.StringList.new([
@@ -74,7 +76,23 @@ class LdcExportFilePropertiesBox(ListBox):
                 ])
         )
         self.curve_background.connect("notify::selected", lambda *args: self.update())
-        expander_row.add_row(self.curve_background)
+        self.append(self.curve_background)
+
+        expander_row = Adw.ExpanderRow(
+            title=_("Curve Appearance"),
+        )
+        self.append(expander_row)
+
+        self.diagram_style = Adw.ComboRow(
+            title=_("Style"),
+            model=Gtk.StringList.new([
+                _("Simple"),
+                _("Detailed")
+            ])
+        )
+        self.diagram_style.connect("notify::selected", lambda *args: self.update())
+        expander_row.add_row(self.diagram_style)
+
 
         self.curve_theme_row = Adw.ComboRow(
                 title=_("Theme"),
@@ -92,6 +110,26 @@ class LdcExportFilePropertiesBox(ListBox):
         )
         self.curve_theme_variant.connect("notify::selected", lambda *args: self.update())
         expander_row.add_row(self.curve_theme_variant)
+
+        self.snap_values_row = Adw.ComboRow(
+                title=_("Snap guides to"),
+                model=Gtk.StringList.new([
+                    _("Max value"),
+                    _("Round number")
+                ])
+        )
+        self.snap_values_row.connect("notify::selected", lambda *args: self.update())
+        expander_row.add_row(self.snap_values_row)
+
+        self.display_half_spaces = Adw.ComboRow(
+            title=_("Display half spaces"),
+            model=Gtk.StringList.new([
+                _("Both"),
+                _("Only relevant")
+            ])
+        )
+        self.display_half_spaces.connect("notify::selected", lambda *args: self.update())
+        expander_row.add_row(self.display_half_spaces)
 
         self.export_button = Button(label=_("Export"))
         self.export_button.connect("clicked", lambda *args: self.on_export_clicked())
@@ -161,3 +199,6 @@ class LdcExportFilePropertiesBox(ListBox):
             new_theme.background_color = new_theme.background_color or background_color
 
         self.properties.plotter_settings.theme = new_theme
+        self.properties.plotter_settings.snap_value_angles_to = SnapValueAnglesTo(self.snap_values_row.get_selected() + 1)
+        self.properties.plotter_settings.display_half_spaces = DisplayHalfSpaces(self.display_half_spaces.get_selected() + 1)
+        self.properties.plotter_settings.style = DiagramStyle(self.diagram_style.get_selected() + 1)

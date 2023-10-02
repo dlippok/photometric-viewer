@@ -34,7 +34,6 @@ class LdcExportPage(Adw.Bin):
             xalign=0,
             wrap=True,
             wrap_mode=WrapMode.WORD_CHAR,
-            css_classes=["title-1"],
             label=_("Export Light Distribution Curve")
         )
         box.append(title_label)
@@ -49,7 +48,6 @@ class LdcExportPage(Adw.Bin):
             xalign=0,
             wrap=True,
             wrap_mode=WrapMode.WORD_CHAR,
-            css_classes=["title-2"],
             label=_("Preview")
         )
         box.append(preview_label)
