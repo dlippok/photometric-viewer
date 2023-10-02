@@ -2,11 +2,10 @@ import os
 
 import gi
 
-from utils.locales import init_locale
-
 gi.require_version(namespace='Gtk', version='4.0')
 gi.require_version(namespace='Adw', version='1')
 
+from photometric_viewer.utils.locales import init_locale
 from photometric_viewer.gui.window import MainWindow
 from gi.repository import Gio, Adw, Gtk, Gdk
 import sys
