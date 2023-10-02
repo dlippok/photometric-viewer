@@ -1,7 +1,8 @@
-import locale
 import os
 
 import gi
+
+from utils.locales import init_locale
 
 gi.require_version(namespace='Gtk', version='4.0')
 gi.require_version(namespace='Adw', version='1')
@@ -10,19 +11,9 @@ from photometric_viewer.gui.window import MainWindow
 from gi.repository import Gio, Adw, Gtk, Gdk
 import sys
 
-import gettext
 
 APPLICATION_ID = 'io.github.dlippok.photometric-viewer'
-
-LOCALE_DIR = "data/translations"
-if os.environ.get("container") == "flatpak":
-    LOCALE_DIR = "/app/share/locale"
-elif root := os.environ.get("SNAP"):
-    LOCALE_DIR = root + "/share/locale"
-
-locale.setlocale(locale.LC_ALL, '')
-locale.bindtextdomain(APPLICATION_ID, LOCALE_DIR)
-gettext.install(APPLICATION_ID, LOCALE_DIR)
+init_locale(APPLICATION_ID)
 
 
 class Application(Adw.Application):
