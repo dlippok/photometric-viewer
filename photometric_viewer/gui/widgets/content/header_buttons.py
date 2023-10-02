@@ -58,7 +58,7 @@ class HeaderButtons(Box):
         builder.add_from_string(MENU_MODELS)
 
         export_button = MenuButton(
-            icon_name="document-save-as",
+            icon_name="document-save-as-symbolic",
             menu_model=builder.get_object("header-menu-export"),
             css_classes=["circular"],
             tooltip_text=_("Export")
