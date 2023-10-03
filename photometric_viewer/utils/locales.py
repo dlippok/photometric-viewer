@@ -10,7 +10,7 @@ def init_locale(application_id):
     if os.environ.get("container") == "flatpak":
         locale_dir = "/app/share/locale"
 
-    elif root := os.environ.get("SNAP") and os.environ.get("SNAP_INSTANCE_NAME") == "photometric-viewer":
+    elif (root := os.environ.get("SNAP")) and os.environ.get("SNAP_INSTANCE_NAME") == "photometric-viewer":
         locale_dir = root + "/share/locale"
         try:
             normalized_monetary = locale.normalize(locale.getlocale(locale.LC_MONETARY)[0])

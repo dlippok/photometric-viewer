@@ -102,6 +102,13 @@
     </requires>
 
     <releases>
+        <release version="1.5.1" date="2023-10-03">
+            <description>
+                <p>Fix bug preventing running application from Snap package</p>
+                <p xml:lang="de">Fehler behoben, der die Ausführung von Anwendungen aus dem Snap-Paket verhindert</p>
+                <p xml:lang="pl">Naprawiono błąd uniemożliwiający uruchomienie aplikacji z pakietu Snap</p>
+            </description>
+        </release>
         <release version="1.5.0" date="2023-10-03">
             <description>
                 <p>Reworks luminaire properties page, adds calculation of luminous flux, allows setting properties of exported light distribution curves and fixes various bugs.</p>
