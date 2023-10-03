@@ -19,7 +19,7 @@ class Application(Adw.Application):
     def __init__(self):
         super().__init__(application_id=APPLICATION_ID,
                          flags=Gio.ApplicationFlags.HANDLES_OPEN | Gio.ApplicationFlags.NON_UNIQUE)
-        self.win = None
+        self.win: MainWindow | None = None
 
     def create_window(self):
         self.win = MainWindow(application=self)
@@ -45,6 +45,7 @@ class Application(Adw.Application):
         file: Gio.File = args[0][0]
         self.win.open_file(file)
         self.props.active_window.present()
+
 
 
 def run():

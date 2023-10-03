@@ -10,6 +10,7 @@ import photometric_viewer.formats.csv
 import photometric_viewer.formats.format_json
 import photometric_viewer.formats.png
 import photometric_viewer.formats.svg
+from photometric_viewer.accelerators import ACCELERATORS
 from photometric_viewer.formats import ldt, ies
 from photometric_viewer.formats.common import import_from_file
 from photometric_viewer.formats.exceptions import InvalidPhotometricFileFormatException
@@ -33,8 +34,11 @@ class MainWindow(Adw.Window):
             title=_('Photometric Viewer'),
             **kwargs
         )
+
         self.set_default_size(900, 700)
         self.install_actions()
+        self.setup_accelerators()
+        self.setup_mouse_buttons()
 
         self.gsettings = GSettings()
 
@@ -128,6 +132,12 @@ class MainWindow(Adw.Window):
         self.install_action("app.export_ldc_as_image", None, self.show_ldc_export_page)
         self.install_action("app.export_as_ldt", None, self.show_ldt_export_file_chooser)
         self.install_action("app.export_as_ies", None, self.show_ies_export_file_chooser)
+        self.install_action("app.open", None, self.on_open_clicked)
+
+        self.install_action("app.nav.back", None, self.on_back_clicked)
+        self.install_action("app.nav.home", None, self.on_back_clicked)
+        self.install_action("app.nav.top", None, self.on_back_clicked)
+
         self.action_set_enabled("app.show_intensity_values", False)
         self.action_set_enabled("app.show_source", False)
         self.action_set_enabled("app.export_luminaire_as_json", False)
@@ -135,6 +145,17 @@ class MainWindow(Adw.Window):
         self.action_set_enabled("app.export_ldc_as_image", False)
         self.action_set_enabled("app.export_as_ldt", False)
         self.action_set_enabled("app.export_as_ies", False)
+
+    def setup_accelerators(self):
+        app = self.get_application()
+
+        for accel in ACCELERATORS:
+            app.set_accels_for_action(accel.action, accel.accelerators)
+
+    def setup_mouse_buttons(self):
+        back_click = Gtk.GestureClick(button=8)
+        back_click.connect("pressed", self.on_back_clicked)
+        self.add_controller(back_click)
 
     def display_photometry_content(self, photometry: Photometry):
         self.photometry_content_page.set_photometry(photometry)
@@ -152,10 +173,10 @@ class MainWindow(Adw.Window):
         self.photometry_content_page.update_settings(self.settings)
         self.gsettings.save(self.settings)
 
-    def on_open_clicked(self, _):
+    def on_open_clicked(self, *args):
         self.open_file_chooser.show()
 
-    def on_back_clicked(self, _):
+    def on_back_clicked(self, *args):
         self.open_page(self.photometry_content_page)
 
     def on_open_response(self, dialog: FileChooserDialog, response):
@@ -279,6 +300,7 @@ class MainWindow(Adw.Window):
             logging.exception("Could not open photometric file")
             self.show_banner(_("Could not open {}").format(file.get_path()))
 
+
     def show_preferences(self, *args):
         window = PreferencesWindow(self.settings, self.update_settings)
         window.show()
@@ -321,3 +343,5 @@ class MainWindow(Adw.Window):
     def show_about_dialog(*args):
         window = AboutWindow()
         window.show()
+
+
