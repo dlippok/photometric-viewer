@@ -79,6 +79,9 @@
         <screenshot>
             <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Source.png</image>
         </screenshot>
+        <screenshot>
+            <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/ExportLdc.png</image>
+        </screenshot>
     </screenshots>
     <project_license>MIT</project_license>
     <metadata_license>CC0-1.0</metadata_license>
@@ -99,6 +102,13 @@
     </requires>
 
     <releases>
+        <release version="1.5.0" date="2023-10-03">
+            <description>
+                <p>Reworks luminaire properties page, adds calculation of luminous flux, allows setting properties of exported light distribution curves and fixes various bugs.</p>
+                <p xml:lang="de">Überarbeitet die Seite mit den Leuchteneigenschaften, fügt die Berechnung des Lichtstroms hinzu, ermöglicht die Einstellung der Eigenschaften von exportierten Lichtverteilungskurven und behebt verschiedene Fehler..</p>
+                <p xml:lang="pl">Przebudowano stronę właściwości oprawy oświetleniowej, dodano obliczanie strumienia świetlnego, umożliwiono ustawianie właściwości eksportowanych krzywych fotometrycznych i naprawiono różne błędy.</p>
+            </description>
+        </release>
         <release version="1.4.0" date="2023-09-01">
             <description>
                 <p>Allows exporting photometries as EULUMDAT or IESNA, adds power consumption calculator, Polish translations and fixes minor bugs.</p>
