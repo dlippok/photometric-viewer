@@ -1,6 +1,5 @@
 import math
 from dataclasses import dataclass
-from typing import List, Dict, Tuple
 
 from photometric_viewer.model.photometry import Photometry, Lamps
 

@@ -1,5 +1,3 @@
-import signal
-
 from gi.repository import Gio
 
 from photometric_viewer.model.settings import Settings, DiagramStyle, DisplayHalfSpaces, SnapValueAnglesTo
