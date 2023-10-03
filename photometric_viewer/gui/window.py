@@ -166,9 +166,6 @@ class MainWindow(Adw.Window):
         self.content_bin.set_child(self.view_stack)
         self.opened_photometry = photometry
 
-
-
-
     def update_settings(self):
         self.photometry_content_page.update_settings(self.settings)
         self.gsettings.save(self.settings)
@@ -343,5 +340,3 @@ class MainWindow(Adw.Window):
     def show_about_dialog(*args):
         window = AboutWindow()
         window.show()
-
-
