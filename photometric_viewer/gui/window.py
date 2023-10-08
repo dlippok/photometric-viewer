@@ -79,7 +79,6 @@ class MainWindow(Adw.Window):
         self.back_button.connect("clicked", self.on_back_clicked)
 
         self.window_title = Adw.WindowTitle()
-        self.window_title.set_title(_("Photometric Viewer"))
 
         box = Gtk.Box(orientation=Orientation.VERTICAL)
 
@@ -270,6 +269,7 @@ class MainWindow(Adw.Window):
                 self.photometry_content_page.update_settings(self.settings)
 
                 self.set_title(title=file.get_basename())
+                self.window_title.set_title(_("Photometric Viewer"))
                 self.window_title.set_subtitle(file.get_basename())
 
                 self.action_set_enabled("app.show_intensity_values", True)
