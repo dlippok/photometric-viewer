@@ -28,13 +28,14 @@ class Gauge(Box):
         self.append(name_box)
 
         try:
-            if min_value <= value <= max_value:
-                level_bar = LevelBar(
-                    min_value=min_value,
-                    max_value=max_value,
-                    value=value
-                )
-                self.append(level_bar)
+            bar_value = min(value, max_value)
+            bar_value = max(bar_value, min_value)
+            level_bar = LevelBar(
+                min_value=min_value,
+                max_value=max_value,
+                value=bar_value
+            )
+            self.append(level_bar)
         except ValueError:
             pass
 

@@ -6,6 +6,7 @@ from gi.repository.Gtk import Box, Orientation
 
 from photometric_viewer.gui.widgets.common.gauge import Gauge
 from photometric_viewer.gui.widgets.common.property_list import PropertyList
+from photometric_viewer.gui.widgets.content.photometry import _value_with_unit
 from photometric_viewer.gui.widgets.content.temperature import ColorTemperatureGauge
 from photometric_viewer.gui.widgets.content.wattage import WattageBox
 from photometric_viewer.model.photometry import Photometry
@@ -66,6 +67,15 @@ class LampAndBallast(Adw.Bin):
 
             if not photometry.is_absolute:
                 property_list.add(_("Initial rating per lamp"), f'{lamp.lumens_per_lamp:.0f}lm')
+                if lamp.wattage:
+                    efficacy = round(lamp.lumens_per_lamp * lamp.number_of_lamps / lamp.wattage)
+                    property_list.append(Gauge(
+                        name=_("Efficacy"),
+                        min_value=0, max_value=160,
+                        value=efficacy,
+                        display=_value_with_unit(efficacy, "lm/W"),
+                        calculated=lamp.lumens_per_lamp is None
+                    ))
 
             property_list.add_if_non_empty(_("Lamp position"), lamp.position)
             property_list.add_if_non_empty(_("Ballast"), lamp.ballast_description)

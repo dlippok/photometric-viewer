@@ -71,3 +71,13 @@ class LuminairePhotometricProperties(Box):
                 _value_with_unit(flux_luminaire, "lm"),
                 is_calculated=lamp.lumens_per_lamp is None
             )
+
+            if lamp.wattage:
+                efficacy = round(flux_luminaire / lamp.wattage)
+                self.property_list.append(Gauge(
+                    name=_("Efficacy"),
+                    min_value=0, max_value=160,
+                    value=efficacy,
+                    display=_value_with_unit(efficacy, "lm/W"),
+                    calculated=lamp.lumens_per_lamp is None
+                ))
