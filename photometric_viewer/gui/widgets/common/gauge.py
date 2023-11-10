@@ -5,7 +5,7 @@ from photometric_viewer.gui.widgets.common import badges
 
 
 class Gauge(Box):
-    def __init__(self, name: str, value: float, min_value: float, max_value: float, display=None, calculated: bool = False, **kwargs):
+    def __init__(self, name: str, value: float, min_value: float, max_value: float, display=None, calculated: bool = False, hint: str | None = None, **kwargs):
         super().__init__(
             orientation=Orientation.VERTICAL,
             homogeneous=False,
@@ -27,13 +27,27 @@ class Gauge(Box):
 
         self.append(name_box)
 
+        if hint:
+            hint_label = Label(
+                label=hint,
+                hexpand=True,
+                xalign=0,
+                wrap=True,
+                wrap_mode=WrapMode.WORD_CHAR,
+                selectable=True,
+                css_classes=["dim-label"],
+            )
+            self.append(hint_label)
+
+
         try:
             bar_value = min(value, max_value)
             bar_value = max(bar_value, min_value)
             level_bar = LevelBar(
                 min_value=min_value,
                 max_value=max_value,
-                value=bar_value
+                value=bar_value,
+                margin_top=8
             )
             self.append(level_bar)
         except ValueError:

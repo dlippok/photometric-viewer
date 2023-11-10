@@ -55,10 +55,15 @@ class LampAndBallast(Adw.Bin):
                     name=_("Color Rendering Index (CRI)"),
                     min_value=0, max_value=100,
                     value=float(lamp.cri),
-                    display=lamp.cri
-                ))
+                    display=lamp.cri,
+                    hint = _("Measure of the ability of a light source to reproduce the colors of various objects faithfully in comparison with an ideal or natural light source."))
+                )
             else:
-                property_list.add_if_non_empty(_("Color Rendering Index (CRI)"), lamp.cri)
+                property_list.add_if_non_empty(
+                    _("Color Rendering Index (CRI)"),
+                    lamp.cri,
+                    hint=_("Measure of the ability of a light source to reproduce the colors of various objects faithfully in comparison with an ideal or natural light source.")
+                )
 
             if lamp.wattage:
                 wattage_box = WattageBox(lamp.wattage)
@@ -66,7 +71,12 @@ class LampAndBallast(Adw.Bin):
                 self.wattage_boxes.append(wattage_box)
 
             if not luminaire.photometry.is_absolute:
-                property_list.add(_("Initial rating per lamp"), f'{lamp.lumens_per_lamp:.0f}lm')
+                property_list.add(
+                    _("Initial rating per lamp"),
+                    f'{lamp.lumens_per_lamp:.0f}lm',
+                    hint=_("Luminous flux emitted by the lamp.")
+                )
+
                 if lamp.wattage:
                     efficacy = round(lamp.lumens_per_lamp * lamp.number_of_lamps / lamp.wattage)
                     property_list.append(Gauge(
@@ -74,7 +84,8 @@ class LampAndBallast(Adw.Bin):
                         min_value=0, max_value=160,
                         value=efficacy,
                         display=_value_with_unit(efficacy, "lm/W"),
-                        calculated=lamp.lumens_per_lamp is None
+                        calculated=lamp.lumens_per_lamp is None,
+                        hint=_("Ratio of luminous flux emitted by the lamp to the power consumed by the lamp.")
                     ))
 
             property_list.add_if_non_empty(_("Lamp position"), lamp.position)
@@ -100,7 +111,11 @@ class LampAndBallast(Adw.Bin):
         elif cri_temp_match:
             property_list.append(ColorTemperatureGauge(int(cri_temp_match.groups()[1]) * 100))
         else:
-            property_list.add(_("Color"), color)
+            property_list.add(
+                _("Color"),
+                color,
+                hint=_("Light color as specified by the manufacturer.")
+            )
 
     def update_settings(self, settings: Settings):
         for wattage_box in self.wattage_boxes:

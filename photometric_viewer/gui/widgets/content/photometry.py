@@ -28,6 +28,14 @@ class LuminairePhotometricProperties(Box):
         self.property_list.clear()
         photometric_properties = calc.calculate_photometry(luminaire)
 
+        if photometric_properties.luminous_flux.value:
+            self.property_list.add(
+                _("Luminous flux"),
+                f"{photometric_properties.luminous_flux.value:.0f}lm",
+                is_calculated=photometric_properties.luminous_flux.is_calculated,
+                hint=_("Total amount of light emitted by the luminaire.")
+            )
+
         if photometric_properties.lor.value:
             self.property_list.append(
                 Gauge(
@@ -36,9 +44,20 @@ class LuminairePhotometricProperties(Box):
                     min_value=0,
                     max_value=1,
                     display=f"{photometric_properties.lor.value:.2%}",
-                    calculated=photometric_properties.lor.is_calculated
+                    calculated=photometric_properties.lor.is_calculated,
+                    hint=_("Ratio of luminous flux emitted by the luminaire to the luminous flux emitted by the lamps.")
                 )
             )
+
+        if photometric_properties.efficacy.value:
+            self.property_list.append(Gauge(
+                name=_("Efficacy"),
+                min_value=0, max_value=160,
+                value=photometric_properties.efficacy.value,
+                display=f"{photometric_properties.efficacy.value:.0f}lm/w",
+                calculated=photometric_properties.efficacy.is_calculated,
+                hint=_("Ratio of luminous flux emitted by the luminaire to the power consumed by the luminaire.")
+            ))
 
         if photometric_properties.dff.value:
             self.property_list.append(
@@ -48,28 +67,7 @@ class LuminairePhotometricProperties(Box):
                     min_value=0,
                     max_value=1,
                     display=f"{photometric_properties.dff.value:.0%}",
-                    calculated=photometric_properties.dff.is_calculated
+                    calculated=photometric_properties.dff.is_calculated,
+                    hint=_("Ratio of luminous flux emitted by the luminaire in the downward hemisphere to the luminous flux emitted by the luminaire in all directions.")
                 )
             )
-
-        if luminaire.metadata.conversion_factor:
-            self.property_list.add(
-                _("Conversion factor for luminous intensities"),
-                str(luminaire.metadata.conversion_factor)
-            )
-
-        if photometric_properties.luminous_flux.value:
-            self.property_list.add(
-                _("Luminous flux of the luminaire"),
-                f"{photometric_properties.luminous_flux.value:.0f}lm",
-                is_calculated=photometric_properties.luminous_flux.is_calculated
-            )
-
-        if photometric_properties.efficacy.value:
-            self.property_list.append(Gauge(
-                name=_("Efficacy"),
-                min_value=0, max_value=160,
-                value=photometric_properties.efficacy.value,
-                display=f"{photometric_properties.efficacy.value:.0f}lm/w",
-                calculated=photometric_properties.efficacy.is_calculated
-            ))
