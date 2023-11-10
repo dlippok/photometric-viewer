@@ -232,7 +232,7 @@ class TestIes(unittest.TestCase):
             in enumerate(gamma_angles)
         }
 
-        self.assertFalse(photometry.is_absolute)
+        self.assertFalse(photometry.luminaire_photometric_properties.is_absolute)
         self.assertEqual(photometry.intensity_values, expected_values)
         self.assertEqual(photometry.lamps[0].lumens_per_lamp, expected_flux)
 
@@ -261,7 +261,7 @@ class TestIes(unittest.TestCase):
             in enumerate(gamma_angles)
         }
 
-        self.assertFalse(photometry.is_absolute)
+        self.assertFalse(photometry.luminaire_photometric_properties.is_absolute)
         self.assertEqual(photometry.intensity_values, expected_values)
         self.assertEqual(photometry.lamps[0].lumens_per_lamp, expected_flux)
 
@@ -287,7 +287,7 @@ class TestIes(unittest.TestCase):
             in enumerate(gamma_angles)
         }
 
-        self.assertTrue(photometry.is_absolute)
+        self.assertTrue(photometry.luminaire_photometric_properties.is_absolute)
         self.assertEqual(photometry.intensity_values, expected_values)
         self.assertIsNone(photometry.lamps[0].lumens_per_lamp)
 
@@ -317,7 +317,7 @@ class TestIes(unittest.TestCase):
             in enumerate(gamma_angles)
         }
 
-        self.assertTrue(photometry.is_absolute)
+        self.assertTrue(photometry.luminaire_photometric_properties.is_absolute)
         self.assertEqual(photometry.intensity_values, expected_values)
         self.assertIsNone(photometry.lamps[0].lumens_per_lamp)
 
@@ -358,7 +358,7 @@ class TestIes(unittest.TestCase):
                 with io.StringIO(exported_value) as f:
                     reimported_photometry = ldt.import_from_file(f)
 
-                self.assertEqual(photometry.is_absolute, reimported_photometry.is_absolute)
+                self.assertEqual(photometry.luminaire_photometric_properties.is_absolute, reimported_photometry.luminaire_photometric_properties.is_absolute)
                 self.assertEqual(photometry.gamma_angles, reimported_photometry.gamma_angles)
                 self.assertEqual(photometry.c_planes, reimported_photometry.c_planes)
                 self.assertEqual(photometry.intensity_values, reimported_photometry.intensity_values)
@@ -367,7 +367,6 @@ class TestIes(unittest.TestCase):
                 self.assertEqual(photometry.luminous_opening_geometry.length, reimported_photometry.luminous_opening_geometry.length)
                 self.assertEqual(photometry.luminous_opening_geometry.height, reimported_photometry.luminous_opening_geometry.height)
 
-                self.assertEqual(photometry.lamps[0].is_absolute, reimported_photometry.lamps[0].is_absolute)
                 self.assertEqual(photometry.lamps[0].description, reimported_photometry.lamps[0].description)
 
                 self.assertEqual(photometry.metadata.luminaire.replace("\n", " ")[0:78], reimported_photometry.metadata.luminaire)

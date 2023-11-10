@@ -83,7 +83,6 @@ class TestJson(unittest.TestCase):
         expected_lamps = [
             {
                 "number_of_lamps": 1,
-                "is_absolute": True,
                 "description": "Test lamp",
                 "catalog_number": "LP1220",
                 "position": "center",
@@ -104,7 +103,6 @@ class TestJson(unittest.TestCase):
         expected_lamps = [
             {
                 "number_of_lamps": 1,
-                "is_absolute": False,
                 "description": "Test lamp 1",
                 "catalog_number": "LP1221",
                 "position": "center",
@@ -117,7 +115,6 @@ class TestJson(unittest.TestCase):
             },
             {
                 "number_of_lamps": 2,
-                "is_absolute": False,
                 "description": "Test lamp 2",
                 "catalog_number": "LP1222",
                 "position": "center",

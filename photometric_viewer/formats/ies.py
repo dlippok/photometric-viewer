@@ -3,7 +3,7 @@ from typing import IO, Dict
 
 from photometric_viewer.formats.exceptions import InvalidLuminousOpeningException, InvalidPhotometricFileFormatException
 from photometric_viewer.model.photometry import Photometry, PhotometryMetadata, LuminousOpeningGeometry, Shape, \
-    Lamps, LuminousOpeningShape
+    Lamps, LuminousOpeningShape, LuminairePhotometricProperties, Calculable
 from photometric_viewer.model.units import LengthUnits
 from photometric_viewer.utils.ioutil import read_non_empty_line
 
@@ -182,18 +182,21 @@ def import_from_file(f: IO):
 
     date = metadata.pop("ISSUEDATE", None) or metadata.pop("DATE", None)
     return Photometry(
-        is_absolute=lumens is None,
         gamma_angles=v_angles,
         c_planes=h_angles,
         intensity_values=candela_values,
         luminous_opening_geometry=create_luminous_opening(attributes),
         luminaire_geometry=None,
-        dff=None,
-        lorl=None,
+        luminaire_photometric_properties=LuminairePhotometricProperties(
+            is_absolute=lumens is None,
+            luminous_flux=Calculable(None),
+            lor=Calculable(None),
+            dff=Calculable(None),
+            efficacy=Calculable(None)
+        ),
         lamps=[Lamps(
             number_of_lamps=attributes["numer_of_lamps"],
             lumens_per_lamp=attributes["lumens_per_lamp"] if attributes["lumens_per_lamp"] >= 0 else None,
-            is_absolute=attributes["lumens_per_lamp"] < 0,
             description=metadata.pop("LAMP", None),
             catalog_number=metadata.pop("LAMPCAT", None),
             position=metadata.pop("LAMPPOSITION", None),
@@ -275,7 +278,7 @@ def export_to_file(f: IO, photometry: Photometry, additional_keywords: Dict[str,
 
     f.write(f"{photometry.lamps[0].number_of_lamps} ")
 
-    if photometry.is_absolute:
+    if photometry.luminaire_photometric_properties.is_absolute:
         f.write(f"{_LUMEN_PER_LAMPS_ABSOLUTE} ")
     elif first_lamp_set.lumens_per_lamp:
         f.write(f"{first_lamp_set.lumens_per_lamp} ")
@@ -312,7 +315,7 @@ def export_to_file(f: IO, photometry: Photometry, additional_keywords: Dict[str,
     for c in photometry.c_planes:
         for gamma in photometry.gamma_angles:
             intensity = photometry.intensity_values[c, gamma]
-            if photometry.is_absolute:
+            if photometry.luminaire_photometric_properties.is_absolute:
                 intensity *= 1
             elif first_lamp_set.lumens_per_lamp and first_lamp_set.lumens_per_lamp > 0:
                 intensity *= first_lamp_set.number_of_lamps * first_lamp_set.lumens_per_lamp / 1000

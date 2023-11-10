@@ -3,7 +3,8 @@ from typing import IO, List, Callable
 
 from datetime import datetime
 from photometric_viewer.model.photometry import Photometry, LuminousOpeningGeometry, Shape, Lamps, \
-    PhotometryMetadata, LuminaireGeometry, LuminaireType, LuminousOpeningShape, Symmetry
+    PhotometryMetadata, LuminaireGeometry, LuminaireType, LuminousOpeningShape, Symmetry, \
+    LuminairePhotometricProperties, Calculable
 from photometric_viewer.model.units import LengthUnits
 
 
@@ -66,8 +67,8 @@ def import_from_file(f: IO):
     opening_height_c90 = float(f.readline().strip()) / 1000
     opening_height_c180 = float(f.readline().strip()) / 1000
     opening_height_c270 = float(f.readline().strip()) / 1000
-    dff = float(f.readline().strip())
-    lorl = float(f.readline().strip())
+    dff = float(f.readline().strip()) / 100
+    lorl = float(f.readline().strip()) / 100
     conversion_factor = float(f.readline().strip())
     tilt = float(f.readline().strip())
     no_lamp_sets = int(f.readline().strip())
@@ -147,13 +148,13 @@ def import_from_file(f: IO):
     f.seek(0)
     source = f.read()
 
+    luminaire_flux = lamp_sets[0]["luminous_flux"] if is_absolute else None
+    luminaire_efficacy = lamp_sets[0]["luminous_flux"] / lamp_sets[0]["wattage"] if is_absolute else None
+
     return Photometry(
-        is_absolute=is_absolute,
         gamma_angles=gamma_angles,
         c_planes=c_angles,
         intensity_values=values,
-        dff=dff,
-        lorl=lorl,
         luminous_opening_geometry=_create_luminous_opening(
             opening_length,
             opening_width,
@@ -162,11 +163,17 @@ def import_from_file(f: IO):
             opening_height_c180,
             opening_height_c270
         ),
+        luminaire_photometric_properties=LuminairePhotometricProperties(
+            is_absolute=is_absolute,
+            luminous_flux=Calculable(luminaire_flux),
+            efficacy=Calculable(luminaire_efficacy),
+            lor=Calculable(lorl),
+            dff=Calculable(dff)
+        ),
         luminaire_geometry=_create_luminaire_geometry(luminaire_length, luminaire_width, luminaire_height),
         lamps=[Lamps(
             number_of_lamps=lamps["number_of_lamps"],
             lumens_per_lamp=lamps["luminous_flux"] / lamps["number_of_lamps"],
-            is_absolute=is_absolute,
             wattage=lamps["wattage"],
             color=lamps["color"],
             cri=lamps["cri"],
@@ -239,7 +246,7 @@ def _write_gamma_values(f: IO, photometry: Photometry, c_plane_predicate: Callab
             continue
         for gamma_angle in photometry.gamma_angles:
             intensity = photometry.intensity_values[(c_plane, gamma_angle)]
-            if photometry.is_absolute:
+            if photometry.luminaire_photometric_properties.is_absolute:
                 lamp = photometry.lamps[0]
                 if lamp.lumens_per_lamp:
                     _write_number(f, intensity / (lamp.lumens_per_lamp * lamp.number_of_lamps) * 1000)
@@ -301,13 +308,16 @@ def export_to_file(f: IO, photometry: Photometry):
     _write_size(f, opening.height_c180, default=opening.height)
     _write_size(f, opening.height_c270, default=opening.height)
 
-    _write_number(f, photometry.dff, 100)
-    _write_number(f, photometry.lorl, 100)
+    dff = photometry.luminaire_photometric_properties.dff.value or 1
+    _write_number(f, dff * 100)
+
+    lor = photometry.luminaire_photometric_properties.lor.value or 1
+    _write_number(f, lor * 100)
     _write_number(f, photometry.metadata.conversion_factor, 1)
     _write_number(f, 0)
     _write_number(f, len(photometry.lamps))
     for lamp in photometry.lamps:
-        if photometry.is_absolute:
+        if photometry.luminaire_photometric_properties.is_absolute:
             _write_number(f, -lamp.number_of_lamps)
         else:
             _write_number(f, lamp.number_of_lamps)

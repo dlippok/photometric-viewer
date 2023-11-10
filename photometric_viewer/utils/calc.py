@@ -1,7 +1,6 @@
 import math
-from dataclasses import dataclass
 
-from photometric_viewer.model.photometry import Photometry, Lamps
+from photometric_viewer.model.photometry import Photometry, Lamps, LuminairePhotometricProperties
 
 DAYS_IN_YEAR = 365
 
@@ -25,16 +24,10 @@ def energy_cost(power_consumption_kwh: float, price_kwh: float):
 
     return power_consumption_kwh * price_kwh
 
-
-@dataclass
-class CalculatedPhotometricProperties:
-    flux_luminaire: float
-    lor: float
-    dff: float
-
-
-def calculate_photometric_properties(photometry: Photometry, lamps: Lamps):
-    ratio = 1 if photometry.is_absolute else (lamps.lumens_per_lamp * lamps.number_of_lamps) / 1000
+def calculate_luminaire_photometric_properties(photometry: Photometry) -> LuminairePhotometricProperties:
+    is_absolute = photometry.luminaire_photometric_properties.is_absolute
+    lamps = photometry.lamps[0]
+    ratio = 1 if is_absolute else (lamps.lumens_per_lamp * lamps.number_of_lamps) / 1000
     gamma_step = photometry.gamma_angles[1] - photometry.gamma_angles[0]
 
     flux_luminaire = 0
@@ -56,10 +49,13 @@ def calculate_photometric_properties(photometry: Photometry, lamps: Lamps):
         flux_luminaire += plane_flux * 2 * math.pi / len(photometry.c_planes)
         flux_lower_luminaire += plane_lower_flux * 2 * math.pi / len(photometry.c_planes)
 
-    lor = (flux_luminaire / (lamps.lumens_per_lamp * lamps.number_of_lamps)) if not photometry.is_absolute else 1
+    lor = (flux_luminaire / (lamps.lumens_per_lamp * lamps.number_of_lamps)) if not is_absolute else 1
+    efficacy = (flux_luminaire / lamps.wattage) if is_absolute and lamps.wattage else None
 
-    return CalculatedPhotometricProperties(
-        flux_luminaire=flux_luminaire,
-        lor=lor,
-        dff=flux_lower_luminaire / flux_luminaire
+    return LuminairePhotometricProperties(
+        is_absolute=photometry.luminaire_photometric_properties.is_absolute,
+        luminous_flux=photometry.luminaire_photometric_properties.luminous_flux.to_calculated(flux_luminaire),
+        lor=photometry.luminaire_photometric_properties.lor.to_calculated(lor),
+        dff=photometry.luminaire_photometric_properties.dff.to_calculated(flux_lower_luminaire / flux_luminaire),
+        efficacy=photometry.luminaire_photometric_properties.efficacy.to_calculated(efficacy)
     )

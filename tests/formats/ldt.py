@@ -5,7 +5,7 @@ from pathlib import Path
 from photometric_viewer.formats import ies
 from photometric_viewer.formats.ldt import import_from_file, export_to_file
 from photometric_viewer.model.photometry import Shape, Lamps, LuminaireGeometry, LuminousOpeningGeometry, LuminaireType, \
-    LuminousOpeningShape
+    LuminousOpeningShape, Calculable
 from photometric_viewer.model.units import LengthUnits
 
 
@@ -16,8 +16,6 @@ class TestLdt(unittest.TestCase):
         with (self.FILES_PATH / "metadata.ldt").open() as f:
             photometry = import_from_file(f)
 
-        self.assertEqual(photometry.lorl, 100.0)
-        self.assertEqual(photometry.dff, 100)
         self.assertEqual(photometry.metadata.luminaire, "Dummy LDT file")
         self.assertEqual(photometry.metadata.manufacturer, "ACME Inc.")
         self.assertEqual(photometry.metadata.catalog_number, "BD0150")
@@ -28,6 +26,14 @@ class TestLdt(unittest.TestCase):
         self.assertEqual(photometry.metadata.date_and_user, "2023-05-01 Photometric Viewer")
         self.assertEqual(photometry.metadata.conversion_factor, 1.0)
         self.assertEqual(photometry.metadata.file_units, LengthUnits.MILLIMETERS)
+
+    def test_photometric_properties(self):
+        with (self.FILES_PATH / "metadata.ldt").open() as f:
+            photometry = import_from_file(f)
+
+        self.assertEqual(photometry.luminaire_photometric_properties.lor, Calculable(1.0))
+        self.assertEqual(photometry.luminaire_photometric_properties.dff, Calculable(1.0))
+
 
     def test_relative_photometry(self):
         with (self.FILES_PATH / "relative.ldt").open() as f:
@@ -51,7 +57,7 @@ class TestLdt(unittest.TestCase):
             in enumerate(gamma_angles)
         }
 
-        self.assertFalse(photometry.is_absolute)
+        self.assertFalse(photometry.luminaire_photometric_properties.is_absolute)
         self.assertEqual(photometry.intensity_values, expected_values)
         self.assertEqual(photometry.lamps[0].lumens_per_lamp, 250)
         self.assertEqual(photometry.lamps[0].number_of_lamps, 2)
@@ -80,7 +86,7 @@ class TestLdt(unittest.TestCase):
             in enumerate(gamma_angles)
         }
 
-        self.assertTrue(photometry.is_absolute)
+        self.assertTrue(photometry.luminaire_photometric_properties.is_absolute)
         self.assertEqual(photometry.intensity_values, expected_values)
         self.assertEqual(photometry.lamps[0].lumens_per_lamp, 250)
         self.assertEqual(photometry.lamps[0].number_of_lamps, 2)
@@ -424,7 +430,6 @@ class TestLdt(unittest.TestCase):
                 color="3000",
                 cri="100",
                 wattage=15.0,
-                is_absolute=False
             ),
             Lamps(
                 number_of_lamps=2,
@@ -433,7 +438,6 @@ class TestLdt(unittest.TestCase):
                 color="3000",
                 cri="100",
                 wattage=30.0,
-                is_absolute=False
             ),
             Lamps(
                 number_of_lamps=1,
@@ -442,7 +446,6 @@ class TestLdt(unittest.TestCase):
                 color="5000",
                 cri="90",
                 wattage=15.0,
-                is_absolute=False
             )
         ]
         self.assertEqual(photometry.lamps, expected_lamp_sets)
@@ -480,9 +483,9 @@ class TestLdt(unittest.TestCase):
                 with io.StringIO(exported_value) as f:
                     reimported_photometry = ies.import_from_file(f)
 
-                self.assertEqual(photometry.is_absolute, reimported_photometry.is_absolute)
+                self.assertEqual(photometry.luminaire_photometric_properties.is_absolute, reimported_photometry.luminaire_photometric_properties.is_absolute)
 
-                if photometry.is_absolute:
+                if photometry.luminaire_photometric_properties.is_absolute:
                     photometry.lamps[0].lumens_per_lamp = None
 
                 self.assertEqual(photometry.lamps[0], reimported_photometry.lamps[0])

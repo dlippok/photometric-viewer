@@ -27,7 +27,6 @@ def export_photometry(photometry: Photometry):
 
         "lamp_sets": [{
             "number_of_lamps": lamp_set.number_of_lamps,
-            "is_absolute": lamp_set.is_absolute,
             "description": lamp_set.description,
             "catalog_number": lamp_set.catalog_number,
             "position": lamp_set.position,
@@ -40,9 +39,9 @@ def export_photometry(photometry: Photometry):
         } for lamp_set in photometry.lamps],
 
         "photometry": {
-            "dff": photometry.dff,
-            "lorl": photometry.lorl,
-            "is_absolute": photometry.is_absolute,
+            "dff": photometry.luminaire_photometric_properties.dff.value,
+            "lorl": photometry.luminaire_photometric_properties.lor.value,
+            "is_absolute": photometry.luminaire_photometric_properties.is_absolute,
             "c_planes": photometry.c_planes,
             "gamma_angles": photometry.gamma_angles,
             "values": [

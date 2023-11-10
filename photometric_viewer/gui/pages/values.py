@@ -98,7 +98,7 @@ class IntensityValuesPage(Adw.Bin):
             return
 
         unit = None
-        match self.photometry.is_absolute:
+        match self.photometry.luminaire_photometric_properties.is_absolute:
             case True: unit = "cd"
             case False: unit = "cd/klm"
 
