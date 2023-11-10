@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Dict, Tuple, List
+from typing import Dict, Tuple, List, Any
 
 from photometric_viewer.model.units import LengthUnits
 
@@ -76,7 +76,6 @@ class LuminaireGeometry:
 @dataclass
 class Lamps:
     number_of_lamps: int
-    is_absolute: bool
     description: str | None = None
     catalog_number: str | None = None
     position: str | None = None
@@ -89,20 +88,49 @@ class Lamps:
 
 
 @dataclass
-class Photometry:
+class Calculable:
+    value: Any | None = None
+    is_calculated: bool = False
+
+    def to_calculated(self, value: Any):
+        if self.value is None and value is not None:
+            return Calculable(value, True)
+        else:
+            return self
+
+
+@dataclass()
+class LuminairePhotometricProperties:
     is_absolute: bool
+    luminous_flux: Calculable
+    efficacy: Calculable
+    lor: Calculable
+    dff: Calculable
+
+    def get(self):
+        return self.luminous_flux
+
+@dataclass
+class Luminaire:
     gamma_angles: List[float]
     c_planes: List[float]
-
     # Values in Candela for absolute photometry, cd/klm otherwise
     intensity_values: Dict[Tuple[float, float], float]
-    dff: float | None
-    lorl: float | None
     luminous_opening_geometry: LuminousOpeningGeometry
-    luminaire_geometry: LuminaireGeometry | None
+    geometry: LuminaireGeometry | None
     lamps: List[Lamps]
     metadata: PhotometryMetadata
 
+    photometry: LuminairePhotometricProperties
+    _photometry: LuminairePhotometricProperties = field(init=False, repr=False)
+
+    @property
+    def photometry(self) -> LuminairePhotometricProperties:
+        return self._photometry
+
+    @photometry.setter
+    def photometry(self, value: LuminairePhotometricProperties):
+        self._photometry = value
 
     def get_values_for_c_angle(self, angle) -> Dict[float, float]:
         if angle in self.c_planes:

@@ -4,8 +4,8 @@ from pathlib import Path
 
 from photometric_viewer.formats import ies
 from photometric_viewer.formats.ldt import import_from_file, export_to_file
-from photometric_viewer.model.photometry import Shape, Lamps, LuminaireGeometry, LuminousOpeningGeometry, LuminaireType, \
-    LuminousOpeningShape
+from photometric_viewer.model.luminaire import Shape, Lamps, LuminaireGeometry, LuminousOpeningGeometry, LuminaireType, \
+    LuminousOpeningShape, Calculable
 from photometric_viewer.model.units import LengthUnits
 
 
@@ -14,24 +14,30 @@ class TestLdt(unittest.TestCase):
 
     def test_metadata(self):
         with (self.FILES_PATH / "metadata.ldt").open() as f:
-            photometry = import_from_file(f)
+            luminaire = import_from_file(f)
 
-        self.assertEqual(photometry.lorl, 100.0)
-        self.assertEqual(photometry.dff, 100)
-        self.assertEqual(photometry.metadata.luminaire, "Dummy LDT file")
-        self.assertEqual(photometry.metadata.manufacturer, "ACME Inc.")
-        self.assertEqual(photometry.metadata.catalog_number, "BD0150")
-        self.assertEqual(photometry.lamps[0].description, "LED Module")
-        self.assertEqual(photometry.metadata.luminaire_type, LuminaireType.POINT_SOURCE_WITH_VERTICAL_SYMMETRY)
-        self.assertEqual(photometry.metadata.measurement, "TESTREP1")
-        self.assertEqual(photometry.metadata.filename, "BD0150.ldt")
-        self.assertEqual(photometry.metadata.date_and_user, "2023-05-01 Photometric Viewer")
-        self.assertEqual(photometry.metadata.conversion_factor, 1.0)
-        self.assertEqual(photometry.metadata.file_units, LengthUnits.MILLIMETERS)
+        self.assertEqual(luminaire.metadata.luminaire, "Dummy LDT file")
+        self.assertEqual(luminaire.metadata.manufacturer, "ACME Inc.")
+        self.assertEqual(luminaire.metadata.catalog_number, "BD0150")
+        self.assertEqual(luminaire.lamps[0].description, "LED Module")
+        self.assertEqual(luminaire.metadata.luminaire_type, LuminaireType.POINT_SOURCE_WITH_VERTICAL_SYMMETRY)
+        self.assertEqual(luminaire.metadata.measurement, "TESTREP1")
+        self.assertEqual(luminaire.metadata.filename, "BD0150.ldt")
+        self.assertEqual(luminaire.metadata.date_and_user, "2023-05-01 Photometric Viewer")
+        self.assertEqual(luminaire.metadata.conversion_factor, 1.0)
+        self.assertEqual(luminaire.metadata.file_units, LengthUnits.MILLIMETERS)
+
+    def test_photometric_properties(self):
+        with (self.FILES_PATH / "metadata.ldt").open() as f:
+            luminaire = import_from_file(f)
+
+        self.assertEqual(luminaire.photometry.lor, Calculable(1.0))
+        self.assertEqual(luminaire.photometry.dff, Calculable(1.0))
+
 
     def test_relative_photometry(self):
         with (self.FILES_PATH / "relative.ldt").open() as f:
-            photometry = import_from_file(f)
+            luminaire = import_from_file(f)
 
         raw_values = [
             2200.0, 2000.2, 1950.0, 1700.1, 1328.4, 1115.1, 900.5, 700.4, 600.3, 501.2, 400.1,
@@ -51,14 +57,14 @@ class TestLdt(unittest.TestCase):
             in enumerate(gamma_angles)
         }
 
-        self.assertFalse(photometry.is_absolute)
-        self.assertEqual(photometry.intensity_values, expected_values)
-        self.assertEqual(photometry.lamps[0].lumens_per_lamp, 250)
-        self.assertEqual(photometry.lamps[0].number_of_lamps, 2)
+        self.assertFalse(luminaire.photometry.is_absolute)
+        self.assertEqual(luminaire.intensity_values, expected_values)
+        self.assertEqual(luminaire.lamps[0].lumens_per_lamp, 250)
+        self.assertEqual(luminaire.lamps[0].number_of_lamps, 2)
 
     def test_absolute_photometry(self):
         with (self.FILES_PATH / "absolute.ldt").open() as f:
-            photometry = import_from_file(f)
+            luminaire = import_from_file(f)
 
         expected_flux = 500
 
@@ -80,10 +86,10 @@ class TestLdt(unittest.TestCase):
             in enumerate(gamma_angles)
         }
 
-        self.assertTrue(photometry.is_absolute)
-        self.assertEqual(photometry.intensity_values, expected_values)
-        self.assertEqual(photometry.lamps[0].lumens_per_lamp, 250)
-        self.assertEqual(photometry.lamps[0].number_of_lamps, 2)
+        self.assertTrue(luminaire.photometry.is_absolute)
+        self.assertEqual(luminaire.intensity_values, expected_values)
+        self.assertEqual(luminaire.lamps[0].lumens_per_lamp, 250)
+        self.assertEqual(luminaire.lamps[0].number_of_lamps, 2)
 
     def test_no_symmetry(self):
         with (self.FILES_PATH / "no_symmetry.ldt").open() as f:
@@ -306,7 +312,7 @@ class TestLdt(unittest.TestCase):
     def test_geometries(self):
         with (self.FILES_PATH / "rectangular_luminaire_rectangular_luminous_opening.ldt").open() as f:
             photometry = import_from_file(f)
-            self.assertEqual(photometry.luminaire_geometry, LuminaireGeometry(
+            self.assertEqual(photometry.geometry, LuminaireGeometry(
                 length=0.12,
                 width=0.06,
                 height=0.03,
@@ -324,7 +330,7 @@ class TestLdt(unittest.TestCase):
 
         with (self.FILES_PATH / "rectangular_luminaire_rectangular_luminous_opening_with_heights.ldt").open() as f:
             photometry = import_from_file(f)
-            self.assertEqual(photometry.luminaire_geometry, LuminaireGeometry(
+            self.assertEqual(photometry.geometry, LuminaireGeometry(
                 length=0.12,
                 width=0.06,
                 height=0.03,
@@ -342,7 +348,7 @@ class TestLdt(unittest.TestCase):
 
         with (self.FILES_PATH / "rectangular_luminaire_round_luminous_opening.ldt").open() as f:
             photometry = import_from_file(f)
-            self.assertEqual(photometry.luminaire_geometry, LuminaireGeometry(
+            self.assertEqual(photometry.geometry, LuminaireGeometry(
                 length=0.12,
                 width=0.06,
                 height=0.03,
@@ -360,7 +366,7 @@ class TestLdt(unittest.TestCase):
 
         with (self.FILES_PATH / "rectangular_luminaire_round_luminous_opening_with_heights.ldt").open() as f:
             photometry = import_from_file(f)
-            self.assertEqual(photometry.luminaire_geometry, LuminaireGeometry(
+            self.assertEqual(photometry.geometry, LuminaireGeometry(
                 length=0.12,
                 width=0.06,
                 height=0.03,
@@ -378,7 +384,7 @@ class TestLdt(unittest.TestCase):
 
         with (self.FILES_PATH / "round_luminaire_rectangular_luminous_opening.ldt").open() as f:
             photometry = import_from_file(f)
-            self.assertEqual(photometry.luminaire_geometry, LuminaireGeometry(
+            self.assertEqual(photometry.geometry, LuminaireGeometry(
                 length=0.12,
                 width=0.12,
                 height=0.03,
@@ -396,7 +402,7 @@ class TestLdt(unittest.TestCase):
 
         with (self.FILES_PATH / "round_luminaire_round_luminous_opening.ldt").open() as f:
             photometry = import_from_file(f)
-            self.assertEqual(photometry.luminaire_geometry, LuminaireGeometry(
+            self.assertEqual(photometry.geometry, LuminaireGeometry(
                 length=0.12,
                 width=0.12,
                 height=0.03,
@@ -424,7 +430,6 @@ class TestLdt(unittest.TestCase):
                 color="3000",
                 cri="100",
                 wattage=15.0,
-                is_absolute=False
             ),
             Lamps(
                 number_of_lamps=2,
@@ -433,7 +438,6 @@ class TestLdt(unittest.TestCase):
                 color="3000",
                 cri="100",
                 wattage=30.0,
-                is_absolute=False
             ),
             Lamps(
                 number_of_lamps=1,
@@ -442,7 +446,6 @@ class TestLdt(unittest.TestCase):
                 color="5000",
                 cri="90",
                 wattage=15.0,
-                is_absolute=False
             )
         ]
         self.assertEqual(photometry.lamps, expected_lamp_sets)
@@ -471,30 +474,30 @@ class TestLdt(unittest.TestCase):
         for path in self.FILES_PATH.iterdir():
             with(self.subTest(path=path)):
                 with path.open() as f:
-                    photometry = import_from_file(f)
+                    luminaire = import_from_file(f)
 
                 with io.StringIO() as f:
-                    ies.export_to_file(f, photometry, additional_keywords={})
+                    ies.export_to_file(f, luminaire, additional_keywords={})
                     exported_value = f.getvalue()
 
                 with io.StringIO(exported_value) as f:
-                    reimported_photometry = ies.import_from_file(f)
+                    reimported_luminaire = ies.import_from_file(f)
 
-                self.assertEqual(photometry.is_absolute, reimported_photometry.is_absolute)
+                self.assertEqual(luminaire.photometry.is_absolute, reimported_luminaire.photometry.is_absolute)
 
-                if photometry.is_absolute:
-                    photometry.lamps[0].lumens_per_lamp = None
+                if luminaire.photometry.is_absolute:
+                    luminaire.lamps[0].lumens_per_lamp = None
 
-                self.assertEqual(photometry.lamps[0], reimported_photometry.lamps[0])
-                self.assertEqual(photometry.c_planes, reimported_photometry.c_planes)
-                self.assertEqual(photometry.gamma_angles, reimported_photometry.gamma_angles)
+                self.assertEqual(luminaire.lamps[0], reimported_luminaire.lamps[0])
+                self.assertEqual(luminaire.c_planes, reimported_luminaire.c_planes)
+                self.assertEqual(luminaire.gamma_angles, reimported_luminaire.gamma_angles)
 
-                photometry.luminous_opening_geometry.height_c90 = None
-                photometry.luminous_opening_geometry.height_c180 = None
-                photometry.luminous_opening_geometry.height_c270 = None
-                self.assertEqual(photometry.luminous_opening_geometry, reimported_photometry.luminous_opening_geometry)
+                luminaire.luminous_opening_geometry.height_c90 = None
+                luminaire.luminous_opening_geometry.height_c180 = None
+                luminaire.luminous_opening_geometry.height_c270 = None
+                self.assertEqual(luminaire.luminous_opening_geometry, reimported_luminaire.luminous_opening_geometry)
 
-                self.assertEqual(photometry.intensity_values, reimported_photometry.intensity_values)
+                self.assertEqual(luminaire.intensity_values, reimported_luminaire.intensity_values)
 
 
 

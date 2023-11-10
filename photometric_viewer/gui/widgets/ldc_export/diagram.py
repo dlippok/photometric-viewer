@@ -1,7 +1,7 @@
 import cairo
 from gi.repository import Gtk
 
-from photometric_viewer.model.photometry import Photometry
+from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.utils.plotters import LightDistributionPlotter, LightDistributionPlotterSettings
 
 
@@ -11,7 +11,7 @@ class PhotometricDiagramPreview(Gtk.DrawingArea):
         self.set_css_classes(["boxed-list"])
         self.set_name("photometric_diagram")
         self.set_draw_func(self.on_draw)
-        self.photometry = None
+        self.luminaire = None
         self.plotter = LightDistributionPlotter()
 
     def draw_checkered_background(self, context: cairo.Context, width, height):
@@ -26,16 +26,16 @@ class PhotometricDiagramPreview(Gtk.DrawingArea):
         context.restore()
 
     def on_draw(self, _, context: cairo.Context, width, height):
-        if self.photometry is None:
+        if self.luminaire is None:
             return
 
         self.set_content_height(width)
         self.plotter.size = width
         self.draw_checkered_background(context, width, height)
-        self.plotter.draw(context, self.photometry)
+        self.plotter.draw(context, self.luminaire)
 
-    def set_photometry(self, photometry: Photometry):
-        self.photometry = photometry
+    def set_photometry(self, luminaire: Luminaire):
+        self.luminaire = luminaire
         self.queue_draw()
 
     def update_settings(self, settings: LightDistributionPlotterSettings):

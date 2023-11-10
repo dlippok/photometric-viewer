@@ -7,7 +7,7 @@ from photometric_viewer.gui.widgets.content.header import LuminaireHeader
 from photometric_viewer.gui.widgets.content.lamps import LampAndBallast
 from photometric_viewer.gui.widgets.content.photometry import LuminairePhotometricProperties
 from photometric_viewer.gui.widgets.content.properties import LuminaireProperties
-from photometric_viewer.model.photometry import Photometry
+from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.model.settings import Settings
 
 
@@ -49,12 +49,12 @@ class PhotometryContentPage(Adw.Bin):
         scrolled_window.set_policy(PolicyType.NEVER, PolicyType.AUTOMATIC)
         self.set_child(scrolled_window)
 
-    def set_photometry(self, photometry: Photometry):
-        self.header.set_photometry(photometry)
-        self.photometric_properties.set_photometry(photometry)
-        self.geometry.set_photometry(photometry)
-        self.lamps_and_ballast.set_photometry(photometry)
-        self.properties.set_photometry(photometry)
+    def set_photometry(self, luminaire: Luminaire):
+        self.header.set_photometry(luminaire)
+        self.photometric_properties.set_photometry(luminaire)
+        self.geometry.set_photometry(luminaire)
+        self.lamps_and_ballast.set_photometry(luminaire)
+        self.properties.set_photometry(luminaire)
 
     def update_settings(self, settings: Settings):
         self.header.update_settings(settings)

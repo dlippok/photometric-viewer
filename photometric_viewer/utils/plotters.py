@@ -5,7 +5,7 @@ from typing import Tuple, List
 
 import cairo
 
-from photometric_viewer.model.photometry import Photometry
+from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.utils.coordinates import cartesian_to_screen
 
 
@@ -59,14 +59,14 @@ class LightDistributionPlotter:
         else:
             self.settings = LightDistributionPlotterSettings()
 
-    def draw(self, context: cairo.Context, photometry: Photometry):
-        self.center = self._get_center(photometry)
+    def draw(self, context: cairo.Context, luminaire: Luminaire):
+        self.center = self._get_center(luminaire)
         self._draw_background(context)
-        self._draw_curve(context, photometry)
-        self._draw_coordinate_system(context, photometry)
+        self._draw_curve(context, luminaire)
+        self._draw_coordinate_system(context, luminaire)
         self._draw_legend(context)
 
-    def _get_center(self, photometry: Photometry):
+    def _get_center(self, luminaire: Luminaire):
         if self.settings.display_half_spaces == DisplayHalfSpaces.BOTH:
             return self.size / 2, self.size / 2
 
@@ -74,7 +74,7 @@ class LightDistributionPlotter:
         max_upper_half = 0
         max_other = 0
         for c_angle in [0, 90, 180, 270]:
-            values = photometry.get_values_for_c_angle(c_angle)
+            values = luminaire.get_values_for_c_angle(c_angle)
             for angle, candelas in values.items():
                 if angle < 45 and candelas > max_lower_half:
                     max_lower_half = candelas
@@ -92,11 +92,11 @@ class LightDistributionPlotter:
         else:
             return self.size / 2, self.size * 0.5
 
-    def _get_max_candela(self, photometry: Photometry):
+    def _get_max_candela(self, luminaire: Luminaire):
         max_candelas = 0
 
         for c_angle in [0, 90, 180, 270]:
-            values = photometry.get_values_for_c_angle(c_angle)
+            values = luminaire.get_values_for_c_angle(c_angle)
             for angle, candelas in values.items():
                 if candelas > max_candelas:
                     max_candelas = candelas
@@ -131,7 +131,7 @@ class LightDistributionPlotter:
         context.rectangle(0, 0, self.size, self.size)
         context.fill()
 
-    def _draw_coordinate_system(self, context: cairo.Context, photometry: Photometry):
+    def _draw_coordinate_system(self, context: cairo.Context, luminaire: Luminaire):
         context.set_line_width(self.settings.theme.coordinate_line_width)
         context.set_dash(self.settings.theme.coordinate_line_dash)
         r, g, b, a = self.settings.theme.coordinate_color
@@ -176,18 +176,18 @@ class LightDistributionPlotter:
             context.line_to(point_clipped_to_canvas[0], point_clipped_to_canvas[1])
             context.stroke()
 
-        self.draw_values(self.center, context, photometry, radii)
+        self.draw_values(self.center, context, luminaire, radii)
 
-    def draw_values(self, center, context, photometry, radii: List[int]):
+    def draw_values(self, center, context, luminaire, radii: List[int]):
         if not self.settings.show_values:
             return
 
         r, g, b, a = self.settings.theme.text_color
         context.set_source_rgba(r, g, b, a)
 
-        max_candelas = self._get_max_candela(photometry)
+        max_candelas = self._get_max_candela(luminaire)
         for n, radius in enumerate(radii):
-            unit = "cd" if photometry.is_absolute else "cd/klm"
+            unit = "cd" if luminaire.photometry.is_absolute else "cd/klm"
             value = max_candelas * (n + 1) / (len(radii) - 2)
 
             text = f"{value:.0f} {unit}"
@@ -200,23 +200,23 @@ class LightDistributionPlotter:
             context.move_to(first_value_point[0], first_value_point[1])
             context.show_text(text)
 
-    def _draw_curve(self, context: cairo.Context, photometry: Photometry):
+    def _draw_curve(self, context: cairo.Context, luminaire: Luminaire):
         theme = self.settings.theme
         context.set_line_width(theme.curve_line_width)
-        max_candelas = self._get_max_candela(photometry)
+        max_candelas = self._get_max_candela(luminaire)
 
         context.set_dash(self.settings.theme.c0_dash)
-        self._draw_halfcurve(context, photometry, max_candelas, 0, theme.c0_stroke, theme.c0_fill)
-        self._draw_halfcurve(context, photometry, max_candelas, 180, theme.c0_stroke, theme.c0_fill)
+        self._draw_halfcurve(context, luminaire, max_candelas, 0, theme.c0_stroke, theme.c0_fill)
+        self._draw_halfcurve(context, luminaire, max_candelas, 180, theme.c0_stroke, theme.c0_fill)
 
         context.set_dash(self.settings.theme.c180_dash)
-        self._draw_halfcurve(context, photometry, max_candelas, 90, theme.c180_stroke, theme.c180_fill)
-        self._draw_halfcurve(context, photometry, max_candelas, 270, theme.c180_stroke, theme.c180_fill)
+        self._draw_halfcurve(context, luminaire, max_candelas, 90, theme.c180_stroke, theme.c180_fill)
+        self._draw_halfcurve(context, luminaire, max_candelas, 270, theme.c180_stroke, theme.c180_fill)
 
     def _draw_halfcurve(
             self,
             context: cairo.Context,
-            photometry: Photometry,
+            luminaire: Luminaire,
             max_candelas,
             c_angle,
             stroke,
@@ -232,7 +232,7 @@ class LightDistributionPlotter:
 
         context.new_path()
         is_first_point = True
-        for angle, candelas in photometry.get_values_for_c_angle(c_angle).items():
+        for angle, candelas in luminaire.get_values_for_c_angle(c_angle).items():
             distance = candelas / max_candelas * max_candelas_scale
             angle = math.radians(angle)
             cartesian_point = (

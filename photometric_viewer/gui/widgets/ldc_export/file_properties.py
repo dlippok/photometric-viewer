@@ -5,7 +5,7 @@ from enum import Enum
 from gi.repository import Adw, Gtk
 from gi.repository.Gtk import ListBox, SelectionMode, Button, Box
 
-from photometric_viewer.utils import plotter_themes
+from photometric_viewer.config import plotter_themes
 from photometric_viewer.utils.plotters import LightDistributionPlotterSettings, SnapValueAnglesTo, DisplayHalfSpaces, \
     DiagramStyle
 

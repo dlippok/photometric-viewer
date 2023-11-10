@@ -1,5 +1,5 @@
 from photometric_viewer.gui.widgets.common.property_list import PropertyList
-from photometric_viewer.model.photometry import Photometry, Shape, LuminousOpeningGeometry, LuminaireGeometry, \
+from photometric_viewer.model.luminaire import Luminaire, Shape, LuminousOpeningGeometry, LuminaireGeometry, \
     LuminousOpeningShape, LuminaireType
 from photometric_viewer.model.settings import Settings
 from photometric_viewer.model.units import LengthUnits, length_factor
@@ -8,11 +8,11 @@ from photometric_viewer.model.units import LengthUnits, length_factor
 class LuminaireGeometryProperties(PropertyList):
     def __init__(self):
         super().__init__()
-        self.photometry: Photometry | None = None
+        self.luminaire: Luminaire | None = None
         self.settings: Settings | None = None
 
-    def set_photometry(self, photometry: Photometry):
-        self.photometry = photometry
+    def set_photometry(self, luminaire: Luminaire):
+        self.luminaire = luminaire
         self._refresh_widgets()
 
     def update_settings(self, settings: Settings):
@@ -24,8 +24,8 @@ class LuminaireGeometryProperties(PropertyList):
             return f"{value}m"
 
         if self.settings.length_units_from_file:
-            converted_value = value * length_factor(self.photometry.metadata.file_units)
-            match self.photometry.metadata.file_units:
+            converted_value = value * length_factor(self.luminaire.metadata.file_units)
+            match self.luminaire.metadata.file_units:
                 case LengthUnits.METERS:
                     return f"{converted_value:.2f}m"
                 case LengthUnits.MILLIMETERS:
@@ -47,7 +47,7 @@ class LuminaireGeometryProperties(PropertyList):
                     return f"{converted_value:.2f}in"
 
     def _refresh_widgets(self):
-        if not self.photometry:
+        if not self.luminaire:
             return
 
         items = [i for i in self]
@@ -55,7 +55,7 @@ class LuminaireGeometryProperties(PropertyList):
         for child in items:
             self.remove(child)
 
-        match self.photometry.luminaire_geometry:
+        match self.luminaire.geometry:
             case LuminaireGeometry(w, l, h, Shape.RECTANGULAR):
                 self.add(_("Luminaire shape"), _("Rectangular"))
                 self.add(_("Luminaire dimensions"), f"{self._convert(w)} x {self._convert(l)} x {self._convert(h)}")
@@ -63,7 +63,7 @@ class LuminaireGeometryProperties(PropertyList):
                 self.add(_("Luminaire shape"), _("Round"))
                 self.add(_("Luminaire dimensions"), f"{self._convert(w)} x {self._convert(l)} x {self._convert(h)}")
 
-        match self.photometry.luminous_opening_geometry.shape:
+        match self.luminaire.luminous_opening_geometry.shape:
             case LuminousOpeningShape.RECTANGULAR:
                 self.add(_("Luminous opening shape"), _("Rectangular"))
             case LuminousOpeningShape.ROUND:
@@ -85,7 +85,7 @@ class LuminaireGeometryProperties(PropertyList):
             case LuminousOpeningShape.ELLIPSOID_ALONG_LENGTH:
                 self.add(_("Luminous opening shape"), _("Ellipsoid oriented along luminaire length"))
 
-        match self.photometry.luminous_opening_geometry:
+        match self.luminaire.luminous_opening_geometry:
             case LuminousOpeningGeometry(width=0, length=0, height=0, shape=LuminousOpeningShape.POINT):
                 pass
             case LuminousOpeningGeometry(width=w, length=l, height=0, shape=_):
@@ -99,11 +99,11 @@ class LuminaireGeometryProperties(PropertyList):
                     f"C0:\t\t{self._convert(h0)}\nC90:\t{self._convert(h90)}\nC180:\t{self._convert(h180)}\nC270:\t{self._convert(h270)}"
                 )
 
-        self.add_if_non_empty(_("Luminaire type"), self._display_liminaire_type(self.photometry.metadata.luminaire_type))
+        self.add_if_non_empty(_("Luminaire type"), self._display_luminaire_type(self.luminaire.metadata.luminaire_type))
 
 
     @staticmethod
-    def _display_liminaire_type(luminaire_type: LuminaireType | None):
+    def _display_luminaire_type(luminaire_type: LuminaireType | None):
         match luminaire_type:
             case LuminaireType.POINT_SOURCE_WITH_VERTICAL_SYMMETRY:
                 return _("Point source with symmetry about the vertical axis")

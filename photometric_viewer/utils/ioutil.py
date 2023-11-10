@@ -8,4 +8,4 @@ def read_non_empty_line(f: IO):
             line = f.readline()
             continue
         else:
-            return line
+            return line.strip()

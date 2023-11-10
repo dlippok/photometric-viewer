@@ -9,7 +9,7 @@ from photometric_viewer.gui.widgets.common.property_list import PropertyList
 from photometric_viewer.gui.widgets.content.photometry import _value_with_unit
 from photometric_viewer.gui.widgets.content.temperature import ColorTemperatureGauge
 from photometric_viewer.gui.widgets.content.wattage import WattageBox
-from photometric_viewer.model.photometry import Photometry
+from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.model.settings import Settings
 
 
@@ -35,14 +35,14 @@ class LampAndBallast(Adw.Bin):
         self.wattage_boxes: List[WattageBox] = []
         self.set_child(box)
 
-    def set_photometry(self, photometry: Photometry):
+    def set_photometry(self, luminaire: Luminaire):
         items = [i for i in self.view_stack]
 
         self.wattage_boxes = []
         for child in items:
             self.view_stack.remove(child)
 
-        for n, lamp in enumerate(photometry.lamps):
+        for n, lamp in enumerate(luminaire.lamps):
             property_list = PropertyList()
             property_list.add(_("Number of lamps"), str(lamp.number_of_lamps))
             property_list.add_if_non_empty(_("Lamp"), lamp.description)
@@ -65,7 +65,7 @@ class LampAndBallast(Adw.Bin):
                 property_list.append(wattage_box)
                 self.wattage_boxes.append(wattage_box)
 
-            if not photometry.is_absolute:
+            if not luminaire.photometry.is_absolute:
                 property_list.add(_("Initial rating per lamp"), f'{lamp.lumens_per_lamp:.0f}lm')
                 if lamp.wattage:
                     efficacy = round(lamp.lumens_per_lamp * lamp.number_of_lamps / lamp.wattage)

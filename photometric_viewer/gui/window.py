@@ -10,7 +10,7 @@ import photometric_viewer.formats.csv
 import photometric_viewer.formats.format_json
 import photometric_viewer.formats.png
 import photometric_viewer.formats.svg
-from photometric_viewer.accelerators import ACCELERATORS
+from photometric_viewer.config.accelerators import ACCELERATORS
 from photometric_viewer.formats import ldt, ies
 from photometric_viewer.formats.common import import_from_file
 from photometric_viewer.formats.exceptions import InvalidPhotometricFileFormatException
@@ -23,9 +23,9 @@ from photometric_viewer.gui.pages.ldc_export import LdcExportPage
 from photometric_viewer.gui.pages.source import SourceViewPage
 from photometric_viewer.gui.pages.values import IntensityValuesPage
 from photometric_viewer.gui.widgets.app_menu import ApplicationMenuButton
-from photometric_viewer.model.photometry import Photometry
-from photometric_viewer.utils.GSettings import GSettings
-from photometric_viewer.utils.gio import gio_file_stream, write_string
+from photometric_viewer.model.luminaire import Luminaire
+from photometric_viewer.utils.gi.GSettings import GSettings
+from photometric_viewer.utils.gi.gio import gio_file_stream, write_string
 
 
 class MainWindow(Adw.Window):
@@ -45,10 +45,10 @@ class MainWindow(Adw.Window):
         self.settings = self.gsettings.load()
 
         self.view_stack = Adw.ViewStack()
-        self.opened_photometry: Optional[Photometry] = None
+        self.opened_photometry: Optional[Luminaire] = None
 
-        self.photometry_content_page = PhotometryContentPage()
-        self.view_stack.add_titled(self.photometry_content_page, "photometry", _("Photometry"))
+        self.luminaire_content_page = PhotometryContentPage()
+        self.view_stack.add_titled(self.luminaire_content_page, "photometry", _("Photometry"))
 
         self.source_view_page = SourceViewPage()
         self.view_stack.add_titled(self.source_view_page, "source", _("Source"))
@@ -156,24 +156,24 @@ class MainWindow(Adw.Window):
         back_click.connect("pressed", self.on_back_clicked)
         self.add_controller(back_click)
 
-    def display_photometry_content(self, photometry: Photometry):
-        self.photometry_content_page.set_photometry(photometry)
-        self.source_view_page.set_photometry(photometry)
-        self.values_table_page.set_photometry(photometry)
-        self.ldc_export_page.set_photometry(photometry)
+    def display_photometry_content(self, luminaire: Luminaire):
+        self.luminaire_content_page.set_photometry(luminaire)
+        self.source_view_page.set_photometry(luminaire)
+        self.values_table_page.set_photometry(luminaire)
+        self.ldc_export_page.set_photometry(luminaire)
 
         self.content_bin.set_child(self.view_stack)
-        self.opened_photometry = photometry
+        self.opened_photometry = luminaire
 
     def update_settings(self):
-        self.photometry_content_page.update_settings(self.settings)
+        self.luminaire_content_page.update_settings(self.settings)
         self.gsettings.save(self.settings)
 
     def on_open_clicked(self, *args):
         self.open_file_chooser.show()
 
     def on_back_clicked(self, *args):
-        self.open_page(self.photometry_content_page)
+        self.open_page(self.luminaire_content_page)
 
     def on_open_response(self, dialog: FileChooserDialog, response):
         if response == Gtk.ResponseType.ACCEPT:
@@ -205,7 +205,7 @@ class MainWindow(Adw.Window):
         self.show_banner(_("Exported as {}").format(file.get_basename()))
 
     def on_export_ldc_response(self, filename):
-        self.open_page(self.photometry_content_page)
+        self.open_page(self.luminaire_content_page)
         self.show_banner(_("Exported as {}").format(filename))
 
     def on_export_ldt_response(self, dialog: FileChooserDialog, response):
@@ -254,7 +254,7 @@ class MainWindow(Adw.Window):
 
     def open_page(self, page):
         self.view_stack.set_visible_child(page)
-        is_start_page = (page == self.photometry_content_page) or self.opened_photometry is None
+        is_start_page = (page == self.luminaire_content_page) or self.opened_photometry is None
         self.back_button.set_visible(not is_start_page)
         self.open_button.set_visible(is_start_page)
 
@@ -266,7 +266,7 @@ class MainWindow(Adw.Window):
                 photometry = import_from_file(f)
 
                 self.display_photometry_content(photometry)
-                self.photometry_content_page.update_settings(self.settings)
+                self.luminaire_content_page.update_settings(self.settings)
 
                 self.set_title(title=file.get_basename())
                 self.window_title.set_title(_("Photometric Viewer"))
@@ -285,7 +285,7 @@ class MainWindow(Adw.Window):
                 self.csv_export_file_chooser.set_current_name(f"{opened_filename}.csv")
                 self.ldt_export_file_chooser.set_current_name(f"{opened_filename}_exported.ldt")
                 self.ies_export_file_chooser.set_current_name(f"{opened_filename}_exported.ies")
-                self.open_page(self.photometry_content_page)
+                self.open_page(self.luminaire_content_page)
 
         except GLib.GError as e:
             logging.exception("Could not open photometric file")

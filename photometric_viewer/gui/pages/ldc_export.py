@@ -7,8 +7,8 @@ from photometric_viewer.gui.dialogs.file_chooser import ExportFileChooser
 from photometric_viewer.gui.widgets.ldc_export.diagram import PhotometricDiagramPreview
 from photometric_viewer.gui.widgets.ldc_export.file_properties import LdcExportFilePropertiesBox, \
     LdcExportFileProperties, LdcExportFileType
-from photometric_viewer.model.photometry import Photometry
-from photometric_viewer.utils.gio import write_bytes
+from photometric_viewer.model.luminaire import Luminaire
+from photometric_viewer.utils.gi.gio import write_bytes
 
 
 class LdcExportPage(Adw.Bin):
@@ -18,7 +18,7 @@ class LdcExportPage(Adw.Bin):
         self.file_chooser = ExportFileChooser(transient_for=transient_for)
         self.transient_for = transient_for
 
-        self.photometry = None
+        self.luminaire = None
         self.on_exported = on_exported
 
         box = Box(
@@ -65,9 +65,9 @@ class LdcExportPage(Adw.Bin):
         scrolled_window.set_policy(PolicyType.NEVER, PolicyType.AUTOMATIC)
         self.set_child(scrolled_window)
 
-    def set_photometry(self, photometry: Photometry):
-        self.photometry = photometry
-        self.diagram.set_photometry(photometry)
+    def set_photometry(self, luminaire: Luminaire):
+        self.luminaire = luminaire
+        self.diagram.set_photometry(luminaire)
         self.properties_box.update()
 
     def properties_changed(self, properties: LdcExportFileProperties):
@@ -94,7 +94,7 @@ class LdcExportPage(Adw.Bin):
         self.file_chooser.show()
 
     def on_export_png_response(self, dialog: FileChooserDialog, response):
-        if not self.photometry:
+        if not self.luminaire:
             return
 
         if response != Gtk.ResponseType.ACCEPT:
@@ -102,7 +102,7 @@ class LdcExportPage(Adw.Bin):
 
         file: Gio.File = dialog.get_file()
         data = png.export_photometry(
-            self.photometry,
+            self.luminaire,
             self.properties_box.properties.size_in_px,
             self.properties_box.properties.plotter_settings
         )
@@ -110,7 +110,7 @@ class LdcExportPage(Adw.Bin):
         self.on_exported(file.get_basename())
 
     def on_export_svg_response(self, dialog: FileChooserDialog, response):
-        if not self.photometry:
+        if not self.luminaire:
             return
 
         if response != Gtk.ResponseType.ACCEPT:
@@ -118,7 +118,7 @@ class LdcExportPage(Adw.Bin):
 
         file: Gio.File = dialog.get_file()
         data = svg.export_photometry(
-            self.photometry,
+            self.luminaire,
             self.properties_box.properties.size_in_px,
             self.properties_box.properties.plotter_settings
         )

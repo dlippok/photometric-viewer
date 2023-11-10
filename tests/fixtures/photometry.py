@@ -1,31 +1,23 @@
 import copy
 import math
 
-from photometric_viewer.model.photometry import Photometry, LuminaireGeometry, Shape, LuminousOpeningGeometry, Lamps, \
-    PhotometryMetadata, LuminaireType, LuminousOpeningShape
+from photometric_viewer.model.luminaire import Luminaire, LuminaireGeometry, Shape, LuminousOpeningGeometry, Lamps, \
+    PhotometryMetadata, LuminaireType, LuminousOpeningShape, LuminairePhotometricProperties, Calculable
 from photometric_viewer.model.units import LengthUnits
 
-ABSOLUTE_PHOTOMETRY_LUMINAIRE = Photometry(
-    is_absolute=True,
-    gamma_angles=[0, 45, 90],
-    c_planes=[0, 90, 180, 270],
-    intensity_values={
-        (0, 0): 300,
-        (0, 45): 100,
-        (0, 90): 20,
-        (90, 0): 300,
-        (90, 45): 100,
-        (90, 90): 20,
-        (180, 0): 300,
-        (180, 45): 100,
-        (180, 90): 20,
-        (270, 0): 300,
-        (270, 45): 100,
-        (270, 90): 20
-    },
-    dff=100,
-    lorl=100,
-    luminaire_geometry=LuminaireGeometry(
+MINIMAL_LUMINAIRE = Luminaire(
+    gamma_angles=[],
+    c_planes=[],
+    intensity_values={},
+    photometry=LuminairePhotometricProperties(
+        is_absolute=True,
+        luminous_flux=Calculable(None),
+        efficacy=Calculable(None),
+        lor=Calculable(None),
+        dff=Calculable(None)
+    ),
+
+    geometry=LuminaireGeometry(
         shape=Shape.RECTANGULAR,
         width=0.4,
         length=1.2,
@@ -43,7 +35,6 @@ ABSOLUTE_PHOTOMETRY_LUMINAIRE = Photometry(
     lamps=[
         Lamps(
             number_of_lamps=1,
-            is_absolute=True,
             description="Test lamp",
             catalog_number="LP1220",
             position="center",
@@ -70,7 +61,31 @@ ABSOLUTE_PHOTOMETRY_LUMINAIRE = Photometry(
         conversion_factor=1,
         filename="file.ldt"
     )
+)
 
+ABSOLUTE_PHOTOMETRY_LUMINAIRE = copy.deepcopy(MINIMAL_LUMINAIRE)
+ABSOLUTE_PHOTOMETRY_LUMINAIRE.gamma_angles=[0, 45, 90]
+ABSOLUTE_PHOTOMETRY_LUMINAIRE.c_planes=[0, 90, 180, 270]
+ABSOLUTE_PHOTOMETRY_LUMINAIRE.intensity_values={
+        (0, 0): 300,
+        (0, 45): 100,
+        (0, 90): 20,
+        (90, 0): 300,
+        (90, 45): 100,
+        (90, 90): 20,
+        (180, 0): 300,
+        (180, 45): 100,
+        (180, 90): 20,
+        (270, 0): 300,
+        (270, 45): 100,
+        (270, 90): 20
+}
+ABSOLUTE_PHOTOMETRY_LUMINAIRE.photometry=LuminairePhotometricProperties(
+        is_absolute=True,
+        luminous_flux=Calculable(1200),
+        efficacy=Calculable(None),
+        lor=Calculable(100),
+        dff=Calculable(100)
 )
 
 TWO_LAMPS_LUMINAIRE = copy.deepcopy(ABSOLUTE_PHOTOMETRY_LUMINAIRE)
@@ -78,7 +93,6 @@ TWO_LAMPS_LUMINAIRE.is_absolute = False
 TWO_LAMPS_LUMINAIRE.lamps = [
     Lamps(
         number_of_lamps=1,
-        is_absolute=False,
         description="Test lamp 1",
         catalog_number="LP1221",
         position="center",
@@ -91,7 +105,6 @@ TWO_LAMPS_LUMINAIRE.lamps = [
     ),
     Lamps(
         number_of_lamps=2,
-        is_absolute=False,
         description="Test lamp 2",
         catalog_number="LP1222",
         position="center",
@@ -105,9 +118,9 @@ TWO_LAMPS_LUMINAIRE.lamps = [
 ]
 
 LUMINAIRE_WITHOUT_LUMINAIRE_GEOMETRY = copy.deepcopy(ABSOLUTE_PHOTOMETRY_LUMINAIRE)
-LUMINAIRE_WITHOUT_LUMINAIRE_GEOMETRY.luminaire_geometry = None
+LUMINAIRE_WITHOUT_LUMINAIRE_GEOMETRY.geometry = None
 
-UNIFORM_RADIATING_SOURCE = copy.deepcopy(ABSOLUTE_PHOTOMETRY_LUMINAIRE)
+UNIFORM_RADIATING_SOURCE = copy.deepcopy(MINIMAL_LUMINAIRE)
 UNIFORM_RADIATING_SOURCE.lamps[0].lumens_per_lamp = 1000 * 4 * math.pi
 UNIFORM_RADIATING_SOURCE.c_planes = [0, 90, 180, 270]
 UNIFORM_RADIATING_SOURCE.gamma_angles = [0, 30, 60, 90, 120, 150, 180]
@@ -131,7 +144,7 @@ UPWARD_RADIATING_SOURCE.intensity_values = {
     for gamma in UNIFORM_RADIATING_SOURCE.gamma_angles
 }
 
-NON_EQUIDISTANT_UNIFORM_RADIATING_SOURCE = copy.deepcopy(ABSOLUTE_PHOTOMETRY_LUMINAIRE)
+NON_EQUIDISTANT_UNIFORM_RADIATING_SOURCE = copy.deepcopy(MINIMAL_LUMINAIRE)
 NON_EQUIDISTANT_UNIFORM_RADIATING_SOURCE.lamps[0].lumens_per_lamp = 1000 * 4 * math.pi
 NON_EQUIDISTANT_UNIFORM_RADIATING_SOURCE.c_planes = [0, 90, 180, 270]
 NON_EQUIDISTANT_UNIFORM_RADIATING_SOURCE.gamma_angles = [0, 10, 20, 30, 40, 50, 50, 70, 80, 90, 180]
@@ -156,11 +169,10 @@ NON_EQUIDISTANT_UPWARD_RADIATING_SOURCE.intensity_values = {
 }
 
 LOR_50_UNIFORM_RADIATING_SOURCE = copy.deepcopy(UNIFORM_RADIATING_SOURCE)
-LOR_50_UNIFORM_RADIATING_SOURCE.is_absolute = False
+LOR_50_UNIFORM_RADIATING_SOURCE.photometry.is_absolute = False
 LOR_50_UNIFORM_RADIATING_SOURCE.lamps = [
     Lamps(
         number_of_lamps=1,
-        is_absolute=False,
         description="Test lamp",
         catalog_number="LP1220",
         position="center",

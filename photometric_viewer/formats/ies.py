@@ -2,10 +2,10 @@ import datetime
 from typing import IO, Dict
 
 from photometric_viewer.formats.exceptions import InvalidLuminousOpeningException, InvalidPhotometricFileFormatException
-from photometric_viewer.model.photometry import Photometry, PhotometryMetadata, LuminousOpeningGeometry, Shape, \
-    Lamps, LuminousOpeningShape
+from photometric_viewer.model.luminaire import Luminaire, PhotometryMetadata, LuminousOpeningGeometry, Shape, \
+    Lamps, LuminousOpeningShape, LuminairePhotometricProperties, Calculable
 from photometric_viewer.model.units import LengthUnits
-from photometric_viewer.utils.io import read_non_empty_line
+from photometric_viewer.utils.ioutil import read_non_empty_line
 
 _LUMEN_PER_LAMPS_ABSOLUTE = -1
 _LUMEN_PER_LAMPS_1000 = 1000
@@ -181,19 +181,22 @@ def import_from_file(f: IO):
     source = f.read()
 
     date = metadata.pop("ISSUEDATE", None) or metadata.pop("DATE", None)
-    return Photometry(
-        is_absolute=lumens is None,
+    return Luminaire(
         gamma_angles=v_angles,
         c_planes=h_angles,
         intensity_values=candela_values,
         luminous_opening_geometry=create_luminous_opening(attributes),
-        luminaire_geometry=None,
-        dff=None,
-        lorl=None,
+        geometry=None,
+        photometry=LuminairePhotometricProperties(
+            is_absolute=lumens is None,
+            luminous_flux=Calculable(None),
+            lor=Calculable(None),
+            dff=Calculable(None),
+            efficacy=Calculable(None)
+        ),
         lamps=[Lamps(
             number_of_lamps=attributes["numer_of_lamps"],
             lumens_per_lamp=attributes["lumens_per_lamp"] if attributes["lumens_per_lamp"] >= 0 else None,
-            is_absolute=attributes["lumens_per_lamp"] < 0,
             description=metadata.pop("LAMP", None),
             catalog_number=metadata.pop("LAMPCAT", None),
             position=metadata.pop("LAMPPOSITION", None),
@@ -222,11 +225,11 @@ def _write_keywords(f: IO, keywords: Dict[str, str]):
         f.write(f"[{k}] {value}\r\n")
 
 
-def _write_luminous_opening_geometry(f, photometry: Photometry):
-    is_feet = photometry.metadata.file_units == LengthUnits.FEET
+def _write_luminous_opening_geometry(f, luminaire: Luminaire):
+    is_feet = luminaire.metadata.file_units == LengthUnits.FEET
     multiplier = 3.2808 if is_feet else 1
 
-    luminous_opening_geometry = photometry.luminous_opening_geometry
+    luminous_opening_geometry = luminaire.luminous_opening_geometry
     match luminous_opening_geometry:
         case LuminousOpeningGeometry(_, _, _, shape=LuminousOpeningShape.POINT):
             f.write("0 0 0 ")
@@ -246,36 +249,36 @@ def _write_luminous_opening_geometry(f, photometry: Photometry):
     f.write("\r\n")
 
 
-def export_to_file(f: IO, photometry: Photometry, additional_keywords: Dict[str, str]):
+def export_to_file(f: IO, luminaire: Luminaire, additional_keywords: Dict[str, str]):
     f.write("IESNA: LM-63-2002\r\n")
 
-    first_lamp_set = photometry.lamps[0]
+    first_lamp_set = luminaire.lamps[0]
     standard_keywords = {
         "TEST": "Unknown",
         "TESTLAB": "Unknown",
-        "LUMCAT": photometry.metadata.catalog_number,
-        "LUMINAIRE": photometry.metadata.luminaire,
-        "MANUFAC": photometry.metadata.manufacturer,
-        "ISSUEDATE": photometry.metadata.date_and_user,
+        "LUMCAT": luminaire.metadata.catalog_number,
+        "LUMINAIRE": luminaire.metadata.luminaire,
+        "MANUFAC": luminaire.metadata.manufacturer,
+        "ISSUEDATE": luminaire.metadata.date_and_user,
         "LAMP": first_lamp_set.description,
         "LAMPCAT": first_lamp_set.catalog_number,
         "LAMPPOSITION": first_lamp_set.position,
         "COLORTEMP": first_lamp_set.color,
         "CRI": first_lamp_set.cri,
         "BALLASTCAT": first_lamp_set.ballast_catalog_number,
-        "BALLAST": photometry.lamps[0].ballast_description
+        "BALLAST": luminaire.lamps[0].ballast_description
     }
 
     _write_keywords(
         f,
-        keywords=standard_keywords | photometry.metadata.additional_properties | additional_keywords
+        keywords=standard_keywords | luminaire.metadata.additional_properties | additional_keywords
     )
 
     f.write("TILT=NONE\r\n")
 
-    f.write(f"{photometry.lamps[0].number_of_lamps} ")
+    f.write(f"{luminaire.lamps[0].number_of_lamps} ")
 
-    if photometry.is_absolute:
+    if luminaire.photometry.is_absolute:
         f.write(f"{_LUMEN_PER_LAMPS_ABSOLUTE} ")
     elif first_lamp_set.lumens_per_lamp:
         f.write(f"{first_lamp_set.lumens_per_lamp} ")
@@ -283,36 +286,36 @@ def export_to_file(f: IO, photometry: Photometry, additional_keywords: Dict[str,
         f.write(f"{_LUMEN_PER_LAMPS_1000} ")
 
     f.write(f"{_DEFAULT_MULTIPLIER} ")
-    f.write(f"{len(photometry.gamma_angles)} ")
-    f.write(f"{len(photometry.c_planes)} ")
+    f.write(f"{len(luminaire.gamma_angles)} ")
+    f.write(f"{len(luminaire.c_planes)} ")
     f.write(f"{_PHOTOMETRIC_TYPE_C} ")
 
-    if photometry.metadata.file_units == LengthUnits.FEET:
+    if luminaire.metadata.file_units == LengthUnits.FEET:
         f.write(f"{_UNIT_TYPE_FEET} ")
     else:
         f.write(f"{_UNIT_TYPE_METERS} ")
 
-    _write_luminous_opening_geometry(f, photometry)
+    _write_luminous_opening_geometry(f, luminaire)
 
     f.write(f"{_DEFAULT_BALLAST_FACTOR} ")
     f.write(f"{_FUTURE_USE} ")
     f.write(f"{first_lamp_set.wattage or 0}\r\n")
 
-    for i, gamma in enumerate(photometry.gamma_angles):
+    for i, gamma in enumerate(luminaire.gamma_angles):
         f.write(f"{gamma} ")
-        if (i+1) % _VALUES_PER_LINE == 0 or (i+1) == len(photometry.gamma_angles):
+        if (i+1) % _VALUES_PER_LINE == 0 or (i+1) == len(luminaire.gamma_angles):
             f.write("\r\n")
 
-    for i, c in enumerate(photometry.c_planes):
+    for i, c in enumerate(luminaire.c_planes):
         f.write(f"{c} ")
-        if (i+1) % _VALUES_PER_LINE == 0 or (i+1) == len(photometry.c_planes):
+        if (i+1) % _VALUES_PER_LINE == 0 or (i+1) == len(luminaire.c_planes):
             f.write("\r\n")
 
     i = 0
-    for c in photometry.c_planes:
-        for gamma in photometry.gamma_angles:
-            intensity = photometry.intensity_values[c, gamma]
-            if photometry.is_absolute:
+    for c in luminaire.c_planes:
+        for gamma in luminaire.gamma_angles:
+            intensity = luminaire.intensity_values[c, gamma]
+            if luminaire.photometry.is_absolute:
                 intensity *= 1
             elif first_lamp_set.lumens_per_lamp and first_lamp_set.lumens_per_lamp > 0:
                 intensity *= first_lamp_set.number_of_lamps * first_lamp_set.lumens_per_lamp / 1000

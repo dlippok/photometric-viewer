@@ -1,9 +1,9 @@
 import cairo
 from gi.repository import Gtk, Adw
 
-from photometric_viewer.model.photometry import Photometry
+from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.model.settings import Settings
-from photometric_viewer.utils import plotter_themes
+from photometric_viewer.config import plotter_themes
 from photometric_viewer.utils.plotters import LightDistributionPlotter, DiagramStyle, SnapValueAnglesTo, \
     DisplayHalfSpaces
 
@@ -17,11 +17,11 @@ class PhotometricDiagram(Gtk.DrawingArea):
 
         self.set_css_classes(["boxed-list"])
         self.set_draw_func(self.on_draw)
-        self.photometry = None
+        self.luminaire = None
         self.plotter = LightDistributionPlotter()
 
     def on_draw(self, _, context: cairo.Context, width, height):
-        if self.photometry is None:
+        if self.luminaire is None:
             return
 
         self.plotter.settings.show_legend = width > 220
@@ -30,10 +30,10 @@ class PhotometricDiagram(Gtk.DrawingArea):
         self.set_content_height(width)
         self.set_name("photometric_diagram")
         self.plotter.size = width
-        self.plotter.draw(context, self.photometry)
+        self.plotter.draw(context, self.luminaire)
 
-    def set_photometry(self, photometry: Photometry):
-        self.photometry = photometry
+    def set_photometry(self, luminaire: Luminaire):
+        self.luminaire = luminaire
         self.queue_draw()
 
     def update_settings(self, settings: Settings):

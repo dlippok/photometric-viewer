@@ -47,7 +47,6 @@ class Application(Adw.Application):
         self.props.active_window.present()
 
 
-
 def run():
     app = Application()
     app.run(sys.argv)

@@ -1,8 +1,6 @@
-import math
 import unittest
 
-from photometric_viewer.utils.calc import annual_power_consumption, energy_cost, calculate_photometric_properties, \
-    CalculatedPhotometricProperties
+from photometric_viewer.utils.calc import annual_power_consumption, energy_cost, calculate_photometry
 from tests.fixtures.photometry import *
 
 
@@ -61,7 +59,7 @@ class TestEnergyCost(unittest.TestCase):
 
 
 class TestPhotometricProperties(unittest.TestCase):
-    def test_uniform_radiating_sources(self):
+    def test_calculates_values_correctly(self):
         """
         Test uniform radiating light sources
         """
@@ -70,44 +68,127 @@ class TestPhotometricProperties(unittest.TestCase):
             {
                 "title": "Equidistant uniform radiating source",
                 "source": UNIFORM_RADIATING_SOURCE,
-                "expected": CalculatedPhotometricProperties(flux_luminaire=EXPECTED_FLUX, lor=1, dff=0.5)
+                "expected": (EXPECTED_FLUX, 1, 0.5)
             },
             {
                 "title": "Equidistant downward radiating source",
                 "source": DOWNWARD_RADIATING_SOURCE,
-                "expected": CalculatedPhotometricProperties(flux_luminaire=EXPECTED_FLUX, lor=1, dff=1)
+                "expected": (EXPECTED_FLUX, 1, 1)
             },
             {
                 "title": "Equidistant upward radiating source",
                 "source": UPWARD_RADIATING_SOURCE,
-                "expected": CalculatedPhotometricProperties(flux_luminaire=EXPECTED_FLUX, lor=1, dff=0)
+                "expected": (EXPECTED_FLUX, 1, 0)
             },
             {
                 "title": "Non equidistant uniform radiating source",
                 "source": NON_EQUIDISTANT_UNIFORM_RADIATING_SOURCE,
-                "expected": CalculatedPhotometricProperties(flux_luminaire=EXPECTED_FLUX, lor=1, dff=0.5)
+                "expected": (EXPECTED_FLUX, 1, 0.5)
             },
             {
                 "title": "Non equidistant downward radiating source",
                 "source": NON_EQUIDISTANT_DOWNWARD_RADIATING_SOURCE,
-                "expected": CalculatedPhotometricProperties(flux_luminaire=EXPECTED_FLUX, lor=1, dff=1)
+                "expected": (EXPECTED_FLUX, 1, 1)
             },
             {
                 "title": "Non equidistant upward radiating source",
                 "source": NON_EQUIDISTANT_UPWARD_RADIATING_SOURCE,
-                "expected": CalculatedPhotometricProperties(flux_luminaire=EXPECTED_FLUX, lor=1, dff=0)
+                "expected": (EXPECTED_FLUX, 1, 0)
             },
             {
                 "title": "LOR 50 equidistant upward radiating source",
                 "source": LOR_50_UNIFORM_RADIATING_SOURCE,
-                "expected": CalculatedPhotometricProperties(flux_luminaire=1000, lor=0.5, dff=0.5)
+                "expected": (1000, 0.5, 0.5)
             }
         ]
 
         for case in cases:
             with(self.subTest(case=case, msg=case["title"])):
-                properties = calculate_photometric_properties(case["source"], case["source"].lamps[0])
-                self.assertAlmostEqual(properties.flux_luminaire, case["expected"].flux_luminaire)
-                self.assertAlmostEqual(properties.lor, case["expected"].lor)
-                self.assertAlmostEqual(properties.dff, case["expected"].dff)
+                properties = calculate_photometry(case["source"])
+                self.assertAlmostEqual(properties.luminous_flux.value, case["expected"][0])
+                self.assertAlmostEqual(properties.lor.value, case["expected"][1])
+                self.assertAlmostEqual(properties.dff.value, case["expected"][2])
 
+    def test_do_not_overwrite_existing_values(self):
+        CALCULATED_FLUX = 1000 * 4 * math.pi
+        CALCULATED_LOR = 1
+        CALCULATED_DFF = 0.5
+        WATTAGE = UNIFORM_RADIATING_SOURCE.lamps[0].wattage
+
+        cases = [
+            {
+                "title": "All values are set",
+                "source": LuminairePhotometricProperties(
+                    is_absolute=True,
+                    luminous_flux=Calculable(1000),
+                    lor=Calculable(0.8),
+                    dff=Calculable(0.8),
+                    efficacy=Calculable(999)
+                ),
+                "expected": LuminairePhotometricProperties(
+                    is_absolute=True,
+                    luminous_flux=Calculable(1000),
+                    lor=Calculable(0.8),
+                    dff=Calculable(0.8),
+                    efficacy=Calculable(999)
+                )
+            },
+            {
+                "title": "Calculated flux and efficacy",
+                "source": LuminairePhotometricProperties(
+                    is_absolute=True,
+                    luminous_flux=Calculable(None),
+                    lor=Calculable(0.8),
+                    dff=Calculable(0.8),
+                    efficacy=Calculable(None)
+                ),
+                "expected": LuminairePhotometricProperties(
+                    is_absolute=True,
+                    luminous_flux=Calculable(CALCULATED_FLUX, is_calculated=True),
+                    lor=Calculable(0.8),
+                    dff=Calculable(0.8),
+                    efficacy=Calculable(CALCULATED_FLUX / WATTAGE, is_calculated=True)
+                )
+            },
+            {
+                "title": "Calculated LOR",
+                "source": LuminairePhotometricProperties(
+                    is_absolute=True,
+                    luminous_flux=Calculable(1000),
+                    lor=Calculable(None),
+                    dff=Calculable(0.8),
+                    efficacy=Calculable(999)
+                ),
+                "expected": LuminairePhotometricProperties(
+                    is_absolute=True,
+                    luminous_flux=Calculable(1000),
+                    lor=Calculable(CALCULATED_LOR, is_calculated=True),
+                    dff=Calculable(0.8),
+                    efficacy=Calculable(999)
+                )
+            },
+            {
+                "title": "Calculated DFF",
+                "source": LuminairePhotometricProperties(
+                    is_absolute=True,
+                    luminous_flux=Calculable(1000),
+                    lor=Calculable(0.8),
+                    dff=Calculable(None),
+                    efficacy=Calculable(999)
+                ),
+                "expected": LuminairePhotometricProperties(
+                    is_absolute=True,
+                    luminous_flux=Calculable(1000),
+                    lor=Calculable(0.8),
+                    dff=Calculable(CALCULATED_DFF, is_calculated=True),
+                    efficacy=Calculable(999)
+                )
+            },
+
+        ]
+        for case in cases:
+            with(self.subTest(case=case["title"])):
+                luminaire = copy.deepcopy(UNIFORM_RADIATING_SOURCE)
+                luminaire.photometry = case["source"]
+                properties = calculate_photometry(luminaire)
+                self.assertEqual(properties, case["expected"])
