@@ -1,26 +1,26 @@
 import json
 
-from photometric_viewer.model.photometry import Photometry
+from photometric_viewer.model.luminaire import Luminaire
 
 
-def export_photometry(photometry: Photometry):
+def export_photometry(luminaire: Luminaire):
     luminaire_geometry = {
-        "width": photometry.luminaire_geometry.width,
-        "height": photometry.luminaire_geometry.height,
-        "length": photometry.luminaire_geometry.length,
-        "shape": photometry.luminaire_geometry.shape.name
-    } if photometry.luminaire_geometry else None
+        "width": luminaire.geometry.width,
+        "height": luminaire.geometry.height,
+        "length": luminaire.geometry.length,
+        "shape": luminaire.geometry.shape.name
+    } if luminaire.geometry else None
 
     data = {
         "geometry": {
             "luminous_opening": {
-                "shape": photometry.luminous_opening_geometry.shape.name,
-                "width": photometry.luminous_opening_geometry.width,
-                "length": photometry.luminous_opening_geometry.length,
-                "height": photometry.luminous_opening_geometry.height,
-                "height_c90": photometry.luminous_opening_geometry.height_c90,
-                "height_c180": photometry.luminous_opening_geometry.height_c180,
-                "height_c270": photometry.luminous_opening_geometry.height_c270,
+                "shape": luminaire.luminous_opening_geometry.shape.name,
+                "width": luminaire.luminous_opening_geometry.width,
+                "length": luminaire.luminous_opening_geometry.length,
+                "height": luminaire.luminous_opening_geometry.height,
+                "height_c90": luminaire.luminous_opening_geometry.height_c90,
+                "height_c180": luminaire.luminous_opening_geometry.height_c180,
+                "height_c270": luminaire.luminous_opening_geometry.height_c270,
             },
             "luminaire": luminaire_geometry,
         },
@@ -36,32 +36,32 @@ def export_photometry(photometry: Photometry):
             "cri": lamp_set.cri,
             "ballast_description": lamp_set.ballast_description,
             "ballast_catalog_number": lamp_set.ballast_catalog_number
-        } for lamp_set in photometry.lamps],
+        } for lamp_set in luminaire.lamps],
 
         "photometry": {
-            "dff": photometry.luminaire_photometric_properties.dff.value,
-            "lorl": photometry.luminaire_photometric_properties.lor.value,
-            "is_absolute": photometry.luminaire_photometric_properties.is_absolute,
-            "c_planes": photometry.c_planes,
-            "gamma_angles": photometry.gamma_angles,
+            "dff": luminaire.photometry.dff.value,
+            "lorl": luminaire.photometry.lor.value,
+            "is_absolute": luminaire.photometry.is_absolute,
+            "c_planes": luminaire.c_planes,
+            "gamma_angles": luminaire.gamma_angles,
             "values": [
                 {
                     "c": coord[0],
                     "gamma": coord[1],
                     "value": value
                 }
-                for coord, value in photometry.intensity_values.items()
+                for coord, value in luminaire.intensity_values.items()
             ]
         },
 
         "metadata": {
-            "luminaire": photometry.metadata.luminaire,
-            "catalog_number": photometry.metadata.catalog_number,
-            "manufacturer": photometry.metadata.manufacturer,
-            "luminaire_type": photometry.metadata.luminaire_type.name if photometry.metadata.luminaire_type else None,
-            "measurement": photometry.metadata.measurement,
-            "date_and_user": photometry.metadata.date_and_user,
-            "additional_properties": photometry.metadata.additional_properties
+            "luminaire": luminaire.metadata.luminaire,
+            "catalog_number": luminaire.metadata.catalog_number,
+            "manufacturer": luminaire.metadata.manufacturer,
+            "luminaire_type": luminaire.metadata.luminaire_type.name if luminaire.metadata.luminaire_type else None,
+            "measurement": luminaire.metadata.measurement,
+            "date_and_user": luminaire.metadata.date_and_user,
+            "additional_properties": luminaire.metadata.additional_properties
         }
     }
     return json.dumps(data, indent=4)

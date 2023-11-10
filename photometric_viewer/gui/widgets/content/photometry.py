@@ -3,7 +3,7 @@ from gi.repository.Gtk import Box, Orientation
 from photometric_viewer.gui.widgets.common.gauge import Gauge
 from photometric_viewer.gui.widgets.common.header import Header
 from photometric_viewer.gui.widgets.common.property_list import PropertyList
-from photometric_viewer.model.photometry import Photometry
+from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.utils import calc
 
 
@@ -24,9 +24,9 @@ class LuminairePhotometricProperties(Box):
         self.append(Header(label=_("Photometric properties"), xalign=0))
         self.append(self.property_list)
 
-    def set_photometry(self, photometry: Photometry):
+    def set_photometry(self, luminaire: Luminaire):
         self.property_list.clear()
-        photometric_properties = calc.calculate_luminaire_photometric_properties(photometry)
+        photometric_properties = calc.calculate_photometry(luminaire)
 
         if photometric_properties.lor.value:
             self.property_list.append(
@@ -47,15 +47,15 @@ class LuminairePhotometricProperties(Box):
                     value=photometric_properties.dff.value,
                     min_value=0,
                     max_value=1,
-                    display=f"{photometric_properties.lor.value:.0%}",
+                    display=f"{photometric_properties.dff.value:.0%}",
                     calculated=photometric_properties.dff.is_calculated
                 )
             )
 
-        if photometry.metadata.conversion_factor:
+        if luminaire.metadata.conversion_factor:
             self.property_list.add(
                 _("Conversion factor for luminous intensities"),
-                str(photometry.metadata.conversion_factor)
+                str(luminaire.metadata.conversion_factor)
             )
 
         if photometric_properties.luminous_flux.value:

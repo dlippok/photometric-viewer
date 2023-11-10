@@ -3,7 +3,7 @@ from gi.repository.Pango import WrapMode
 
 from photometric_viewer.gui.widgets.content.diagram import PhotometricDiagram
 from photometric_viewer.gui.widgets.content.header_buttons import HeaderButtons
-from photometric_viewer.model.photometry import Photometry
+from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.model.settings import Settings
 
 
@@ -68,24 +68,23 @@ class LuminaireHeader(Box):
         properties_box.append(self.description_label)
         properties_box.append(HeaderButtons())
 
-
         self.append(self.diagram)
         self.append(properties_box)
 
-    def set_photometry(self, photometry: Photometry):
-        self.name_label.set_label(photometry.metadata.catalog_number or "")
-        self.manufacturer_label.set_label(photometry.metadata.manufacturer or "")
-        self.description_label.set_label(photometry.metadata.luminaire or "")
-        self.date_label.set_label(photometry.metadata.date_and_user or "")
+    def set_photometry(self, luminaire: Luminaire):
+        self.name_label.set_label(luminaire.metadata.catalog_number or "")
+        self.manufacturer_label.set_label(luminaire.metadata.manufacturer or "")
+        self.description_label.set_label(luminaire.metadata.luminaire or "")
+        self.date_label.set_label(luminaire.metadata.date_and_user or "")
 
-        if photometry.metadata.measurement:
-            self.measurement_label.set_label(f'{_("Measurement")}: {photometry.metadata.measurement}')
+        if luminaire.metadata.measurement:
+            self.measurement_label.set_label(f'{_("Measurement")}: {luminaire.metadata.measurement}')
             self.measurement_label.set_visible(True)
         else:
             self.measurement_label.set_label("")
             self.measurement_label.set_visible(False)
 
-        self.diagram.set_photometry(photometry)
+        self.diagram.set_photometry(luminaire)
 
     def update_settings(self, settings: Settings):
         self.diagram.update_settings(settings)

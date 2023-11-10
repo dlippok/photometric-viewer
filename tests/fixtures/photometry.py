@@ -1,15 +1,15 @@
 import copy
 import math
 
-from photometric_viewer.model.photometry import Photometry, LuminaireGeometry, Shape, LuminousOpeningGeometry, Lamps, \
+from photometric_viewer.model.luminaire import Luminaire, LuminaireGeometry, Shape, LuminousOpeningGeometry, Lamps, \
     PhotometryMetadata, LuminaireType, LuminousOpeningShape, LuminairePhotometricProperties, Calculable
 from photometric_viewer.model.units import LengthUnits
 
-MINIMAL_LUMINAIRE = Photometry(
+MINIMAL_LUMINAIRE = Luminaire(
     gamma_angles=[],
     c_planes=[],
     intensity_values={},
-    luminaire_photometric_properties=LuminairePhotometricProperties(
+    photometry=LuminairePhotometricProperties(
         is_absolute=True,
         luminous_flux=Calculable(None),
         efficacy=Calculable(None),
@@ -17,7 +17,7 @@ MINIMAL_LUMINAIRE = Photometry(
         dff=Calculable(None)
     ),
 
-    luminaire_geometry=LuminaireGeometry(
+    geometry=LuminaireGeometry(
         shape=Shape.RECTANGULAR,
         width=0.4,
         length=1.2,
@@ -80,7 +80,7 @@ ABSOLUTE_PHOTOMETRY_LUMINAIRE.intensity_values={
         (270, 45): 100,
         (270, 90): 20
 }
-ABSOLUTE_PHOTOMETRY_LUMINAIRE.luminaire_photometric_properties=LuminairePhotometricProperties(
+ABSOLUTE_PHOTOMETRY_LUMINAIRE.photometry=LuminairePhotometricProperties(
         is_absolute=True,
         luminous_flux=Calculable(1200),
         efficacy=Calculable(None),
@@ -118,7 +118,7 @@ TWO_LAMPS_LUMINAIRE.lamps = [
 ]
 
 LUMINAIRE_WITHOUT_LUMINAIRE_GEOMETRY = copy.deepcopy(ABSOLUTE_PHOTOMETRY_LUMINAIRE)
-LUMINAIRE_WITHOUT_LUMINAIRE_GEOMETRY.luminaire_geometry = None
+LUMINAIRE_WITHOUT_LUMINAIRE_GEOMETRY.geometry = None
 
 UNIFORM_RADIATING_SOURCE = copy.deepcopy(MINIMAL_LUMINAIRE)
 UNIFORM_RADIATING_SOURCE.lamps[0].lumens_per_lamp = 1000 * 4 * math.pi
@@ -169,7 +169,7 @@ NON_EQUIDISTANT_UPWARD_RADIATING_SOURCE.intensity_values = {
 }
 
 LOR_50_UNIFORM_RADIATING_SOURCE = copy.deepcopy(UNIFORM_RADIATING_SOURCE)
-LOR_50_UNIFORM_RADIATING_SOURCE.luminaire_photometric_properties.is_absolute = False
+LOR_50_UNIFORM_RADIATING_SOURCE.photometry.is_absolute = False
 LOR_50_UNIFORM_RADIATING_SOURCE.lamps = [
     Lamps(
         number_of_lamps=1,

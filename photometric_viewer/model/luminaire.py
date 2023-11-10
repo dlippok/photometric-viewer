@@ -111,30 +111,26 @@ class LuminairePhotometricProperties:
         return self.luminous_flux
 
 @dataclass
-class Photometry:
+class Luminaire:
     gamma_angles: List[float]
     c_planes: List[float]
     # Values in Candela for absolute photometry, cd/klm otherwise
     intensity_values: Dict[Tuple[float, float], float]
     luminous_opening_geometry: LuminousOpeningGeometry
-    luminaire_geometry: LuminaireGeometry | None
+    geometry: LuminaireGeometry | None
     lamps: List[Lamps]
     metadata: PhotometryMetadata
 
+    photometry: LuminairePhotometricProperties
+    _photometry: LuminairePhotometricProperties = field(init=False, repr=False)
 
-    luminaire_photometric_properties: LuminairePhotometricProperties
-    _luminaire_photometric_properties: LuminairePhotometricProperties = field(init=False, repr=False)
     @property
-    def luminaire_photometric_properties(self) -> LuminairePhotometricProperties:
-        return self._luminaire_photometric_properties
+    def photometry(self) -> LuminairePhotometricProperties:
+        return self._photometry
 
-    @luminaire_photometric_properties.setter
-    def luminaire_photometric_properties(self, value: LuminairePhotometricProperties):
-        self._luminaire_photometric_properties = value
-
-
-
-
+    @photometry.setter
+    def photometry(self, value: LuminairePhotometricProperties):
+        self._photometry = value
 
     def get_values_for_c_angle(self, angle) -> Dict[float, float]:
         if angle in self.c_planes:

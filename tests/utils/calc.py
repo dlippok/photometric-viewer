@@ -1,6 +1,6 @@
 import unittest
 
-from photometric_viewer.utils.calc import annual_power_consumption, energy_cost, calculate_luminaire_photometric_properties
+from photometric_viewer.utils.calc import annual_power_consumption, energy_cost, calculate_photometry
 from tests.fixtures.photometry import *
 
 
@@ -104,7 +104,7 @@ class TestPhotometricProperties(unittest.TestCase):
 
         for case in cases:
             with(self.subTest(case=case, msg=case["title"])):
-                properties = calculate_luminaire_photometric_properties(case["source"])
+                properties = calculate_photometry(case["source"])
                 self.assertAlmostEqual(properties.luminous_flux.value, case["expected"][0])
                 self.assertAlmostEqual(properties.lor.value, case["expected"][1])
                 self.assertAlmostEqual(properties.dff.value, case["expected"][2])
@@ -189,6 +189,6 @@ class TestPhotometricProperties(unittest.TestCase):
         for case in cases:
             with(self.subTest(case=case["title"])):
                 luminaire = copy.deepcopy(UNIFORM_RADIATING_SOURCE)
-                luminaire.luminaire_photometric_properties = case["source"]
-                properties = calculate_luminaire_photometric_properties(luminaire)
+                luminaire.photometry = case["source"]
+                properties = calculate_photometry(luminaire)
                 self.assertEqual(properties, case["expected"])

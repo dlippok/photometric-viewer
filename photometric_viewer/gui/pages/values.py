@@ -2,13 +2,13 @@ from gi.repository import Adw, Gtk
 from gi.repository.Gtk import ScrolledWindow, PolicyType, Orientation, SelectionMode
 
 from photometric_viewer.gui.widgets.common.property_list import PropertyList
-from photometric_viewer.model.photometry import Photometry
+from photometric_viewer.model.luminaire import Luminaire
 
 
 class IntensityValuesPage(Adw.Bin):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.photometry = None
+        self.luminaire = None
         self.selected_c_angle = None
         self.selected_gamma_angle = None
 
@@ -48,20 +48,20 @@ class IntensityValuesPage(Adw.Bin):
         scrolled_window.set_policy(PolicyType.NEVER, PolicyType.AUTOMATIC)
         self.set_child(scrolled_window)
 
-    def set_photometry(self, photometry: Photometry):
-        self.photometry = photometry
-        self.selected_c_angle = photometry.c_planes[0]
+    def set_photometry(self, luminaire: Luminaire):
+        self.luminaire = luminaire
+        self.selected_c_angle = luminaire.c_planes[0]
         self.show_angle()
 
         c_angle_model = Gtk.StringList()
         c_angle_model.append(_("Show all"))
-        for c_angle in self.photometry.c_planes:
+        for c_angle in self.luminaire.c_planes:
             c_angle_model.append(str(c_angle))
         self.c_angle_selection_row.set_model(c_angle_model)
 
         gamma_angle_model = Gtk.StringList()
         gamma_angle_model.append(_("Show all"))
-        for gamma_angle in self.photometry.gamma_angles:
+        for gamma_angle in self.luminaire.gamma_angles:
             gamma_angle_model.append(str(gamma_angle))
         self.gamma_angle_selection_row.set_model(gamma_angle_model)
 
@@ -70,7 +70,7 @@ class IntensityValuesPage(Adw.Bin):
         if i == 0:
             self.selected_c_angle = None
         else:
-            self.selected_c_angle = self.photometry.c_planes[i - 1]
+            self.selected_c_angle = self.luminaire.c_planes[i - 1]
         self.show_angle()
 
     def on_update_gamma_angle(self, *args):
@@ -78,14 +78,14 @@ class IntensityValuesPage(Adw.Bin):
         if i == 0:
             self.selected_gamma_angle = None
         else:
-            self.selected_gamma_angle = self.photometry.gamma_angles[i - 1]
+            self.selected_gamma_angle = self.luminaire.gamma_angles[i - 1]
         self.show_angle()
 
     def show_angle(self):
         self.property_list.clear()
 
         values = [
-            (angle, v) for angle, v in self.photometry.intensity_values.items()
+            (angle, v) for angle, v in self.luminaire.intensity_values.items()
             if (self.selected_c_angle is None or angle[0] == self.selected_c_angle)
             and (self.selected_gamma_angle is None or angle[1] == self.selected_gamma_angle)
         ]
@@ -98,7 +98,7 @@ class IntensityValuesPage(Adw.Bin):
             return
 
         unit = None
-        match self.photometry.luminaire_photometric_properties.is_absolute:
+        match self.luminaire.photometry.is_absolute:
             case True: unit = "cd"
             case False: unit = "cd/klm"
 
