@@ -1,7 +1,7 @@
 from typing import IO
 
 from photometric_viewer.formats import ies, ldt
-from photometric_viewer.utils.io import read_non_empty_line
+from photometric_viewer.utils.ioutil import read_non_empty_line
 
 
 def import_from_file(f: IO):

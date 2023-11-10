@@ -24,8 +24,8 @@ from photometric_viewer.gui.pages.source import SourceViewPage
 from photometric_viewer.gui.pages.values import IntensityValuesPage
 from photometric_viewer.gui.widgets.app_menu import ApplicationMenuButton
 from photometric_viewer.model.photometry import Photometry
-from photometric_viewer.utils.GSettings import GSettings
-from photometric_viewer.utils.gio import gio_file_stream, write_string
+from photometric_viewer.utils.gi.GSettings import GSettings
+from photometric_viewer.utils.gi.gio import gio_file_stream, write_string
 
 
 class MainWindow(Adw.Window):

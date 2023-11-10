@@ -1,4 +1,3 @@
-import math
 import unittest
 
 from photometric_viewer.utils.calc import annual_power_consumption, energy_cost, calculate_photometric_properties, \

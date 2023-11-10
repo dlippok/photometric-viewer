@@ -8,7 +8,7 @@ from photometric_viewer.gui.widgets.ldc_export.diagram import PhotometricDiagram
 from photometric_viewer.gui.widgets.ldc_export.file_properties import LdcExportFilePropertiesBox, \
     LdcExportFileProperties, LdcExportFileType
 from photometric_viewer.model.photometry import Photometry
-from photometric_viewer.utils.gio import write_bytes
+from photometric_viewer.utils.gi.gio import write_bytes
 
 
 class LdcExportPage(Adw.Bin):

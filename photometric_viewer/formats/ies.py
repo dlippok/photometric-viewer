@@ -5,7 +5,7 @@ from photometric_viewer.formats.exceptions import InvalidLuminousOpeningExceptio
 from photometric_viewer.model.photometry import Photometry, PhotometryMetadata, LuminousOpeningGeometry, Shape, \
     Lamps, LuminousOpeningShape
 from photometric_viewer.model.units import LengthUnits
-from photometric_viewer.utils.io import read_non_empty_line
+from photometric_viewer.utils.ioutil import read_non_empty_line
 
 _LUMEN_PER_LAMPS_ABSOLUTE = -1
 _LUMEN_PER_LAMPS_1000 = 1000
