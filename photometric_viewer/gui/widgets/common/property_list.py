@@ -12,7 +12,7 @@ class PropertyList(Gtk.ListBox):
         self.set_selection_mode(SelectionMode.NONE)
 
     @staticmethod
-    def _create_item(name, value: str, is_calculated: bool = False):
+    def _create_item(name, value: str, is_calculated: bool = False, hint: str | None = None):
         box = Box(orientation=Orientation.VERTICAL)
         box.set_homogeneous(False)
         box.set_spacing(4)
@@ -29,8 +29,23 @@ class PropertyList(Gtk.ListBox):
         if is_calculated:
             name_box.append(badges.calculated())
 
+        box.append(name_box)
+
+        if hint:
+            hint_label = Label(
+                label=hint,
+                hexpand=True,
+                xalign=0,
+                wrap=True,
+                wrap_mode=WrapMode.WORD_CHAR,
+                selectable=True,
+                css_classes=["dim-label"],
+            )
+            box.append(hint_label)
+
         value_label = Label(
             label=value if (value is not None and value != "") else _("Unknown"),
+            margin_top=8,
             tooltip_text=value,
             hexpand=True,
             xalign=0,
@@ -40,17 +55,16 @@ class PropertyList(Gtk.ListBox):
             css_classes=[] if (value is not None and value != "") else ["warning"],
         )
 
-        box.append(name_box)
         box.append(value_label)
 
         return box
 
-    def add(self, name: str, value: str, is_calculated: bool = False):
-        self.append(self._create_item(name=name, value=value, is_calculated=is_calculated))
+    def add(self, name: str, value: str, is_calculated: bool = False, hint: str | None = None):
+        self.append(self._create_item(name=name, value=value, is_calculated=is_calculated, hint=hint))
 
-    def add_if_non_empty(self, name: str, value):
+    def add_if_non_empty(self, name: str, value, hint: str | None = None):
         if value:
-            self.append(self._create_item(name=name, value=value))
+            self.append(self._create_item(name=name, value=value, hint=hint))
 
     def clear(self):
         items = [i for i in self]

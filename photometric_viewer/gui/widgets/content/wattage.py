@@ -29,6 +29,7 @@ class WattageBox(Box):
 
         value_label = Label(
             label=f"{self.wattage:.0f} W",
+            margin_top=8,
             tooltip_text=f"{self.wattage:.0f} W",
             hexpand=True,
             xalign=0,
