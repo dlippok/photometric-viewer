@@ -3,7 +3,7 @@ from gi.repository import Gtk, Adw
 
 from photometric_viewer.model.photometry import Photometry
 from photometric_viewer.model.settings import Settings
-from photometric_viewer.utils import plotter_themes
+from photometric_viewer.config import plotter_themes
 from photometric_viewer.utils.plotters import LightDistributionPlotter, DiagramStyle, SnapValueAnglesTo, \
     DisplayHalfSpaces
 

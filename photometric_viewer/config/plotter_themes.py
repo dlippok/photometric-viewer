@@ -2,11 +2,13 @@ from dataclasses import dataclass
 
 from photometric_viewer.utils.plotters import LightDistributionPlotterTheme
 
+
 @dataclass
 class Theme:
     name: str
     plotter_theme: LightDistributionPlotterTheme
     plotter_theme_dark: LightDistributionPlotterTheme
+
 
 THEMES = [
     Theme(
