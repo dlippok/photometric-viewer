@@ -102,6 +102,13 @@
     </requires>
 
     <releases>
+        <release version="1.6.0" date="2023-11-25">
+            <description>
+                <p>Adds luminous efficacy and descriptions for photometric values for beginners</p>
+                <p xml:lang="de">Fügt Anzeige für Lichtausbeute und Beschreibungen für photometrische Werte für Anfänger hinzu</p>
+                <p xml:lang="pl">Dodano skuteczność świetlną i opisy wartości fotometrycznych dla początkujących.</p>
+            </description>
+        </release>
         <release version="1.5.1" date="2023-10-03">
             <description>
                 <p>Fix bug preventing running application from Snap package</p>
