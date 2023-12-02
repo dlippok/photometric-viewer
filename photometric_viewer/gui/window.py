@@ -59,8 +59,12 @@ class MainWindow(Adw.Window):
         self.ldc_export_page = LdcExportPage(on_exported=self.on_export_ldc_response, transient_for=self)
         self.view_stack.add_titled(self.ldc_export_page, "ldc_export", _("LDC Export"))
 
+        empty_page = EmptyPage()
+        self.view_stack.add_titled(empty_page, "empty", _("Empty"))
+
+
         self.content_bin = Adw.Bin()
-        self.content_bin.set_child(EmptyPage())
+        self.content_bin.set_child(self.view_stack)
         self.content_bin.set_vexpand(True)
 
         self.banner = Adw.Banner()
@@ -117,6 +121,8 @@ class MainWindow(Adw.Window):
 
         self.drop_target.connect("drop", self.on_drop)
         self.add_controller(self.drop_target)
+
+        self.open_page(empty_page)
 
         if self.gsettings.settings is None:
             self.show_banner(_("Settings schema could not be loaded. Selected settings will be lost on restart"))
