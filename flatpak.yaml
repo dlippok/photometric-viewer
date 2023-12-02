@@ -1,0 +1,19 @@
+app-id: io.github.dlippok.photometric-viewer
+runtime: org.gnome.Platform
+runtime-version: "44"
+sdk: org.gnome.Sdk
+command: photometric-viewer
+finish-args:
+  - --share=ipc
+  - --socket=fallback-x11
+  - --socket=wayland
+  - --device=dri
+
+modules:
+  - name: photometric-viewer
+    buildsystem: simple
+    build-commands:
+      - pip3 install . --prefix ${FLATPAK_DEST}
+    sources:
+      - type: dir
+        path: .
