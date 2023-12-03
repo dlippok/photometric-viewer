@@ -268,7 +268,7 @@ def export_to_file(f: IO, luminaire: Luminaire):
     _write_line(f, luminaire.metadata.luminaire, max_len=78)
     _write_line(f, luminaire.metadata.catalog_number, max_len=78)
     _write_line(f, luminaire.metadata.filename)
-    date_and_user = luminaire.metadata.date_and_user or datetime.today().strftime("%Y-%m-%d") + " exported by Photometric Viewer"
+    date_and_user = luminaire.metadata.date_and_user or datetime.today().strftime("%Y-%m-%d") + " exported by Photometry"
     _write_line(f, date_and_user, max_len=78)
 
     if luminaire.geometry:

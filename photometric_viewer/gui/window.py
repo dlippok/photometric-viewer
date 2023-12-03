@@ -31,7 +31,7 @@ from photometric_viewer.utils.gi.gio import gio_file_stream, write_string
 class MainWindow(Adw.Window):
     def __init__(self, **kwargs):
         super().__init__(
-            title=_('Photometric Viewer'),
+            title=_('Photometry'),
             **kwargs
         )
 
@@ -238,7 +238,7 @@ class MainWindow(Adw.Window):
         file: Gio.File = dialog.get_file()
 
         export_keywords = {
-            "_EXPORT_TOOL": _("Photometric Viewer"),
+            "_EXPORT_TOOL": _("Photometry"),
             "_EXPORT_TOOL_VERSION": "1.3.0",
             "_EXPORT_TOOL_URL": "https://github.com/dlippok/photometric-viewer",
             "_EXPORT_TOOL_ISSUE_TRACKER": "https://github.com/dlippok/photometric-viewer/issues",
@@ -275,7 +275,7 @@ class MainWindow(Adw.Window):
                 self.luminaire_content_page.update_settings(self.settings)
 
                 self.set_title(title=file.get_basename())
-                self.window_title.set_title(_("Photometric Viewer"))
+                self.window_title.set_title(_("Photometry"))
                 self.window_title.set_subtitle(file.get_basename())
 
                 self.action_set_enabled("app.show_intensity_values", True)

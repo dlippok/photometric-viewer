@@ -4,7 +4,7 @@ from gi.repository import Adw, Gtk
 class AboutWindow:
     def __init__(self):
         self._about_window = Adw.AboutWindow(
-            application_name=_("Photometric Viewer"),
+            application_name=_("Photometry"),
             application_icon="io.github.dlippok.photometric-viewer",
             developer_name="Damian Lippok",
             version="1.6.1",

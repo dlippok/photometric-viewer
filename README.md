@@ -1,4 +1,4 @@
-# Photometric Viewer
+# Photometry
 
 Application for viewing IES and EULUMDAT photometric files under Linux (Gnome/GTK).
 
