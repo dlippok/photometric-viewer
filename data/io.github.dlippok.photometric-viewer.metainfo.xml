@@ -102,6 +102,13 @@
     </requires>
 
     <releases>
+        <release version="1.6.1" date="2023-12-03">
+            <description>
+                <p>Fixes crash when opening photometric files using the button on the start page.</p>
+                <p xml:lang="de">Behebt Absturz beim Öffnen von Photometrie-Dateien über den Button auf der Startseite.</p>
+                <p xml:lang="pl">Naprawiono błąd podczas otwierania plików fotometrycznych za pomocą przycisku na stronie startowej.</p>
+            </description>
+        </release>
         <release version="1.6.0" date="2023-11-25">
             <description>
                 <p>Adds luminous efficacy and descriptions for photometric values for beginners</p>
