@@ -81,17 +81,6 @@ msgstr ""
 msgid "All Files"
 msgstr ""
 
-#: photometric_viewer/gui/dialogs/about.py:7
-#: photometric_viewer/gui/pages/empty.py:14 photometric_viewer/gui/window.py:34
-#: photometric_viewer/gui/window.py:235 photometric_viewer/gui/window.py:272
-#: photometric_viewer/gui/window.py:33 photometric_viewer/gui/window.py:78
-#: photometric_viewer/gui/window.py:218 photometric_viewer/gui/window.py:80
-#: photometric_viewer/gui/window.py:233 photometric_viewer/gui/window.py:74
-#: photometric_viewer/gui/window.py:32 photometric_viewer/gui/window.py:73
-#: photometric_viewer/gui/window.py:30 photometric_viewer/gui/window.py:71
-msgid "Photometric Viewer"
-msgstr ""
-
 #: photometric_viewer/gui/dialogs/preferences.py:13
 #: photometric_viewer/gui/dialogs/preferences.py:15
 #: photometric_viewer/gui/dialogs/preferences.py:12
@@ -947,7 +936,7 @@ msgid "Preferences"
 msgstr ""
 
 #: photometric_viewer/gui/widgets/app_menu.py
-msgid "About Photometric Viewer"
+msgid "About Photometry"
 msgstr ""
 
 #: photometric_viewer/gui/widgets/app_menu.py

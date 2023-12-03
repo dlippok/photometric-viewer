@@ -2,14 +2,14 @@
 <component type="desktop">
     <id>io.github.dlippok.photometric-viewer</id>
     <launchable type="desktop-id">io.github.dlippok.photometric-viewer.desktop</launchable>
-    <name>Photometric Viewer</name>
-    <name xml:lang="de">Photometriebetrachter</name>
+    <name>Photometry</name>
+    <name xml:lang="de">Photometrie</name>
     <summary>Browse content of IES and LDT photometric files</summary>
     <summary xml:lang="de">Öffne IES- und LDT-Photometriedateien</summary>
     <summary xml:lang="pl">Przeglądaj zawartość plików fotometrzcznych IES i LDT</summary>
     <description>
         <p>
-            Photometric Viewer allow viewing light distribution curves and metadata of IESNA and EULUMDAT photometric
+            Photometry allows viewing light distribution curves and metadata of IESNA and EULUMDAT photometric
             files which describe the light distribution of light sources like lamps and luminaires and
             are used mostly for data transfer in the lighting industry and in 3D graphics.
         </p>
@@ -24,10 +24,10 @@
             transferu danych w przemyśle oświetleniowym i grafice 3D.
         </p>
         <p>
-            Photometric Viewer displays following information of the opened photometric file:
+            Photometry following information of the opened photometric file:
         </p>
         <p xml:lang="de">
-            Photometriebetrachter zeigt folgende Informationen über die Photometiredatei an:
+            Photometrie zeigt folgende Informationen über die Photometiredatei an:
         </p>
         <p xml:lang="pl">
             Aplikacja pozwala zobaczyć następujące informacje zawarte w plikach fotometrycznych:

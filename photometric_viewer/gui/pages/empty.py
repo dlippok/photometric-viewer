@@ -11,7 +11,7 @@ class EmptyPage(Adw.Bin):
         app_icon_image.set_pixel_size(200)
         box.append(app_icon_image)
 
-        box.append(Label(label=_("Photometric Viewer"), css_classes=["title-1"]))
+        box.append(Label(label=_("Photometry"), css_classes=["title-1"]))
         box.append(Label(label=_("Open photometric file to display it here")))
 
         open_button = Gtk.Button(

@@ -1,6 +1,7 @@
 [Desktop Entry]
-Name=Photometric Viewer
-Name[de]=Photometriebetrachter
+Name=Photometry
+Name[de]=Photometrie
+Name[pl]=Fotometria
 Comment=Browse content of photometric files
 Comment[de]=Öffne Photometriedateien
 Comment[pl]=Przeglądaj zawartość plików fotometrycznych

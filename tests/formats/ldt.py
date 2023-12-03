@@ -23,7 +23,7 @@ class TestLdt(unittest.TestCase):
         self.assertEqual(luminaire.metadata.luminaire_type, LuminaireType.POINT_SOURCE_WITH_VERTICAL_SYMMETRY)
         self.assertEqual(luminaire.metadata.measurement, "TESTREP1")
         self.assertEqual(luminaire.metadata.filename, "BD0150.ldt")
-        self.assertEqual(luminaire.metadata.date_and_user, "2023-05-01 Photometric Viewer")
+        self.assertEqual(luminaire.metadata.date_and_user, "2023-05-01 Photometry")
         self.assertEqual(luminaire.metadata.conversion_factor, 1.0)
         self.assertEqual(luminaire.metadata.file_units, LengthUnits.MILLIMETERS)
 
