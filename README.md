@@ -16,7 +16,7 @@ Application for viewing IES and EULUMDAT photometric files under Linux (Gnome/GT
 
 ## Features
 
-Photometic Viewer allows you to see following information from the opened photometric file:
+Photometry allows you to see following information from the opened photometric file:
 
 - Light distribution curves of selected photometric files
 - General information (Catalog Number, Manufacturer, Description, etc.)
@@ -49,13 +49,13 @@ Next, activate your virtual environment and install all missing dependencies:
 
 ### Running tests
 ```shell
-python3 setup.py test
+make test
 ```
 
 ### Starting the application
 
 ```shell
-python3 run.py
+make run
 ```
 
 ## Authors

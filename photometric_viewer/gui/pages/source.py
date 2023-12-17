@@ -12,10 +12,12 @@ class SourceViewPage(Adw.Bin):
             editable=False,
             monospace=True,
             wrap_mode=Gtk.WrapMode.WORD_CHAR,
-            left_margin=7,
-            right_margin=7,
-            top_margin=7,
-            bottom_margin=7
+            left_margin=20,
+            right_margin=20,
+            top_margin=20,
+            bottom_margin=20,
+            pixels_below_lines=1,
+
         )
 
         scrolled_window = ScrolledWindow()

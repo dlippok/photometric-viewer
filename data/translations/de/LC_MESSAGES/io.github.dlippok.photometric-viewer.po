@@ -915,7 +915,7 @@ msgstr "Längeneinheiten für Anzeige in der Applikation"
 
 #: photometric_viewer/gui/dialogs/about.py:7
 msgid "Photomertic Viewer"
-msgstr "Photometriebetrachter"
+msgstr "Photometrie"
 
 #: photometric_viewer/gui/dialogs/file_chooser.py:14
 msgid "Untitled.json"
@@ -963,7 +963,7 @@ msgstr "Einstellungen"
 
 #: photometric_viewer/gui/widgets/app_menu.py
 msgid "About Photometry"
-msgstr "Über Photometriebetrachter"
+msgstr "Über Photometrie"
 
 #: photometric_viewer/gui/widgets/app_menu.py
 msgid "As EULUMDAT"
