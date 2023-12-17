@@ -4,6 +4,7 @@ from gi.repository.Pango import WrapMode
 
 from photometric_viewer.formats import svg, png
 from photometric_viewer.gui.dialogs.file_chooser import ExportFileChooser
+from photometric_viewer.gui.pages.base import BasePage
 from photometric_viewer.gui.widgets.ldc_export.diagram import PhotometricDiagramPreview
 from photometric_viewer.gui.widgets.ldc_export.file_properties import LdcExportFilePropertiesBox, \
     LdcExportFileProperties, LdcExportFileType
@@ -11,9 +12,9 @@ from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.utils.gi.gio import write_bytes
 
 
-class LdcExportPage(Adw.Bin):
+class LdcExportPage(BasePage):
     def __init__(self, on_exported, transient_for: Gtk.Window, **kwargs):
-        super().__init__(**kwargs)
+        super().__init__(_("Export Light Distribution Curve"), **kwargs)
 
         self.file_chooser = ExportFileChooser(transient_for=transient_for)
         self.transient_for = transient_for
@@ -29,14 +30,6 @@ class LdcExportPage(Adw.Bin):
             margin_start=16,
             margin_end=16,
         )
-
-        title_label = Label(
-            xalign=0,
-            wrap=True,
-            wrap_mode=WrapMode.WORD_CHAR,
-            label=_("Export Light Distribution Curve")
-        )
-        box.append(title_label)
 
         self.properties_box = LdcExportFilePropertiesBox(
             on_properties_changed=self.properties_changed,
@@ -55,7 +48,6 @@ class LdcExportPage(Adw.Bin):
         self.diagram = PhotometricDiagramPreview()
         box.append(self.diagram)
 
-
         clamp = Adw.Clamp(maximum_size=800)
         clamp.set_child(box)
 
@@ -63,7 +55,7 @@ class LdcExportPage(Adw.Bin):
         scrolled_window.set_child(clamp)
         scrolled_window.set_vexpand(True)
         scrolled_window.set_policy(PolicyType.NEVER, PolicyType.AUTOMATIC)
-        self.set_child(scrolled_window)
+        self.set_content(scrolled_window)
 
     def set_photometry(self, luminaire: Luminaire):
         self.luminaire = luminaire

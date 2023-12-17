@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Optional
 
 from gi.repository import Adw, Gtk, Gio, GLib, Gdk
-from gi.repository.Gtk import Orientation, Button, FileChooserDialog, DropTarget
+from gi.repository.Gtk import FileChooserDialog, DropTarget
 
 import photometric_viewer.formats.csv
 import photometric_viewer.formats.format_json
@@ -22,7 +22,6 @@ from photometric_viewer.gui.pages.empty import EmptyPage
 from photometric_viewer.gui.pages.ldc_export import LdcExportPage
 from photometric_viewer.gui.pages.source import SourceViewPage
 from photometric_viewer.gui.pages.values import IntensityValuesPage
-from photometric_viewer.gui.widgets.app_menu import ApplicationMenuButton
 from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.utils.gi.GSettings import GSettings
 from photometric_viewer.utils.gi.gio import gio_file_stream, write_string
@@ -38,64 +37,27 @@ class MainWindow(Adw.Window):
         self.set_default_size(900, 700)
         self.install_actions()
         self.setup_accelerators()
-        self.setup_mouse_buttons()
 
         self.gsettings = GSettings()
 
         self.settings = self.gsettings.load()
 
-        self.view_stack = Adw.ViewStack()
+        self.navigation_view = Adw.NavigationView()
+
         self.opened_photometry: Optional[Luminaire] = None
 
         self.luminaire_content_page = PhotometryContentPage()
-        self.view_stack.add_titled(self.luminaire_content_page, "photometry", _("Photometry"))
-
         self.source_view_page = SourceViewPage()
-        self.view_stack.add_titled(self.source_view_page, "source", _("Source"))
-
         self.values_table_page = IntensityValuesPage()
-        self.view_stack.add_titled(self.values_table_page, "values", _("Intensity Values"))
-
         self.ldc_export_page = LdcExportPage(on_exported=self.on_export_ldc_response, transient_for=self)
-        self.view_stack.add_titled(self.ldc_export_page, "ldc_export", _("LDC Export"))
 
         empty_page = EmptyPage()
-        self.view_stack.add_titled(empty_page, "empty", _("Empty"))
+        self.navigation_view.replace([empty_page])
 
-
-        self.content_bin = Adw.Bin()
-        self.content_bin.set_child(self.view_stack)
-        self.content_bin.set_vexpand(True)
-
-        self.banner = Adw.Banner()
-        self.banner.set_button_label(_("Dismiss"))
-        self.banner.connect("button-clicked", self.banner_dismiss_clicked)
-
-        self.open_button = Button(
-            child=Adw.ButtonContent(label=_("Open"), icon_name="document-open-symbolic")
-        )
-        self.open_button.connect("clicked", self.on_open_clicked)
-
-        self.back_button = Button(
-            child=Adw.ButtonContent(label=_("Back"), icon_name="go-previous-symbolic"),
-            visible=False
-        )
-        self.back_button.connect("clicked", self.on_back_clicked)
+        self.toast_overlay = Adw.ToastOverlay()
+        self.toast_overlay.set_child(self.navigation_view)
 
         self.window_title = Adw.WindowTitle()
-
-        box = Gtk.Box(orientation=Orientation.VERTICAL)
-
-        header_bar = Adw.HeaderBar(css_classes=["flat"])
-        header_bar.set_title_widget(self.window_title)
-        header_bar.pack_start(self.open_button)
-        header_bar.pack_start(self.back_button)
-
-        header_bar.pack_end(ApplicationMenuButton())
-
-        box.append(header_bar)
-        box.append(self.banner)
-        box.append(self.content_bin)
 
         self.open_file_chooser = OpenFileChooser(transient_for=self)
         self.open_file_chooser.connect("response", self.on_open_response)
@@ -112,7 +74,7 @@ class MainWindow(Adw.Window):
         self.ies_export_file_chooser = ExportFileChooser.for_ies(transient_for=self)
         self.ies_export_file_chooser.connect("response", self.on_export_ies_response)
 
-        self.set_content(box)
+        self.set_content(self.toast_overlay)
 
         self.drop_target = DropTarget(
             actions=Gdk.DragAction.COPY
@@ -122,10 +84,11 @@ class MainWindow(Adw.Window):
         self.drop_target.connect("drop", self.on_drop)
         self.add_controller(self.drop_target)
 
-        self.open_page(empty_page)
-
         if self.gsettings.settings is None:
             self.show_banner(_("Settings schema could not be loaded. Selected settings will be lost on restart"))
+
+    def show_start_page(self):
+        self.navigation_view.replace([self.luminaire_content_page])
 
     def install_actions(self):
         self.install_action("app.show_about_window", None, self.show_about_dialog)
@@ -139,9 +102,6 @@ class MainWindow(Adw.Window):
         self.install_action("app.export_as_ies", None, self.show_ies_export_file_chooser)
         self.install_action("app.open", None, self.on_open_clicked)
 
-        self.install_action("app.nav.back", None, self.on_back_clicked)
-        self.install_action("app.nav.home", None, self.on_back_clicked)
-        self.install_action("app.nav.top", None, self.on_back_clicked)
 
         self.action_set_enabled("app.show_intensity_values", False)
         self.action_set_enabled("app.show_source", False)
@@ -157,18 +117,12 @@ class MainWindow(Adw.Window):
         for accel in ACCELERATORS:
             app.set_accels_for_action(accel.action, accel.accelerators)
 
-    def setup_mouse_buttons(self):
-        back_click = Gtk.GestureClick(button=8)
-        back_click.connect("pressed", self.on_back_clicked)
-        self.add_controller(back_click)
-
     def display_photometry_content(self, luminaire: Luminaire):
         self.luminaire_content_page.set_photometry(luminaire)
         self.source_view_page.set_photometry(luminaire)
         self.values_table_page.set_photometry(luminaire)
         self.ldc_export_page.set_photometry(luminaire)
 
-        self.content_bin.set_child(self.view_stack)
         self.opened_photometry = luminaire
 
     def update_settings(self):
@@ -177,9 +131,6 @@ class MainWindow(Adw.Window):
 
     def on_open_clicked(self, *args):
         self.open_file_chooser.show()
-
-    def on_back_clicked(self, *args):
-        self.open_page(self.luminaire_content_page)
 
     def on_open_response(self, dialog: FileChooserDialog, response):
         if response == Gtk.ResponseType.ACCEPT:
@@ -258,15 +209,8 @@ class MainWindow(Adw.Window):
         self.open_file(file)
         return True
 
-    def open_page(self, page):
-        self.view_stack.set_visible_child(page)
-        is_start_page = (page == self.luminaire_content_page) or self.opened_photometry is None
-        self.back_button.set_visible(not is_start_page)
-        self.open_button.set_visible(is_start_page)
-
 
     def open_file(self, file: Gio.File):
-        self.banner.set_revealed(False)
         try:
             with gio_file_stream(file) as f:
                 photometry = import_from_file(f)
@@ -291,7 +235,7 @@ class MainWindow(Adw.Window):
                 self.csv_export_file_chooser.set_current_name(f"{opened_filename}.csv")
                 self.ldt_export_file_chooser.set_current_name(f"{opened_filename}_exported.ldt")
                 self.ies_export_file_chooser.set_current_name(f"{opened_filename}_exported.ies")
-                self.open_page(self.luminaire_content_page)
+                self.show_start_page()
 
         except GLib.GError as e:
             logging.exception("Could not open photometric file")
@@ -309,10 +253,10 @@ class MainWindow(Adw.Window):
         window.show()
 
     def show_source(self, *args):
-        self.open_page(self.source_view_page)
+        self.navigation_view.push(self.source_view_page)
 
     def show_intensity_values(self, *args):
-        self.open_page(self.values_table_page)
+        self.navigation_view.push(self.values_table_page)
 
     def show_json_export_file_chooser(self, *args):
         self.json_export_file_chooser.show()
@@ -330,17 +274,16 @@ class MainWindow(Adw.Window):
         self.ies_export_file_chooser.show()
 
     def show_ldc_export_page(self, *args):
-        self.open_page(self.ldc_export_page)
-
-    def banner_dismiss_clicked(self, *args):
-        self.banner.set_revealed(False)
+        self.navigation_view.push(self.ldc_export_page)
 
     def show_banner(self, message: str, details: str | None = None):
+        toast = Adw.Toast()
+        toast.set_timeout(3)
         if details:
-            self.banner.set_title(f"{message}\n{details}")
+            toast.set_title(f"{message}\n{details}")
         else:
-            self.banner.set_title(message)
-        self.banner.set_revealed(True)
+            toast.set_title(message)
+        self.toast_overlay.add_toast(toast)
 
     @staticmethod
     def show_about_dialog(*args):

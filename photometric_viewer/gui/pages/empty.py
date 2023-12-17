@@ -1,10 +1,12 @@
 from gi.repository import Gtk, Adw
 from gi.repository.Gtk import Label, Orientation, Image
 
+from photometric_viewer.gui.pages.base import BasePage
 
-class EmptyPage(Adw.Bin):
+
+class EmptyPage(BasePage):
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+        super().__init__(title=_("Empty page"), show_title=False, **kwargs)
         box = Gtk.Box(orientation=Orientation.VERTICAL, valign=Gtk.Align.CENTER, spacing=24)
 
         app_icon_image: Image = Image().new_from_icon_name("io.github.dlippok.photometric-viewer")
@@ -29,4 +31,4 @@ class EmptyPage(Adw.Bin):
         clamp = Adw.Clamp()
         clamp.set_child(box)
 
-        self.set_child(clamp)
+        self.set_content(clamp)
