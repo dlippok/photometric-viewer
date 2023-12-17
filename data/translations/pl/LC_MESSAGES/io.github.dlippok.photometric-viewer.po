@@ -913,8 +913,8 @@ msgid "Measurement units displayed in the application"
 msgstr "Jednostki miary w aplikacji"
 
 #: photometric_viewer/gui/dialogs/about.py:7
-msgid "Photomertic Viewer"
-msgstr "Photomertic Viewer"
+msgid "Photomertry"
+msgstr "Fotomertia"
 
 #: photometric_viewer/gui/dialogs/file_chooser.py:14
 msgid "Untitled.json"
