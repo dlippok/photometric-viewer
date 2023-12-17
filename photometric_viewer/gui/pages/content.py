@@ -1,6 +1,7 @@
 from gi.repository import Gtk, Adw
 from gi.repository.Gtk import Orientation, PolicyType, ScrolledWindow
 
+from photometric_viewer.gui.pages.base import BasePage
 from photometric_viewer.gui.widgets.common.header import Header
 from photometric_viewer.gui.widgets.content.geometry import LuminaireGeometryProperties
 from photometric_viewer.gui.widgets.content.header import LuminaireHeader
@@ -11,9 +12,9 @@ from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.model.settings import Settings
 
 
-class PhotometryContentPage(Adw.Bin):
+class PhotometryContentPage(BasePage):
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+        super().__init__(_("Photometry"), **kwargs)
         self.header = LuminaireHeader()
         self.photometric_properties = LuminairePhotometricProperties()
         self.geometry = LuminaireGeometryProperties()
@@ -47,7 +48,7 @@ class PhotometryContentPage(Adw.Bin):
         scrolled_window.set_child(clamp)
         scrolled_window.set_vexpand(True)
         scrolled_window.set_policy(PolicyType.NEVER, PolicyType.AUTOMATIC)
-        self.set_child(scrolled_window)
+        self.set_content(scrolled_window)
 
     def set_photometry(self, luminaire: Luminaire):
         self.header.set_photometry(luminaire)

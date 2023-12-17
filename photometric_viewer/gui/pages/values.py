@@ -1,13 +1,14 @@
 from gi.repository import Adw, Gtk
 from gi.repository.Gtk import ScrolledWindow, PolicyType, Orientation, SelectionMode
 
+from photometric_viewer.gui.pages.base import BasePage
 from photometric_viewer.gui.widgets.common.property_list import PropertyList
 from photometric_viewer.model.luminaire import Luminaire
 
 
-class IntensityValuesPage(Adw.Bin):
+class IntensityValuesPage(BasePage):
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+        super().__init__(_("Intensity values"), **kwargs)
         self.luminaire = None
         self.selected_c_angle = None
         self.selected_gamma_angle = None
@@ -46,7 +47,7 @@ class IntensityValuesPage(Adw.Bin):
         scrolled_window.set_child(clamp)
         scrolled_window.set_vexpand(True)
         scrolled_window.set_policy(PolicyType.NEVER, PolicyType.AUTOMATIC)
-        self.set_child(scrolled_window)
+        self.set_content(scrolled_window)
 
     def set_photometry(self, luminaire: Luminaire):
         self.luminaire = luminaire
