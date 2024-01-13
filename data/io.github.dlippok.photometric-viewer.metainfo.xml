@@ -103,6 +103,13 @@
     </requires>
 
     <releases>
+        <release version="2.0.0" date="2024-01-13">
+            <description>
+                <p>Rebranding of the application to Photometry with improved application icon.</p>
+                <p xml:lang="de">Umbenennung der Anwendung in "Photometrie" mit verbessertem Anwendungssymbol.</p>
+                <p xml:lang="pl">Zmiana marki na "Fotometria" z nowa ikoną aplikacji.</p>
+            </description>
+        </release>
         <release version="1.6.1" date="2023-12-03">
             <description>
                 <p>Fixes crash when opening photometric files using the button on the start page.</p>
