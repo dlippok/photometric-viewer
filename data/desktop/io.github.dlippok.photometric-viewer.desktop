@@ -2,9 +2,9 @@
 Name=Photometry
 Name[de]=Photometrie
 Name[pl]=Fotometria
-Comment=Browse content of photometric files
+Comment=View photometric files
 Comment[de]=Öffne Photometriedateien
-Comment[pl]=Przeglądaj zawartość plików fotometrycznych
+Comment[pl]=Przeglądaj pliki fotometryczne
 Exec=photometric-viewer %f
 Icon=io.github.dlippok.photometric-viewer
 Terminal=false
