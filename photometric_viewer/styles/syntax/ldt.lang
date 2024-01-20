@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language id="ldt" name="LDT" version="2.0" _section="Source">
+  <metadata>
+    <property name="mimetypes">application/x-eulumdat</property>
+    <property name="globs">*.ldt</property>
+  </metadata>
+
+  <styles>
+    <style id="number" name="Number" map-to="def:decimal"/>
+  </styles>
+  
+  <definitions>
+    <context id="ldt">
+      <include>
+        <context id="numbers" style-ref="number">
+          <match>^\s*[+-]?([0-9]*[.])?[0-9]+\s*$</match>
+        </context>
+      </include>
+    </context>
+  </definitions>
+</language>
