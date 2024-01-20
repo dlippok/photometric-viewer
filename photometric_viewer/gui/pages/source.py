@@ -7,7 +7,7 @@ from gi.repository.GtkSource import View
 from photometric_viewer.gui.pages.base import BasePage
 from photometric_viewer.model.luminaire import Luminaire, FileFormat
 
-SPECS_DIR = os.path.dirname(__file__)  + "/../../assets/language-specs/"
+SPECS_DIR = os.path.dirname(__file__) + "/../../assets/language-specs/"
 
 
 class SourceViewPage(BasePage):
