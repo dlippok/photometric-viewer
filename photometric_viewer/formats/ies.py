@@ -3,7 +3,7 @@ from typing import IO, Dict
 
 from photometric_viewer.formats.exceptions import InvalidLuminousOpeningException, InvalidPhotometricFileFormatException
 from photometric_viewer.model.luminaire import Luminaire, PhotometryMetadata, LuminousOpeningGeometry, Shape, \
-    Lamps, LuminousOpeningShape, LuminairePhotometricProperties, Calculable
+    Lamps, LuminousOpeningShape, LuminairePhotometricProperties, Calculable, FileFormat
 from photometric_viewer.model.units import LengthUnits
 from photometric_viewer.utils.ioutil import read_non_empty_line
 
@@ -213,6 +213,7 @@ def import_from_file(f: IO):
             date_and_user=date,
             additional_properties=metadata,
             file_source=source,
+            file_format=FileFormat.IES,
             file_units=LengthUnits.FEET if attributes["luminous_opening_units"] == 1 else LengthUnits.METERS
         )
     )

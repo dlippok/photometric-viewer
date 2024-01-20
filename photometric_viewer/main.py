@@ -4,6 +4,7 @@ import gi
 
 gi.require_version(namespace='Gtk', version='4.0')
 gi.require_version(namespace='Adw', version='1')
+gi.require_version(namespace='GtkSource', version='5')
 
 from photometric_viewer.utils.locales import init_locale
 from photometric_viewer.gui.window import MainWindow
@@ -25,7 +26,7 @@ class Application(Adw.Application):
         self.win = MainWindow(application=self)
 
         css_provider = Gtk.CssProvider()
-        css_provider.load_from_path(os.path.dirname(__file__) + "/styles/style.css")
+        css_provider.load_from_path(os.path.dirname(__file__) + "/assets/style.css")
 
         Gtk.StyleContext.add_provider_for_display(
             Gdk.Display.get_default(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION

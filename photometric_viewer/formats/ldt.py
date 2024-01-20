@@ -4,7 +4,7 @@ from typing import IO, List, Callable
 from datetime import datetime
 from photometric_viewer.model.luminaire import Luminaire, LuminousOpeningGeometry, Shape, Lamps, \
     PhotometryMetadata, LuminaireGeometry, LuminaireType, LuminousOpeningShape, Symmetry, \
-    LuminairePhotometricProperties, Calculable
+    LuminairePhotometricProperties, Calculable, FileFormat
 from photometric_viewer.model.units import LengthUnits
 
 
@@ -188,6 +188,7 @@ def import_from_file(f: IO):
             luminaire=luminaire_name,
             manufacturer=manufacturer,
             file_source=source,
+            file_format=FileFormat.LDT,
             file_units=LengthUnits.MILLIMETERS,
             luminaire_type=_get_source_type(light_source_type),
             measurement=measurement,
