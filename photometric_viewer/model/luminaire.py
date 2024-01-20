@@ -19,6 +19,11 @@ class Symmetry(Enum):
     TO_C0_C180_C90_C270 = 4
 
 
+class FileFormat(Enum):
+    IES = 1
+    LDT = 2
+
+
 @dataclass
 class PhotometryMetadata:
     luminaire: str
@@ -34,7 +39,7 @@ class PhotometryMetadata:
     filename: str | None = None
     symmetry: Symmetry = Symmetry.NONE
     direct_ratios_for_room_indices: List[float] | None = None
-
+    file_format: FileFormat | None = None
 
 class Shape(Enum):
     RECTANGULAR = 1

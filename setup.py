@@ -41,7 +41,10 @@ setup(name='photometric-viewer',
           'console_scripts': ['photometric-viewer=photometric_viewer.main:run'],
       },
       package_data={
-          'photometric_viewer': ['styles/style.css'],
+          'photometric_viewer': [
+              'styles/style.css',
+              'styles/syntax/ies.lang'
+          ],
       },
       data_files=[
           ('share/icons/hicolor/scalable/apps', ['data/icons/io.github.dlippok.photometric-viewer.svg']),
