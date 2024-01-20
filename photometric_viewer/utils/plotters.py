@@ -59,6 +59,12 @@ class LightDistributionPlotter:
         else:
             self.settings = LightDistributionPlotterSettings()
 
+    def _get_max_value_ratio(self):
+        if self.center[1] == self.size / 2:
+            return 0.4
+        else:
+            return 0.72
+
     def draw(self, context: cairo.Context, luminaire: Luminaire):
         self.center = self._get_center(luminaire)
         self._draw_background(context)
@@ -137,10 +143,7 @@ class LightDistributionPlotter:
         r, g, b, a = self.settings.theme.coordinate_color
         context.set_source_rgba(r, g, b, a)
 
-        if self.center[1] == self.size / 2:
-            ratio = 0.4
-        else:
-            ratio = 0.8
+        ratio = self._get_max_value_ratio()
 
         if self.settings.style == DiagramStyle.SIMPLE:
             radii = [
@@ -222,12 +225,7 @@ class LightDistributionPlotter:
             stroke,
             fill
     ):
-
-        if self.center[1] == self.size / 2:
-            max_candelas_scale = int(self.size * 0.4)
-        else:
-            max_candelas_scale = int(self.size * 0.8)
-
+        max_candelas_scale = int(self.size * self._get_max_value_ratio())
         angle_modifier = 1 if c_angle < 180 else -1
 
         context.new_path()
