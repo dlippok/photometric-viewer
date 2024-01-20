@@ -18,6 +18,10 @@ class SourceViewPage(BasePage):
             monospace=True,
             wrap_mode=Gtk.WrapMode.WORD_CHAR,
             pixels_below_lines=1,
+            left_margin=20,
+            right_margin=20,
+            top_margin=20,
+            bottom_margin=20,
         )
 
         self.source_text_view.set_show_line_numbers(True)
