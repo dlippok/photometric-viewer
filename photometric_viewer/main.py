@@ -4,6 +4,7 @@ import gi
 
 gi.require_version(namespace='Gtk', version='4.0')
 gi.require_version(namespace='Adw', version='1')
+gi.require_version(namespace='GtkSource', version='5')
 
 from photometric_viewer.utils.locales import init_locale
 from photometric_viewer.gui.window import MainWindow
