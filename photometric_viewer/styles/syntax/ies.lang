@@ -1,36 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language id="ies" name="IES" version="2.0" _section="Source">
-    <metadata>
-      <property name="mimetypes">application/x-iesna</property>
-      <property name="globs">*.ies</property>
-    </metadata>
-    <styles>
-        <style id="keyword" name="Key" map-to="def:keyword"/>
-        <style id="val" name="Value" map-to="def:string"/>
-        <style id="key" name="Key" map-to="def:keyword"/>
-    </styles>
+  <metadata>
+    <property name="mimetypes">application/x-iesna</property>
+    <property name="globs">*.ies</property>
+  </metadata>
+  
+  <styles>
+    <style id="header" name="Header" map-to="def:shebang"/>
+    <style id="keyword" name="Keyword" map-to="def:keyword"/>
+    <style id="attribute-key" name="Attribute Key" map-to="def:keyword"/>
+    <style id="attribute-val" name="Attribute Value" map-to="def:string"/>
+  </styles>
 
-    <definitions>
-        <context id="ies">
-            <include>
-             <context id="attributes" style-ref="key">
-                <start>^\[.+]</start>
-                <end>$</end>
-                <include>
-                    <context id="key" style-ref="val">
-                        <match>.+</match>
-                    </context>
-                </include>
-             </context>
-                <context id="keyword" style-ref="keyword">
-                    <keyword>IESNA91</keyword>
-                    <keyword>IESNA:LM-63-2002</keyword>
-                    <keyword>IESNA:LM-63-1995</keyword>
-                    <keyword>TILT=</keyword>
-                </context>
-                <context ref="def:decimal"/>
-                <context ref="def:float"/>
-            </include>
-        </context>
-    </definitions>
+  <definitions>
+
+    <context id="header" style-ref="header">
+      <keyword>IESNA91</keyword>
+      <keyword>IESNA:LM-63-2002</keyword>
+      <keyword>IESNA:LM-63-1995</keyword>
+    </context>
+
+    <context id="attribute">
+      <match>^(\[.*\])(.*)$</match>
+      <include>
+        <context sub-pattern="1" style-ref="attribute-key"/>
+        <context sub-pattern="2" style-ref="attribute-val"/>
+      </include>
+    </context>
+
+    <context id="keyword" style-ref="keyword">
+      <keyword>TILT=</keyword>
+    </context>
+
+    <context id="ies">
+      <include>
+        <context ref="header"/>
+        <context ref="attribute"/>
+        <context ref="keyword"/>
+        <context ref="def:decimal"/>
+        <context ref="def:float"/>
+      </include>
+  </context>
+
+    
+  </definitions>
 </language>
