@@ -7,6 +7,8 @@ from gi.repository.GtkSource import View
 from photometric_viewer.gui.pages.base import BasePage
 from photometric_viewer.model.luminaire import Luminaire, FileFormat
 
+SPECS_DIR = os.path.dirname(__file__)  + "/../../assets/language-specs/"
+
 
 class SourceViewPage(BasePage):
     def __init__(self, **kwargs):
@@ -27,7 +29,7 @@ class SourceViewPage(BasePage):
         self.source_text_view.set_show_line_numbers(True)
 
         self.lang_manager: GtkSource.LanguageManager = GtkSource.LanguageManager.get_default()
-        self.lang_manager.append_search_path(os.path.dirname(__file__)  + "/../../styles/syntax/")
+        self.lang_manager.append_search_path(SPECS_DIR)
 
         scrolled_window = ScrolledWindow()
         scrolled_window.set_child(self.source_text_view)
@@ -39,6 +41,7 @@ class SourceViewPage(BasePage):
 
     def set_photometry(self, luminaire: Luminaire):
         self.source_text_view.get_buffer().set_text(luminaire.metadata.file_source)
+
         buffer: GtkSource.Buffer = self.source_text_view.get_buffer()
 
         if luminaire.metadata.file_format == FileFormat.IES:

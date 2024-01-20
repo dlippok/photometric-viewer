@@ -42,8 +42,9 @@ setup(name='photometric-viewer',
       },
       package_data={
           'photometric_viewer': [
-              'styles/style.css',
-              'styles/syntax/ies.lang'
+              'assets/style.css',
+              'assets/language-specs/ies.lang',
+              'assets/language-specs/ldt.lang',
           ],
       },
       data_files=[
