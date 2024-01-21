@@ -4,6 +4,7 @@ from gi.repository.Gtk import Orientation
 from photometric_viewer.gui.widgets.common.header import Header
 from photometric_viewer.gui.widgets.common.property_list import PropertyList
 from photometric_viewer.model.luminaire import Luminaire
+from photometric_viewer.utils.urls import is_url
 
 
 class LuminaireProperties(Gtk.Box):
@@ -20,7 +21,10 @@ class LuminaireProperties(Gtk.Box):
         self.property_list.clear()
         children = 0
         for key, value in luminaire.metadata.additional_properties.items():
+            if is_url(value):
+                continue
             self.property_list.add(key.title().replace("_", " ").strip(), value)
             children += 1
 
         self.set_visible(children > 0)
+

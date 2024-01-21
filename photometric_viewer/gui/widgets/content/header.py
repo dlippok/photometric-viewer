@@ -60,13 +60,15 @@ class LuminaireHeader(Box):
             css_classes=["dim-label"]
         )
 
+        self.header_buttons = HeaderButtons()
+
         properties_box = Box(orientation=Orientation.VERTICAL, spacing=12)
         properties_box.append(self.name_label)
         properties_box.append(self.manufacturer_label)
         properties_box.append(self.date_label)
         properties_box.append(self.measurement_label)
         properties_box.append(self.description_label)
-        properties_box.append(HeaderButtons())
+        properties_box.append(self.header_buttons)
 
         self.append(self.diagram)
         self.append(properties_box)
@@ -85,6 +87,7 @@ class LuminaireHeader(Box):
             self.measurement_label.set_visible(False)
 
         self.diagram.set_photometry(luminaire)
+        self.header_buttons.set_photometry(luminaire)
 
     def update_settings(self, settings: Settings):
         self.diagram.update_settings(settings)
