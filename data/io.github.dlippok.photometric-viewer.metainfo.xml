@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component type="desktop-applicatio">
+<component type="desktop-application">
     <id>io.github.dlippok.photometric-viewer</id>
     <launchable type="desktop-id">io.github.dlippok.photometric-viewer.desktop</launchable>
     <name>Photometry</name>
