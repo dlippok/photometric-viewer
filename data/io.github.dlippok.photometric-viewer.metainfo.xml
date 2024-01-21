@@ -86,8 +86,13 @@
     </screenshots>
     <project_license>MIT</project_license>
     <metadata_license>CC0-1.0</metadata_license>
+
+    <developer_name>Damian Lippok</developer_name>
+    <update_contact>mail.dalee@gmail.com</update_contact>
+
+    <url type="homepage">https://github.com/dlippok/photometric-viewer</url>
     <url type="bugtracker">https://github.com/dlippok/photometric-viewer/issues</url>
-    <update_contact>mail.dalee_at_gmail.com</update_contact>
+    <url type="help">https://github.com/dlippok/photometric-viewer/discussions/categories/q-a</url>
 
     <content_rating type="oars-1.1" />>
 
@@ -103,6 +108,13 @@
     </requires>
 
     <releases>
+        <release version="2.1.0" date="2024-01-21">
+            <description>
+                <p>Adds syntax highlighting for source text of photometric files and a button for opening of URLs from attributes of IES files in a web browser. Includes various minor bugfixes.</p>
+                <p xml:lang="de">Fügt Syntax-Hervorhebung für den Quelltext photometrischer Dateien und eine Schaltfläche zum Öffnen von URLs aus Attributen von IES-Dateien in einem Webbrowser hinzu. Enthält verschiedene kleinere Bugfixes.</p>
+                <p xml:lang="pl">Dodano podświetlanie składni dla tekstu źródłowego plików fotometrycznych oraz przycisk do otwierania adresów URL zawartych w atrybutach plików IES w przeglądarce internetowej. Zawiera różne drobne poprawki błędów.</p>
+            </description>
+        </release>
         <release version="2.0.0" date="2024-01-13">
             <description>
                 <p>Rebranding of the application to Photometry with improved application icon.</p>
@@ -189,7 +201,4 @@
         </release>
         <release version="0.1.0" date="2023-04-07"/>
     </releases>
-    <url type="homepage">https://github.com/dlippok/photometric-viewer</url>
-    <url type="bugtracker">https://github.com/dlippok/photometric-viewer/issues</url>
-    <url type="help">https://github.com/dlippok/photometric-viewer/discussions/categories/q-a</url>
 </component>
