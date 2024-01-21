@@ -251,7 +251,7 @@ def _write_luminous_opening_geometry(f, luminaire: Luminaire):
 
 
 def export_to_file(f: IO, luminaire: Luminaire, additional_keywords: Dict[str, str]):
-    f.write("IESNA: LM-63-2002\r\n")
+    f.write("IESNA:LM-63-2002\r\n")
 
     first_lamp_set = luminaire.lamps[0]
     standard_keywords = {
