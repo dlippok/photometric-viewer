@@ -25,6 +25,7 @@ from photometric_viewer.gui.pages.values import IntensityValuesPage
 from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.utils.gi.GSettings import GSettings
 from photometric_viewer.utils.gi.gio import gio_file_stream, write_string
+from photometric_viewer.utils.project import PROJECT
 
 
 class MainWindow(Adw.Window):
@@ -195,10 +196,10 @@ class MainWindow(Adw.Window):
         file: Gio.File = dialog.get_file()
 
         export_keywords = {
-            "_EXPORT_TOOL": _("Photometry"),
-            "_EXPORT_TOOL_VERSION": "1.3.0",
-            "_EXPORT_TOOL_URL": "https://github.com/dlippok/photometric-viewer",
-            "_EXPORT_TOOL_ISSUE_TRACKER": "https://github.com/dlippok/photometric-viewer/issues",
+            "_EXPORT_TOOL": PROJECT.name,
+            "_EXPORT_TOOL_VERSION": PROJECT.version,
+            "_EXPORT_TOOL_HOMEPAGE": PROJECT.urls.homepage,
+            "_EXPORT_TOOL_ISSUE_TRACKER": PROJECT.urls.bug_tracker,
             "_EXPORT_TIMESTAMP": datetime.now().isoformat()
         }
 
