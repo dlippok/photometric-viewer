@@ -16,6 +16,7 @@ apps:
     extensions:
       - gnome
     command: bin/photometric-viewer
+    common-id: io.github.dlippok.photometric-viewer
     desktop: share/applications/io.github.dlippok.photometric-viewer.desktop
     plugs:
       - home
