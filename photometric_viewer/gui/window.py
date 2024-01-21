@@ -101,6 +101,7 @@ class MainWindow(Adw.Window):
         self.install_action("app.export_as_ldt", None, self.show_ldt_export_file_chooser)
         self.install_action("app.export_as_ies", None, self.show_ies_export_file_chooser)
         self.install_action("app.open", None, self.on_open_clicked)
+        self.install_action("app.open_url", "s", self.on_open_url)
 
 
         self.action_set_enabled("app.show_intensity_values", False)
@@ -110,6 +111,7 @@ class MainWindow(Adw.Window):
         self.action_set_enabled("app.export_ldc_as_image", False)
         self.action_set_enabled("app.export_as_ldt", False)
         self.action_set_enabled("app.export_as_ies", False)
+        self.action_set_enabled("app.open_url", True)
 
     def setup_accelerators(self):
         app = self.get_application()
@@ -131,6 +133,10 @@ class MainWindow(Adw.Window):
 
     def on_open_clicked(self, *args):
         self.open_file_chooser.show()
+
+    def on_open_url(self, window, action, params: GLib.Variant, *args):
+        Gtk.show_uri(window, params.get_string(), Gdk.CURRENT_TIME)
+
 
     def on_open_response(self, dialog: FileChooserDialog, response):
         if response == Gtk.ResponseType.ACCEPT:
