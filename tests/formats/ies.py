@@ -335,6 +335,9 @@ class TestIes(unittest.TestCase):
                 with io.StringIO(exported_value) as f:
                     reimported_photometry = import_from_file(f)
 
+                iesna_header = exported_value.split("\r\n")[0]
+                self.assertEqual(iesna_header, "IESNA:LM-63-2002")
+
                 photometry.metadata.file_source = ""
                 reimported_photometry.metadata.file_source = ""
 
