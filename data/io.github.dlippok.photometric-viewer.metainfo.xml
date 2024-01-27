@@ -108,6 +108,13 @@
     </requires>
 
     <releases>
+        <release version="2.1.1" date="2024-01-27">
+            <description>
+                <p>Fixed bug preventing the application from starting when installed via Flathub.</p>
+                <p xml:lang="de">Es wurde ein Fehler behoben, der den Start der Anwendung verhinderte, wenn das Programm über Flathub installiert wurde.</p>
+                <p xml:lang="pl">Naprawiono błąd uniemożliwiający uruchomienie aplikacji po zainstalowaniu jej przez Flathub.</p>
+            </description>
+        </release>
         <release version="2.1.0" date="2024-01-21">
             <description>
                 <p>Adds syntax highlighting for source text of photometric files and a button for opening of URLs from attributes of IES files in a web browser. Includes various minor bugfixes.</p>

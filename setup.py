@@ -27,7 +27,7 @@ class InstallCommand(install):
             )
 
 setup(name='photometric-viewer',
-      version='2.1.0',
+      version='2.1.1',
       description='Browse content of IES and LDT photometric files',
       url='https://github.com/dlippok/photometric-viewer',
       project_urls={
