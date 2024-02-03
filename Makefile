@@ -28,11 +28,14 @@ compile-translations: $(POS)
 	msgfmt data/translations/pl/LC_MESSAGES/io.github.dlippok.photometric-viewer.po \
 		-o data/translations/pl/LC_MESSAGES/io.github.dlippok.photometric-viewer.mo
 
-install: compile-translations
+build: compile-translations
+	echo "Building"
+
+install: build
 	pip3 install .
 
 # Flatpak
-flatpak-build: compile-translations
+flatpak-build: build
 	flatpak-builder --force-clean build/flatpak flatpak.yaml
 
 flatpak-install: test
@@ -54,5 +57,5 @@ clean:
 	rm -rf build
 
 
-run: test compile-translations
+run: test build
 	python3 run.py

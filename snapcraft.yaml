@@ -24,11 +24,16 @@ apps:
 
 parts:
   photometric-viewer:
-    plugin: make
+    plugin: python
     source: https://github.com/dlippok/photometric-viewer.git
     build-environment:
+      - PARTS_PYTHON_VENV_ARGS: --system-site-packages
       - PATH: ${CRAFT_PART_INSTALL}/bin:${PATH}
       - PYTHONPATH: ""
+
+    override-build: |
+      make build
+      snapcraftctl build
 
     override-stage: |
       sed -i 's|Icon=.*$|Icon=share/icons/hicolor/scalable/apps/io.github.dlippok.photometric-viewer.svg|g' ${CRAFT_PART_INSTALL}/share/applications/io.github.dlippok.photometric-viewer.desktop
