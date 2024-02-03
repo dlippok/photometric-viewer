@@ -13,7 +13,7 @@ modules:
   - name: photometric-viewer
     buildsystem: simple
     build-commands:
-      - pip3 install . --prefix ${FLATPAK_DEST}
+      - PIP_PREFIX=${FLATPAK_DEST} make install
     sources:
       - type: dir
         path: .

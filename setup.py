@@ -12,22 +12,8 @@ class InstallCommand(install):
         install.run(self)
         check_call(["glib-compile-schemas", os.path.join(self.install_data, "share/glib-2.0/schemas/")])
 
-        translation_dirs = [p for p in Path("data/translations").iterdir() if p.is_dir()]
-        for translation_dir in translation_dirs:
-            lang = translation_dir.name
-            check_call([
-                "msgfmt",
-                str(translation_dir / "LC_MESSAGES" / "io.github.dlippok.photometric-viewer.po"),
-                "-o", str(translation_dir / "LC_MESSAGES" / "io.github.dlippok.photometric-viewer.mo")
-            ])
-            os.makedirs(os.path.join(self.install_data, f"share/locale/{lang}/LC_MESSAGES"), exist_ok=True)
-            shutil.copy2(
-                (translation_dir / "LC_MESSAGES" / "io.github.dlippok.photometric-viewer.mo"),
-                os.path.join(self.install_data, f"share/locale/{lang}/LC_MESSAGES")
-            )
-
 setup(name='photometric-viewer',
-      version='2.1.1',
+      version='2.1.2',
       description='Browse content of IES and LDT photometric files',
       url='https://github.com/dlippok/photometric-viewer',
       project_urls={
@@ -53,6 +39,9 @@ setup(name='photometric-viewer',
       },
       data_files=[
           ('share/icons/hicolor/scalable/apps', ['data/icons/io.github.dlippok.photometric-viewer.svg']),
+          ('share/icons/hicolor/symbolic/apps', ['data/icons/io.github.dlippok.photometric-viewer-symbolic.svg']),
+          ('share/locale/de/LC_MESSAGES', ['data/translations/de/LC_MESSAGES/io.github.dlippok.photometric-viewer.mo']),
+          ('share/locale/pl/LC_MESSAGES', ['data/translations/pl/LC_MESSAGES/io.github.dlippok.photometric-viewer.mo']),
           ('share/icons/hicolor/symbolic/apps', ['data/icons/io.github.dlippok.photometric-viewer-symbolic.svg']),
           ('share/applications', ['data/desktop/io.github.dlippok.photometric-viewer.desktop']),
           ('share/mime/packages', ['data/desktop/io.github.dlippok.photometric-viewer.mime.xml']),
