@@ -1,16 +1,4 @@
-import os
-from pathlib import Path
-import shutil
-
 from setuptools import setup, find_packages
-from setuptools.command.install import install
-from subprocess import check_call
-
-
-class InstallCommand(install):
-    def run(self):
-        install.run(self)
-        check_call(["glib-compile-schemas", os.path.join(self.install_data, "share/glib-2.0/schemas/")])
 
 setup(name='photometric-viewer',
       version='2.1.2',
@@ -24,9 +12,6 @@ setup(name='photometric-viewer',
       author_email='mail.dalee@gmail.com',
       license='MIT',
       packages=find_packages(),
-      cmdclass={
-          'install': InstallCommand,
-      },
       entry_points={
           'console_scripts': ['photometric-viewer=photometric_viewer.main:run'],
       },
@@ -40,13 +25,13 @@ setup(name='photometric-viewer',
       data_files=[
           ('share/icons/hicolor/scalable/apps', ['data/icons/io.github.dlippok.photometric-viewer.svg']),
           ('share/icons/hicolor/symbolic/apps', ['data/icons/io.github.dlippok.photometric-viewer-symbolic.svg']),
-          ('share/locale/de/LC_MESSAGES', ['data/translations/de/LC_MESSAGES/io.github.dlippok.photometric-viewer.mo']),
-          ('share/locale/pl/LC_MESSAGES', ['data/translations/pl/LC_MESSAGES/io.github.dlippok.photometric-viewer.mo']),
+          ('share/locale/de/LC_MESSAGES', ['build/translations/de/LC_MESSAGES/io.github.dlippok.photometric-viewer.mo']),
+          ('share/locale/pl/LC_MESSAGES', ['build/translations/pl/LC_MESSAGES/io.github.dlippok.photometric-viewer.mo']),
           ('share/icons/hicolor/symbolic/apps', ['data/icons/io.github.dlippok.photometric-viewer-symbolic.svg']),
           ('share/applications', ['data/desktop/io.github.dlippok.photometric-viewer.desktop']),
           ('share/mime/packages', ['data/desktop/io.github.dlippok.photometric-viewer.mime.xml']),
           ('share/metainfo', ['data/io.github.dlippok.photometric-viewer.metainfo.xml']),
-          ('share/glib-2.0/schemas/', ['data/io.github.dlippok.photometric-viewer.gschema.xml'])
+          ('share/glib-2.0/schemas', ['data/io.github.dlippok.photometric-viewer.gschema.xml', 'build/gschemas.compiled'])
       ],
       test_suite="tests",
       zip_safe=False)

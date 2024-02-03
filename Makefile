@@ -1,8 +1,9 @@
-.PHONY = test run clean flatpak-install flatpak-build flatpak-run flatpak-uninstall
 SOURCES = $(shell find photometric_viewer/ -name "*.py")
 POS = $(shell find data/translations/ -name "*.po")
 
 all: $(POS) test
+
+.PHONY: test run clean flatpak-install flatpak-build flatpak-run flatpak-uninstall build
 
 # Translations
 data/translations/io.github.dlippok.photometric-viewer.pot: $(SOURCES)
@@ -22,14 +23,17 @@ data/translations/pl/LC_MESSAGES/io.github.dlippok.photometric-viewer.po: data/t
   		data/translations/io.github.dlippok.photometric-viewer.pot \
 		-o data/translations/pl/LC_MESSAGES/io.github.dlippok.photometric-viewer.po
 
-compile-translations: $(POS)
-	msgfmt data/translations/de/LC_MESSAGES/io.github.dlippok.photometric-viewer.po \
-  		-o data/translations/de/LC_MESSAGES/io.github.dlippok.photometric-viewer.mo
-	msgfmt data/translations/pl/LC_MESSAGES/io.github.dlippok.photometric-viewer.po \
-		-o data/translations/pl/LC_MESSAGES/io.github.dlippok.photometric-viewer.mo
+build:
+	mkdir -p build
+	glib-compile-schemas data/ --targetdir=build
 
-build: compile-translations
-	echo "Building"
+	mkdir -p build/translations/de/LC_MESSAGES/
+	msgfmt data/translations/de/LC_MESSAGES/io.github.dlippok.photometric-viewer.po \
+  		-o build/translations/de/LC_MESSAGES/io.github.dlippok.photometric-viewer.mo
+
+	mkdir -p build/translations/pl/LC_MESSAGES/
+	msgfmt data/translations/pl/LC_MESSAGES/io.github.dlippok.photometric-viewer.po \
+		-o build/translations/pl/LC_MESSAGES/io.github.dlippok.photometric-viewer.mo
 
 install: build
 	pip3 install .
@@ -38,7 +42,7 @@ install: build
 flatpak-build: build
 	flatpak-builder --force-clean build/flatpak flatpak.yaml
 
-flatpak-install: test
+flatpak-install: build
 	flatpak-builder --user --install --force-clean build/flatpak flatpak.yaml
 
 flatpak-run: flatpak-install
@@ -52,7 +56,6 @@ test:
 	python3 setup.py test
 
 clean:
-	find data/translations/ -name "*.mo" -delete
 	rm -rf .flatpak-builder
 	rm -rf build
 
