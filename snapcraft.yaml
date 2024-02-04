@@ -25,7 +25,7 @@ apps:
 parts:
   photometric-viewer:
     plugin: python
-    source: https://github.com/dlippok/photometric-viewer.git
+    source: .
     build-environment:
       - PARTS_PYTHON_VENV_ARGS: --system-site-packages
       - PATH: ${CRAFT_PART_INSTALL}/bin:${PATH}
@@ -33,6 +33,7 @@ parts:
 
     override-build: |
       make build
+      INSTALL_TARGET=${CRAFT_PART_INSTALL} make install-dist
       snapcraftctl build
 
     override-stage: |
