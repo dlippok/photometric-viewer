@@ -25,7 +25,7 @@ apps:
 parts:
   photometric-viewer:
     plugin: python
-    source: .
+    source: https://github.com/dlippok/photometric-viewer.git
     build-environment:
       - PARTS_PYTHON_VENV_ARGS: --system-site-packages
       - PATH: ${CRAFT_PART_INSTALL}/bin:${PATH}
