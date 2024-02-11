@@ -1,11 +1,13 @@
-# Photometry
-
-Application for viewing IES and EULUMDAT photometric files under Linux (Gnome/GTK).
-
 <picture>
-  <source srcset="docs/screenshots/Dark.png" media="(prefers-color-scheme: dark)">
-  <img src="docs/screenshots/Main.png" alt="Screenshot">
+  <source srcset="docs/images/banner-dark.svg" media="(prefers-color-scheme: dark)">
+  <img src="docs/images/banner.svg" alt="Photometry">
 </picture>
+
+# View photometric files under Linux.
+
+ Photometry allows viewing light distribution curves and metadata of IESNA and EULUMDAT photometric
+            files which describe the light distribution of light sources like lamps and luminaires and
+            are used mostly for data transfer in the lighting industry and in 3D graphics.
 
 <a href='https://flathub.org/apps/io.github.dlippok.photometric-viewer'><img height='60' alt='Download on Flathub' src='https://dl.flathub.org/assets/badges/flathub-badge-en.png'/></a> 
 <a href="https://snapcraft.io/photometric-viewer">
