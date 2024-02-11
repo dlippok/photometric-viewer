@@ -5,31 +5,25 @@
 
 # View photometric files under Linux.
 
- Photometry allows viewing light distribution curves and metadata of IESNA and EULUMDAT photometric
-            files which describe the light distribution of light sources like lamps and luminaires and
-            are used mostly for data transfer in the lighting industry and in 3D graphics.
+Photometry allows viewing light distribution curves and metadata of IESNA and EULUMDAT photometric 
+files which describe the light distribution of light sources like lamps and luminaires and
+are used mostly for data transfer in the lighting industry and in 3D graphics.
+
+## Features
+
+- Light distribution curves of selected photometric files
+- General information and photometric properties of the luminaire
+- Intensity Values
+- Lamps and ballast information
+- Luminaire and luminous opening geometry information
+- Additional properties (Test number, issue date, test laboratory, etc.)
+- Source of photometric file with syntax highlighting
 
 <a href='https://flathub.org/apps/io.github.dlippok.photometric-viewer'><img height='60' alt='Download on Flathub' src='https://dl.flathub.org/assets/badges/flathub-badge-en.png'/></a> 
 <a href="https://snapcraft.io/photometric-viewer">
   <img height='60' alt="Get it from the Snap Store" src="https://snapcraft.io/static/images/badges/en/snap-store-black.svg" />
 </a>
 
-
-
-## Features
-
-Photometry allows you to see following information from the opened photometric file:
-
-- Light distribution curves of selected photometric files
-- General information (Catalog Number, Manufacturer, Description, etc.)
-- Photometric properties (Light Output Ration and Downward Flux Fraction)
-- Lamps and ballast information
-- Luminaire and luminous opening geometry information
-- Additional properties (Test number, issue date, test laboratory, etc.)
-- Intensity Values for selected C planes and gamma values
-- Raw text source of photometric file
-
-The application uses Libadwaita library for modern design and responsive layout. 
 
 
 
