@@ -1,6 +1,6 @@
 import math
 
-from photometric_viewer.model.luminaire import Luminaire, Lamps, LuminairePhotometricProperties
+from photometric_viewer.model.luminaire import Luminaire, Lamps, LuminairePhotometricProperties, Calculable
 
 DAYS_IN_YEAR = 365
 
@@ -25,6 +25,16 @@ def energy_cost(power_consumption_kwh: float, price_kwh: float):
     return power_consumption_kwh * price_kwh
 
 def calculate_photometry(luminaire: Luminaire) -> LuminairePhotometricProperties:
+    if not luminaire.intensity_values:
+        return LuminairePhotometricProperties(
+            is_absolute=False,
+            luminous_flux=Calculable(),
+            lor=Calculable(),
+            dff=Calculable(),
+            efficacy=Calculable()
+        )
+
+
     is_absolute = luminaire.photometry.is_absolute
     lamps = luminaire.lamps[0]
     ratio = 1 if is_absolute else (lamps.lumens_per_lamp * lamps.number_of_lamps) / 1000

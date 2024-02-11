@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-03 15:22+0100\n"
+"POT-Creation-Date: 2024-02-11 19:30+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,22 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: photometric_viewer/gui/widgets/content/header.py:77
+msgid "No catalog number"
+msgstr ""
+
+#: photometric_viewer/gui/widgets/content/header.py:78
+msgid "No manufacturer"
+msgstr ""
+
+#: photometric_viewer/gui/widgets/content/header.py:79
+msgid "No description"
+msgstr ""
+
+#: photometric_viewer/gui/widgets/content/header.py:80
+msgid "Measurement date unknown"
+msgstr ""
 
 #: photometric_viewer/gui/dialogs/preferences.py:13
 #: photometric_viewer/gui/dialogs/preferences.py:15

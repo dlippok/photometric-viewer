@@ -74,10 +74,10 @@ class LuminaireHeader(Box):
         self.append(properties_box)
 
     def set_photometry(self, luminaire: Luminaire):
-        self.name_label.set_label(luminaire.metadata.catalog_number or "")
-        self.manufacturer_label.set_label(luminaire.metadata.manufacturer or "")
-        self.description_label.set_label(luminaire.metadata.luminaire or "")
-        self.date_label.set_label(luminaire.metadata.date_and_user or "")
+        self.name_label.set_label(luminaire.metadata.catalog_number or _("No catalog number"))
+        self.manufacturer_label.set_label(luminaire.metadata.manufacturer or _("No manufacturer"))
+        self.description_label.set_label(luminaire.metadata.luminaire or _("No description"))
+        self.date_label.set_label(luminaire.metadata.date_and_user or _("Measurement date unknown"))
 
         if luminaire.metadata.measurement:
             self.measurement_label.set_label(f'{_("Measurement")}: {luminaire.metadata.measurement}')
