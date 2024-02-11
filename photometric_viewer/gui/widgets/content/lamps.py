@@ -42,7 +42,7 @@ class LampAndBallast(Adw.Bin):
         for child in items:
             self.view_stack.remove(child)
 
-        for n, lamp in enumerate(luminaire.lamps):
+        for n, lamp in enumerate(luminaire.lamps[:5]):
             property_list = PropertyList()
             property_list.add(_("Number of lamps"), str(lamp.number_of_lamps))
             property_list.add_if_non_empty(_("Lamp"), lamp.description)
