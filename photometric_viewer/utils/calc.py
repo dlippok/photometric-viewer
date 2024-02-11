@@ -24,21 +24,32 @@ def energy_cost(power_consumption_kwh: float, price_kwh: float):
 
     return power_consumption_kwh * price_kwh
 
-def calculate_photometry(luminaire: Luminaire) -> LuminairePhotometricProperties:
-    if not luminaire.intensity_values:
-        return LuminairePhotometricProperties(
-            is_absolute=False,
-            luminous_flux=Calculable(),
-            lor=Calculable(),
-            dff=Calculable(),
-            efficacy=Calculable()
-        )
 
+def empty_values():
+    return LuminairePhotometricProperties(
+        is_absolute=False,
+        luminous_flux=Calculable(),
+        lor=Calculable(),
+        dff=Calculable(),
+        efficacy=Calculable()
+    )
+
+def calculate_photometry(luminaire: Luminaire) -> LuminairePhotometricProperties:
+    try:
+        return _calculate_photometry(luminaire)
+    except Exception as e:
+        return empty_values()
+
+
+def _calculate_photometry(luminaire: Luminaire) -> LuminairePhotometricProperties:
+    assert luminaire.intensity_values
 
     is_absolute = luminaire.photometry.is_absolute
     lamps = luminaire.lamps[0]
     ratio = 1 if is_absolute else (lamps.lumens_per_lamp * lamps.number_of_lamps) / 1000
     gamma_step = luminaire.gamma_angles[1] - luminaire.gamma_angles[0]
+
+    assert gamma_step > 0
 
     flux_luminaire = 0
     flux_lower_luminaire = 0
