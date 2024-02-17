@@ -32,7 +32,7 @@ def _get_metadata():
         developer_name=metadata["Author"],
         urls=ProjectUrls(
             homepage=metadata["Home-page"],
-            bug_tracker=project_urls.get("Bug Tracker", None),
+            bug_tracker=project_urls.get("Issues", None),
             support=project_urls.get("Support", None),
         ),
         copyright="© 2023 Damian Lippok"

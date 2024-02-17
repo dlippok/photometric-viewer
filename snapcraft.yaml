@@ -33,6 +33,7 @@ parts:
 
     override-build: |
       make build
+      INSTALL_TARGET=${CRAFT_PART_INSTALL} make install-dist
       snapcraftctl build
 
     override-stage: |
