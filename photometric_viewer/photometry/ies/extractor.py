@@ -72,15 +72,27 @@ def _extract_lamp_attributes(f: IO) -> LampAttributes:
 
 def _extract_v_angles(f: IO, attributes: InlineAttributes) -> List[float]:
     n_angles = attributes.n_v_angles or 0
-    return [safe_float(angle) for angle in get_n_values(f, n_angles)]
+    return [
+        safe_float(angle)
+        for angle in get_n_values(f, n_angles)
+        if angle is not None
+    ]
 
 
 def _extract_h_angles(f: IO, attributes: InlineAttributes) -> List[float]:
     n_angles = attributes.n_h_angles or 0
-    return [safe_float(angle) for angle in get_n_values(f, n_angles)]
+    return [
+        safe_float(angle)
+        for angle in get_n_values(f, n_angles)
+        if angle is not None
+    ]
 
 
 def _extract_intensities(f: IO, attributes: InlineAttributes) -> List[float]:
     n_v_angles = attributes.n_v_angles or 0
     n_h_angles = attributes.n_h_angles or 0
-    return get_n_values(f, n_v_angles * n_h_angles)
+    return [
+        safe_float(v)
+        for v in get_n_values(f, n_v_angles * n_h_angles)
+        if v is not None
+    ]

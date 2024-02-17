@@ -11,9 +11,9 @@ class InlineAttributes:
     n_h_angles: int | None
     photometry_type: int | None
     luminous_opening_units: int | None
-    luminous_opening_width: int | None
-    luminous_opening_length: int | None
-    luminous_opening_height: int | None
+    luminous_opening_width: float | None
+    luminous_opening_length: float | None
+    luminous_opening_height: float | None
 
 
 @dataclass
