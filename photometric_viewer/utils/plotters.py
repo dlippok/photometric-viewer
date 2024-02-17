@@ -68,7 +68,12 @@ class LightDistributionPlotter:
     def draw(self, context: cairo.Context, luminaire: Luminaire):
         self.center = self._get_center(luminaire)
         self._draw_background(context)
-        self._draw_curve(context, luminaire)
+
+        try:
+            self._draw_curve(context, luminaire)
+        except ZeroDivisionError:
+            pass
+
         self._draw_coordinate_system(context, luminaire)
         self._draw_legend(context)
 

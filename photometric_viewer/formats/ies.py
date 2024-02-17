@@ -5,6 +5,7 @@ from photometric_viewer.formats.exceptions import InvalidLuminousOpeningExceptio
 from photometric_viewer.model.luminaire import Luminaire, PhotometryMetadata, LuminousOpeningGeometry, Shape, \
     Lamps, LuminousOpeningShape, LuminairePhotometricProperties, Calculable, FileFormat
 from photometric_viewer.model.units import LengthUnits
+from photometric_viewer.utils.conversion import safe_int, safe_float
 from photometric_viewer.utils.ioutil import read_non_empty_line
 
 _LUMEN_PER_LAMPS_ABSOLUTE = -1
@@ -21,18 +22,20 @@ _VALUES_PER_LINE = 12
 
 def _get_n_values(f: IO, n: int):
     raw_values = []
-    while n > 0:
+    i = n
+    while i > 0:
         line = read_non_empty_line(f)
-        if line.strip() == "":
-            continue
+        if line is None:
+            values = [0] * i
+        else:
+            values = line.strip().split(" ")
 
-        values = line.strip().split(" ")
         for value in values:
             if value == "":
                 continue
             raw_values.append(value)
-            n -= 1
-    return raw_values
+            i -= 1
+    return raw_values[:n]
 
 
 def create_luminous_opening_for_iesna95(w, l, h, f):
@@ -127,7 +130,7 @@ def import_from_file(f: IO):
     metadata = {}
     next_line = read_non_empty_line(f)
     last_key = None
-    while next_line.startswith("["):
+    while next_line and next_line.startswith("["):
         metadata_line = next_line.split("]")
         metadata_key = metadata_line[0].strip("[").strip()
         metadata_value = metadata_line[1].strip()
@@ -144,22 +147,25 @@ def import_from_file(f: IO):
     raw_attributes = _get_n_values(f, 10)
     attributes = {
         "header": header,
-        "numer_of_lamps": int(raw_attributes[0]),
-        "lumens_per_lamp": float(raw_attributes[1]),
-        "multiplying_factor": float(raw_attributes[2]),
-        "n_v_angles": int(raw_attributes[3]),
-        "n_h_angles": int(raw_attributes[4]),
-        "photometer_type": int(raw_attributes[5]),
-        "luminous_opening_units": int(raw_attributes[6]),
-        "luminous_opening_width": float(raw_attributes[7]),
-        "luminous_opening_length": float(raw_attributes[8]),
-        "luminous_opening_height": float(raw_attributes[9]),
+        "numer_of_lamps": safe_int(raw_attributes[0]),
+        "lumens_per_lamp": safe_float(raw_attributes[1]),
+        "multiplying_factor": safe_float(raw_attributes[2]),
+        "n_v_angles": safe_int(raw_attributes[3]),
+        "n_h_angles": safe_int(raw_attributes[4]),
+        "photometer_type": safe_int(raw_attributes[5]),
+        "luminous_opening_units": safe_int(raw_attributes[6]),
+        "luminous_opening_width": safe_float(raw_attributes[7]),
+        "luminous_opening_length": safe_float(raw_attributes[8]),
+        "luminous_opening_height": safe_float(raw_attributes[9]),
     }
 
-    [ballast_factor, lamp_photometric_factor, input_watts] = _get_n_values(f, 3)
+    lamp_attr = _get_n_values(f, 3)
+    ballast_factor = safe_float(lamp_attr[0])
+    lamp_photometric_factor = safe_float(lamp_attr[1])
+    input_watts = safe_float(lamp_attr[2])
 
-    v_angles = [float(angle) for angle in _get_n_values(f, attributes["n_v_angles"])]
-    h_angles = [float(angle) for angle in _get_n_values(f, attributes["n_h_angles"])]
+    v_angles = [safe_float(angle) for angle in _get_n_values(f, attributes["n_v_angles"])]
+    h_angles = [safe_float(angle) for angle in _get_n_values(f, attributes["n_h_angles"])]
 
     raw_values = _get_n_values(f, attributes["n_v_angles"] * attributes["n_h_angles"])
 
@@ -167,14 +173,14 @@ def import_from_file(f: IO):
                                                                                  "lumens_per_lamp"] >= 0 else None
 
     candela_values = {}
-    relative_photomety_divider = lumens / 1000 if lumens else 1
+    relative_photometry_divider = lumens / 1000 if lumens else 1
     n = 0
     for h_angle in h_angles:
         for v_angle in v_angles:
             raw_value = float(raw_values[n])
             multiplying_factor = attributes["multiplying_factor"]
-            value = raw_value * multiplying_factor * float(ballast_factor) * float(lamp_photometric_factor)
-            candela_values[(h_angle, v_angle)] = round(value / relative_photomety_divider, ndigits=2)
+            value = raw_value * multiplying_factor * ballast_factor * lamp_photometric_factor
+            candela_values[(h_angle, v_angle)] = round(value / relative_photometry_divider, ndigits=2)
             n += 1
 
     f.seek(0)
