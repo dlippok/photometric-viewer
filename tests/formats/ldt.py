@@ -7,6 +7,8 @@ from photometric_viewer.formats.ldt import import_from_file, export_to_file
 from photometric_viewer.model.luminaire import Shape, Lamps, LuminaireGeometry, LuminousOpeningGeometry, LuminaireType, \
     LuminousOpeningShape, Calculable
 from photometric_viewer.model.units import LengthUnits
+from photometric_viewer.photometry.ies.extractor import extract_content
+from photometric_viewer.photometry.ies.converter import convert_content
 
 
 class TestLdt(unittest.TestCase):
@@ -481,7 +483,8 @@ class TestLdt(unittest.TestCase):
                     exported_value = f.getvalue()
 
                 with io.StringIO(exported_value) as f:
-                    reimported_luminaire = ies.import_from_file(f)
+                    content = extract_content(f)
+                    reimported_luminaire = convert_content(content)
 
                 self.assertEqual(luminaire.photometry.is_absolute, reimported_luminaire.photometry.is_absolute)
 
