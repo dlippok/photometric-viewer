@@ -64,7 +64,7 @@ class LuminousOpeningGeometry:
     width: float
     length: float
     height: float
-    shape: LuminousOpeningShape
+    shape: LuminousOpeningShape | None
     height_c90: float | None = None
     height_c180: float | None = None
     height_c270: float | None = None
@@ -80,7 +80,7 @@ class LuminaireGeometry:
 
 @dataclass
 class Lamps:
-    number_of_lamps: int
+    number_of_lamps: int | None
     description: str | None = None
     catalog_number: str | None = None
     position: str | None = None
@@ -121,7 +121,7 @@ class Luminaire:
     c_planes: List[float]
     # Values in Candela for absolute photometry, cd/klm otherwise
     intensity_values: Dict[Tuple[float, float], float]
-    luminous_opening_geometry: LuminousOpeningGeometry
+    luminous_opening_geometry: LuminousOpeningGeometry | None
     geometry: LuminaireGeometry | None
     lamps: List[Lamps]
     metadata: PhotometryMetadata

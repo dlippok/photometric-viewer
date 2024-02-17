@@ -63,40 +63,41 @@ class LuminaireGeometryProperties(PropertyList):
                 self.add(_("Luminaire shape"), _("Round"))
                 self.add(_("Luminaire dimensions"), f"{self._convert(w)} x {self._convert(l)} x {self._convert(h)}")
 
-        match self.luminaire.luminous_opening_geometry.shape:
-            case LuminousOpeningShape.RECTANGULAR:
-                self.add(_("Luminous opening shape"), _("Rectangular"))
-            case LuminousOpeningShape.ROUND:
-                self.add(_("Luminous opening shape"), _("Round"))
-            case LuminousOpeningShape.SPHERE:
-                self.add(_("Luminous opening shape"), _("Sphere"))
-            case LuminousOpeningShape.POINT:
-                self.add(_("Luminous opening shape"), _("Point"))
-            case LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_WIDTH:
-                self.add(_("Luminous opening shape"), _("Horizontal cylinder oriented along luminaire width"))
-            case LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_LENGTH:
-                self.add(_("Luminous opening shape"), _("Horizontal cylinder oriented along luminaire length"))
-            case LuminousOpeningShape.ELLIPSE_ALONG_WIDTH:
-                self.add(_("Luminous opening shape"), _("Ellipse oriented along luminaire width"))
-            case LuminousOpeningShape.ELLIPSE_ALONG_LENGTH:
-                self.add(_("Luminous opening shape"), _("Ellipse oriented along luminaire length"))
-            case LuminousOpeningShape.ELLIPSOID_ALONG_WIDTH:
-                self.add(_("Luminous opening shape"), _("Ellipsoid oriented along luminaire width"))
-            case LuminousOpeningShape.ELLIPSOID_ALONG_LENGTH:
-                self.add(_("Luminous opening shape"), _("Ellipsoid oriented along luminaire length"))
+        if self.luminaire.luminous_opening_geometry is not None:
+            match self.luminaire.luminous_opening_geometry.shape:
+                case LuminousOpeningShape.RECTANGULAR:
+                    self.add(_("Luminous opening shape"), _("Rectangular"))
+                case LuminousOpeningShape.ROUND:
+                    self.add(_("Luminous opening shape"), _("Round"))
+                case LuminousOpeningShape.SPHERE:
+                    self.add(_("Luminous opening shape"), _("Sphere"))
+                case LuminousOpeningShape.POINT:
+                    self.add(_("Luminous opening shape"), _("Point"))
+                case LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_WIDTH:
+                    self.add(_("Luminous opening shape"), _("Horizontal cylinder oriented along luminaire width"))
+                case LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_LENGTH:
+                    self.add(_("Luminous opening shape"), _("Horizontal cylinder oriented along luminaire length"))
+                case LuminousOpeningShape.ELLIPSE_ALONG_WIDTH:
+                    self.add(_("Luminous opening shape"), _("Ellipse oriented along luminaire width"))
+                case LuminousOpeningShape.ELLIPSE_ALONG_LENGTH:
+                    self.add(_("Luminous opening shape"), _("Ellipse oriented along luminaire length"))
+                case LuminousOpeningShape.ELLIPSOID_ALONG_WIDTH:
+                    self.add(_("Luminous opening shape"), _("Ellipsoid oriented along luminaire width"))
+                case LuminousOpeningShape.ELLIPSOID_ALONG_LENGTH:
+                    self.add(_("Luminous opening shape"), _("Ellipsoid oriented along luminaire length"))
 
-        match self.luminaire.luminous_opening_geometry:
-            case LuminousOpeningGeometry(width=0, length=0, height=0, shape=LuminousOpeningShape.POINT):
-                pass
-            case LuminousOpeningGeometry(width=w, length=l, height=0, shape=_):
-                self.add(_("Luminous opening dimensions"), f"{self._convert(w)} x {self._convert(l)}")
-            case LuminousOpeningGeometry(width=w, length=l, height=h, height_c90=None, shape=_):
-                self.add(_("Luminous opening dimensions"), f"{self._convert(w)} x {self._convert(l)} x {self._convert(h)}")
-            case LuminousOpeningGeometry(width=w, length=l, height=h0, height_c90=h90, height_c180=h180, height_c270=h270, shape=_):
-                self.add(_("Luminous opening dimensions"), f"{self._convert(w)} x {self._convert(l)}")
-                self.add(
-                    _("Luminous opening height"),
-                    f"C0:\t\t{self._convert(h0)}\nC90:\t{self._convert(h90)}\nC180:\t{self._convert(h180)}\nC270:\t{self._convert(h270)}"
+            match self.luminaire.luminous_opening_geometry:
+                case LuminousOpeningGeometry(width=0, length=0, height=0, shape=LuminousOpeningShape.POINT):
+                    pass
+                case LuminousOpeningGeometry(width=w, length=l, height=0, shape=_):
+                    self.add(_("Luminous opening dimensions"), f"{self._convert(w)} x {self._convert(l)}")
+                case LuminousOpeningGeometry(width=w, length=l, height=h, height_c90=None, shape=_):
+                    self.add(_("Luminous opening dimensions"), f"{self._convert(w)} x {self._convert(l)} x {self._convert(h)}")
+                case LuminousOpeningGeometry(width=w, length=l, height=h0, height_c90=h90, height_c180=h180, height_c270=h270, shape=_):
+                    self.add(_("Luminous opening dimensions"), f"{self._convert(w)} x {self._convert(l)}")
+                    self.add(
+                        _("Luminous opening height"),
+                        f"C0:\t\t{self._convert(h0)}\nC90:\t{self._convert(h90)}\nC180:\t{self._convert(h180)}\nC270:\t{self._convert(h270)}"
                 )
 
         self.add_if_non_empty(_("Luminaire type"), self._display_luminaire_type(self.luminaire.metadata.luminaire_type))
