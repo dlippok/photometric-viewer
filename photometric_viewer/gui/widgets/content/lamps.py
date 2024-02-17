@@ -44,7 +44,9 @@ class LampAndBallast(Adw.Bin):
 
         for n, lamp in enumerate(luminaire.lamps[:5]):
             property_list = PropertyList()
-            property_list.add(_("Number of lamps"), str(lamp.number_of_lamps))
+            if lamp.number_of_lamps is not None:
+                property_list.add(_("Number of lamps"), str(lamp.number_of_lamps))
+
             property_list.add_if_non_empty(_("Lamp"), lamp.description)
             property_list.add_if_non_empty(_("Lamp catalog no."), lamp.catalog_number)
 
@@ -70,7 +72,7 @@ class LampAndBallast(Adw.Bin):
                 property_list.append(wattage_box)
                 self.wattage_boxes.append(wattage_box)
 
-            if not luminaire.photometry.is_absolute:
+            if not luminaire.photometry.is_absolute and lamp.lumens_per_lamp:
                 property_list.add(
                     _("Initial rating per lamp"),
                     f'{lamp.lumens_per_lamp:.0f}lm',

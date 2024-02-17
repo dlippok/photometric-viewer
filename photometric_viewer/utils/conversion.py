@@ -1,12 +1,15 @@
-def safe_int(value: str | None) -> int:
+from typing import Any
+
+
+def safe_int(value: Any | None) -> int | None:
     try:
         return int(value)
     except (ValueError, TypeError):
-        return 0
+        return None
 
 
-def safe_float(value: str | None) -> float:
+def safe_float(value: Any | None) -> float | None:
     try:
         return float(value)
     except (ValueError, TypeError):
-        return 0.0
+        return None
