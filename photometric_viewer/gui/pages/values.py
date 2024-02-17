@@ -51,7 +51,8 @@ class IntensityValuesPage(BasePage):
 
     def set_photometry(self, luminaire: Luminaire):
         self.luminaire = luminaire
-        self.selected_c_angle = luminaire.c_planes[0]
+        if luminaire.c_planes:
+            self.selected_c_angle = luminaire.c_planes[0]
         self.show_angle()
 
         c_angle_model = Gtk.StringList()

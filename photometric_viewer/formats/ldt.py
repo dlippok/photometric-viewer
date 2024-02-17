@@ -6,6 +6,7 @@ from photometric_viewer.model.luminaire import Luminaire, LuminousOpeningGeometr
     PhotometryMetadata, LuminaireGeometry, LuminaireType, LuminousOpeningShape, Symmetry, \
     LuminairePhotometricProperties, Calculable, FileFormat
 from photometric_viewer.model.units import LengthUnits
+from photometric_viewer.utils.conversion import safe_int, safe_float
 
 
 def _create_luminous_opening(length, width, height_c0, height_c90, height_c180, height_c270) -> LuminousOpeningGeometry:
@@ -47,78 +48,84 @@ def _get_source_type(light_source_type: int):
 
 def import_from_file(f: IO):
     manufacturer = f.readline().strip()
-    light_source_type = int(f.readline().strip())
-    symmetry = Symmetry(int(f.readline().strip()))
-    n_c_angles = int(f.readline().strip())
-    c_angle_interval = float(f.readline().strip())
-    values_per_c_plane = int(f.readline().strip())
-    values_angle_interval = float(f.readline().strip())
+    light_source_type = safe_int(f.readline().strip())
+    try:
+        symmetry = Symmetry(safe_int(f.readline().strip()))
+    except ValueError:
+        symmetry = Symmetry.NONE
+
+    n_c_angles = safe_int(f.readline().strip())
+    c_angle_interval = safe_float(f.readline().strip())
+    values_per_c_plane = safe_int(f.readline().strip())
+    values_angle_interval = safe_float(f.readline().strip())
     measurement = f.readline().strip()
     luminaire_name = f.readline().strip()
     luminaire_catalog_number = f.readline().strip()
     filename = f.readline().strip()
     date_and_user = f.readline().strip()
-    luminaire_length = float(f.readline().strip()) / 1000
-    luminaire_width = float(f.readline().strip()) / 1000
-    luminaire_height = float(f.readline().strip()) / 1000
-    opening_length = float(f.readline().strip()) / 1000
-    opening_width = float(f.readline().strip()) / 1000
-    opening_height_c0 = float(f.readline().strip()) / 1000
-    opening_height_c90 = float(f.readline().strip()) / 1000
-    opening_height_c180 = float(f.readline().strip()) / 1000
-    opening_height_c270 = float(f.readline().strip()) / 1000
-    dff = float(f.readline().strip()) / 100
-    lorl = float(f.readline().strip()) / 100
-    conversion_factor = float(f.readline().strip())
-    tilt = float(f.readline().strip())
-    no_lamp_sets = int(f.readline().strip())
+    luminaire_length = safe_float(f.readline().strip()) / 1000
+    luminaire_width = safe_float(f.readline().strip()) / 1000
+    luminaire_height = safe_float(f.readline().strip()) / 1000
+    opening_length = safe_float(f.readline().strip()) / 1000
+    opening_width = safe_float(f.readline().strip()) / 1000
+    opening_height_c0 = safe_float(f.readline().strip()) / 1000
+    opening_height_c90 = safe_float(f.readline().strip()) / 1000
+    opening_height_c180 = safe_float(f.readline().strip()) / 1000
+    opening_height_c270 = safe_float(f.readline().strip()) / 1000
+    dff = safe_float(f.readline().strip()) / 100
+    lorl = safe_float(f.readline().strip()) / 100
+    conversion_factor = safe_float(f.readline().strip())
+    tilt = safe_float(f.readline().strip())
+    no_lamp_sets = safe_int(f.readline().strip())
 
     lamp_sets = []
+    is_absolute = False
+
     for sets in range(no_lamp_sets):
-        no_lamps = int(f.readline().strip())
+        no_lamps = safe_int(f.readline().strip())
         lamp_sets.append({
                 "number_of_lamps": abs(no_lamps),
                 "type": f.readline().strip(),
-                "luminous_flux": float(f.readline().strip()),
+                "luminous_flux": safe_float(f.readline().strip()),
                 "color": f.readline().strip(),
                 "cri": f.readline().strip(),
-                "wattage": float(f.readline().strip())
+                "wattage": safe_float(f.readline().strip())
             }
         )
         is_absolute = no_lamps < 0
 
     ratios_for_room_indexes = [
-        float(f.readline().strip())
+        safe_float(f.readline().strip())
         for _ in range(10)
     ]
 
     c_angles = [
-        float(f.readline().strip())
+        safe_float(f.readline().strip())
         for _ in range(n_c_angles)
-    ]
+    ][:1000]
 
     gamma_angles = [
-        float(f.readline().strip())
+        safe_float(f.readline().strip())
         for _ in range(values_per_c_plane)
-    ]
+    ][:1000]
 
     values = {}
 
     if symmetry == Symmetry.NONE:
         for c in c_angles:
             for gamma in gamma_angles:
-                raw_value = float(f.readline().strip())
+                raw_value = safe_float(f.readline().strip())
                 values[(c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
     elif symmetry == Symmetry.TO_VERTICAL_AXIS:
         for gamma in gamma_angles:
-            raw_value = float(f.readline().strip())
+            raw_value = safe_float(f.readline().strip())
             for c in c_angles:
                 values[(c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
     elif symmetry == Symmetry.TO_C0_C180:
         for c in c_angles:
             if c <= 180:
                 for gamma in gamma_angles:
-                    raw_value = float(f.readline().strip())
+                    raw_value = safe_float(f.readline().strip())
                     values[(c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
                     if c != 0:
                         values[(360-c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
@@ -126,19 +133,19 @@ def import_from_file(f: IO):
         for c in c_angles:
             if 90 <= c <= 180:
                 for gamma in gamma_angles:
-                    raw_value = float(f.readline().strip())
+                    raw_value = safe_float(f.readline().strip())
                     values[(c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
                     values[(90 - (c - 90), gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
             if 180 < c <= 270:
                 for gamma in gamma_angles:
-                    raw_value = float(f.readline().strip())
+                    raw_value = safe_float(f.readline().strip())
                     values[(c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
                     values[(360 - (c - 180), gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
     elif symmetry == Symmetry.TO_C0_C180_C90_C270:
         for c in c_angles:
             if c <= 90:
                 for gamma in gamma_angles:
-                    raw_value = float(f.readline().strip())
+                    raw_value = safe_float(f.readline().strip())
                     values[(c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
                     values[(180+c, gamma)] = raw_value * lamp_sets[0]["luminous_flux"] / 1000 if is_absolute else raw_value
                     if c != 0:
@@ -173,7 +180,7 @@ def import_from_file(f: IO):
         geometry=_create_luminaire_geometry(luminaire_length, luminaire_width, luminaire_height),
         lamps=[Lamps(
             number_of_lamps=lamps["number_of_lamps"],
-            lumens_per_lamp=lamps["luminous_flux"] / lamps["number_of_lamps"],
+            lumens_per_lamp=lamps["luminous_flux"] / max(lamps["number_of_lamps"], 1),
             wattage=lamps["wattage"],
             color=lamps["color"],
             cri=lamps["cri"],
