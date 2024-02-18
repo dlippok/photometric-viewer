@@ -104,63 +104,57 @@ def _convert_luminous_opening_geometry(content: IesContent) -> LuminousOpeningGe
     else:
         f = 1
 
+    w = content.inline_attributes.luminous_opening_width
+    l = content.inline_attributes.luminous_opening_length
+    h = content.inline_attributes.luminous_opening_height
+
+    if w is None or l is None or h is None:
+        return None
+
     match content.header:
         case "IESNA:LM-63-2002":
-            converter = _create_luminous_opening_for_iesna02
+            return _create_luminous_opening_for_iesna02(w, l, h, f)
         case _:
-            converter = _create_luminous_opening_for_iesna95
-
-    return converter(
-        content.inline_attributes.luminous_opening_width,
-        content.inline_attributes.luminous_opening_length,
-        content.inline_attributes.luminous_opening_height,
-        f
-    )
+            return _create_luminous_opening_for_iesna95(w * f, l * f, h * f)
 
 
 def _create_luminous_opening_for_iesna95(
         w: float | None,
         l: float | None,
-        h: float | None,
-        f: float | None
+        h: float | None
 ) -> LuminousOpeningGeometry | None:
-    if w is None or l is None or h is None or f is None:
+    if w is None or l is None or h is None:
         return None
 
     match (w, l, h):
         case 0, 0, 0:
             return LuminousOpeningGeometry(0, 0, 0, shape=LuminousOpeningShape.POINT)
         case w, l, h if w > 0 and l > 0 and h >= 0:
-            return LuminousOpeningGeometry(w * f, l * f, h * f, LuminousOpeningShape.RECTANGULAR)
+            return LuminousOpeningGeometry(w, l, h, LuminousOpeningShape.RECTANGULAR)
         case w, l, h if w > 0 and l == 0 and h >= 0:
-            return LuminousOpeningGeometry(w * f, w * f, h * f, LuminousOpeningShape.RECTANGULAR)
+            return LuminousOpeningGeometry(w, w, h, LuminousOpeningShape.RECTANGULAR)
         case w, l, h if w == 0 and l > 0 and h >= 0:
-            return LuminousOpeningGeometry(l * f, l * f, h * f, LuminousOpeningShape.RECTANGULAR)
+            return LuminousOpeningGeometry(l, l, h, LuminousOpeningShape.RECTANGULAR)
         case w, l, h if w < 0 <= h and l < 0:
-            return LuminousOpeningGeometry(abs(w) * f, abs(l) * f, h * f, LuminousOpeningShape.ROUND)
+            return LuminousOpeningGeometry(abs(w), abs(l), h, LuminousOpeningShape.ROUND)
         case w, l, h if w < 0 <= h and l == 0:
-            return LuminousOpeningGeometry(abs(w) * f, abs(w) * f, h * f, LuminousOpeningShape.ROUND)
+            return LuminousOpeningGeometry(abs(w), abs(w), h, LuminousOpeningShape.ROUND)
         case w, l, h if w == 0 and l < 0 <= h:
-            return LuminousOpeningGeometry(abs(l) * f, abs(l) * f, h * f, LuminousOpeningShape.ROUND)
+            return LuminousOpeningGeometry(abs(l), abs(l), h, LuminousOpeningShape.ROUND)
         case w, 0, h if w == h and w < 0:
-            return LuminousOpeningGeometry(abs(w) * f, abs(w) * f, abs(w) * f, LuminousOpeningShape.SPHERE)
+            return LuminousOpeningGeometry(abs(w), abs(w), abs(w), LuminousOpeningShape.SPHERE)
         case 0, l, h if l > 0 > h:
-            return LuminousOpeningGeometry(abs(l) * f, abs(l) * f, abs(h) * f,
-                                           LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_LENGTH)
+            return LuminousOpeningGeometry(abs(l), abs(l), abs(h), LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_LENGTH)
         case w, 0, h if w > 0 > h:
-            return LuminousOpeningGeometry(abs(w) * f, abs(w) * f, abs(h) * f,
-                                           LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_WIDTH)
+            return LuminousOpeningGeometry(abs(w), abs(w), abs(h), LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_WIDTH)
         case w, l, h if w < 0 < l and h > 0:
-            return LuminousOpeningGeometry(abs(w) * f, abs(l) * f, abs(h) * f,
-                                           LuminousOpeningShape.ELLIPSE_ALONG_LENGTH)
+            return LuminousOpeningGeometry(abs(w), abs(l), abs(h), LuminousOpeningShape.ELLIPSE_ALONG_LENGTH)
         case w, l, h if w > 0 > l and h > 0:
-            return LuminousOpeningGeometry(abs(w) * f, abs(l) * f, abs(h) * f, LuminousOpeningShape.ELLIPSE_ALONG_WIDTH)
+            return LuminousOpeningGeometry(abs(w), abs(l), abs(h), LuminousOpeningShape.ELLIPSE_ALONG_WIDTH)
         case w, l, h if w < 0 < l and h < 0:
-            return LuminousOpeningGeometry(abs(w) * f, abs(l) * f, abs(h) * f,
-                                           LuminousOpeningShape.ELLIPSOID_ALONG_LENGTH)
+            return LuminousOpeningGeometry(abs(w), abs(l), abs(h), LuminousOpeningShape.ELLIPSOID_ALONG_LENGTH)
         case w, l, h if w > 0 > l and h < 0:
-            return LuminousOpeningGeometry(abs(w) * f, abs(l) * f, abs(h) * f,
-                                           LuminousOpeningShape.ELLIPSOID_ALONG_WIDTH)
+            return LuminousOpeningGeometry(abs(w), abs(l), abs(h), LuminousOpeningShape.ELLIPSOID_ALONG_WIDTH)
         case _:
             return None
 
