@@ -1,6 +1,6 @@
 from typing import IO, List
 
-from photometric_viewer.photometry.ies.model import MetadataTuple, InlineAttributes, LampAttributes, IesContent
+from photometric_viewer.photometry.ies02.model import MetadataTuple, InlineAttributes, LampAttributes, IesContent
 from photometric_viewer.utils.conversion import safe_int, safe_float
 from photometric_viewer.utils.ioutil import read_non_empty_line, get_n_values, read_till_end
 
@@ -65,7 +65,7 @@ def _extract_lamp_attributes(f: IO) -> LampAttributes:
 
     return LampAttributes(
         ballast_factor=safe_float(lamp_attr[0]),
-        photometric_factor=safe_float(lamp_attr[1]),
+        future_use=lamp_attr[1],
         input_watts=safe_float(lamp_attr[2])
     )
 

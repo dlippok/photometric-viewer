@@ -1,8 +1,8 @@
 import io
 import unittest
 
-from photometric_viewer.photometry.ies.extractor import extract_content
-from photometric_viewer.photometry.ies.model import IesContent, InlineAttributes, LampAttributes, MetadataTuple
+from photometric_viewer.photometry.ies95.extractor import extract_content
+from photometric_viewer.photometry.ies95.model import IesContent, InlineAttributes, LampAttributes, MetadataTuple
 
 
 class TestExtractContent(unittest.TestCase):
@@ -29,7 +29,7 @@ class TestExtractContent(unittest.TestCase):
             ),
             lamp_attributes=LampAttributes(
                 ballast_factor=None,
-                photometric_factor=None,
+                future_use=None,
                 input_watts=None
             ),
             v_angles=[],
@@ -62,7 +62,7 @@ class TestExtractContent(unittest.TestCase):
             ),
             lamp_attributes=LampAttributes(
                 ballast_factor=None,
-                photometric_factor=None,
+                future_use=None,
                 input_watts=None
             ),
             v_angles=[],
@@ -106,7 +106,7 @@ class TestExtractContent(unittest.TestCase):
             ),
             lamp_attributes=LampAttributes(
                 ballast_factor=None,
-                photometric_factor=None,
+                future_use=None,
                 input_watts=None
             ),
             v_angles=[],
@@ -142,7 +142,7 @@ class TestExtractContent(unittest.TestCase):
             ),
             lamp_attributes=LampAttributes(
                 ballast_factor=None,
-                photometric_factor=None,
+                future_use=None,
                 input_watts=None
             ),
             v_angles=[],
@@ -186,7 +186,7 @@ class TestExtractContent(unittest.TestCase):
             ),
             lamp_attributes=LampAttributes(
                 ballast_factor=1.0,
-                photometric_factor=1.0,
+                future_use="1.0",
                 input_watts=15.0
             ),
             v_angles=[
@@ -240,7 +240,7 @@ class TestExtractContent(unittest.TestCase):
             ),
             lamp_attributes=LampAttributes(
                 ballast_factor=1.0,
-                photometric_factor=1.0,
+                future_use="1.0",
                 input_watts=15.0
             ),
             v_angles=[
@@ -291,7 +291,7 @@ class TestExtractContent(unittest.TestCase):
             ),
             lamp_attributes=LampAttributes(
                 ballast_factor=1.0,
-                photometric_factor=1.0,
+                future_use="1.0",
                 input_watts=15.0
             ),
             v_angles=[
@@ -345,7 +345,7 @@ class TestExtractContent(unittest.TestCase):
             ),
             lamp_attributes=LampAttributes(
                 ballast_factor=1.0,
-                photometric_factor=1.0,
+                future_use="1.0",
                 input_watts=15.0
             ),
             v_angles=[
@@ -396,7 +396,7 @@ class TestExtractContent(unittest.TestCase):
             ),
             lamp_attributes=LampAttributes(
                 ballast_factor=1.0,
-                photometric_factor=1.0,
+                future_use="1.0",
                 input_watts=15.0
             ),
             v_angles=[
@@ -450,7 +450,7 @@ class TestExtractContent(unittest.TestCase):
             ),
             lamp_attributes=LampAttributes(
                 ballast_factor=1.0,
-                photometric_factor=1.0,
+                future_use="1.0",
                 input_watts=15.0
             ),
             v_angles=[
@@ -503,7 +503,7 @@ class TestExtractContent(unittest.TestCase):
             ),
             lamp_attributes=LampAttributes(
                 ballast_factor=1.0,
-                photometric_factor=1.0,
+                future_use="1.0",
                 input_watts=15.0
             ),
             v_angles=[
@@ -557,7 +557,7 @@ class TestExtractContent(unittest.TestCase):
             ),
             lamp_attributes=LampAttributes(
                 ballast_factor=1.0,
-                photometric_factor=1.0,
+                future_use="1.0",
                 input_watts=15.0
             ),
             v_angles=[

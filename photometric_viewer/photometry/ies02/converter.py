@@ -4,7 +4,7 @@ from photometric_viewer.model.luminaire import LuminousOpeningGeometry
 from photometric_viewer.model.luminaire import Luminaire, PhotometryMetadata, FileFormat, Lamps, \
     LuminairePhotometricProperties, Calculable, LuminousOpeningShape
 from photometric_viewer.model.units import LengthUnits
-from photometric_viewer.photometry.ies.model import IesContent
+from photometric_viewer.photometry.ies02.model import IesContent
 from photometric_viewer.utils.conversion import safe_float
 
 
@@ -42,7 +42,7 @@ def convert_content(content: IesContent) -> Luminaire:
             catalog_number=metadata.pop("LUMCAT", None),
             luminaire=metadata.pop("LUMINAIRE", None),
             manufacturer=metadata.pop("MANUFAC", None),
-            date_and_user=metadata.pop("ISSUEDATE", None) or metadata.pop("DATE", None),
+            date_and_user=metadata.pop("ISSUEDATE", None),
             additional_properties=metadata,
             file_source="",
             file_format=FileFormat.IES,
@@ -71,9 +71,8 @@ def _convert_metadata(content: IesContent) -> Dict[str, str]:
 def _convert_candela_values(content: IesContent) -> Dict[Tuple[float, float], float]:
     lumens_per_lamp = content.inline_attributes.lumens_per_lamp or 0
     number_of_lamps = content.inline_attributes.number_of_lamps or 0
-    multiplying_factor = content.inline_attributes.multiplying_factor or 0
-    ballast_factor = content.lamp_attributes.ballast_factor or 0
-    lamp_photometric_factor = content.lamp_attributes.photometric_factor or 0
+    multiplying_factor = content.inline_attributes.multiplying_factor or 1
+    ballast_factor = content.lamp_attributes.ballast_factor or 1
 
     lumens = lumens_per_lamp * number_of_lamps
     relative_photometry_divider = lumens / 1000 if lumens_per_lamp >= 0 else 1
@@ -86,7 +85,7 @@ def _convert_candela_values(content: IesContent) -> Dict[Tuple[float, float], fl
         for v_angle in content.v_angles:
             v_angle = safe_float(v_angle)
             raw_value = safe_float(content.intensities[n]) if len(content.intensities) >= n else None
-            value = raw_value * multiplying_factor * ballast_factor * lamp_photometric_factor
+            value = raw_value * multiplying_factor * ballast_factor
             candela_values[(h_angle, v_angle)] = round(value / relative_photometry_divider, ndigits=2)
             n += 1
 
@@ -104,68 +103,17 @@ def _convert_luminous_opening_geometry(content: IesContent) -> LuminousOpeningGe
     else:
         f = 1
 
-    match content.header:
-        case "IESNA:LM-63-2002":
-            converter = _create_luminous_opening_for_iesna02
-        case _:
-            converter = _create_luminous_opening_for_iesna95
+    w = content.inline_attributes.luminous_opening_width
+    l = content.inline_attributes.luminous_opening_length
+    h = content.inline_attributes.luminous_opening_height
 
-    return converter(
-        content.inline_attributes.luminous_opening_width,
-        content.inline_attributes.luminous_opening_length,
-        content.inline_attributes.luminous_opening_height,
-        f
-    )
-
-
-def _create_luminous_opening_for_iesna95(
-        w: float | None,
-        l: float | None,
-        h: float | None,
-        f: float | None
-) -> LuminousOpeningGeometry | None:
-    if w is None or l is None or h is None or f is None:
+    if w is None or l is None or h is None:
         return None
 
-    match (w, l, h):
-        case 0, 0, 0:
-            return LuminousOpeningGeometry(0, 0, 0, shape=LuminousOpeningShape.POINT)
-        case w, l, h if w > 0 and l > 0 and h >= 0:
-            return LuminousOpeningGeometry(w * f, l * f, h * f, LuminousOpeningShape.RECTANGULAR)
-        case w, l, h if w > 0 and l == 0 and h >= 0:
-            return LuminousOpeningGeometry(w * f, w * f, h * f, LuminousOpeningShape.RECTANGULAR)
-        case w, l, h if w == 0 and l > 0 and h >= 0:
-            return LuminousOpeningGeometry(l * f, l * f, h * f, LuminousOpeningShape.RECTANGULAR)
-        case w, l, h if w < 0 <= h and l < 0:
-            return LuminousOpeningGeometry(abs(w) * f, abs(l) * f, h * f, LuminousOpeningShape.ROUND)
-        case w, l, h if w < 0 <= h and l == 0:
-            return LuminousOpeningGeometry(abs(w) * f, abs(w) * f, h * f, LuminousOpeningShape.ROUND)
-        case w, l, h if w == 0 and l < 0 <= h:
-            return LuminousOpeningGeometry(abs(l) * f, abs(l) * f, h * f, LuminousOpeningShape.ROUND)
-        case w, 0, h if w == h and w < 0:
-            return LuminousOpeningGeometry(abs(w) * f, abs(w) * f, abs(w) * f, LuminousOpeningShape.SPHERE)
-        case 0, l, h if l > 0 > h:
-            return LuminousOpeningGeometry(abs(l) * f, abs(l) * f, abs(h) * f,
-                                           LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_LENGTH)
-        case w, 0, h if w > 0 > h:
-            return LuminousOpeningGeometry(abs(w) * f, abs(w) * f, abs(h) * f,
-                                           LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_WIDTH)
-        case w, l, h if w < 0 < l and h > 0:
-            return LuminousOpeningGeometry(abs(w) * f, abs(l) * f, abs(h) * f,
-                                           LuminousOpeningShape.ELLIPSE_ALONG_LENGTH)
-        case w, l, h if w > 0 > l and h > 0:
-            return LuminousOpeningGeometry(abs(w) * f, abs(l) * f, abs(h) * f, LuminousOpeningShape.ELLIPSE_ALONG_WIDTH)
-        case w, l, h if w < 0 < l and h < 0:
-            return LuminousOpeningGeometry(abs(w) * f, abs(l) * f, abs(h) * f,
-                                           LuminousOpeningShape.ELLIPSOID_ALONG_LENGTH)
-        case w, l, h if w > 0 > l and h < 0:
-            return LuminousOpeningGeometry(abs(w) * f, abs(l) * f, abs(h) * f,
-                                           LuminousOpeningShape.ELLIPSOID_ALONG_WIDTH)
-        case _:
-            return None
+    return _create_luminous_opening(w, l, h, f)
 
 
-def _create_luminous_opening_for_iesna02(
+def _create_luminous_opening(
         w: float | None,
         l: float | None,
         h: float | None,

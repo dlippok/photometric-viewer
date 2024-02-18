@@ -4,8 +4,10 @@ from pathlib import Path
 
 from photometric_viewer.formats import ldt, ies
 from photometric_viewer.model.luminaire import LuminousOpeningShape
-from photometric_viewer.photometry.ies.converter import convert_content
-from photometric_viewer.photometry.ies.extractor import extract_content
+from photometric_viewer.photometry.ies95.extractor import extract_content as extract_content_ies95
+from photometric_viewer.photometry.ies95.converter import convert_content as convert_content_ies95
+from photometric_viewer.photometry.ies02.extractor import extract_content as extract_content_ies02
+from photometric_viewer.photometry.ies02.converter import convert_content as convert_content_ies02
 
 UNSUPPORTED_EXPORT_SHAPES = {
     LuminousOpeningShape.ELLIPSE_ALONG_LENGTH,
@@ -22,16 +24,16 @@ class TestIes(unittest.TestCase):
         for path in self.FILES_PATH.iterdir():
             with(self.subTest(path=path)):
                 with path.open() as f:
-                    content = extract_content(f)
-                    photometry = convert_content(content)
+                    content = extract_content_ies95(f)
+                    photometry = convert_content_ies95(content)
 
                 with io.StringIO() as f:
                     ies.export_to_file(f, photometry, additional_keywords={})
                     exported_value = f.getvalue()
 
                 with io.StringIO(exported_value) as f:
-                    content = extract_content(f)
-                    reimported_photometry = convert_content(content)
+                    content = extract_content_ies02(f)
+                    reimported_photometry = convert_content_ies02(content)
 
                 iesna_header = exported_value.split("\r\n")[0]
                 self.assertEqual(iesna_header, "IESNA:LM-63-2002")
@@ -50,8 +52,8 @@ class TestIes(unittest.TestCase):
         for path in self.FILES_PATH.iterdir():
             with(self.subTest(path=path)):
                 with path.open() as f:
-                    content = extract_content(f)
-                    luminaire = convert_content(content)
+                    content = extract_content_ies95(f)
+                    luminaire = convert_content_ies95(content)
 
                 with io.StringIO() as f:
                     ldt.export_to_file(f, luminaire)
