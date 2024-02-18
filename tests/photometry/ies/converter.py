@@ -206,5 +206,81 @@ class TestConvertContent(unittest.TestCase):
 
         self.assertEqual(convert_content(content), expected)
 
+    def test_additional_property_parsing(self):
+        cases = [
+            {
+                "title": "Single property",
+                "given": [
+                    MetadataTuple(key='PROPERTY', value='Single value'),
+                ],
+                "expected": {
+                    "PROPERTY": "Single value",
+                }
+            },
+            {
+                "title": "Multiline property with MORE",
+                "given": [
+                    MetadataTuple(key='MULTILINE_PROPERTY1', value='First line'),
+                    MetadataTuple(key='MORE', value='Second line'),
+                    MetadataTuple(key='SINGLE_LINE_PROPERTY', value='Line'),
+                    MetadataTuple(key='MULTILINE_PROPERTY2', value='First line'),
+                    MetadataTuple(key='MORE', value='Second line'),
+                    MetadataTuple(key='MORE', value='Third line')
+                ],
+                "expected": {
+                    "MULTILINE_PROPERTY1": "First line\nSecond line",
+                    "SINGLE_LINE_PROPERTY": "Line",
+                    "MULTILINE_PROPERTY2": "First line\nSecond line\nThird line"
+                }
+            },
+            {
+                "title": "Multiline property with repeated keyword",
+                "given": [
+                    MetadataTuple(key='MULTILINE_PROPERTY1', value='First line'),
+                    MetadataTuple(key='MULTILINE_PROPERTY1', value='Second line'),
+                    MetadataTuple(key='MULTILINE_PROPERTY2', value='First line'),
+                    MetadataTuple(key='SINGLE_LINE_PROPERTY', value='Line'),
+                    MetadataTuple(key='MULTILINE_PROPERTY2', value='Second line'),
+                    MetadataTuple(key='MULTILINE_PROPERTY2', value='Third line')
+                ],
+                "expected": {
+                    "MULTILINE_PROPERTY1": "First line\nSecond line",
+                    "SINGLE_LINE_PROPERTY": "Line",
+                    "MULTILINE_PROPERTY2": "First line\nSecond line\nThird line"
+                }
+            },
+
+        ]
+
+        for case in cases:
+            with self.subTest(title=case["title"]):
+                content = IesContent(
+                    header=None,
+                    metadata=case["given"],
+                    inline_attributes=InlineAttributes(
+                        number_of_lamps=None,
+                        lumens_per_lamp=None,
+                        multiplying_factor=None,
+                        n_v_angles=None,
+                        n_h_angles=None,
+                        photometry_type=None,
+                        luminous_opening_units=None,
+                        luminous_opening_width=None,
+                        luminous_opening_length=None,
+                        luminous_opening_height=None,
+                    ),
+                    lamp_attributes=LampAttributes(
+                        ballast_factor=None,
+                        photometric_factor=None,
+                        input_watts=None
+                    ),
+                    v_angles=[],
+                    h_angles=[],
+                    intensities=[]
+                )
+
+                self.assertEqual(convert_content(content).metadata.additional_properties, case["expected"])
+
+
 if __name__ == '__main__':
     unittest.main()
