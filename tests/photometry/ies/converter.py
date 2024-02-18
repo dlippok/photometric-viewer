@@ -237,17 +237,372 @@ class TestConvertContent(unittest.TestCase):
 
                 self.assertEqual(convert_content(content).metadata.additional_properties, case["expected"])
 
-    def test_luminous_opening_size_calculation(self):
+    def test_luminous_opening_calculation_for_iesna95(self):
         test_cases = [
             {
-                "title": "Size in feet, needs to be converted to meters",
+                "title": "Point source",
+                "given": (0, 0, 0, 1),
+                "expected": LuminousOpeningGeometry(
+                    width=0,
+                    length=0,
+                    height=0,
+                    shape=LuminousOpeningShape.POINT
+                )
+            },
+            {
+                "title": "Rectangular opening in feet",
                 "given": (0.1, 0.2, 0.3, 1),
-                "expected":  (0.03048, 0.06096, 0.09144, LengthUnits.FEET)
+                "expected": LuminousOpeningGeometry(
+                    width=0.1 * 0.3048,
+                    length=0.2 * 0.3048,
+                    height=0.3 * 0.3048,
+                    shape=LuminousOpeningShape.RECTANGULAR
+                ),
+            },
+            {
+                "title": "Rectangular opening in meters",
+                "given": (0.1, 0.2, 0.3, 2),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1,
+                    length=0.2,
+                    height=0.3,
+                    shape=LuminousOpeningShape.RECTANGULAR
+                ),
+            },
+            {
+                "title": "Rectangular opening in feet without height",
+                "given": (0.1, 0.2, 0, 1),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1 * 0.3048,
+                    length=0.2 * 0.3048,
+                    height=0,
+                    shape=LuminousOpeningShape.RECTANGULAR
+                ),
+            },
+            {
+                "title": "Rectangular opening in meters without height",
+                "given": (0.1, 0.2, 0, 2),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1,
+                    length=0.2,
+                    height=0,
+                    shape=LuminousOpeningShape.RECTANGULAR
+                ),
+            },
+            {
+                "title": "Rectangular opening in feet without width",
+                "given": (0, 0.2, 0.3, 1),
+                "expected": LuminousOpeningGeometry(
+                    width=0.2 * 0.3048,
+                    length=0.2 * 0.3048,
+                    height=0.3 * 0.3048,
+                    shape=LuminousOpeningShape.RECTANGULAR
+                ),
+            },
+            {
+                "title": "Rectangular opening in meters without width",
+                "given": (0, 0.2, 0.3, 2),
+                "expected": LuminousOpeningGeometry(
+                    width=0.2,
+                    length=0.2,
+                    height=0.3,
+                    shape=LuminousOpeningShape.RECTANGULAR
+                ),
+            },
+            {
+                "title": "Rectangular opening in feet without length",
+                "given": (0.1, 0, 0.3, 1),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1 * 0.3048,
+                    length=0.1 * 0.3048,
+                    height=0.3 * 0.3048,
+                    shape=LuminousOpeningShape.RECTANGULAR
+                ),
+            },
+            {
+                "title": "Rectangular opening in meters without length",
+                "given": (0.1, 0, 0.3, 2),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1,
+                    length=0.1,
+                    height=0.3,
+                    shape=LuminousOpeningShape.RECTANGULAR
+                ),
+            },
+            {
+                "title": "Round opening in feet",
+                "given": (-0.1, -0.2, 0.3, 1),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1 * 0.3048,
+                    length=0.2 * 0.3048,
+                    height=0.3 * 0.3048,
+                    shape=LuminousOpeningShape.ROUND
+                ),
+            },
+            {
+                "title": "Round opening in meters without length",
+                "given": (-0.1, -0.2, 0.3, 2),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1,
+                    length=0.2,
+                    height=0.3,
+                    shape=LuminousOpeningShape.ROUND
+                ),
+            },
+            {
+                "title": "Round opening in feet without height",
+                "given": (-0.1, -0.2, 0, 1),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1 * 0.3048,
+                    length=0.2 * 0.3048,
+                    height=0,
+                    shape=LuminousOpeningShape.ROUND
+                ),
+            },
+            {
+                "title": "Round opening in meters without height",
+                "given": (-0.1, -0.2, 0, 2),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1,
+                    length=0.2,
+                    height=0,
+                    shape=LuminousOpeningShape.ROUND
+                ),
+            },
+            {
+                "title": "Round opening in feet without width",
+                "given": (0, -0.2, 0.3, 1),
+                "expected": LuminousOpeningGeometry(
+                    width=0.2 * 0.3048,
+                    length=0.2 * 0.3048,
+                    height=0.3 * 0.3048,
+                    shape=LuminousOpeningShape.ROUND
+                ),
+            },
+            {
+                "title": "Round opening in meters without width",
+                "given": (0, -0.2, 0.3, 2),
+                "expected": LuminousOpeningGeometry(
+                    width=0.2,
+                    length=0.2,
+                    height=0.3,
+                    shape=LuminousOpeningShape.ROUND
+                ),
+            },
+            {
+                "title": "Round opening in feet without length",
+                "given": (-0.1, 0, 0.3, 1),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1 * 0.3048,
+                    length=0.1 * 0.3048,
+                    height=0.3 * 0.3048,
+                    shape=LuminousOpeningShape.ROUND
+                ),
+            },
+            {
+                "title": "Round opening in meters without length",
+                "given": (-0.1, 0, 0.3, 2),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1,
+                    length=0.1,
+                    height=0.3,
+                    shape=LuminousOpeningShape.ROUND
+                ),
+            },
+            {
+                "title": "Sphere opening in feet",
+                "given": (-0.1, 0, -0.1, 1),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1 * 0.3048,
+                    length=0.1 * 0.3048,
+                    height=0.1 * 0.3048,
+                    shape=LuminousOpeningShape.SPHERE
+                ),
+            },
+            {
+                "title": "Sphere opening in meters",
+                "given": (-0.1, 0, -0.1, 2),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1,
+                    length=0.1,
+                    height=0.1,
+                    shape=LuminousOpeningShape.SPHERE
+                ),
+            },
+            {
+                "title": "Horizontal cylinder along length opening in feet",
+                "given": (0, 0.2, -0.3, 1),
+                "expected": LuminousOpeningGeometry(
+                    width=0.2 * 0.3048,
+                    length=0.2 * 0.3048,
+                    height=0.3 * 0.3048,
+                    shape=LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_LENGTH
+                ),
+            },
+            {
+                "title": "Horizontal cylinder along length opening in meters",
+                "given": (0, 0.2, -0.3, 2),
+                "expected": LuminousOpeningGeometry(
+                    width=0.2,
+                    length=0.2,
+                    height=0.3,
+                    shape=LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_LENGTH
+                ),
+            },
+            {
+                "title": "Horizontal cylinder along width opening in feet",
+                "given": (0.1, 0, -0.3, 1),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1 * 0.3048,
+                    length=0.1 * 0.3048,
+                    height=0.3 * 0.3048,
+                    shape=LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_WIDTH
+                ),
+            },
+            {
+                "title": "Horizontal cylinder along width opening in meters",
+                "given": (0.1, 0, -0.3, 2),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1,
+                    length=0.1,
+                    height=0.3,
+                    shape=LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_WIDTH
+                ),
+            },
+            {
+                "title": "Ellipse along length opening in feet",
+                "given": (-0.1, 0.2, 0.3, 1),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1 * 0.3048,
+                    length=0.2 * 0.3048,
+                    height=0.3 * 0.3048,
+                    shape=LuminousOpeningShape.ELLIPSE_ALONG_LENGTH
+                ),
+            },
+            {
+                "title": "Ellipse along length opening in meters",
+                "given": (-0.1, 0.2, 0.3, 2),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1,
+                    length=0.2,
+                    height=0.3,
+                    shape=LuminousOpeningShape.ELLIPSE_ALONG_LENGTH
+                ),
+            },
+            {
+                "title": "Ellipse along width opening in feet",
+                "given": (0.1, -0.2, 0.3, 1),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1 * 0.3048,
+                    length=0.2 * 0.3048,
+                    height=0.3 * 0.3048,
+                    shape=LuminousOpeningShape.ELLIPSE_ALONG_WIDTH
+                ),
+            },
+            {
+                "title": "Ellipse along width opening in meters",
+                "given": (0.1, -0.2, 0.3, 2),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1,
+                    length=0.2,
+                    height=0.3,
+                    shape=LuminousOpeningShape.ELLIPSE_ALONG_WIDTH
+                ),
+            },
+            {
+                "title": "Ellipsoid along length opening in feet",
+                "given": (-0.1, 0.2, -0.3, 1),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1 * 0.3048,
+                    length=0.2 * 0.3048,
+                    height=0.3 * 0.3048,
+                    shape=LuminousOpeningShape.ELLIPSOID_ALONG_LENGTH
+                ),
+            },
+            {
+                "title": "Ellipsoid along length opening in meters",
+                "given": (-0.1, 0.2, -0.3, 2),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1,
+                    length=0.2,
+                    height=0.3,
+                    shape=LuminousOpeningShape.ELLIPSOID_ALONG_LENGTH
+                ),
+            },
+            {
+                "title": "Ellipsoid along width opening in feet",
+                "given": (0.1, -0.2, -0.3, 1),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1 * 0.3048,
+                    length=0.2 * 0.3048,
+                    height=0.3 * 0.3048,
+                    shape=LuminousOpeningShape.ELLIPSOID_ALONG_WIDTH
+                ),
+            },
+            {
+                "title": "Ellipsoid along width opening in meters",
+                "given": (0.1, -0.2, -0.3, 2),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1,
+                    length=0.2,
+                    height=0.3,
+                    shape=LuminousOpeningShape.ELLIPSOID_ALONG_WIDTH
+                ),
+            },
+            {
+                "title": "None width",
+                "given": (None, 0.2, 0.3, 2),
+                "expected": None
+            },
+            {
+                "title": "None length",
+                "given": (0.1, None, 0.3, 2),
+                "expected": None
+            },
+            {
+                "title": "None height",
+                "given": (0.1, 0.2, None, 2),
+                "expected": None
+            },
+            {
+                "title": "All None except units",
+                "given": (None, None, None, 2),
+                "expected": None
+            },
+            {
+                "title": "All None",
+                "given": (None, None, None, None),
+                "expected": None
+            }
+        ]
+
+        for case in test_cases:
+            with self.subTest(title=case["title"]):
+                content = IesContent(
+                    header="IESNA:LM-63-1995",
+                    inline_attributes=InlineAttributes(
+                        luminous_opening_units=case["given"][3],
+                        luminous_opening_width=case["given"][0],
+                        luminous_opening_length=case["given"][1],
+                        luminous_opening_height=case["given"][2],
+                    )
+                )
+
+                converted = convert_content(content)
+
+                self.assertEqual(converted.luminous_opening_geometry, case["expected"])
+
+    def test_file_units(self):
+        test_cases = [
+            {
+                "title": "Size in feet",
+                "given": (0.1, 0.2, 0.3, 1),
+                "expected":  LengthUnits.FEET
             },
             {
                 "title": "Size in meters",
                 "given": (0.1, 0.2, 0.3, 2),
-                "expected":  (0.1, 0.2, 0.3, LengthUnits.METERS)
+                "expected":  LengthUnits.METERS
             }
         ]
 
@@ -264,10 +619,7 @@ class TestConvertContent(unittest.TestCase):
 
                 converted = convert_content(content)
 
-                self.assertAlmostEqual(converted.luminous_opening_geometry.width, case["expected"][0])
-                self.assertAlmostEqual(converted.luminous_opening_geometry.length, case["expected"][1])
-                self.assertAlmostEqual(converted.luminous_opening_geometry.height, case["expected"][2])
-                self.assertAlmostEqual(converted.metadata.file_units, case["expected"][3])
+                self.assertAlmostEqual(converted.metadata.file_units, case["expected"])
 
     def test_detect_absolute_photometry(self):
         test_cases = [
