@@ -42,7 +42,7 @@ def convert_content(content: IesContent) -> Luminaire:
             catalog_number=metadata.pop("LUMCAT", None),
             luminaire=metadata.pop("LUMINAIRE", None),
             manufacturer=metadata.pop("MANUFAC", None),
-            date_and_user=metadata.pop("ISSUEDATE", None) or metadata.pop("DATE", None),
+            date_and_user=metadata.pop("DATE", None),
             additional_properties=metadata,
             file_source="",
             file_format=FileFormat.IES,

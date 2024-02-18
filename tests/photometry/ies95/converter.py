@@ -58,7 +58,7 @@ class TestConvertContent(unittest.TestCase):
             metadata=[
                 MetadataTuple(key='TEST', value='TD-1234'),
                 MetadataTuple(key='TESTLAB', value='ACME Labs'),
-                MetadataTuple(key='ISSUEDATE', value='2023-01-20'),
+                MetadataTuple(key='DATE', value='2023-01-20'),
                 MetadataTuple(key='MANUFAC', value='ACME Inc.'),
                 MetadataTuple(key='LUMCAT', value='LUM-1234'),
                 MetadataTuple(key='LUMINAIRE', value='Test Luminaire'),
