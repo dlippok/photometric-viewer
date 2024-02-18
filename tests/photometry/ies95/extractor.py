@@ -1,8 +1,8 @@
 import io
 import unittest
 
-from photometric_viewer.photometry.ies.extractor import extract_content
-from photometric_viewer.photometry.ies.model import IesContent, InlineAttributes, LampAttributes, MetadataTuple
+from photometric_viewer.photometry.ies95.extractor import extract_content
+from photometric_viewer.photometry.ies95.model import IesContent, InlineAttributes, LampAttributes, MetadataTuple
 
 
 class TestExtractContent(unittest.TestCase):

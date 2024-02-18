@@ -7,8 +7,8 @@ from photometric_viewer.formats.ldt import import_from_file, export_to_file
 from photometric_viewer.model.luminaire import Shape, Lamps, LuminaireGeometry, LuminousOpeningGeometry, LuminaireType, \
     LuminousOpeningShape, Calculable
 from photometric_viewer.model.units import LengthUnits
-from photometric_viewer.photometry.ies.extractor import extract_content
-from photometric_viewer.photometry.ies.converter import convert_content
+from photometric_viewer.photometry.ies95.extractor import extract_content
+from photometric_viewer.photometry.ies95.converter import convert_content
 
 
 class TestLdt(unittest.TestCase):

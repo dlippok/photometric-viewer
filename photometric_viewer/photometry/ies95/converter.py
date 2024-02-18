@@ -4,7 +4,7 @@ from photometric_viewer.model.luminaire import LuminousOpeningGeometry
 from photometric_viewer.model.luminaire import Luminaire, PhotometryMetadata, FileFormat, Lamps, \
     LuminairePhotometricProperties, Calculable, LuminousOpeningShape
 from photometric_viewer.model.units import LengthUnits
-from photometric_viewer.photometry.ies.model import IesContent
+from photometric_viewer.photometry.ies95.model import IesContent
 from photometric_viewer.utils.conversion import safe_float
 
 
@@ -111,14 +111,10 @@ def _convert_luminous_opening_geometry(content: IesContent) -> LuminousOpeningGe
     if w is None or l is None or h is None:
         return None
 
-    match content.header:
-        case "IESNA:LM-63-2002":
-            return _create_luminous_opening_for_iesna02(w, l, h, f)
-        case _:
-            return _create_luminous_opening_for_iesna95(w * f, l * f, h * f)
+    return _create_luminous_opening(w * f, l * f, h * f)
 
 
-def _create_luminous_opening_for_iesna95(
+def _create_luminous_opening(
         w: float | None,
         l: float | None,
         h: float | None
@@ -154,37 +150,6 @@ def _create_luminous_opening_for_iesna95(
             return LuminousOpeningGeometry(abs(w), abs(l), abs(h), LuminousOpeningShape.ELLIPSOID_ALONG_WIDTH)
         case _:
             return None
-
-
-def _create_luminous_opening_for_iesna02(
-        w: float | None,
-        l: float | None,
-        h: float | None,
-        f: float | None
-) -> LuminousOpeningGeometry | None:
-    if w is None or l is None or h is None or f is None:
-        return None
-
-    if w == 0 and l == 0 and h == 0:
-        shape = LuminousOpeningShape.POINT
-    elif w > 0 and l > 0 and h == 0:
-        shape = LuminousOpeningShape.RECTANGULAR
-    elif w > 0 and l > 0 and h > 0:
-        shape = LuminousOpeningShape.RECTANGULAR
-    elif w < 0 <= h and l < 0:
-        shape = LuminousOpeningShape.ROUND
-    elif w < 0 and l < 0 and h < 0:
-        shape = LuminousOpeningShape.SPHERE
-    elif w < 0 < l and h < 0:
-        shape = LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_WIDTH
-    elif w > 0 > l and h < 0:
-        shape = LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_LENGTH
-    elif w < 0 and l == 0 and h < 0:
-        shape = LuminousOpeningShape.ELLIPSE_ALONG_LENGTH
-    else:
-        return None
-
-    return LuminousOpeningGeometry(abs(w) * f, abs(l) * f, abs(h) * f, shape)
 
 
 def _get_is_absolute(content: IesContent) -> bool:

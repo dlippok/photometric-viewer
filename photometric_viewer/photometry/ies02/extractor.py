@@ -1,6 +1,6 @@
 from typing import IO, List
 
-from photometric_viewer.photometry.ies.model import MetadataTuple, InlineAttributes, LampAttributes, IesContent
+from photometric_viewer.photometry.ies02.model import MetadataTuple, InlineAttributes, LampAttributes, IesContent
 from photometric_viewer.utils.conversion import safe_int, safe_float
 from photometric_viewer.utils.ioutil import read_non_empty_line, get_n_values, read_till_end
 
