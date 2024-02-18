@@ -71,9 +71,9 @@ def _convert_metadata(content: IesContent) -> Dict[str, str]:
 def _convert_candela_values(content: IesContent) -> Dict[Tuple[float, float], float]:
     lumens_per_lamp = content.inline_attributes.lumens_per_lamp or 0
     number_of_lamps = content.inline_attributes.number_of_lamps or 0
-    multiplying_factor = content.inline_attributes.multiplying_factor or 0
-    ballast_factor = content.lamp_attributes.ballast_factor or 0
-    lamp_photometric_factor = content.lamp_attributes.photometric_factor or 0
+    multiplying_factor = content.inline_attributes.multiplying_factor or 1
+    ballast_factor = content.lamp_attributes.ballast_factor or 1
+    lamp_photometric_factor = content.lamp_attributes.photometric_factor or 1
 
     lumens = lumens_per_lamp * number_of_lamps
     relative_photometry_divider = lumens / 1000 if lumens_per_lamp >= 0 else 1
