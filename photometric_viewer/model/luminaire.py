@@ -26,11 +26,11 @@ class FileFormat(Enum):
 
 @dataclass
 class PhotometryMetadata:
-    luminaire: str
-    catalog_number: str
-    manufacturer: str
+    luminaire: str | None
+    catalog_number: str | None
+    manufacturer: str | None
     additional_properties: Dict[str, str]
-    file_source: str
+    file_source: str | None
     file_units: LengthUnits
     luminaire_type: LuminaireType | None = None
     measurement: str | None = None
