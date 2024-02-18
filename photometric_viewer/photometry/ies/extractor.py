@@ -2,7 +2,7 @@ from typing import IO, List
 
 from photometric_viewer.photometry.ies.model import MetadataTuple, InlineAttributes, LampAttributes, IesContent
 from photometric_viewer.utils.conversion import safe_int, safe_float
-from photometric_viewer.utils.ioutil import read_non_empty_line, get_n_values
+from photometric_viewer.utils.ioutil import read_non_empty_line, get_n_values, read_till_end
 
 
 def extract_content(f: IO) -> IesContent:
@@ -12,7 +12,7 @@ def extract_content(f: IO) -> IesContent:
     lamp_attributes = _extract_lamp_attributes(f)
     v_angles = _extract_v_angles(f, inline_attributes)
     h_angles = _extract_h_angles(f, inline_attributes)
-    intensities = _extract_intensities(f, inline_attributes)
+    intensities = _extract_intensities(f)
 
     return IesContent(
         header=header,
@@ -88,11 +88,8 @@ def _extract_h_angles(f: IO, attributes: InlineAttributes) -> List[float]:
     ]
 
 
-def _extract_intensities(f: IO, attributes: InlineAttributes) -> List[float]:
-    n_v_angles = attributes.n_v_angles or 0
-    n_h_angles = attributes.n_h_angles or 0
+def _extract_intensities(f: IO) -> List[float]:
     return [
         safe_float(v)
-        for v in get_n_values(f, n_v_angles * n_h_angles)
-        if v is not None
+        for v in read_till_end(f)
     ]

@@ -35,6 +35,6 @@ class IesContent:
     metadata: List[MetadataTuple]
     inline_attributes: InlineAttributes
     lamp_attributes: LampAttributes
-    v_angles: List[float] | None
-    h_angles: List[float] | None
+    v_angles: List[float | None]
+    h_angles: List[float | None]
     intensities: List[float]

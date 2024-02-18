@@ -29,3 +29,15 @@ def get_n_values(f: IO, n: int):
             i -= 1
     return raw_values[:n]
 
+
+def read_till_end(f: IO):
+    raw_values = []
+    line = read_non_empty_line(f)
+    while line is not None:
+        values = line.strip().split(" ")
+        for value in values:
+            if value == "":
+                continue
+            raw_values.append(value)
+        line = read_non_empty_line(f)
+    return raw_values
