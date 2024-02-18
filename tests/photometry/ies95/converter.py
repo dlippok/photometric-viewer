@@ -84,7 +84,7 @@ class TestConvertContent(unittest.TestCase):
             ),
             lamp_attributes=LampAttributes(
                 ballast_factor=1.0,
-                photometric_factor=1.0,
+                future_use=1.0,
                 input_watts=15.0
             ),
             v_angles=[
@@ -642,6 +642,94 @@ class TestConvertContent(unittest.TestCase):
                     )
                 )
                 self.assertEqual(convert_content(content).photometry.is_absolute, case["expected"])
+
+    def test_calculating_intensities(self):
+        test_cases = [
+            {
+                "title": "Absolute photometry",
+                "number_of_lamps": 1,
+                "lumens_per_lamp": -1,
+                "multiplying_factor": 1,
+                "ballast_factor": 1,
+                "intensities": [1, 2, 3],
+                "expected": {
+                    (0, 0): 1,
+                    (0, 90): 2,
+                    (0, 180): 3
+                }
+            },
+            {
+                "title": "Relative photometry 500 lm",
+                "number_of_lamps": 1,
+                "lumens_per_lamp": 500,
+                "multiplying_factor": 1,
+                "ballast_factor": 1,
+                "intensities": [1, 2, 3],
+                "expected": {
+                    (0, 0): 2,
+                    (0, 90): 4,
+                    (0, 180): 6
+                }
+            },
+            {
+                "title": "Relative photometry 500 lm, no factors",
+                "number_of_lamps": 1,
+                "lumens_per_lamp": 500,
+                "multiplying_factor": None,
+                "ballast_factor": None,
+                "intensities": [1, 2, 3],
+                "expected": {
+                    (0, 0): 2,
+                    (0, 90): 4,
+                    (0, 180): 6
+                }
+            },
+            {
+                "title": "Relative photometry 500 lm, applied multiplying factor",
+                "number_of_lamps": 1,
+                "lumens_per_lamp": 500,
+                "multiplying_factor": 2,
+                "ballast_factor": 1.0,
+                "intensities": [1, 2, 3],
+                "expected": {
+                    (0, 0): 4,
+                    (0, 90): 8,
+                    (0, 180): 12
+                }
+            },
+            {
+                "title": "Relative photometry 500 lm, applied ballast factor",
+                "number_of_lamps": 1,
+                "lumens_per_lamp": 500,
+                "multiplying_factor": 1.0,
+                "ballast_factor": 2,
+                "intensities": [1, 2, 3],
+                "expected": {
+                    (0, 0): 4,
+                    (0, 90): 8,
+                    (0, 180): 12
+                }
+            },
+        ]
+
+        for case in test_cases:
+            with self.subTest(title=case["title"]):
+                content = IesContent(
+                    inline_attributes=InlineAttributes(
+                        n_h_angles=3,
+                        n_v_angles=1,
+                        number_of_lamps=case["number_of_lamps"],
+                        lumens_per_lamp=case["lumens_per_lamp"],
+                        multiplying_factor=case["multiplying_factor"],
+                    ),
+                    h_angles=[0],
+                    v_angles=[0, 90, 180],
+                    lamp_attributes=LampAttributes(
+                        ballast_factor=case["ballast_factor"]
+                    ),
+                    intensities=case["intensities"]
+                )
+                self.assertEqual(convert_content(content).intensity_values, case["expected"])
 
 
 if __name__ == '__main__':

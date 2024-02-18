@@ -19,7 +19,7 @@ class InlineAttributes:
 @dataclass
 class LampAttributes:
     ballast_factor: float | None = None
-    photometric_factor: float | None = None
+    future_use: str | None = None
     input_watts: float | None = None
 
 

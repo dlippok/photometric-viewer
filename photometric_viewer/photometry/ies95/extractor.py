@@ -65,7 +65,7 @@ def _extract_lamp_attributes(f: IO) -> LampAttributes:
 
     return LampAttributes(
         ballast_factor=safe_float(lamp_attr[0]),
-        photometric_factor=safe_float(lamp_attr[1]),
+        future_use=lamp_attr[1],
         input_watts=safe_float(lamp_attr[2])
     )
 

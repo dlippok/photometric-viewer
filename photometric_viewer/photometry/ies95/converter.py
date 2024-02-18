@@ -73,7 +73,6 @@ def _convert_candela_values(content: IesContent) -> Dict[Tuple[float, float], fl
     number_of_lamps = content.inline_attributes.number_of_lamps or 0
     multiplying_factor = content.inline_attributes.multiplying_factor or 1
     ballast_factor = content.lamp_attributes.ballast_factor or 1
-    lamp_photometric_factor = content.lamp_attributes.photometric_factor or 1
 
     lumens = lumens_per_lamp * number_of_lamps
     relative_photometry_divider = lumens / 1000 if lumens_per_lamp >= 0 else 1
@@ -86,7 +85,7 @@ def _convert_candela_values(content: IesContent) -> Dict[Tuple[float, float], fl
         for v_angle in content.v_angles:
             v_angle = safe_float(v_angle)
             raw_value = safe_float(content.intensities[n]) if len(content.intensities) >= n else None
-            value = raw_value * multiplying_factor * ballast_factor * lamp_photometric_factor
+            value = raw_value * multiplying_factor * ballast_factor
             candela_values[(h_angle, v_angle)] = round(value / relative_photometry_divider, ndigits=2)
             n += 1
 
