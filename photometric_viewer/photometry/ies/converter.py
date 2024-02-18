@@ -123,9 +123,6 @@ def _create_luminous_opening_for_iesna95(
         l: float | None,
         h: float | None
 ) -> LuminousOpeningGeometry | None:
-    if w is None or l is None or h is None:
-        return None
-
     match (w, l, h):
         case 0, 0, 0:
             return LuminousOpeningGeometry(0, 0, 0, shape=LuminousOpeningShape.POINT)
