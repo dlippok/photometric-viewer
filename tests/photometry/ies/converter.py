@@ -10,30 +10,7 @@ from photometric_viewer.photometry.ies.model import IesContent, InlineAttributes
 
 class TestConvertContent(unittest.TestCase):
     def test_empty_content(self):
-        content = IesContent(
-            header=None,
-            metadata=[],
-            inline_attributes=InlineAttributes(
-                number_of_lamps=None,
-                lumens_per_lamp=None,
-                multiplying_factor=None,
-                n_v_angles=None,
-                n_h_angles=None,
-                photometry_type=None,
-                luminous_opening_units=None,
-                luminous_opening_width=None,
-                luminous_opening_length=None,
-                luminous_opening_height=None,
-            ),
-            lamp_attributes=LampAttributes(
-                ballast_factor=None,
-                photometric_factor=None,
-                input_watts=None
-            ),
-            v_angles=[],
-            h_angles=[],
-            intensities=[]
-        )
+        content = IesContent()
 
         expected = Luminaire(
             gamma_angles=[],
@@ -207,7 +184,7 @@ class TestConvertContent(unittest.TestCase):
         self.assertEqual(convert_content(content), expected)
 
     def test_additional_property_parsing(self):
-        cases = [
+        test_cases = [
             {
                 "title": "Single property",
                 "given": [
@@ -252,34 +229,68 @@ class TestConvertContent(unittest.TestCase):
 
         ]
 
-        for case in cases:
+        for case in test_cases:
             with self.subTest(title=case["title"]):
                 content = IesContent(
-                    header=None,
-                    metadata=case["given"],
-                    inline_attributes=InlineAttributes(
-                        number_of_lamps=None,
-                        lumens_per_lamp=None,
-                        multiplying_factor=None,
-                        n_v_angles=None,
-                        n_h_angles=None,
-                        photometry_type=None,
-                        luminous_opening_units=None,
-                        luminous_opening_width=None,
-                        luminous_opening_length=None,
-                        luminous_opening_height=None,
-                    ),
-                    lamp_attributes=LampAttributes(
-                        ballast_factor=None,
-                        photometric_factor=None,
-                        input_watts=None
-                    ),
-                    v_angles=[],
-                    h_angles=[],
-                    intensities=[]
+                    metadata=case["given"]
                 )
 
                 self.assertEqual(convert_content(content).metadata.additional_properties, case["expected"])
+
+    def test_luminous_opening_size_calculation(self):
+        test_cases = [
+            {
+                "title": "Size in feet, needs to be converted to meters",
+                "given": (0.1, 0.2, 0.3, 1),
+                "expected":  (0.03048, 0.06096, 0.09144, LengthUnits.FEET)
+            },
+            {
+                "title": "Size in meters",
+                "given": (0.1, 0.2, 0.3, 2),
+                "expected":  (0.1, 0.2, 0.3, LengthUnits.METERS)
+            }
+        ]
+
+        for case in test_cases:
+            with self.subTest(title=case["title"]):
+                content = IesContent(
+                    inline_attributes=InlineAttributes(
+                        luminous_opening_units=case["given"][3],
+                        luminous_opening_width=case["given"][0],
+                        luminous_opening_length=case["given"][1],
+                        luminous_opening_height=case["given"][2],
+                    )
+                )
+
+                converted = convert_content(content)
+
+                self.assertAlmostEqual(converted.luminous_opening_geometry.width, case["expected"][0])
+                self.assertAlmostEqual(converted.luminous_opening_geometry.length, case["expected"][1])
+                self.assertAlmostEqual(converted.luminous_opening_geometry.height, case["expected"][2])
+                self.assertAlmostEqual(converted.metadata.file_units, case["expected"][3])
+
+    def test_detect_absolute_photometry(self):
+        test_cases = [
+            {
+                "title": "Absolute photometry",
+                "given": -1,
+                "expected": True
+            },
+            {
+                "title": "Relative photometry",
+                "given": 600,
+                "expected": False
+            }
+        ]
+
+        for case in test_cases:
+            with self.subTest(title=case["title"]):
+                content = IesContent(
+                    inline_attributes=InlineAttributes(
+                        lumens_per_lamp=case["given"]
+                    )
+                )
+                self.assertEqual(convert_content(content).photometry.is_absolute, case["expected"])
 
 
 if __name__ == '__main__':
