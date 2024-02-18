@@ -169,7 +169,7 @@ class MainWindow(Adw.Window):
         self.show_banner(_("Exported as {}").format(file.get_basename()))
 
     def on_export_ldc_response(self, filename):
-        self.open_page(self.luminaire_content_page)
+        self.show_start_page()
         self.show_banner(_("Exported as {}").format(filename))
 
     def on_export_ldt_response(self, dialog: FileChooserDialog, response):
