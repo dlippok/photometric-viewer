@@ -2,7 +2,7 @@ from typing import IO
 
 from photometric_viewer.photometry.ldt.model import LdtContent, LampSet
 from photometric_viewer.utils.conversion import safe_int, safe_float
-from photometric_viewer.utils.ioutil import read_line
+from photometric_viewer.utils.ioutil import read_line, read_till_end
 
 
 def extract_lamp_set(f) -> LampSet:
@@ -14,34 +14,6 @@ def extract_lamp_set(f) -> LampSet:
         cri=safe_int(f.readline().strip()),
         wattage=safe_float(f.readline().strip())
     )
-
-
-def extract_intensities(
-        f: IO,
-        symmetry: int,
-        num_c: int,
-        num_gamma: int
-) -> list[float]:
-    match symmetry:
-        case 0:
-            mc1 = 1
-            mc2 = num_c
-        case 1:
-            mc1 = 1
-            mc2 = 1
-        case 2:
-            mc1 = 1
-            mc2 = (num_c // 2) + 1
-        case 3:
-            mc1 = (3 * num_c // 4) + 1
-            mc2 = num_c // 2
-        case 4:
-            mc1 = 1
-            mc2 = (num_c // 4) + 1
-        case _:
-            return []
-    n_intensities = (mc2-mc1+1) * num_gamma
-    return [safe_float(f.readline().strip()) for _ in range(n_intensities)]
 
 
 def extract_content(f: IO) -> LdtContent:
@@ -76,12 +48,10 @@ def extract_content(f: IO) -> LdtContent:
     c_angles = [safe_float(f.readline().strip()) for _ in range(number_of_c_planes)] if number_of_c_planes else []
     gamma_angles = [safe_float(f.readline().strip()) for _ in range(number_of_intensities)] if number_of_intensities else []
 
-    intensities = extract_intensities(
-        f,
-        symmetry=symmetry_indicator,
-        num_c=number_of_c_planes,
-        num_gamma=number_of_intensities
-    )
+    intensities = [
+        safe_float(v)
+        for v in read_till_end(f)
+    ]
 
     return LdtContent(
         header=header,
