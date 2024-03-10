@@ -44,4 +44,4 @@ class LdtContent:
     direct_ratios_for_room_indices: List[float | None] = field(default_factory=list)
     c_angles: List[float | None] = field(default_factory=list)
     gamma_angles: List[float | None] = field(default_factory=list)
-    intensities: List[float | None] = field(default_factory=list)
+    intensities: List[float] = field(default_factory=list)
