@@ -41,7 +41,7 @@ class LdtContent:
     tilt: float | None = None
     number_of_lamp_sets: int | None = None
     lamp_sets: List[LampSet] = field(default_factory=list)
-    direct_ratios_for_room_indices: List[float] = field(default_factory=list)
-    c_angles: List[float] = field(default_factory=list)
-    gamma_angles: List[float] = field(default_factory=list)
-    intensities: List[float] = field(default_factory=list)
+    direct_ratios_for_room_indices: List[float | None] = field(default_factory=list)
+    c_angles: List[float | None] = field(default_factory=list)
+    gamma_angles: List[float | None] = field(default_factory=list)
+    intensities: List[float | None] = field(default_factory=list)
