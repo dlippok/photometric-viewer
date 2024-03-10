@@ -11,7 +11,7 @@ def extract_lamp_set(f) -> LampSet:
         type_of_lamp=f.readline().strip(),
         total_lumens=safe_float(f.readline().strip()),
         light_color=f.readline().strip(),
-        cri=safe_int(f.readline().strip()),
+        cri=f.readline().strip(),
         wattage=safe_float(f.readline().strip())
     )
 

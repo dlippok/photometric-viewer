@@ -26,24 +26,7 @@ def import_from_file(f: IO):
         photometry.metadata.file_source = f.read()
     else:
         content = ldt_extractor.extract_content(f)
-        converted_content = ldt_converter.convert_content(content)
+        photometry = ldt_converter.convert_content(content)
         f.seek(0)
-        converted_content.metadata.file_source = f.read()
-
-        f.seek(0)
-        photometry = ldt.import_from_file(f)
-
-        photometry.metadata.file_source = ""
-        converted_content.metadata.file_source = ""
-        photometry.intensity_values = {}
-        converted_content.intensity_values = {}
-
-        if photometry == converted_content:
-            print("Both photometries are equal")
-        else:
-
-            print("Photometries are not equal")
-            print("o", photometry)
-            print("c", converted_content)
-
+        photometry.metadata.file_source = f.read()
     return photometry

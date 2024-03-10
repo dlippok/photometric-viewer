@@ -8,7 +8,7 @@ class LampSet:
     type_of_lamp: str | None = None
     total_lumens: float | None = None
     light_color: str | None = None
-    cri: int | None = None
+    cri: str | None = None
     wattage: float | None = None
 
 

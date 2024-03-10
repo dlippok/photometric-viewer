@@ -1,7 +1,7 @@
-from model.luminaire import Luminaire, LuminaireGeometry, Shape, LuminousOpeningGeometry, LuminousOpeningShape, \
+from photometric_viewer.model.luminaire import Luminaire, LuminaireGeometry, Shape, LuminousOpeningGeometry, LuminousOpeningShape, \
     LuminairePhotometricProperties, Calculable, Lamps, PhotometryMetadata, FileFormat, Symmetry, LuminaireType
-from model.units import LengthUnits
-from photometry.ldt.model import LdtContent, LampSet
+from photometric_viewer.model.units import LengthUnits
+from photometric_viewer.photometry.ldt.model import LdtContent, LampSet
 
 
 def _extract_candela_values(content: LdtContent) -> dict[tuple[float, float], float]:
@@ -63,26 +63,36 @@ def _extract_candela_values(content: LdtContent) -> dict[tuple[float, float], fl
     return values
 
 
-def _extract_luminaire_geometry(content: LdtContent) -> LuminaireGeometry:
-    length = content.length_of_luminaire / 1000 if content.length_of_luminaire else None
-    width = content.width_of_luminaire / 1000 if content.width_of_luminaire else None
-    height = content.height_of_luminaire / 1000 if content.height_of_luminaire else None
+def _extract_luminaire_geometry(content: LdtContent) -> LuminaireGeometry | None:
+    length = _to_meters(content.length_of_luminaire)
+    width = _to_meters(content.width_of_luminaire)
+    height = _to_meters(content.height_of_luminaire)
+
+    if length is None or height is None or width is None:
+        return None
 
     return LuminaireGeometry(
         length=length,
         width=width or length,
         height=height,
-        shape=Shape.RECTANGULAR if content.width_of_luminaire > 0 else Shape.ROUND,
+        shape=Shape.RECTANGULAR if width and width > 0 else Shape.ROUND,
     )
 
 
-def _extract_luminous_opening_geometry(content: LdtContent) -> LuminousOpeningGeometry:
-    width = content.width_of_luminous_area / 1000 if content.width_of_luminous_area else None
-    length = content.length_of_luminous_area / 1000 if content.length_of_luminous_area else None
-    height_c0 = content.height_of_luminous_area_c0 / 1000 if content.height_of_luminous_area_c0 else None
-    height_c90 = content.height_of_luminous_area_c90 / 1000 if content.height_of_luminous_area_c90 else None
-    height_c180 = content.height_of_luminous_area_c180 / 1000 if content.height_of_luminous_area_c180 else None
-    height_c270 = content.height_of_luminous_area_c270 / 1000 if content.height_of_luminous_area_c270 else None
+def _to_meters(value: float | None) -> float | None:
+    return value / 1000 if value is not None else None
+
+
+def _extract_luminous_opening_geometry(content: LdtContent) -> LuminousOpeningGeometry | None:
+    width = _to_meters(content.width_of_luminous_area)
+    length = _to_meters(content.length_of_luminous_area)
+    height_c0 = _to_meters(content.height_of_luminous_area_c0)
+    height_c90 = _to_meters(content.height_of_luminous_area_c90)
+    height_c180 = _to_meters(content.height_of_luminous_area_c180)
+    height_c270 = _to_meters(content.height_of_luminous_area_c270)
+
+    if width is None or length is None or height_c0 is None or height_c90 is None or height_c180 is None or height_c270 is None:
+        return None
 
     shape = None
     match content.length_of_luminous_area, content.width_of_luminous_area:
@@ -95,7 +105,7 @@ def _extract_luminous_opening_geometry(content: LdtContent) -> LuminousOpeningGe
 
     return LuminousOpeningGeometry(
         length=length,
-        width=width,
+        width=width or length,
         height=height_c0,
         height_c90=height_c90,
         height_c180=height_c180,
@@ -152,6 +162,7 @@ def _extract_luminous_flux(content: LdtContent) -> Calculable:
         return Calculable(content.lamp_sets[0].total_lumens)
 
     return Calculable(None)
+
 
 def _extract_efficacy(content: LdtContent) -> Calculable:
     is_absolute = any(lamp_set.number_of_lamps < 0 for lamp_set in content.lamp_sets)
