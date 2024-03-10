@@ -1,7 +1,7 @@
 from typing import IO
 
 
-def read_non_empty_line(f: IO) -> str | None:
+def first_non_empty_line(f: IO) -> str | None:
     line = f.readline()
     while line != "":
         if line.strip() == "":
@@ -12,11 +12,18 @@ def read_non_empty_line(f: IO) -> str | None:
     return None
 
 
+def read_line(f: IO) -> str | None:
+    line = f.readline()
+    if line == "":
+        return None
+    return line.strip()
+
+
 def get_n_values(f: IO, n: int):
     raw_values = []
     i = n
     while i > 0:
-        line = read_non_empty_line(f)
+        line = first_non_empty_line(f)
         if line is None:
             values = [None] * i
         else:
@@ -32,12 +39,12 @@ def get_n_values(f: IO, n: int):
 
 def read_till_end(f: IO):
     raw_values = []
-    line = read_non_empty_line(f)
+    line = first_non_empty_line(f)
     while line is not None:
         values = line.strip().split(" ")
         for value in values:
             if value == "":
                 continue
             raw_values.append(value)
-        line = read_non_empty_line(f)
+        line = first_non_empty_line(f)
     return raw_values

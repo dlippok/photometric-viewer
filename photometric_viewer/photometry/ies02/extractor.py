@@ -2,7 +2,7 @@ from typing import IO, List
 
 from photometric_viewer.photometry.ies02.model import MetadataTuple, InlineAttributes, LampAttributes, IesContent
 from photometric_viewer.utils.conversion import safe_int, safe_float
-from photometric_viewer.utils.ioutil import read_non_empty_line, get_n_values, read_till_end
+from photometric_viewer.utils.ioutil import first_non_empty_line, get_n_values, read_till_end
 
 
 def extract_content(f: IO) -> IesContent:
@@ -26,7 +26,7 @@ def extract_content(f: IO) -> IesContent:
 
 
 def _extract_header(f: IO) -> str | None:
-    line = read_non_empty_line(f)
+    line = first_non_empty_line(f)
     if line is None:
         return None
     return line.strip()
@@ -34,13 +34,13 @@ def _extract_header(f: IO) -> str | None:
 
 def _extract_metadata(f: IO) -> List[MetadataTuple]:
     metadata = []
-    next_line = read_non_empty_line(f)
+    next_line = first_non_empty_line(f)
     while next_line and next_line.startswith("["):
         metadata_line = next_line.split("]")
         metadata_key = metadata_line[0].strip("[").strip()
         metadata_value = metadata_line[1].strip()
         metadata.append(MetadataTuple(metadata_key, metadata_value))
-        next_line = read_non_empty_line(f)
+        next_line = first_non_empty_line(f)
     return metadata
 
 

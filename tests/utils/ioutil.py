@@ -1,7 +1,7 @@
 import io as python_io
 import unittest
 
-from photometric_viewer.utils.ioutil import read_non_empty_line
+from photometric_viewer.utils.ioutil import first_non_empty_line
 
 WINDOWS_NEWLINE = "\r\n"
 UNIX_NEWLINE = "\n"
@@ -19,7 +19,7 @@ class TestReadNonEmptyLine(unittest.TestCase):
             with(self.subTest(case=case[0])):
                 f = python_io.StringIO(case[1])
                 for expected_line in lines_expected:
-                    self.assertEqual(read_non_empty_line(f), expected_line)
+                    self.assertEqual(first_non_empty_line(f), expected_line)
 
     def test_empty_lines_in_the_beginning(self):
         lines_given = ["", "a", "b", "c"]
@@ -33,7 +33,7 @@ class TestReadNonEmptyLine(unittest.TestCase):
             with(self.subTest(case=case[0])):
                 f = python_io.StringIO(case[1])
                 for expected_line in lines_expected:
-                    self.assertEqual(read_non_empty_line(f), expected_line)
+                    self.assertEqual(first_non_empty_line(f), expected_line)
 
     def test_empty_lines_in_the_end(self):
         lines_given = ["a", "b", "c", ""]
@@ -47,7 +47,7 @@ class TestReadNonEmptyLine(unittest.TestCase):
             with(self.subTest(case=case[0])):
                 f = python_io.StringIO(case[1])
                 for expected_line in lines_expected:
-                    self.assertEqual(read_non_empty_line(f), expected_line)
+                    self.assertEqual(first_non_empty_line(f), expected_line)
 
     def test_empty_between_content(self):
         lines_given = ["a", "", "b", "", "c"]
@@ -61,4 +61,4 @@ class TestReadNonEmptyLine(unittest.TestCase):
             with(self.subTest(case=case[0])):
                 f = python_io.StringIO(case[1])
                 for expected_line in lines_expected:
-                    self.assertEqual(read_non_empty_line(f), expected_line)
+                    self.assertEqual(first_non_empty_line(f), expected_line)
