@@ -94,10 +94,12 @@ def import_from_file(f: IO):
         )
         is_absolute = no_lamps < 0
 
-    ratios_for_room_indexes = [
-        safe_float(f.readline().strip())
-        for _ in range(10)
-    ]
+    indices = [0.60, 0.80, 1.00, 1.25, 1.50, 2.00, 2.50, 3.00, 4.00, 5.00]
+    ratios = [safe_float(f.readline().strip()) for _ in range(10)]
+    ratios_for_room_indexes = {
+            index: ratio
+            for index, ratio in zip(indices, ratios)
+    }
 
     c_angles = [
         safe_float(f.readline().strip())
@@ -340,9 +342,10 @@ def export_to_file(f: IO, luminaire: Luminaire):
 
     ratios_for_room_indices = [0 for _ in range(10)]
     if luminaire.metadata.direct_ratios_for_room_indices:
-        for i, ratio in enumerate(luminaire.metadata.direct_ratios_for_room_indices):
-            if i < len(ratios_for_room_indices):
-                ratios_for_room_indices[i] = ratio
+        ratios_for_room_indices = [
+            luminaire.metadata.direct_ratios_for_room_indices.get(index, "")
+            for index in [0.6, 0.8, 1, 1.25, 1.5, 2, 2.5, 3, 4, 5]
+        ]
 
     for ratio in ratios_for_room_indices:
         _write_number(f, ratio, ndigits=5)

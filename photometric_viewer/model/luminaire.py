@@ -38,7 +38,7 @@ class PhotometryMetadata:
     conversion_factor: float | None = None
     filename: str | None = None
     symmetry: Symmetry = Symmetry.NONE
-    direct_ratios_for_room_indices: List[float] | None = None
+    direct_ratios_for_room_indices: Dict[float, float] | None = None
     file_format: FileFormat | None = None
 
 class Shape(Enum):
