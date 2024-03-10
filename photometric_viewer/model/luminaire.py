@@ -29,7 +29,6 @@ class PhotometryMetadata:
     luminaire: str | None
     catalog_number: str | None
     manufacturer: str | None
-    additional_properties: Dict[str, str]
     file_source: str | None
     file_units: LengthUnits
     luminaire_type: LuminaireType | None = None
@@ -37,8 +36,9 @@ class PhotometryMetadata:
     date_and_user: str | None = None
     conversion_factor: float | None = None
     filename: str | None = None
+    additional_properties: Dict[str, str] = field(default_factory=dict)
     symmetry: Symmetry = Symmetry.NONE
-    direct_ratios_for_room_indices: Dict[float, float] | None = None
+    direct_ratios_for_room_indices: Dict[float, float] = field(default_factory=dict)
     file_format: FileFormat | None = None
 
 class Shape(Enum):

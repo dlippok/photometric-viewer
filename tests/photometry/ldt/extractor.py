@@ -203,7 +203,7 @@ class TestExtractContent(unittest.TestCase):
                     type_of_lamp="Generic 15W LED module",
                     total_lumens=1000.0,
                     light_color="3600K",
-                    cri=90,
+                    cri='90',
                     wattage=15.0
                 )
             ],
@@ -350,7 +350,7 @@ class TestExtractContent(unittest.TestCase):
                     type_of_lamp="Set 1",
                     total_lumens=1000.0,
                     light_color="3600K",
-                    cri=90,
+                    cri='90',
                     wattage=20.0
                 ),
                 LampSet(
@@ -358,7 +358,7 @@ class TestExtractContent(unittest.TestCase):
                     type_of_lamp="Set 2",
                     total_lumens=500.0,
                     light_color="3000K",
-                    cri=80,
+                    cri='80',
                     wattage=15.0
                 )
             ],
@@ -538,7 +538,7 @@ class TestExtractContent(unittest.TestCase):
                     type_of_lamp="Set 1",
                     total_lumens=1000.0,
                     light_color="3600K",
-                    cri=90,
+                    cri='90',
                     wattage=20.0
                 ),
                 LampSet(
@@ -546,7 +546,7 @@ class TestExtractContent(unittest.TestCase):
                     type_of_lamp="Set 2",
                     total_lumens=500.0,
                     light_color="3000K",
-                    cri=80,
+                    cri='80',
                     wattage=15.0
                 )
             ],
