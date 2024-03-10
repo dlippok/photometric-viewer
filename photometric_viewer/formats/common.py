@@ -7,6 +7,7 @@ from photometric_viewer.photometry.ies95 import converter as ies95_converter
 from photometric_viewer.photometry.ies02 import extractor as ies02_extractor
 from photometric_viewer.photometry.ies02 import converter as ies02_converter
 from photometric_viewer.photometry.ldt import extractor as ldt_extractor
+from photometric_viewer.photometry.ldt import converter as ldt_converter
 
 
 def import_from_file(f: IO):
@@ -25,8 +26,24 @@ def import_from_file(f: IO):
         photometry.metadata.file_source = f.read()
     else:
         content = ldt_extractor.extract_content(f)
-        print(content)
+        converted_content = ldt_converter.convert_content(content)
+        f.seek(0)
+        converted_content.metadata.file_source = f.read()
+
         f.seek(0)
         photometry = ldt.import_from_file(f)
+
+        photometry.metadata.file_source = ""
+        converted_content.metadata.file_source = ""
+        photometry.intensity_values = {}
+        converted_content.intensity_values = {}
+
+        if photometry == converted_content:
+            print("Both photometries are equal")
+        else:
+
+            print("Photometries are not equal")
+            print("o", photometry)
+            print("c", converted_content)
 
     return photometry

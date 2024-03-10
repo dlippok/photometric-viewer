@@ -103,6 +103,11 @@ class Calculable:
         else:
             return self
 
+    def from_percent(self):
+        if self.value is None:
+            return Calculable(None, self.is_calculated)
+        return Calculable(self.value / 100, self.is_calculated)
+
 
 @dataclass()
 class LuminairePhotometricProperties:
