@@ -26,11 +26,11 @@ class FileFormat(Enum):
 
 @dataclass
 class PhotometryMetadata:
-    luminaire: str | None
-    catalog_number: str | None
-    manufacturer: str | None
-    file_source: str | None
-    file_units: LengthUnits
+    luminaire: str | None = None
+    catalog_number: str | None = None
+    manufacturer: str | None = None
+    file_source: str | None = None
+    file_units: LengthUnits = LengthUnits.METERS
     luminaire_type: LuminaireType | None = None
     measurement: str | None = None
     date_and_user: str | None = None
@@ -111,25 +111,25 @@ class Calculable:
 
 @dataclass()
 class LuminairePhotometricProperties:
-    is_absolute: bool
-    luminous_flux: Calculable
-    efficacy: Calculable
-    lor: Calculable
-    dff: Calculable
+    is_absolute: bool = False
+    luminous_flux: Calculable = field(default_factory=Calculable)
+    efficacy: Calculable = field(default_factory=Calculable)
+    lor: Calculable = field(default_factory=Calculable)
+    dff: Calculable = field(default_factory=Calculable)
 
     def get(self):
         return self.luminous_flux
 
 @dataclass
 class Luminaire:
-    gamma_angles: List[float]
-    c_planes: List[float]
+    gamma_angles: List[float] = field(default_factory=list)
+    c_planes: List[float] = field(default_factory=list)
     # Values in Candela for absolute photometry, cd/klm otherwise
-    intensity_values: Dict[Tuple[float, float], float]
-    luminous_opening_geometry: LuminousOpeningGeometry | None
-    geometry: LuminaireGeometry | None
-    lamps: List[Lamps]
-    metadata: PhotometryMetadata
+    intensity_values: Dict[Tuple[float, float], float] = field(default_factory=dict)
+    luminous_opening_geometry: LuminousOpeningGeometry | None = None
+    geometry: LuminaireGeometry | None = None
+    lamps: List[Lamps] = field(default_factory=list)
+    metadata: PhotometryMetadata = field(default_factory=PhotometryMetadata)
 
     photometry: LuminairePhotometricProperties
     _photometry: LuminairePhotometricProperties = field(init=False, repr=False)

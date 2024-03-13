@@ -1,8 +1,13 @@
+from typing import List
+
 from photometric_viewer.model.luminaire import Luminaire, LuminaireGeometry, Shape, LuminousOpeningGeometry, LuminousOpeningShape, \
     LuminairePhotometricProperties, Calculable, Lamps, PhotometryMetadata, FileFormat, Symmetry, LuminaireType
 from photometric_viewer.model.units import LengthUnits
 from photometric_viewer.photometry.ldt.model import LdtContent, LampSet
 
+
+def _extract_intensity(intensities: List[float]) -> float | None:
+    return intensities.pop(0) if intensities else None
 
 def _extract_candela_values(content: LdtContent) -> dict[tuple[float, float], float]:
     is_absolute = any(lamp_set.number_of_lamps < 0 for lamp_set in content.lamp_sets)
@@ -23,17 +28,17 @@ def _extract_candela_values(content: LdtContent) -> dict[tuple[float, float], fl
     if symmetry == Symmetry.NONE:
         for c in c_angles:
             for gamma in gamma_angles:
-                values[(c, gamma)] = converted_intensities.pop(0)
+                values[(c, gamma)] = _extract_intensity(converted_intensities)
     elif symmetry == Symmetry.TO_VERTICAL_AXIS:
         for gamma in gamma_angles:
-            value = converted_intensities.pop(0)
+            value = _extract_intensity(converted_intensities)
             for c in c_angles:
                 values[(c, gamma)] = value
     elif symmetry == Symmetry.TO_C0_C180:
         for c in c_angles:
             if c <= 180:
                 for gamma in gamma_angles:
-                    value = converted_intensities.pop(0)
+                    value = _extract_intensity(converted_intensities)
                     values[(c, gamma)] = value
                     if c != 0:
                         values[(360 - c, gamma)] = value
@@ -41,26 +46,26 @@ def _extract_candela_values(content: LdtContent) -> dict[tuple[float, float], fl
         for c in c_angles:
             if 90 <= c <= 180:
                 for gamma in gamma_angles:
-                    value = converted_intensities.pop(0)
+                    value = _extract_intensity(converted_intensities)
                     values[(c, gamma)] = value
                     values[(90 - (c - 90), gamma)] = value
             if 180 < c <= 270:
                 for gamma in gamma_angles:
-                    value = converted_intensities.pop(0)
+                    value = _extract_intensity(converted_intensities)
                     values[(c, gamma)] = value
                     values[(360 - (c - 180), gamma)] = value
     elif symmetry == Symmetry.TO_C0_C180_C90_C270:
         for c in c_angles:
             if c <= 90:
                 for gamma in gamma_angles:
-                    value = converted_intensities.pop(0)
+                    value = _extract_intensity(converted_intensities)
                     values[(c, gamma)] = value
                     values[(180 + c, gamma)] = value
                     if c != 0:
                         values[(360 - c, gamma)] = value
                         values[(180 - c, gamma)] = value
 
-    return values
+    return {k: v for k, v in values.items() if v is not None}
 
 
 def _extract_luminaire_geometry(content: LdtContent) -> LuminaireGeometry | None:
