@@ -43,17 +43,22 @@ def _extract_candela_values(content: LdtContent) -> dict[tuple[float, float], fl
                     if c != 0:
                         values[(360 - c, gamma)] = value
     elif symmetry == Symmetry.TO_C90_C270:
-        for c in c_angles:
-            if 90 <= c <= 180:
+        angles = [c for c in c_angles if c >= 270]
+        angles += [c for c in c_angles if c <= 90]
+        angles += [c for c in c_angles if c > 90 and c < 270]
+
+        for c in angles:
+            if c >= 270:
                 for gamma in gamma_angles:
                     value = _extract_intensity(converted_intensities)
                     values[(c, gamma)] = value
-                    values[(90 - (c - 90), gamma)] = value
-            if 180 < c <= 270:
+                    values[(270 - (c - 270), gamma)] = value
+            if c <= 90:
                 for gamma in gamma_angles:
                     value = _extract_intensity(converted_intensities)
                     values[(c, gamma)] = value
-                    values[(360 - (c - 180), gamma)] = value
+                    values[(180 - c, gamma)] = value
+
     elif symmetry == Symmetry.TO_C0_C180_C90_C270:
         for c in c_angles:
             if c <= 90:
