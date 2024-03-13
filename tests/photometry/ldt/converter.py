@@ -151,7 +151,7 @@ class TestConvertContent(unittest.TestCase):
 
         self.assertEqual(convert_content(content), expected)
 
-    def test_symmetry(self):
+    def test_no_symmetry(self):
         content = LdtContent(
             number_of_lamp_sets=1,
             lamp_sets=[
@@ -164,17 +164,24 @@ class TestConvertContent(unittest.TestCase):
                     wattage=100
                 )
             ],
+            symmetry_indicator=0,
             c_angles=[
-                0, 45, 90, 135, 180,
-                225, 270, 315, 360
+                0.0, 10.0, 20.0, 30.0, 180.0
             ],
-            gamma_angles=[0.0, 90.0]
+            gamma_angles=[0.0, 90.0],
+            intensities=[
+                2200.0, 400.0,
+                2000.2, 300.0,
+                1950.0, 200.0,
+                1700.1, 100.0,
+                1328.4, 50.0
+            ]
         )
 
         expected = Luminaire(
             lamps=[
                 Lamps(
-                    number_of_lamps=-1,
+                    number_of_lamps=1,
                     description="Lamp 1",
                     lumens_per_lamp=1000.0,
                     wattage=100,
@@ -185,209 +192,364 @@ class TestConvertContent(unittest.TestCase):
             metadata=PhotometryMetadata(
                 file_format=FileFormat.LDT,
                 file_units=LengthUnits.MILLIMETERS,
+                symmetry=Symmetry.NONE
             ),
             photometry=LuminairePhotometricProperties(
                 is_absolute=True,
-                luminous_flux=Calculable(500.0),
+                luminous_flux=Calculable(1000.0),
                 lor=Calculable(None),
                 dff=Calculable(None),
-                efficacy=Calculable(5)
+                efficacy=Calculable(10.0)
             ),
+            c_planes=[
+                0.0, 10.0, 20.0, 30.0, 180.0
+            ],
             gamma_angles=[
                 0.0, 90.0
+            ],
+            intensity_values={
+                (0.0, 0.0): 2200.0,
+                (0.0, 90.0): 400,
+                (10.0, 0.0): 2000.2,
+                (10.0, 90.0): 300,
+                (20.0, 0.0): 1950.0,
+                (20.0, 90.0): 200.0,
+                (30.0, 0.0): 1700.1,
+                (30.0, 90.0): 100.0,
+                (180.0, 0.0): 1328.4,
+                (180.0, 90.0): 50.0,
+            }
+        )
+
+        actual = convert_content(content)
+
+        self.assertEqual(convert_content(content), expected)
+
+    def test_symmetry_to_vertical_axis(self):
+        content = LdtContent(
+            number_of_lamp_sets=1,
+            lamp_sets=[
+                LampSet(
+                    number_of_lamps=-1,
+                    type_of_lamp="Lamp 1",
+                    total_lumens=1000.0,
+                    light_color="White",
+                    cri="80",
+                    wattage=100
+                )
+            ],
+            symmetry_indicator=1,
+            c_angles=[
+                0.0, 45.0, 90.0, 135.0, 180.0,
+                225.0, 270.0, 315.0
+            ],
+            gamma_angles=[0.0, 90.0],
+            intensities=[2200.0, 2000.2]
+        )
+
+        expected = Luminaire(
+            lamps=[
+                Lamps(
+                    number_of_lamps=1,
+                    description="Lamp 1",
+                    lumens_per_lamp=1000.0,
+                    wattage=100,
+                    color="White",
+                    cri="80"
+                )
+            ],
+            metadata=PhotometryMetadata(
+                file_format=FileFormat.LDT,
+                file_units=LengthUnits.MILLIMETERS,
+                symmetry=Symmetry.TO_VERTICAL_AXIS
+            ),
+            photometry=LuminairePhotometricProperties(
+                is_absolute=True,
+                luminous_flux=Calculable(1000.0),
+                lor=Calculable(None),
+                dff=Calculable(None),
+                efficacy=Calculable(10.0)
+            ),
+            c_planes=[
+                0.0, 45.0, 90.0, 135.0, 180.0,
+                225.0, 270.0, 315.0
+            ],
+            gamma_angles=[
+                0.0, 90.0
+            ],
+            intensity_values={
+                (0.0, 0.0): 2200.0,
+                (0.0, 90.0): 2000.2,
+                (45.0, 0.0): 2200.0,
+                (45.0, 90.0): 2000.2,
+                (90.0, 0.0): 2200.0,
+                (90.0, 90.0): 2000.2,
+                (135.0, 0.0): 2200.0,
+                (135.0, 90.0): 2000.2,
+                (180.0, 0.0): 2200.0,
+                (180.0, 90.0): 2000.2,
+                (225.0, 0.0): 2200.0,
+                (225.0, 90.0): 2000.2,
+                (270.0, 0.0): 2200.0,
+                (270.0, 90.0): 2000.2,
+                (315.0, 0.0): 2200.0,
+                (315.0, 90.0): 2000.2
+            }
+        )
+
+        actual = convert_content(content)
+
+        self.assertEqual(convert_content(content), expected)
+
+
+    def test_symmetry_to_c0_c180(self):
+        content = LdtContent(
+            number_of_lamp_sets=1,
+            lamp_sets=[
+                LampSet(
+                    number_of_lamps=-1,
+                    type_of_lamp="Lamp 1",
+                    total_lumens=1000.0,
+                    light_color="White",
+                    cri="80",
+                    wattage=100
+                )
+            ],
+            symmetry_indicator=2,
+            c_angles=[
+                0.0, 45.0, 90.0, 135.0, 180.0,
+                225.0, 270.0, 315.0, 360.0
+            ],
+            gamma_angles=[0.0, 90.0],
+            intensities=[
+                2200.0, 400.0,
+                2000.2, 300.0,
+                1950.0, 200.0,
+                1700.1, 100.0,
+                1328.4, 50.0
             ]
         )
 
-        with self.subTest(title="No Symmetry"):
-            content.symmetry_indicator = 0
-            content.c_angles = [
-                0, 15, 30, 45, 60
-            ]
+        expected = Luminaire(
+            lamps=[
+                Lamps(
+                    number_of_lamps=1,
+                    description="Lamp 1",
+                    lumens_per_lamp=1000.0,
+                    wattage=100,
+                    color="White",
+                    cri="80"
+                )
+            ],
+            metadata=PhotometryMetadata(
+                file_format=FileFormat.LDT,
+                file_units=LengthUnits.MILLIMETERS,
+                symmetry=Symmetry.TO_C0_C180
+            ),
+            photometry=LuminairePhotometricProperties(
+                is_absolute=True,
+                luminous_flux=Calculable(1000.0),
+                lor=Calculable(None),
+                dff=Calculable(None),
+                efficacy=Calculable(10.0)
+            ),
+            c_planes=[
+                0.0, 45.0, 90.0, 135.0, 180.0,
+                225.0, 270.0, 315.0, 360.0
+            ],
+            gamma_angles=[
+                0.0, 90.0
+            ],
+            intensity_values={
+                (0.0, 0.0): 2200.0,
+                (0.0, 90.0): 400.0,
+                (45.0, 0.0): 2000.2,
+                (45.0, 90.0): 300.0,
+                (90.0, 0.0): 1950.0,
+                (90.0, 90.0): 200.0,
+                (135.0, 0.0): 1700.1,
+                (135.0, 90.0): 100.0,
+                (180.0, 0.0): 1328.4,
+                (180.0, 90.0): 50.0,
 
-            content.intensities =  [
-                2200.0, 2000.2,
-                1950.0, 1700.1,
-                1328.4, 1115.1,
-                1328.4, 1115.1,
-                1328.4, 1115.1
-            ]
-
-            expected.symmetry = Symmetry.NONE
-
-            angle_combinations = [(c, gamma) for c in content.c_angles for gamma in content.gamma_angles]
-
-            expected.intensity_values = {
-                angle: content.intensities[i % len(content.intensities)]
-                for i, angle
-                in enumerate(angle_combinations)
+                (315.0, 0.0): 2000.2,
+                (315.0, 90.0): 300.0,
+                (270.0, 0.0): 1950.0,
+                (270.0, 90.0): 200.0,
+                (225.0, 0.0): 1700.1,
+                (225.0, 90.0): 100.0
             }
+        )
 
-            actual = convert_content(content)
+        actual = convert_content(content)
 
-            for coord, value in expected.intensity_values.items():
-                self.assertAlmostEqual(actual.intensity_values[coord], value, places=5,
-                                       msg=f"Invalid value for coord {coord}")
+        self.assertEqual(convert_content(content), expected)
 
-        with self.subTest(title="Symmetry to vertical axis"):
-            content.symmetry_indicator = 1
-            content.c_angles=[
-                0, 45, 90, 135, 180,
-                225, 270, 315, 360
-            ]
-            content.intensities =  [2200.0, 2000.2]
-            expected.symmetry = Symmetry.TO_VERTICAL_AXIS
+    def test_symmetry_to_c90_c270(self):
+        content = LdtContent(
+            number_of_lamp_sets=1,
+            lamp_sets=[
+                LampSet(
+                    number_of_lamps=-1,
+                    type_of_lamp="Lamp 1",
+                    total_lumens=1000.0,
+                    light_color="White",
+                    cri="80",
+                    wattage=100
+                )
+            ],
+            symmetry_indicator=3,
+            c_angles=[
+                0.0, 45.0, 90.0, 135.0, 180.0,
+                225.0, 270.0, 315.0, 360.0
+            ],
+            gamma_angles=[0.0, 90.0],
+            intensities=[
+                    2200.0, 400.0,
+                    2000.2, 300.0,
+                    1950.0, 200.0,
+                    1700.1, 100.0,
+                    1328.4, 50.0
+                ]
+        )
 
-            angle_combinations = [(c, gamma) for c in content.c_angles for gamma in content.gamma_angles]
-            expected.intensity_values = {
-                (0, 0): 2200.0,
-                (0, 90): 2000.2,
-                (45, 0): 2200.0,
-                (45, 90): 2000.2,
-                (90, 0): 2200.0,
-                (90, 90): 2000.2,
-                (135, 0): 2200.0,
-                (135, 90): 2000.2,
-                (180, 0): 2200.0,
-                (180, 90): 2000.2,
-                (225, 0): 2200.0,
-                (225, 90): 2000.2,
-                (270, 0): 2200.0,
-                (270, 90): 2000.2,
-                (315, 0): 2200.0,
-                (315, 90): 2000.2
-            }
+        expected = Luminaire(
+            lamps=[
+                Lamps(
+                    number_of_lamps=1,
+                    description="Lamp 1",
+                    lumens_per_lamp=1000.0,
+                    wattage=100,
+                    color="White",
+                    cri="80"
+                )
+            ],
+            metadata=PhotometryMetadata(
+                file_format=FileFormat.LDT,
+                file_units=LengthUnits.MILLIMETERS,
+                symmetry=Symmetry.TO_C90_C270
+            ),
+            photometry=LuminairePhotometricProperties(
+                is_absolute=True,
+                luminous_flux=Calculable(1000.0),
+                lor=Calculable(None),
+                dff=Calculable(None),
+                efficacy=Calculable(10.0)
+            ),
+            c_planes=[
+                0.0, 45.0, 90.0, 135.0, 180.0,
+                225.0, 270.0, 315.0, 360.0
+            ],
+            gamma_angles=[
+                0.0, 90.0
+            ],
+            intensity_values={
+                    (270, 0): 2200.0,
+                    (270, 90): 400.0,
+                    (315, 0): 2000.2,
+                    (315, 90): 300.0,
+                    (0, 0): 1950.0,
+                    (0, 90): 200.0,
+                    (45, 0): 1700.1,
+                    (45, 90): 100.0,
+                    (90, 0): 1328.4,
+                    (90, 90): 50.0,
 
-            actual = convert_content(content)
+                    (225, 0): 2000.2,
+                    (225, 90): 300.0,
+                    (180, 0): 1950.0,
+                    (180, 90): 200.0,
+                    (135, 0): 1700.1,
+                    (135, 90): 100.0,
+                }
+        )
 
-            for coord, value in expected.intensity_values.items():
-                self.assertAlmostEqual(actual.intensity_values[coord], value, places=5,
-                                       msg=f"Invalid value for coord {coord}")
+        actual = convert_content(content)
 
-        with self.subTest(title="Symmetry to C0 C180"):
-            content.symmetry_indicator = 2
-            content.c_angles=[
-                0, 45, 90, 135, 180,
-                225, 270, 315, 360
-            ]
+        self.assertEqual(convert_content(content), expected)
 
-            content.intensities = [
-                2200.0, 400.0,
-                2000.2, 300.0,
-                1950.0, 200.0,
-                1700.1, 100.0,
-                1328.4, 50.0
-            ]
-
-            expected.symmetry = Symmetry.TO_C0_C180
-
-            angle_combinations = [(c, gamma) for c in content.c_angles for gamma in content.gamma_angles]
-
-            expected.intensity_values = {
-                (0, 0): 2200.0,
-                (0, 90): 400.0,
-                (45, 0): 2000.2,
-                (45, 90): 300.0,
-                (90, 0): 1950.0,
-                (90, 90): 200.0,
-                (135, 0): 1700.1,
-                (135, 90): 100.0,
-                (180, 0): 1328.4,
-                (180, 90): 50.0,
-
-                (315, 0): 2000.2,
-                (315, 90): 300.0,
-                (270, 0): 1950.0,
-                (270, 90): 200.0,
-                (225, 0): 1700.1,
-                (225, 90): 100.0
-            }
-
-            actual = convert_content(content)
-
-            for coord, value in expected.intensity_values.items():
-                self.assertAlmostEqual(actual.intensity_values[coord], value, places=5,
-                                       msg=f"Invalid value for coord {coord}")
-
-
-        with self.subTest(title="Symmetry to C90 C270"):
-            content.symmetry_indicator = 3
-            content.c_angles=[
-                0, 45, 90, 135, 180,
-                225, 270, 315, 360
-            ]
-
-            content.intensities = [
-                2200.0, 400.0,
-                2000.2, 300.0,
-                1950.0, 200.0,
-                1700.1, 100.0,
-                1328.4, 50.0
-            ]
-
-            expected.symmetry = Symmetry.TO_C0_C180
-
-            angle_combinations = [(c, gamma) for c in content.c_angles for gamma in content.gamma_angles]
-
-            expected.intensity_values = {
-                (270, 0): 2200.0,
-                (270, 90): 400.0,
-                (315, 0): 2000.2,
-                (315, 90): 300.0,
-                (0, 0): 1950.0,
-                (0, 90): 200.0,
-                (45, 0): 1700.1,
-                (45, 90): 100.0,
-                (90, 0): 1328.4,
-                (90, 90): 50.0,
-
-                (225, 0): 2000.2,
-                (225, 90): 300.0,
-                (180, 0): 1950.0,
-                (180, 90): 200.0,
-                (135, 0): 1700.1,
-                (135, 90): 100.0,
-            }
-
-            actual = convert_content(content)
-
-            for coord, value in expected.intensity_values.items():
-                self.assertAlmostEqual(actual.intensity_values[coord], value, places=5,
-                                       msg=f"Invalid value for coord {coord}")
-
-        with self.subTest(title="Symmetry to C0 C180 C90 C270"):
-            content.symmetry_indicator = 4
-            content.c_angles=[
-                0, 45, 90, 135, 180,
-                225, 270, 315, 360
-            ]
-            content.intensities = [
+    def test_symmetry_to_c0_c180_c90_c270(self):
+        content = LdtContent(
+            number_of_lamp_sets=1,
+            lamp_sets=[
+                LampSet(
+                    number_of_lamps=-1,
+                    type_of_lamp="Lamp 1",
+                    total_lumens=1000.0,
+                    light_color="White",
+                    cri="80",
+                    wattage=100
+                )
+            ],
+            symmetry_indicator=4,
+            c_angles=[
+                0.0, 45.0, 90.0, 135.0, 180.0,
+                225.0, 270.0, 315.0, 360.0
+            ],
+            gamma_angles=[0.0, 90.0],
+            intensities=[
                 2200.0, 400.0,
                 2000.2, 300.0,
                 1950.0, 200.0,
             ]
+        )
 
-            expected.symmetry = Symmetry.TO_C0_C180_C90_C270
+        expected = Luminaire(
+            lamps=[
+                Lamps(
+                    number_of_lamps=1,
+                    description="Lamp 1",
+                    lumens_per_lamp=1000.0,
+                    wattage=100,
+                    color="White",
+                    cri="80"
+                )
+            ],
+            metadata=PhotometryMetadata(
+                file_format=FileFormat.LDT,
+                file_units=LengthUnits.MILLIMETERS,
+                symmetry=Symmetry.TO_C0_C180_C90_C270
+            ),
+            photometry=LuminairePhotometricProperties(
+                is_absolute=True,
+                luminous_flux=Calculable(1000.0),
+                lor=Calculable(None),
+                dff=Calculable(None),
+                efficacy=Calculable(10.0)
+            ),
+            c_planes=[
+                0.0, 45.0, 90.0, 135.0, 180.0,
+                225.0, 270.0, 315.0, 360.0
+            ],
+            gamma_angles=[
+                0.0, 90.0
+            ],
+            intensity_values={
+                (0.0, 0.0): 2200.0,
+                (0.0, 90.0): 400.0,
+                (45.0, 0.0): 2000.2,
+                (45.0, 90.0): 300.0,
+                (90.0, 0.0): 1950.0,
+                (90.0, 90.0): 200.0,
 
-            angle_combinations = [(c, gamma) for c in content.c_angles for gamma in content.gamma_angles]
+                (180.0, 0.0): 2200.0,
+                (180.0, 90.0): 400.0,
+                (135.0, 0.0): 2000.2,
+                (135.0, 90.0): 300.0,
 
-            expected.intensity_values = {
-                (0, 0): 2200.0,
-                (0, 90): 400.0,
-                (45, 0): 2000.2,
-                (45, 90): 300.0,
-                (90, 0): 1950.0,
-                (90, 90): 200.0,
+                (270.0, 0.0): 1950.0,
+                (270.0, 90.0): 200.0,
+                (225.0, 0.0): 2000.2,
+                (225.0, 90.0): 300.0,
 
-                (180, 0): 2200.0,
-                (180, 90): 400.0,
-                (135, 0): 2000.2,
-                (135, 90): 300.0,
-
-                (270, 0): 1950.0,
-                (270, 90): 200.0,
-                (315, 0): 2000.2,
-                (315, 90): 300.0
+                (315.0, 0.0): 2000.2,
+                (315.0, 90.0): 300.0
             }
+        )
+
+        actual = convert_content(content)
+
+        self.assertEqual(convert_content(content), expected)
 
     def test_missing_values(self):
         cases = [
