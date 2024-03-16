@@ -2,6 +2,8 @@ import os
 
 import gi
 
+from photometric_viewer.utils.project import ASSETS_PATH
+
 gi.require_version(namespace='Gtk', version='4.0')
 gi.require_version(namespace='Adw', version='1')
 gi.require_version(namespace='GtkSource', version='5')
@@ -15,6 +17,8 @@ import sys
 APPLICATION_ID = 'io.github.dlippok.photometric-viewer'
 init_locale(APPLICATION_ID)
 
+theme: Gtk.IconTheme = Gtk.IconTheme.get_for_display(Gdk.Display.get_default())
+theme.add_search_path(os.path.join(ASSETS_PATH, "icons"))
 
 class Application(Adw.Application):
     def __init__(self):

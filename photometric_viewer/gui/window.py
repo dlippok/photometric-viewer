@@ -17,9 +17,11 @@ from photometric_viewer.formats.exceptions import InvalidPhotometricFileFormatEx
 from photometric_viewer.gui.dialogs.about import AboutWindow
 from photometric_viewer.gui.dialogs.file_chooser import OpenFileChooser, ExportFileChooser
 from photometric_viewer.gui.dialogs.preferences import PreferencesWindow
+from photometric_viewer.gui.pages.ballast_set import BallastPage
 from photometric_viewer.gui.pages.content import PhotometryContentPage
 from photometric_viewer.gui.pages.direct_ratios import DirectRatiosPage
 from photometric_viewer.gui.pages.empty import EmptyPage
+from photometric_viewer.gui.pages.lamp_set import LampSetPage
 from photometric_viewer.gui.pages.ldc_export import LdcExportPage
 from photometric_viewer.gui.pages.source import SourceViewPage
 from photometric_viewer.gui.pages.values import IntensityValuesPage
@@ -53,6 +55,8 @@ class MainWindow(Adw.Window):
         self.values_table_page = IntensityValuesPage()
         self.ldc_export_page = LdcExportPage(on_exported=self.on_export_ldc_response, transient_for=self)
         self.direct_ratios_page = DirectRatiosPage()
+        self.lamp_set_page = LampSetPage()
+        self.ballast_page = BallastPage()
 
         empty_page = EmptyPage()
         self.navigation_view.replace([empty_page])
@@ -99,6 +103,8 @@ class MainWindow(Adw.Window):
         self.install_action("app.show_intensity_values", None, self.show_intensity_values)
         self.install_action("app.show_source", None, self.show_source)
         self.install_action("app.show_direct_ratios", None, self.show_direct_ratios)
+        self.install_action("app.show_lamp_set", "i", self.show_lamp_set)
+        self.install_action("app.show_ballast", "i", self.show_ballast)
         self.install_action("app.export_luminaire_as_json", None, self.show_json_export_file_chooser)
         self.install_action("app.export_intensities_as_csv", None, self.show_csv_export_file_chooser)
         self.install_action("app.export_ldc_as_image", None, self.show_ldc_export_page)
@@ -111,6 +117,7 @@ class MainWindow(Adw.Window):
         self.action_set_enabled("app.show_intensity_values", False)
         self.action_set_enabled("app.show_source", False)
         self.action_set_enabled("app.show_direct_ratios", False)
+        self.action_set_enabled("app.show_lamp_set", False)
         self.action_set_enabled("app.export_luminaire_as_json", False)
         self.action_set_enabled("app.export_intensities_as_csv", False)
         self.action_set_enabled("app.export_ldc_as_image", False)
@@ -135,6 +142,7 @@ class MainWindow(Adw.Window):
 
     def update_settings(self):
         self.luminaire_content_page.update_settings(self.settings)
+        self.lamp_set_page.update_settings(self.settings)
         self.gsettings.save(self.settings)
 
     def on_open_clicked(self, *args):
@@ -229,6 +237,7 @@ class MainWindow(Adw.Window):
 
                 self.display_photometry_content(photometry)
                 self.luminaire_content_page.update_settings(self.settings)
+                self.lamp_set_page.update_settings(self.settings)
 
                 self.set_title(title=file.get_basename())
                 self.window_title.set_title(_("Photometry"))
@@ -237,6 +246,7 @@ class MainWindow(Adw.Window):
                 self.action_set_enabled("app.show_intensity_values", True)
                 self.action_set_enabled("app.show_source", True)
                 self.action_set_enabled("app.show_direct_ratios", True)
+                self.action_set_enabled("app.show_lamp_set", True)
                 self.action_set_enabled("app.export_luminaire_as_json", True)
                 self.action_set_enabled("app.export_intensities_as_csv", True)
                 self.action_set_enabled("app.export_ldc_as_image", True)
@@ -270,6 +280,32 @@ class MainWindow(Adw.Window):
 
     def show_direct_ratios(self, *args):
         self.navigation_view.push(self.direct_ratios_page)
+
+    def show_lamp_set(self, window, action, params: GLib.Variant, *args):
+        if self.opened_photometry is None:
+            return
+
+        lamp_index = params.get_int32()
+        if len(self.opened_photometry.lamps) < lamp_index:
+            return
+
+        lamp_set = self.opened_photometry.lamps[lamp_index]
+
+        self.lamp_set_page.set_lamp_set(self.opened_photometry, lamp_set)
+        self.navigation_view.push(self.lamp_set_page)
+
+    def show_ballast(self, window, action, params: GLib.Variant, *args):
+        if self.opened_photometry is None:
+            return
+
+        lamp_index = params.get_int32()
+        if len(self.opened_photometry.lamps) < lamp_index:
+            return
+
+        lamp_set = self.opened_photometry.lamps[lamp_index]
+
+        self.ballast_page.set_lamp_set(lamp_set)
+        self.navigation_view.push(self.ballast_page)
 
     def show_intensity_values(self, *args):
         self.navigation_view.push(self.values_table_page)

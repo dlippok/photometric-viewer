@@ -1,4 +1,5 @@
 import importlib.metadata
+import os
 from dataclasses import dataclass
 
 @dataclass
@@ -40,3 +41,6 @@ def _get_metadata():
 
 
 PROJECT = _get_metadata()
+
+ASSETS_PATH = os.path.join(os.path.dirname(__file__), '..', 'assets')
+
