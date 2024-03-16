@@ -64,6 +64,12 @@
             <li>Żródło pliku fotometrycznego</li>
         </ul>
     </description>
+
+    <branding>
+        <color type="primary" scheme_preference="light">#62a0ea</color>
+        <color type="primary" scheme_preference="dark">#134889</color>
+    </branding>
+
     <screenshots>
         <screenshot>
             <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Main.png</image>
