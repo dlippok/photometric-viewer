@@ -8,6 +8,8 @@ from photometric_viewer.photometry.ies95.extractor import extract_content as ext
 from photometric_viewer.photometry.ies95.converter import convert_content as convert_content_ies95
 from photometric_viewer.photometry.ies02.extractor import extract_content as extract_content_ies02
 from photometric_viewer.photometry.ies02.converter import convert_content as convert_content_ies02
+from photometric_viewer.photometry.ldt.converter import convert_content as convert_content_ldt
+from photometric_viewer.photometry.ldt.extractor import extract_content as extract_content_ldt
 
 UNSUPPORTED_EXPORT_SHAPES = {
     LuminousOpeningShape.ELLIPSE_ALONG_LENGTH,
@@ -15,6 +17,7 @@ UNSUPPORTED_EXPORT_SHAPES = {
     LuminousOpeningShape.ELLIPSOID_ALONG_LENGTH,
     LuminousOpeningShape.ELLIPSOID_ALONG_WIDTH
 }
+
 
 class TestIes(unittest.TestCase):
     FILES_PATH = Path(__file__).parent / ".." / "data" / "photometrics" / "ies95"
@@ -60,7 +63,8 @@ class TestIes(unittest.TestCase):
                     exported_value = f.getvalue()
 
                 with io.StringIO(exported_value) as f:
-                    reimported_luminaire = ldt.import_from_file(f)
+                    content = extract_content_ldt(f)
+                    reimported_luminaire = convert_content_ldt(content)
 
                 self.assertEqual(luminaire.photometry.is_absolute, reimported_luminaire.photometry.is_absolute)
                 self.assertEqual(luminaire.gamma_angles, reimported_luminaire.gamma_angles)
