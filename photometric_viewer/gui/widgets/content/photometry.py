@@ -82,6 +82,7 @@ class LuminairePhotometricProperties(Box):
                 activatable_widget=icon,
 
             )
+            row.add_prefix(Gtk.Image(icon_name="direct-ratios-symbolic"))
             row.add_suffix(icon)
             self.property_list.append(row)
 
@@ -93,5 +94,6 @@ class LuminairePhotometricProperties(Box):
                 activatable_widget=icon,
 
             )
+            row.add_prefix(Gtk.Image(icon_name="intensities-symbolic"))
             row.add_suffix(icon)
             self.property_list.append(row)
