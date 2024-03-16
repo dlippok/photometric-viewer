@@ -1,4 +1,5 @@
 from gi.repository import Adw, Gtk
+from gi.repository.Adw import ActionRow
 from gi.repository.Gtk import ScrolledWindow, PolicyType, Orientation, SelectionMode
 
 from photometric_viewer.gui.pages.base import BasePage
@@ -93,10 +94,13 @@ class IntensityValuesPage(BasePage):
         ]
 
         if len(values) > 200:
-            self.property_list.add(
-                _("Too many values to display"),
-                _("Select a particular C plane or gamma angle to display the values")
+            row = ActionRow(
+                title= _("Too many values to display"),
+                subtitle=_("Select a particular C plane or gamma angle to display the values"),
+                action_name="app.show_direct_ratios",
+
             )
+            self.property_list.append(row)
             return
 
         unit = None
@@ -105,7 +109,11 @@ class IntensityValuesPage(BasePage):
             case False: unit = "cd/klm"
 
         for value in sorted(values, key=lambda v: v[0]):
-            self.property_list.add(
-                f"C: {value[0][0]}°, γ: {value[0][1]}°",
-                f"{value[1]:.1f} {unit}"
+            row = ActionRow(
+                title=f"C: {value[0][0]}°, γ: {value[0][1]}°",
+                subtitle= f"{value[1]:.1f} {unit}",
+                css_classes=["property"],
+                subtitle_selectable=True
+
             )
+            self.property_list.append(row)

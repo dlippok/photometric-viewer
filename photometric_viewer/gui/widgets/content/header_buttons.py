@@ -36,10 +36,6 @@ MENU_MODELS = """
     <menu id='header-menu-other'>
         <section>
             <item>
-                <attribute name='label' translatable='yes'>Intensity Values</attribute>
-                <attribute name='action'>app.show_intensity_values</attribute>
-            </item>
-            <item>
                 <attribute name='label' translatable='yes'>Show source</attribute>
                 <attribute name='action'>app.show_source</attribute>
             </item>
