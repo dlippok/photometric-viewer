@@ -136,7 +136,7 @@ def _extract_luminous_opening_geometry(content: LdtContent) -> LuminousOpeningGe
 def _extract_lamp_set(lamp_set: LampSet) -> Lamps:
     return Lamps(
         number_of_lamps=abs(lamp_set.number_of_lamps) if lamp_set.number_of_lamps else None,
-        lumens_per_lamp=lamp_set.total_lumens / max(1, lamp_set.number_of_lamps) if lamp_set.total_lumens else None,
+        lumens_per_lamp=lamp_set.total_lumens / abs(lamp_set.number_of_lamps) if lamp_set.total_lumens else None,
         wattage=lamp_set.wattage,
         color=lamp_set.light_color,
         cri=lamp_set.cri,
