@@ -1,3 +1,5 @@
+from gi.repository import Gtk
+from gi.repository.Adw import ActionRow
 from gi.repository.Gtk import Box, Orientation
 
 from photometric_viewer.gui.widgets.common.gauge import Gauge
@@ -71,3 +73,14 @@ class LuminairePhotometricProperties(Box):
                     hint=_("Ratio of luminous flux emitted by the luminaire in the downward hemisphere to the luminous flux emitted by the luminaire in all directions.")
                 )
             )
+
+        if luminaire.metadata.direct_ratios_for_room_indices:
+            icon = Gtk.Image(icon_name="go-next-symbolic")
+            row = ActionRow(
+                title=_("Direct ratios for room indices"),
+                action_name="app.show_direct_ratios",
+                activatable_widget=icon,
+
+            )
+            row.add_suffix(icon)
+            self.property_list.append(row)

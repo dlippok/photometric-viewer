@@ -18,6 +18,7 @@ from photometric_viewer.gui.dialogs.about import AboutWindow
 from photometric_viewer.gui.dialogs.file_chooser import OpenFileChooser, ExportFileChooser
 from photometric_viewer.gui.dialogs.preferences import PreferencesWindow
 from photometric_viewer.gui.pages.content import PhotometryContentPage
+from photometric_viewer.gui.pages.direct_ratios import DirectRatiosPage
 from photometric_viewer.gui.pages.empty import EmptyPage
 from photometric_viewer.gui.pages.ldc_export import LdcExportPage
 from photometric_viewer.gui.pages.source import SourceViewPage
@@ -51,6 +52,7 @@ class MainWindow(Adw.Window):
         self.source_view_page = SourceViewPage()
         self.values_table_page = IntensityValuesPage()
         self.ldc_export_page = LdcExportPage(on_exported=self.on_export_ldc_response, transient_for=self)
+        self.direct_ratios_page = DirectRatiosPage()
 
         empty_page = EmptyPage()
         self.navigation_view.replace([empty_page])
@@ -96,6 +98,7 @@ class MainWindow(Adw.Window):
         self.install_action("app.show_preferences", None, self.show_preferences)
         self.install_action("app.show_intensity_values", None, self.show_intensity_values)
         self.install_action("app.show_source", None, self.show_source)
+        self.install_action("app.show_direct_ratios", None, self.show_direct_ratios)
         self.install_action("app.export_luminaire_as_json", None, self.show_json_export_file_chooser)
         self.install_action("app.export_intensities_as_csv", None, self.show_csv_export_file_chooser)
         self.install_action("app.export_ldc_as_image", None, self.show_ldc_export_page)
@@ -107,6 +110,7 @@ class MainWindow(Adw.Window):
 
         self.action_set_enabled("app.show_intensity_values", False)
         self.action_set_enabled("app.show_source", False)
+        self.action_set_enabled("app.show_direct_ratios", False)
         self.action_set_enabled("app.export_luminaire_as_json", False)
         self.action_set_enabled("app.export_intensities_as_csv", False)
         self.action_set_enabled("app.export_ldc_as_image", False)
@@ -125,6 +129,7 @@ class MainWindow(Adw.Window):
         self.source_view_page.set_photometry(luminaire)
         self.values_table_page.set_photometry(luminaire)
         self.ldc_export_page.set_photometry(luminaire)
+        self.direct_ratios_page.set_photometry(luminaire)
 
         self.opened_photometry = luminaire
 
@@ -231,6 +236,7 @@ class MainWindow(Adw.Window):
 
                 self.action_set_enabled("app.show_intensity_values", True)
                 self.action_set_enabled("app.show_source", True)
+                self.action_set_enabled("app.show_direct_ratios", True)
                 self.action_set_enabled("app.export_luminaire_as_json", True)
                 self.action_set_enabled("app.export_intensities_as_csv", True)
                 self.action_set_enabled("app.export_ldc_as_image", True)
@@ -261,6 +267,9 @@ class MainWindow(Adw.Window):
 
     def show_source(self, *args):
         self.navigation_view.push(self.source_view_page)
+
+    def show_direct_ratios(self, *args):
+        self.navigation_view.push(self.direct_ratios_page)
 
     def show_intensity_values(self, *args):
         self.navigation_view.push(self.values_table_page)
