@@ -84,3 +84,14 @@ class LuminairePhotometricProperties(Box):
             )
             row.add_suffix(icon)
             self.property_list.append(row)
+
+        if luminaire.intensity_values:
+            icon = Gtk.Image(icon_name="go-next-symbolic")
+            row = ActionRow(
+                title=_("Intensity values"),
+                action_name="app.show_intensity_values",
+                activatable_widget=icon,
+
+            )
+            row.add_suffix(icon)
+            self.property_list.append(row)
