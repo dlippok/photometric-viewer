@@ -1,6 +1,7 @@
 from typing import List
 
-from photometric_viewer.model.luminaire import Luminaire, LuminaireGeometry, Shape, LuminousOpeningGeometry, LuminousOpeningShape, \
+from photometric_viewer.model.luminaire import Luminaire, LuminaireGeometry, Shape, LuminousOpeningGeometry, \
+    LuminousOpeningShape, \
     LuminairePhotometricProperties, Calculable, Lamps, PhotometryMetadata, FileFormat, Symmetry, LuminaireType
 from photometric_viewer.model.units import LengthUnits
 from photometric_viewer.photometry.ldt.model import LdtContent, LampSet
@@ -9,15 +10,23 @@ from photometric_viewer.photometry.ldt.model import LdtContent, LampSet
 def _extract_intensity(intensities: List[float]) -> float | None:
     return intensities.pop(0) if intensities else None
 
-def _extract_candela_values(content: LdtContent) -> dict[tuple[float, float], float]:
-    is_absolute = any(lamp_set.number_of_lamps < 0 for lamp_set in content.lamp_sets)
 
+def _is_absolute(content: LdtContent):
+    return any(
+        lamp_set.number_of_lamps is not None
+        and lamp_set.number_of_lamps < 0
+        for lamp_set
+        in content.lamp_sets
+    )
+
+
+def _extract_candela_values(content: LdtContent) -> dict[tuple[float, float], float]:
     symmetry = _extract_symmetry(content)
 
     c_angles = [c for c in content.c_angles if c is not None]
     gamma_angles = [g for g in content.gamma_angles if g is not None]
 
-    if content.lamp_sets and is_absolute:
+    if content.lamp_sets and _is_absolute(content):
         factor = content.lamp_sets[0].total_lumens / 1000
     else:
         factor = 1
@@ -126,7 +135,7 @@ def _extract_luminous_opening_geometry(content: LdtContent) -> LuminousOpeningGe
 
 def _extract_lamp_set(lamp_set: LampSet) -> Lamps:
     return Lamps(
-        number_of_lamps=abs(lamp_set.number_of_lamps),
+        number_of_lamps=abs(lamp_set.number_of_lamps) if lamp_set.number_of_lamps else None,
         lumens_per_lamp=lamp_set.total_lumens / max(1, lamp_set.number_of_lamps) if lamp_set.total_lumens else None,
         wattage=lamp_set.wattage,
         color=lamp_set.light_color,
@@ -163,9 +172,7 @@ def _extract_lor(content: LdtContent) -> Calculable:
 
 
 def _extract_luminous_flux(content: LdtContent) -> Calculable:
-    is_absolute = any(lamp_set.number_of_lamps < 0 for lamp_set in content.lamp_sets)
-
-    if not is_absolute:
+    if not _is_absolute(content):
         return Calculable(None)
 
     if content.lamp_sets and content.lamp_sets[0].total_lumens:
@@ -175,9 +182,7 @@ def _extract_luminous_flux(content: LdtContent) -> Calculable:
 
 
 def _extract_efficacy(content: LdtContent) -> Calculable:
-    is_absolute = any(lamp_set.number_of_lamps < 0 for lamp_set in content.lamp_sets)
-
-    if not is_absolute:
+    if not _is_absolute(content):
         return Calculable(None)
 
     if content.lamp_sets and content.lamp_sets[0].total_lumens and content.lamp_sets[0].wattage:
@@ -201,8 +206,6 @@ def _extract_symmetry(content: LdtContent) -> Symmetry:
 
 
 def convert_content(content: LdtContent) -> Luminaire:
-    is_absolute = any(lamp_set.number_of_lamps < 0 for lamp_set in content.lamp_sets)
-
     return Luminaire(
         gamma_angles=content.gamma_angles,
         c_planes=content.c_angles,
@@ -210,7 +213,7 @@ def convert_content(content: LdtContent) -> Luminaire:
         geometry=_extract_luminaire_geometry(content),
         luminous_opening_geometry=_extract_luminous_opening_geometry(content),
         photometry=LuminairePhotometricProperties(
-            is_absolute=is_absolute,
+            is_absolute=_is_absolute(content),
             luminous_flux=_extract_luminous_flux(content),
             lor=Calculable(content.lor_percent).from_percent(),
             dff=Calculable(content.dff_percent).from_percent(),

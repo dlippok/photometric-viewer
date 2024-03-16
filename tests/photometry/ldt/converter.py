@@ -21,6 +21,33 @@ class TestConvertContent(unittest.TestCase):
 
         self.assertEqual(convert_content(content), expected)
 
+    def test_empty_lamp(self):
+        content = LdtContent(
+            lamp_sets=[
+                LampSet(
+                    number_of_lamps=None,
+                    type_of_lamp=None,
+                    total_lumens=None,
+                    light_color=None,
+                    cri=None,
+                    wattage=None
+                )
+            ]
+        )
+
+        expected = Luminaire(
+            photometry=LuminairePhotometricProperties(),
+            lamps=[Lamps(
+                number_of_lamps=None
+            )],
+            metadata=PhotometryMetadata(
+                file_format=FileFormat.LDT,
+                file_units=LengthUnits.MILLIMETERS
+            )
+        )
+
+        self.assertEqual(convert_content(content), expected)
+
     def test_full_luminaire(self):
         content = LdtContent(
             header="Manufacturer",
