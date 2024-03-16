@@ -1,4 +1,5 @@
 from gi.repository import Gtk
+from gi.repository.Adw import ActionRow
 from gi.repository.Gtk import Box, Orientation, Label, SelectionMode, Image
 from gi.repository.Pango import WrapMode
 

@@ -59,5 +59,4 @@ class PhotometryContentPage(BasePage):
 
     def update_settings(self, settings: Settings):
         self.header.update_settings(settings)
-        self.lamps_and_ballast.update_settings(settings)
         self.geometry.update_settings(settings)
