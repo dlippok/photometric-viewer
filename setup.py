@@ -21,7 +21,10 @@ setup(name='photometric-viewer',
               'assets/language-specs/ies.lang',
               'assets/language-specs/ldt.lang',
               'assets/icons/hicolor/scalable/actions/ballast-symbolic.svg',
-              'assets/icons/hicolor/scalable/actions/lamp-symbolic.svg'
+              'assets/icons/hicolor/scalable/actions/direct-ratios-symbolic.svg',
+              'assets/icons/hicolor/scalable/actions/photometry-symbolic.svg',
+              'assets/icons/hicolor/scalable/actions/intensities-symbolic.svg',
+              'assets/icons/hicolor/scalable/actions/lamp-symbolic.svg',
           ],
       },
       zip_safe=False)
