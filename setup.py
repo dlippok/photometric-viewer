@@ -25,6 +25,7 @@ setup(name='photometric-viewer',
               'assets/icons/hicolor/scalable/actions/photometry-symbolic.svg',
               'assets/icons/hicolor/scalable/actions/intensities-symbolic.svg',
               'assets/icons/hicolor/scalable/actions/lamp-symbolic.svg',
+              'assets/icons/hicolor/scalable/actions/geometry-symbolic.svg',
           ],
       },
       zip_safe=False)

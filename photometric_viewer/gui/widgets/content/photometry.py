@@ -42,7 +42,7 @@ class LuminairePhotometricProperties(Box):
             )
             row.add_prefix(Gtk.Image(icon_name="photometry-symbolic"))
 
-            if photometric_properties.luminous_flux:
+            if photometric_properties.luminous_flux.value:
                 row.add_suffix(Label(label=f"{photometric_properties.luminous_flux.value:.0f} lm"))
 
             row.add_suffix(icon)
@@ -71,3 +71,13 @@ class LuminairePhotometricProperties(Box):
             row.add_prefix(Gtk.Image(icon_name="intensities-symbolic"))
             row.add_suffix(icon)
             self.property_list.append(row)
+
+        icon = Gtk.Image(icon_name="go-next-symbolic")
+        row = ActionRow(
+            title=_("Geometry"),
+            action_name="app.show_geometry",
+            activatable_widget=icon,
+        )
+        row.add_prefix(Gtk.Image(icon_name="geometry-symbolic"))
+        row.add_suffix(icon)
+        self.property_list.append(row)

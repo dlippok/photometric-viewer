@@ -21,9 +21,10 @@ from photometric_viewer.gui.pages.ballast_set import BallastPage
 from photometric_viewer.gui.pages.content import PhotometryContentPage
 from photometric_viewer.gui.pages.direct_ratios import DirectRatiosPage
 from photometric_viewer.gui.pages.empty import EmptyPage
-from photometric_viewer.gui.pages.photometry import PhotometryPage
+from photometric_viewer.gui.pages.geometry import GeometryPage
 from photometric_viewer.gui.pages.lamp_set import LampSetPage
 from photometric_viewer.gui.pages.ldc_export import LdcExportPage
+from photometric_viewer.gui.pages.photometry import PhotometryPage
 from photometric_viewer.gui.pages.source import SourceViewPage
 from photometric_viewer.gui.pages.values import IntensityValuesPage
 from photometric_viewer.model.luminaire import Luminaire
@@ -57,6 +58,7 @@ class MainWindow(Adw.Window):
         self.ldc_export_page = LdcExportPage(on_exported=self.on_export_ldc_response, transient_for=self)
         self.direct_ratios_page = DirectRatiosPage()
         self.photometry_page = PhotometryPage()
+        self.geometry_page = GeometryPage()
         self.lamp_set_page = LampSetPage()
         self.ballast_page = BallastPage()
 
@@ -106,6 +108,7 @@ class MainWindow(Adw.Window):
         self.install_action("app.show_source", None, self.show_source)
         self.install_action("app.show_direct_ratios", None, self.show_direct_ratios)
         self.install_action("app.show_photometry", None, self.show_photometry)
+        self.install_action("app.show_geometry", None, self.show_geometry)
         self.install_action("app.show_lamp_set", "i", self.show_lamp_set)
         self.install_action("app.show_ballast", "i", self.show_ballast)
         self.install_action("app.export_luminaire_as_json", None, self.show_json_export_file_chooser)
@@ -121,6 +124,7 @@ class MainWindow(Adw.Window):
         self.action_set_enabled("app.show_source", False)
         self.action_set_enabled("app.show_direct_ratios", False)
         self.action_set_enabled("app.show_photometry", False)
+        self.action_set_enabled("app.show_geometry", False)
         self.action_set_enabled("app.show_lamp_set", False)
         self.action_set_enabled("app.export_luminaire_as_json", False)
         self.action_set_enabled("app.export_intensities_as_csv", False)
@@ -142,12 +146,14 @@ class MainWindow(Adw.Window):
         self.ldc_export_page.set_photometry(luminaire)
         self.direct_ratios_page.set_photometry(luminaire)
         self.photometry_page.set_photometry(luminaire)
+        self.geometry_page.set_photometry(luminaire)
 
         self.opened_photometry = luminaire
 
     def update_settings(self):
         self.luminaire_content_page.update_settings(self.settings)
         self.lamp_set_page.update_settings(self.settings)
+        self.geometry_page.update_settings(self.settings)
         self.gsettings.save(self.settings)
 
     def on_open_clicked(self, *args):
@@ -242,6 +248,7 @@ class MainWindow(Adw.Window):
 
                 self.display_photometry_content(photometry)
                 self.luminaire_content_page.update_settings(self.settings)
+                self.geometry_page.update_settings(self.settings)
                 self.lamp_set_page.update_settings(self.settings)
 
                 self.set_title(title=file.get_basename())
@@ -252,6 +259,7 @@ class MainWindow(Adw.Window):
                 self.action_set_enabled("app.show_source", True)
                 self.action_set_enabled("app.show_direct_ratios", True)
                 self.action_set_enabled("app.show_photometry", True)
+                self.action_set_enabled("app.show_geometry", True)
                 self.action_set_enabled("app.show_lamp_set", True)
                 self.action_set_enabled("app.export_luminaire_as_json", True)
                 self.action_set_enabled("app.export_intensities_as_csv", True)
@@ -289,6 +297,9 @@ class MainWindow(Adw.Window):
 
     def show_photometry(self, *args):
         self.navigation_view.push(self.photometry_page)
+
+    def show_geometry(self, *args):
+        self.navigation_view.push(self.geometry_page)
 
     def show_lamp_set(self, window, action, params: GLib.Variant, *args):
         if self.opened_photometry is None:

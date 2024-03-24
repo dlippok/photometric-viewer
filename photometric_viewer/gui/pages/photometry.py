@@ -10,7 +10,7 @@ from photometric_viewer.utils import calc
 
 class PhotometryPage(BasePage):
     def __init__(self, **kwargs):
-        super().__init__(_("Direct ratios for room indices"), **kwargs)
+        super().__init__(_("Photometric Properties"), **kwargs)
         self.luminaire = None
 
         self.property_list = PropertyList()
