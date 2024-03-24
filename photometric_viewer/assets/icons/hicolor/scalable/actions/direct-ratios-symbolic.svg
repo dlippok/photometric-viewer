@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="16"
+   height="16"
+   viewBox="0 0 4.2333333 4.2333335"
+   version="1.1"
+   id="svg5"
+   sodipodi:docname="direct-ratios-symbolic.svg"
+   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="true"
+     units="px"
+     showguides="true"
+     inkscape:zoom="18.013744"
+     inkscape:cx="6.3007447"
+     inkscape:cy="18.12505"
+     inkscape:window-width="1920"
+     inkscape:window-height="1011"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1">
+    <inkscape:grid
+       id="grid1"
+       units="mm"
+       originx="0"
+       originy="0"
+       spacingx="0.99999999"
+       spacingy="1"
+       empcolor="#0099e5"
+       empopacity="0.30196078"
+       color="#0099e5"
+       opacity="0.14901961"
+       empspacing="5"
+       dotted="false"
+       gridanglex="30"
+       gridanglez="30"
+       visible="true" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2">
+    <linearGradient
+       id="linearGradient13462"
+       inkscape:swatch="solid">
+      <stop
+         style="stop-color:#b94545;stop-opacity:1;"
+         offset="0"
+         id="stop13460" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient12624"
+       inkscape:swatch="solid">
+      <stop
+         style="stop-color:#aa8800;stop-opacity:1;"
+         offset="0"
+         id="stop12622" />
+    </linearGradient>
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#000000;fill-rule:evenodd;stroke-width:0.18324;stroke-linecap:round;stroke-linejoin:round"
+       id="rect41"
+       width="0.52916664"
+       height="1.5875"
+       x="0.79917109"
+       y="0.25961924"
+       ry="0" />
+    <rect
+       style="fill:#000000;fill-rule:evenodd;stroke-width:0.18324;stroke-linecap:round;stroke-linejoin:round"
+       id="rect44"
+       width="0.52916664"
+       height="1.5875"
+       x="0.79917109"
+       y="2.3909738"
+       ry="0" />
+    <rect
+       style="fill:#000000;fill-rule:evenodd;stroke-width:0.18324;stroke-linecap:round;stroke-linejoin:round"
+       id="rect45"
+       width="0.52916664"
+       height="1.5875"
+       x="1.8575046"
+       y="0.25961924"
+       ry="0" />
+    <rect
+       style="fill:#000000;fill-rule:evenodd;stroke-width:0.18324;stroke-linecap:round;stroke-linejoin:round"
+       id="rect46"
+       width="0.52916664"
+       height="1.5875"
+       x="1.8575046"
+       y="2.3909738"
+       ry="0" />
+    <rect
+       style="fill:#000000;fill-rule:evenodd;stroke-width:0.18324;stroke-linecap:round;stroke-linejoin:round"
+       id="rect47"
+       width="0.52916664"
+       height="1.5875"
+       x="2.9158392"
+       y="0.25961924"
+       ry="0" />
+    <rect
+       style="fill:#000000;fill-rule:evenodd;stroke-width:0.18324;stroke-linecap:round;stroke-linejoin:round"
+       id="rect48"
+       width="0.52916664"
+       height="1.5875"
+       x="2.9158392"
+       y="2.3909738"
+       ry="0" />
+  </g>
+</svg>

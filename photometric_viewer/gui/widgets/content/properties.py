@@ -1,4 +1,5 @@
 from gi.repository import Gtk
+from gi.repository.Adw import ActionRow
 from gi.repository.Gtk import Orientation
 
 from photometric_viewer.gui.widgets.common.header import Header
@@ -23,7 +24,17 @@ class LuminaireProperties(Gtk.Box):
         for key, value in luminaire.metadata.additional_properties.items():
             if is_url(value):
                 continue
-            self.property_list.add(key.title().replace("_", " ").strip(), value)
+
+            row = ActionRow(
+                title=key.title().replace("_", " ").strip(),
+                subtitle=value,
+                title_selectable=True,
+                subtitle_selectable=True,
+                css_classes=["property"] if value else []
+
+            )
+
+            self.property_list.append(row)
             children += 1
 
         self.set_visible(children > 0)

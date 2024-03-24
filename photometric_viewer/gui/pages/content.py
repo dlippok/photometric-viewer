@@ -3,7 +3,6 @@ from gi.repository.Gtk import Orientation, PolicyType, ScrolledWindow
 
 from photometric_viewer.gui.pages.base import BasePage
 from photometric_viewer.gui.widgets.common.header import Header
-from photometric_viewer.gui.widgets.content.geometry import LuminaireGeometryProperties
 from photometric_viewer.gui.widgets.content.header import LuminaireHeader
 from photometric_viewer.gui.widgets.content.lamps import LampAndBallast
 from photometric_viewer.gui.widgets.content.photometry import LuminairePhotometricProperties
@@ -17,7 +16,6 @@ class PhotometryContentPage(BasePage):
         super().__init__(_("Photometry"), **kwargs)
         self.header = LuminaireHeader()
         self.photometric_properties = LuminairePhotometricProperties()
-        self.geometry = LuminaireGeometryProperties()
         self.lamps_and_ballast = LampAndBallast()
         self.properties = LuminaireProperties()
 
@@ -32,9 +30,6 @@ class PhotometryContentPage(BasePage):
 
         box.append(self.header)
         box.append(self.photometric_properties)
-
-        box.append(Header(label=_("Geometry"), xalign=0))
-        box.append(self.geometry)
 
         box.append(Header(label=_("Lamps and ballast"), xalign=0))
         box.append(self.lamps_and_ballast)
@@ -53,10 +48,8 @@ class PhotometryContentPage(BasePage):
     def set_photometry(self, luminaire: Luminaire):
         self.header.set_photometry(luminaire)
         self.photometric_properties.set_photometry(luminaire)
-        self.geometry.set_photometry(luminaire)
         self.lamps_and_ballast.set_photometry(luminaire)
         self.properties.set_photometry(luminaire)
 
     def update_settings(self, settings: Settings):
         self.header.update_settings(settings)
-        self.geometry.update_settings(settings)
