@@ -69,8 +69,8 @@
         <color type="primary" scheme_preference="dark">#1a5fb4</color>
     </branding>
     <screenshots>
-        <screenshot>
-            <image type="default">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Main.png</image>
+        <screenshot type="default">
+            <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Main.png</image>
             <caption>Main application window</caption>
         </screenshot>
         <screenshot>
