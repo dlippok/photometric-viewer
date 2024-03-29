@@ -112,6 +112,27 @@
     </requires>
 
     <releases>
+        <release version="2.1.2" date="2024-03-29">
+            <description>
+                <ul>
+                    <li>Show direct ratios for room indices from EULUMDAT files</li>
+                    <li xml:lang="de">Fügt Anzeige für Direkt-Nutzlichtstrom-Anteile für Raumindizien aus EULUMDAT-Dateien hinzu</li>
+                    <li xml:lang="pl">Dodano wskaźniki pomieszczeń dla obliczeń metodą lumenów z plików EULUMDAT</li>
+                    <li>Cleanup main content page of the opened file and move detailed information into submenus</li>
+                    <li xml:lang="de">Vereinfacht die Hauptseite des geöffneten Dateiinhalts und verschiebe detaillierte Informationen in Untermenüs</li>
+                    <li xml:lang="pl">Uproszcono stronę główną stronę otwartego pliku i przenosi szczegółowe informacje do podmenu</li>
+                    <li>Bugfix: Support opening incomplete and faulty photometric files without crashing</li>
+                    <li xml:lang="de">Fehlerbehebung: Unterstützt das Öffnen unvollständiger und fehlerhafter Photometriedateien ohne Absturz</li>
+                    <li xml:lang="pl">Naprawiono błąd uniemożliwiający otwarcie niekompletnych i uszkodzonych plików fotometrycznych bez awarii</li>
+                    <li>Bugfix: Return to start page after exporting light distribution curve</li>
+                    <li xml:lang="de">Fehlerbehebung: Öffnet die Startseite nach dem Exportieren der Lichtverteilungskurve</li>
+                    <li xml:lang="pl">Naprawiono błąd powrotu do strony startowej po wyeksportowaniu krzywej światłości</li>
+                    <li>Add branding color information</li>
+                    <li xml:lang="de">Fügt Branding-Farben für die Anwendung hinzu</li>
+                    <li xml:lang="pl">Dodano informacje o kolorach marki</li>
+                </ul>
+            </description>
+        </release>
         <release version="2.1.1" date="2024-01-27">
             <description>
                 <p>Fixed bug preventing the application from starting when installed via Flathub.</p>
