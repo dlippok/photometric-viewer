@@ -71,27 +71,35 @@
     <screenshots>
         <screenshot>
             <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Main.png</image>
+            <caption>Main application window</caption>
         </screenshot>
         <screenshot>
             <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Properties.png</image>
+            <caption>Property list</caption>
         </screenshot>
         <screenshot>
             <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Lamps.png</image>
+            <caption>Lamps</caption>
         </screenshot>
         <screenshot>
             <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Intensities.png</image>
+            <caption>Intensity values</caption>
         </screenshot>
         <screenshot>
             <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Source.png</image>
+            <caption>File source</caption>
         </screenshot>
         <screenshot>
             <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/ExportLdc.png</image>
+            <caption>Export light distribution curve</caption>
         </screenshot>
     </screenshots>
     <project_license>MIT</project_license>
     <metadata_license>CC0-1.0</metadata_license>
 
-    <developer_name>Damian Lippok</developer_name>
+    <developer>
+        <name>Damian Lippok</name>
+    </developer>
     <update_contact>mail.dalee@gmail.com</update_contact>
 
     <url type="homepage">https://github.com/dlippok/photometric-viewer</url>
