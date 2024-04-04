@@ -35,33 +35,29 @@
         </p>
         <ul>
             <li>Light distribution curves</li>
+            <li xml:lang="de">Lichtverteilungskurve</li>
+            <li xml:lang="pl">Krzywe fotometrzyczne</li>
             <li>General information (Catalog Number, Manufacturer, Description, etc.)</li>
+            <li xml:lang="de">Allgemeine Informationen (Katalognummer, Hersteller, Beschreibung, usw.)</li>
+            <li xml:lang="pl">Podstawowe informacje (numer katalogowy, producent, opis, itd.)</li>
             <li>Photometric properties (Light Output Ratio and Downward Flux Fraction)</li>
+            <li xml:lang="de">Photometishce Eigenschaften</li>
+            <li xml:lang="pl">Właściwości fotometryczne</li>
             <li>Lamps and ballast information</li>
+            <li xml:lang="de">Information über Lampen und Vorschaltgeräte</li>
+            <li xml:lang="pl">Informacje o lampach i statecznikach</li>
             <li>Luminaire and luminous opening geometry information</li>
+            <li xml:lang="de">Abmessungen der Leuchte und der Lichtaustrittfläche</li>
+            <li xml:lang="pl">Wymiary oprawy oświetleniowej i powierzchni świecącej</li>
             <li>Additional properties (Test number, issue date, test laboratory, etc.)</li>
+            <li xml:lang="de">Zusätzliche Informationen (Testnummer, Datum, Photometrisches Labor, usw.)</li>
+            <li xml:lang="pl">Dodatkowe informacje (numer pomiaru, data, laboratorium, itd.)</li>
             <li>Intensity Values for selected C planes and gamma angles</li>
+            <li xml:lang="de">Candela-Werte für ausgewählte C-Ebenen und Gammawinkel</li>
+            <li xml:lang="pl">Wartości światłości dla wybranych płaszczyzn i kontów gamma</li>
             <li>Raw text source of photometric file</li>
-        </ul>
-        <ul xml:lang="de">
-            <li>Lichtverteilungskurve</li>
-            <li>Allgemeine Informationen (Katalognummer, Hersteller, Beschreibung, usw.)</li>
-            <li>Photometishce Eigenschaften</li>
-            <li>Information über Lampen und Vorschaltgeräte</li>
-            <li>Abmessungen der Leuchte und der Lichtaustrittfläche</li>
-            <li>Zusätzliche Informationen (Testnummer, Datum, Photometrisches Labor, usw.)</li>
-            <li>Candela-Werte für ausgewählte C-Ebenen und Gammawinkel</li>
-            <li>Textinhalt der Photometriedatei</li>
-        </ul>
-        <ul xml:lang="pl">
-            <li>Krzywe fotometrzyczne</li>
-            <li>Podstawowe informacje (numer katalogowy, producent, opis, itd.)</li>
-            <li>Właściwości fotometryczne</li>
-            <li>Informacje o lampach i statecznikach</li>
-            <li>Wymiary oprawy oświetleniowej i powierzchni świecącej</li>
-            <li>Dodatkowe informacje (numer pomiaru, data, laboratorium, itd.)</li>
-            <li>Wartości światłości dla wybranych płaszczyzn i kontów gamma</li>
-            <li>Żródło pliku fotometrycznego</li>
+            <li xml:lang="de">Textinhalt der Photometriedatei</li>
+            <li xml:lang="pl">Żródło pliku fotometrycznego</li>
         </ul>
     </description>
     <branding>
@@ -72,26 +68,38 @@
         <screenshot type="default">
             <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Main.png</image>
             <caption>Main application window</caption>
+            <caption xml:lang="de">Hauptfenster der Anwendung</caption>
+            <caption xml:lang="pl">Główne okno aplikacji</caption>
         </screenshot>
         <screenshot>
             <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Properties.png</image>
             <caption>Property list</caption>
+            <caption xml:lang="de">Eigenschaftenliste</caption>
+            <caption xml:lang="pl">Lista właściwości</caption>
         </screenshot>
         <screenshot>
             <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Lamps.png</image>
-            <caption>Lamps</caption>
+            <caption>Lamp imformation</caption>
+            <caption xml:lang="de">Lampeninformation</caption>
+            <caption xml:lang="pl">Informacje o lampach</caption>
         </screenshot>
         <screenshot>
             <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Intensities.png</image>
             <caption>Intensity values</caption>
+            <caption xml:lang="de">Candela-Werte</caption>
+            <caption xml:lang="pl">Wartości światłości</caption>
         </screenshot>
         <screenshot>
             <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Source.png</image>
             <caption>File source</caption>
+            <caption xml:lang="de">Dateiquelle</caption>
+            <caption xml:lang="pl">Źródło pliku</caption>
         </screenshot>
         <screenshot>
             <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/ExportLdc.png</image>
             <caption>Export light distribution curve</caption>
+            <caption xml:lang="de">Export von Lichtverteilungskurven</caption>
+            <caption xml:lang="pl">Eksport krzywej światłości</caption>
         </screenshot>
     </screenshots>
     <project_license>MIT</project_license>
@@ -106,7 +114,7 @@
     <url type="bugtracker">https://github.com/dlippok/photometric-viewer/issues</url>
     <url type="help">https://github.com/dlippok/photometric-viewer/discussions/categories/q-a</url>
 
-    <content_rating type="oars-1.1" />>
+    <content_rating type="oars-1.1" />
 
     <supports>
         <control>pointing</control>
@@ -124,9 +132,16 @@
     </requires>
 
     <releases>
+        <release version="2.1.3" date="2024-04-04">
+            <description>
+                <p>Fixed translations of application description</p>
+                <p xml:lang="de">Korrigiert Übersetzungen der Anwendungsbeschreibung</p>
+                <p xml:lang="pl">Poprawiono tłumaczenia opisu aplikacji</p>
+            </description>
+        </release>
         <release version="2.1.2" date="2024-03-29">
             <description>
-                <p>>Display direct ratios for room indices, cleanup main content page and fix crashes when opening incomplete or faulty photometric files.</p>
+                <p>Display direct ratios for room indices, cleanup main content page and fix crashes when opening incomplete or faulty photometric files.</p>
                 <p xml:lang="de">Fügt Anzeige für Direkt-Nutzlichtstrom-Anteile für Raumindizien, bereinigt die Hauptinhaltsseite und behebt abstürze beim Öffnen unvollständiger oder fehlerhafter Photometriedateien.</p>
                 <p xml:lang="pl">Dodano wskaźniki pomieszczeń dla obliczeń metodą lumenów, uproszczono stronę główną i naprawiono otwieranie niekompletnych lub błędnych plików fotometrycznych.</p>
             </description>
