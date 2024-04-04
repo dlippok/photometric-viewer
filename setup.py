@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='photometric-viewer',
-      version='2.1.2',
+      version='2.1.3',
       description='Browse content of IES and LDT photometric files',
       url='https://github.com/dlippok/photometric-viewer',
       project_urls={
