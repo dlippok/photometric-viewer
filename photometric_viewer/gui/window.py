@@ -53,6 +53,7 @@ class MainWindow(Adw.Window):
         self.navigation_view = Adw.NavigationView()
 
         self.opened_photometry: Optional[Luminaire] = None
+        self.opened_file: Gio.File | None = None
 
         self.luminaire_content_page = PhotometryContentPage()
         self.source_view_page = SourceViewPage()
@@ -123,8 +124,9 @@ class MainWindow(Adw.Window):
         self.install_action("app.export_ldc_as_image", None, self.show_ldc_export_page)
         self.install_action("app.export_as_ldt", None, self.show_ldt_export_file_chooser)
         self.install_action("app.export_as_ies", None, self.show_ies_export_file_chooser)
-        self.install_action("app.open", None, self.on_open_clicked)
-        self.install_action("app.save_as", None, self.on_save_as_clicked)
+        self.install_action("app.open", None, self.on_open)
+        self.install_action("app.save", None, self.on_save)
+        self.install_action("app.save_as", None, self.on_save_as)
         self.install_action("app.open_url", "s", self.on_open_url)
 
 
@@ -139,6 +141,7 @@ class MainWindow(Adw.Window):
         self.action_set_enabled("app.export_ldc_as_image", False)
         self.action_set_enabled("app.export_as_ldt", False)
         self.action_set_enabled("app.export_as_ies", False)
+        self.action_set_enabled("app.save", False)
         self.action_set_enabled("app.save_as", False)
         self.action_set_enabled("app.open_url", True)
 
@@ -165,10 +168,19 @@ class MainWindow(Adw.Window):
         self.geometry_page.update_settings(self.settings)
         self.gsettings.save(self.settings)
 
-    def on_open_clicked(self, *args):
+    def on_open(self, *args):
         self.open_file_chooser.show()
 
-    def on_save_as_clicked(self, *args):
+    def on_save(self, *args):
+        if self.opened_file:
+            buffer: Gtk.TextBuffer = self.source_view_page.source_text_view.get_buffer()
+            start = buffer.get_start_iter()
+            end = buffer.get_end_iter()
+            write_string(self.opened_file, buffer.get_text(start, end, True))
+        else:
+            self.on_save_as()
+
+    def on_save_as(self, *args):
         self.save_as_file_chooser.show()
 
     def on_open_url(self, window, action, params: GLib.Variant, *args):
@@ -186,7 +198,7 @@ class MainWindow(Adw.Window):
             start = buffer.get_start_iter()
             end = buffer.get_end_iter()
             write_string(dialog.get_file(), buffer.get_text(start, end, True))
-            self.update_filename(dialog.get_file())
+            self.update_file(dialog.get_file())
 
     def on_export_json_response(self, dialog: FileChooserDialog, response):
         if not self.opened_photometry:
@@ -286,6 +298,7 @@ class MainWindow(Adw.Window):
             self.action_set_enabled("app.export_ldc_as_image", True)
             self.action_set_enabled("app.export_as_ldt", True)
             self.action_set_enabled("app.export_as_ies", True)
+            self.action_set_enabled("app.save", True)
             self.action_set_enabled("app.save_as", True)
 
             self.show_start_page()
@@ -293,7 +306,8 @@ class MainWindow(Adw.Window):
             self.is_opening = False
 
 
-    def update_filename(self, file: Gio.File):
+    def update_file(self, file: Gio.File):
+        self.opened_file = file
         filename = file.get_basename()
         self.set_title(title=filename)
         self.window_title.set_subtitle(filename)
@@ -307,7 +321,7 @@ class MainWindow(Adw.Window):
         try:
             with gio_file_stream(file) as f:
                 self.open_stream(f)
-                self.update_filename(file)
+                self.update_file(file)
 
         except GLib.GError as e:
             logging.exception("Could not open photometric file")
