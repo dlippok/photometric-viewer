@@ -30,10 +30,7 @@ class PhotometryContentPage(BasePage):
 
         box.append(self.header)
         box.append(self.photometric_properties)
-
-        box.append(Header(label=_("Lamps and ballast"), xalign=0))
         box.append(self.lamps_and_ballast)
-
         box.append(self.properties)
 
         clamp = Adw.Clamp(maximum_size=800)

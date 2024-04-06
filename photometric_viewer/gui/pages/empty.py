@@ -31,7 +31,6 @@ class EmptyPage(BasePage):
             css_classes=["pill"]
         ))
 
-
         box.append(buttons_box)
 
         clamp = Adw.Clamp()

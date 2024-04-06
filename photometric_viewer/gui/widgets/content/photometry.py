@@ -25,13 +25,15 @@ class LuminairePhotometricProperties(Box):
 
     def set_photometry(self, luminaire: Luminaire):
         self.property_list.clear()
+        self.set_visible(False)
+
         photometric_properties = calc.calculate_photometry(luminaire)
 
         if any((
-            photometric_properties.luminous_flux,
-            photometric_properties.lor,
-            photometric_properties.efficacy,
-            photometric_properties.dff
+            photometric_properties.luminous_flux.value,
+            photometric_properties.lor.value,
+            photometric_properties.efficacy.value,
+            photometric_properties.dff.value
         )):
             icon = Gtk.Image(icon_name="go-next-symbolic")
             row = ActionRow(
@@ -47,6 +49,7 @@ class LuminairePhotometricProperties(Box):
 
             row.add_suffix(icon)
             self.property_list.append(row)
+            self.set_visible(True)
 
         if luminaire.metadata.direct_ratios_for_room_indices:
             icon = Gtk.Image(icon_name="go-next-symbolic")
@@ -59,6 +62,7 @@ class LuminairePhotometricProperties(Box):
             row.add_prefix(Gtk.Image(icon_name="direct-ratios-symbolic"))
             row.add_suffix(icon)
             self.property_list.append(row)
+            self.set_visible(True)
 
         if luminaire.intensity_values:
             icon = Gtk.Image(icon_name="go-next-symbolic")
@@ -71,13 +75,16 @@ class LuminairePhotometricProperties(Box):
             row.add_prefix(Gtk.Image(icon_name="intensities-symbolic"))
             row.add_suffix(icon)
             self.property_list.append(row)
+            self.set_visible(True)
 
-        icon = Gtk.Image(icon_name="go-next-symbolic")
-        row = ActionRow(
-            title=_("Geometry"),
-            action_name="app.show_geometry",
-            activatable_widget=icon,
-        )
-        row.add_prefix(Gtk.Image(icon_name="geometry-symbolic"))
-        row.add_suffix(icon)
-        self.property_list.append(row)
+        if luminaire.geometry or luminaire.luminous_opening_geometry:
+            icon = Gtk.Image(icon_name="go-next-symbolic")
+            row = ActionRow(
+                title=_("Geometry"),
+                action_name="app.show_geometry",
+                activatable_widget=icon,
+            )
+            row.add_prefix(Gtk.Image(icon_name="geometry-symbolic"))
+            row.add_suffix(icon)
+            self.property_list.append(row)
+            self.set_visible(True)

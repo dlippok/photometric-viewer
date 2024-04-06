@@ -1,50 +1,10 @@
-from gi.overrides.Gtk import Builder
-from gi.repository import Gio, Gtk
+from gi.repository import Gio
+from gi.repository.Adw import ButtonContent
 from gi.repository.GLib import Variant
-from gi.repository.Gtk import Box, Orientation, MenuButton
+from gi.repository.Gtk import Box, Orientation, MenuButton, Button
 
 from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.utils.urls import is_url
-
-MENU_MODELS = """
-<?xml version="1.0"?>
-<interface>
-    <menu id='header-menu-export'>
-        <section>
-            <item>
-                <attribute name='label' translatable='yes'>As EULUMDAT</attribute>
-                <attribute name='action'>app.export_as_ldt</attribute>
-            </item>
-            <item>
-                <attribute name='label' translatable='yes'>As IESNA</attribute>
-                <attribute name='action'>app.export_as_ies</attribute>
-            </item>
-            <item>
-                <attribute name='label' translatable='yes'>Light distribution curve</attribute>
-                <attribute name='action'>app.export_ldc_as_image</attribute>
-            </item>
-            <item>
-                <attribute name='label' translatable='yes'>Intensity values</attribute>
-                <attribute name='action'>app.export_intensities_as_csv</attribute>
-            </item>
-            <item>
-                <attribute name='label' translatable='yes'>Luminaire data</attribute>
-                <attribute name='action'>app.export_luminaire_as_json</attribute>
-            </item>
-        </section>
-    </menu>
-    <menu id='header-menu-other'>
-        <section>
-            <item>
-                <attribute name='label' translatable='yes'>Show source</attribute>
-                <attribute name='action'>app.show_source</attribute>
-            </item>
-        </section>
-    </menu>
-    
-</interface>
-"""
-
 
 
 class HeaderButtons(Box):
@@ -54,17 +14,6 @@ class HeaderButtons(Box):
             spacing=8,
         )
 
-        builder: Builder = Builder()
-        builder.set_translation_domain("io.github.dlippok.photometric-viewer")
-        builder.add_from_string(MENU_MODELS)
-
-        export_button = MenuButton(
-            icon_name="document-save-as-symbolic",
-            menu_model=builder.get_object("header-menu-export"),
-            css_classes=["circular"],
-            tooltip_text=_("Export")
-        )
-
         self.url_button = MenuButton(
             icon_name = "web-browser-symbolic",
             css_classes=["circular"],
@@ -72,16 +21,21 @@ class HeaderButtons(Box):
             visible=False
         )
 
-        other_menu_button = MenuButton(
-            icon_name="open-menu",
-            menu_model=builder.get_object("header-menu-other"),
-            css_classes=["circular"],
-            tooltip_text=_("Menu")
+        edit_source_button = Button(
+            css_classes=["pill"],
+            tooltip_text=_("Menu"),
+            action_name="app.show_source"
+
+        )
+        edit_source_button.set_child(
+            ButtonContent(
+                icon_name="document-edit-symbolic",
+                label=_("Edit source"),
+            )
         )
 
-        self.append(export_button)
         self.append(self.url_button)
-        self.append(other_menu_button)
+        self.append(edit_source_button)
 
     def set_photometry(self, luminaire: Luminaire):
         urls = {

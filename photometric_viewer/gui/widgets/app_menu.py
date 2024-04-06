@@ -17,7 +17,31 @@ class ApplicationMenuButton(Gtk.MenuButton):
                     <attribute name='label' translatable='yes'>Save as...</attribute>
                     <attribute name='action'>app.save_as</attribute>
                 </item>
-                
+                    <submenu>
+                        <attribute name='label' translatable='yes'>Export</attribute>
+                        <section>
+                            <item>
+                                <attribute name='label' translatable='yes'>As EULUMDAT</attribute>
+                                <attribute name='action'>app.export_as_ldt</attribute>
+                            </item>
+                            <item>
+                                <attribute name='label' translatable='yes'>As IESNA</attribute>
+                                <attribute name='action'>app.export_as_ies</attribute>
+                            </item>
+                            <item>
+                                <attribute name='label' translatable='yes'>Light distribution curve</attribute>
+                                <attribute name='action'>app.export_ldc_as_image</attribute>
+                            </item>
+                            <item>
+                                <attribute name='label' translatable='yes'>Intensity values</attribute>
+                                <attribute name='action'>app.export_intensities_as_csv</attribute>
+                            </item>
+                            <item>
+                                <attribute name='label' translatable='yes'>Luminaire data</attribute>
+                                <attribute name='action'>app.export_luminaire_as_json</attribute>
+                            </item>
+                        </section>
+                    </submenu>
             </section>
             <section>
                 <item>
