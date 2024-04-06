@@ -7,16 +7,16 @@ msgstr ""
 "Project-Id-Version: 1.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-16 14:10+0100\n"
-"PO-Revision-Date: 2024-03-16 14:19+0100\n"
+"PO-Revision-Date: 2024-04-06 19:04+0200\n"
 "Last-Translator: Damian Lippok <mail.dalee@gmail.com>\n"
-"Language-Team: Polish <>\n"
+"Language-Team: Polish <mail.dalee@gmail.com>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2)\n"
-"X-Generator: Gtranslator 45.3\n"
+"X-Generator: Gtranslator 46.0\n"
 
 #: photometric_viewer/gui/pages/values.py:11
 #: photometric_viewer/gui/widgets/app_menu.py
@@ -1083,6 +1083,14 @@ msgstr "Nazwa pliku"
 #: photometric_viewer/gui/widgets/app_menu.py
 msgid "Show source"
 msgstr "Pokaż źródło"
+
+#: photometric_viewer/gui/widgets/app_menu.py
+msgid "Save"
+msgstr "Zapisz"
+
+#: photometric_viewer/gui/widgets/app_menu.py
+msgid "Save as..."
+msgstr "Zapisz jako ..."
 
 #: photometric_viewer/gui/widgets/app_menu.py
 msgid "Preferences"

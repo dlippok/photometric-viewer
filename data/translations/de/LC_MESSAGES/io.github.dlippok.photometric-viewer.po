@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-17 23:59+0100\n"
-"PO-Revision-Date: 2024-02-18 00:05+0100\n"
+"POT-Creation-Date: 2024-03-16 14:10+0100\n"
+"PO-Revision-Date: 2024-04-06 19:04+0200\n"
 "Last-Translator: Damian Lippok <mail.dalee@gmail.com>\n"
 "Language-Team: German - Germany <mail.dalee@gmail.com>\n"
 "Language: de_DE\n"
@@ -1083,6 +1083,14 @@ msgstr "Dateiname"
 #: photometric_viewer/gui/widgets/app_menu.py
 msgid "Show source"
 msgstr "Quelle anzeigen"
+
+#: photometric_viewer/gui/widgets/app_menu.py
+msgid "Save"
+msgstr "Speichern"
+
+#: photometric_viewer/gui/widgets/app_menu.py
+msgid "Save as..."
+msgstr "Speichern unter ..."
 
 #: photometric_viewer/gui/widgets/app_menu.py
 msgid "Preferences"
