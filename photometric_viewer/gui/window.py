@@ -1,7 +1,7 @@
 import io
 import logging
 from datetime import datetime
-from typing import Optional
+from typing import Optional, IO
 
 from gi.repository import Adw, Gtk, Gio, GLib, Gdk
 from gi.repository.Gtk import FileChooserDialog, DropTarget
@@ -94,6 +94,8 @@ class MainWindow(Adw.Window):
 
         self.drop_target.connect("drop", self.on_drop)
         self.add_controller(self.drop_target)
+
+        self.source_view_page.connect("hiding", self.on_hiding_source_page)
 
         if self.gsettings.settings is None:
             self.show_banner(_("Settings schema could not be loaded. Selected settings will be lost on restart"))
@@ -240,39 +242,43 @@ class MainWindow(Adw.Window):
         self.open_file(file)
         return True
 
+    def open_stream(self, f: IO):
+        photometry = import_from_file(f)
+
+        self.display_photometry_content(photometry)
+        self.luminaire_content_page.update_settings(self.settings)
+        self.geometry_page.update_settings(self.settings)
+        self.lamp_set_page.update_settings(self.settings)
+
+        self.window_title.set_title(_("Photometry"))
+
+        self.action_set_enabled("app.show_intensity_values", True)
+        self.action_set_enabled("app.show_source", True)
+        self.action_set_enabled("app.show_direct_ratios", True)
+        self.action_set_enabled("app.show_photometry", True)
+        self.action_set_enabled("app.show_geometry", True)
+        self.action_set_enabled("app.show_lamp_set", True)
+        self.action_set_enabled("app.export_luminaire_as_json", True)
+        self.action_set_enabled("app.export_intensities_as_csv", True)
+        self.action_set_enabled("app.export_ldc_as_image", True)
+        self.action_set_enabled("app.export_as_ldt", True)
+        self.action_set_enabled("app.export_as_ies", True)
+
+        self.show_start_page()
+
+
 
     def open_file(self, file: Gio.File):
         try:
             with gio_file_stream(file) as f:
-                photometry = import_from_file(f)
-
-                self.display_photometry_content(photometry)
-                self.luminaire_content_page.update_settings(self.settings)
-                self.geometry_page.update_settings(self.settings)
-                self.lamp_set_page.update_settings(self.settings)
-
-                self.set_title(title=file.get_basename())
-                self.window_title.set_title(_("Photometry"))
-                self.window_title.set_subtitle(file.get_basename())
-
-                self.action_set_enabled("app.show_intensity_values", True)
-                self.action_set_enabled("app.show_source", True)
-                self.action_set_enabled("app.show_direct_ratios", True)
-                self.action_set_enabled("app.show_photometry", True)
-                self.action_set_enabled("app.show_geometry", True)
-                self.action_set_enabled("app.show_lamp_set", True)
-                self.action_set_enabled("app.export_luminaire_as_json", True)
-                self.action_set_enabled("app.export_intensities_as_csv", True)
-                self.action_set_enabled("app.export_ldc_as_image", True)
-                self.action_set_enabled("app.export_as_ldt", True)
-                self.action_set_enabled("app.export_as_ies", True)
-
-                opened_filename = file.get_basename()
-                self.json_export_file_chooser.set_current_name(f"{opened_filename}.json")
-                self.csv_export_file_chooser.set_current_name(f"{opened_filename}.csv")
-                self.ldt_export_file_chooser.set_current_name(f"{opened_filename}_exported.ldt")
-                self.ies_export_file_chooser.set_current_name(f"{opened_filename}_exported.ies")
-                self.show_start_page()
+                filename = file.get_basename()
+                self.open_stream(f)
+                self.set_title(title=filename)
+                self.window_title.set_subtitle(filename)
+                self.json_export_file_chooser.set_current_name(f"{filename}.json")
+                self.csv_export_file_chooser.set_current_name(f"{filename}.csv")
+                self.ldt_export_file_chooser.set_current_name(f"{filename}_exported.ldt")
+                self.ies_export_file_chooser.set_current_name(f"{filename}_exported.ies")
 
         except GLib.GError as e:
             logging.exception("Could not open photometric file")
@@ -347,6 +353,16 @@ class MainWindow(Adw.Window):
 
     def show_ldc_export_page(self, *args):
         self.navigation_view.push(self.ldc_export_page)
+
+    def on_hiding_source_page(self, source_view_page: SourceViewPage):
+        buffer: Gtk.TextBuffer = source_view_page.source_text_view.get_buffer()
+        start = buffer.get_start_iter()
+        end = buffer.get_end_iter()
+
+        self.open_stream(
+            io.StringIO(buffer.get_text(start, end, True))
+        )
+
 
     def show_banner(self, message: str, details: str | None = None):
         toast = Adw.Toast()
