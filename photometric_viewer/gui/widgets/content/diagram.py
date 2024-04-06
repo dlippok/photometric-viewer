@@ -34,7 +34,11 @@ class PhotometricDiagram(Gtk.DrawingArea):
 
     def set_photometry(self, luminaire: Luminaire):
         self.luminaire = luminaire
-        self.queue_draw()
+        if self.luminaire.intensity_values:
+            self.set_visible(True)
+            self.queue_draw()
+        else:
+            self.set_visible(False)
 
     def update_settings(self, settings: Settings):
         self.plotter.settings.style = DiagramStyle(settings.diagram_style.value)
