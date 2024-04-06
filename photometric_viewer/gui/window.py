@@ -124,6 +124,7 @@ class MainWindow(Adw.Window):
         self.install_action("app.export_ldc_as_image", None, self.show_ldc_export_page)
         self.install_action("app.export_as_ldt", None, self.show_ldt_export_file_chooser)
         self.install_action("app.export_as_ies", None, self.show_ies_export_file_chooser)
+        self.install_action("app.new", None, self.on_new)
         self.install_action("app.open", None, self.on_open)
         self.install_action("app.save", None, self.on_save)
         self.install_action("app.save_as", None, self.on_save_as)
@@ -167,6 +168,9 @@ class MainWindow(Adw.Window):
         self.lamp_set_page.update_settings(self.settings)
         self.geometry_page.update_settings(self.settings)
         self.gsettings.save(self.settings)
+
+    def on_new(self, *args):
+        self.open_stream(io.StringIO(""))
 
     def on_open(self, *args):
         self.open_file_chooser.show()

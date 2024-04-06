@@ -16,15 +16,21 @@ class EmptyPage(BasePage):
         box.append(Label(label=_("Photometry"), css_classes=["title-1"]))
         box.append(Label(label=_("Open photometric file to display it here")))
 
-        open_button = Gtk.Button(
+        buttons_box = Gtk.Box(orientation=Orientation.HORIZONTAL, spacing=10)
+        buttons_box.set_halign(Gtk.Align.CENTER)
+
+        buttons_box.append(Gtk.Button(
             label=_("Open File"),
             action_name="app.open",
             css_classes=["suggested-action", "pill"]
-        )
+        ))
 
-        buttons_box = Gtk.Box(orientation=Orientation.HORIZONTAL, spacing=10)
-        buttons_box.set_halign(Gtk.Align.CENTER)
-        buttons_box.append(open_button)
+        buttons_box.append(Gtk.Button(
+            label=_("New file"),
+            action_name="app.new",
+            css_classes=["pill"]
+        ))
+
 
         box.append(buttons_box)
 
