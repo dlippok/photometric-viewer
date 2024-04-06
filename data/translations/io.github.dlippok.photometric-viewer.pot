@@ -1062,6 +1062,14 @@ msgid "Show source"
 msgstr ""
 
 #: photometric_viewer/gui/widgets/app_menu.py
+msgid "Save"
+msgstr ""
+
+#: photometric_viewer/gui/widgets/app_menu.py
+msgid "Save as..."
+msgstr ""
+
+#: photometric_viewer/gui/widgets/app_menu.py
 msgid "Preferences"
 msgstr ""
 

@@ -16,7 +16,7 @@ class SourceViewPage(BasePage):
         self.adw_style_manager: Adw.StyleManager = Adw.StyleManager.get_default()
 
         self.source_text_view = View(
-            editable=False,
+            editable=True,
             monospace=True,
             wrap_mode=Gtk.WrapMode.WORD_CHAR,
             pixels_below_lines=1,
@@ -35,8 +35,11 @@ class SourceViewPage(BasePage):
         scrolled_window.set_child(self.source_text_view)
         scrolled_window.set_vexpand(True)
         scrolled_window.set_policy(PolicyType.NEVER, PolicyType.AUTOMATIC)
+
         self.set_content(scrolled_window)
+
         self.adw_style_manager.connect("notify", self.update_theme)
+
         self.update_theme()
 
     def set_photometry(self, luminaire: Luminaire):

@@ -75,15 +75,12 @@ class ExportFileChooser(FileChooserNative):
         return chooser
 
 
-class OpenFileChooser(FileChooserNative):
+class FileChooser(FileChooserNative):
     def __init__(self, **kwargs):
         super().__init__(
-            action=Gtk.FileChooserAction.OPEN,
-            select_multiple=False,
             modal=True,
             **kwargs
         )
-
         photometric_filter = FileFilter(name=_("All photometric files"))
         photometric_filter.add_pattern("*.ies")
         photometric_filter.add_pattern("*.ldt")
