@@ -15,7 +15,7 @@ from photometric_viewer.formats import ldt, ies
 from photometric_viewer.formats.common import import_from_file
 from photometric_viewer.formats.exceptions import InvalidPhotometricFileFormatException
 from photometric_viewer.gui.dialogs.about import AboutWindow
-from photometric_viewer.gui.dialogs.file_chooser import OpenFileChooser, ExportFileChooser
+from photometric_viewer.gui.dialogs.file_chooser import ExportFileChooser, FileChooser
 from photometric_viewer.gui.dialogs.preferences import PreferencesWindow
 from photometric_viewer.gui.pages.ballast_set import BallastPage
 from photometric_viewer.gui.pages.content import PhotometryContentPage
@@ -39,6 +39,8 @@ class MainWindow(Adw.Window):
             title=_('Photometry'),
             **kwargs
         )
+
+        self.is_opening = False
 
         self.set_default_size(900, 700)
         self.install_actions()
@@ -70,8 +72,11 @@ class MainWindow(Adw.Window):
 
         self.window_title = Adw.WindowTitle()
 
-        self.open_file_chooser = OpenFileChooser(transient_for=self)
+        self.open_file_chooser = FileChooser(transient_for=self, action=Gtk.FileChooserAction.OPEN)
         self.open_file_chooser.connect("response", self.on_open_response)
+
+        self.save_as_file_chooser = FileChooser(transient_for=self, action=Gtk.FileChooserAction.SAVE)
+        self.save_as_file_chooser.connect("response", self.on_save_as_response)
 
         self.json_export_file_chooser = ExportFileChooser.for_json(transient_for=self)
         self.json_export_file_chooser.connect("response", self.on_export_json_response)
@@ -119,6 +124,7 @@ class MainWindow(Adw.Window):
         self.install_action("app.export_as_ldt", None, self.show_ldt_export_file_chooser)
         self.install_action("app.export_as_ies", None, self.show_ies_export_file_chooser)
         self.install_action("app.open", None, self.on_open_clicked)
+        self.install_action("app.save_as", None, self.on_save_as_clicked)
         self.install_action("app.open_url", "s", self.on_open_url)
 
 
@@ -133,6 +139,7 @@ class MainWindow(Adw.Window):
         self.action_set_enabled("app.export_ldc_as_image", False)
         self.action_set_enabled("app.export_as_ldt", False)
         self.action_set_enabled("app.export_as_ies", False)
+        self.action_set_enabled("app.save_as", False)
         self.action_set_enabled("app.open_url", True)
 
     def setup_accelerators(self):
@@ -161,6 +168,9 @@ class MainWindow(Adw.Window):
     def on_open_clicked(self, *args):
         self.open_file_chooser.show()
 
+    def on_save_as_clicked(self, *args):
+        self.save_as_file_chooser.show()
+
     def on_open_url(self, window, action, params: GLib.Variant, *args):
         Gtk.show_uri(window, params.get_string(), Gdk.CURRENT_TIME)
 
@@ -169,6 +179,14 @@ class MainWindow(Adw.Window):
         if response == Gtk.ResponseType.ACCEPT:
             file: Gio.File = dialog.get_file()
             self.open_file(file)
+
+    def on_save_as_response(self, dialog: FileChooserDialog, response):
+        if response == Gtk.ResponseType.ACCEPT:
+            buffer: Gtk.TextBuffer = self.source_view_page.source_text_view.get_buffer()
+            start = buffer.get_start_iter()
+            end = buffer.get_end_iter()
+            write_string(dialog.get_file(), buffer.get_text(start, end, True))
+            self.update_filename(dialog.get_file())
 
     def on_export_json_response(self, dialog: FileChooserDialog, response):
         if not self.opened_photometry:
@@ -243,42 +261,53 @@ class MainWindow(Adw.Window):
         return True
 
     def open_stream(self, f: IO):
-        photometry = import_from_file(f)
+        if self.is_opening:
+            return
 
-        self.display_photometry_content(photometry)
-        self.luminaire_content_page.update_settings(self.settings)
-        self.geometry_page.update_settings(self.settings)
-        self.lamp_set_page.update_settings(self.settings)
+        try:
+            self.is_opening = True
+            photometry = import_from_file(f)
 
-        self.window_title.set_title(_("Photometry"))
+            self.display_photometry_content(photometry)
+            self.luminaire_content_page.update_settings(self.settings)
+            self.geometry_page.update_settings(self.settings)
+            self.lamp_set_page.update_settings(self.settings)
 
-        self.action_set_enabled("app.show_intensity_values", True)
-        self.action_set_enabled("app.show_source", True)
-        self.action_set_enabled("app.show_direct_ratios", True)
-        self.action_set_enabled("app.show_photometry", True)
-        self.action_set_enabled("app.show_geometry", True)
-        self.action_set_enabled("app.show_lamp_set", True)
-        self.action_set_enabled("app.export_luminaire_as_json", True)
-        self.action_set_enabled("app.export_intensities_as_csv", True)
-        self.action_set_enabled("app.export_ldc_as_image", True)
-        self.action_set_enabled("app.export_as_ldt", True)
-        self.action_set_enabled("app.export_as_ies", True)
+            self.window_title.set_title(_("Photometry"))
 
-        self.show_start_page()
+            self.action_set_enabled("app.show_intensity_values", True)
+            self.action_set_enabled("app.show_source", True)
+            self.action_set_enabled("app.show_direct_ratios", True)
+            self.action_set_enabled("app.show_photometry", True)
+            self.action_set_enabled("app.show_geometry", True)
+            self.action_set_enabled("app.show_lamp_set", True)
+            self.action_set_enabled("app.export_luminaire_as_json", True)
+            self.action_set_enabled("app.export_intensities_as_csv", True)
+            self.action_set_enabled("app.export_ldc_as_image", True)
+            self.action_set_enabled("app.export_as_ldt", True)
+            self.action_set_enabled("app.export_as_ies", True)
+            self.action_set_enabled("app.save_as", True)
+
+            self.show_start_page()
+        finally:
+            self.is_opening = False
 
 
+    def update_filename(self, file: Gio.File):
+        filename = file.get_basename()
+        self.set_title(title=filename)
+        self.window_title.set_subtitle(filename)
+        self.save_as_file_chooser.set_file(file)
+        self.json_export_file_chooser.set_current_name(f"{filename}.json")
+        self.csv_export_file_chooser.set_current_name(f"{filename}.csv")
+        self.ldt_export_file_chooser.set_current_name(f"{filename}_exported.ldt")
+        self.ies_export_file_chooser.set_current_name(f"{filename}_exported.ies")
 
     def open_file(self, file: Gio.File):
         try:
             with gio_file_stream(file) as f:
-                filename = file.get_basename()
                 self.open_stream(f)
-                self.set_title(title=filename)
-                self.window_title.set_subtitle(filename)
-                self.json_export_file_chooser.set_current_name(f"{filename}.json")
-                self.csv_export_file_chooser.set_current_name(f"{filename}.csv")
-                self.ldt_export_file_chooser.set_current_name(f"{filename}_exported.ldt")
-                self.ies_export_file_chooser.set_current_name(f"{filename}_exported.ies")
+                self.update_filename(file)
 
         except GLib.GError as e:
             logging.exception("Could not open photometric file")
@@ -289,7 +318,6 @@ class MainWindow(Adw.Window):
         except Exception:
             logging.exception("Could not open photometric file")
             self.show_banner(_("Could not open {}").format(file.get_path()))
-
 
     def show_preferences(self, *args):
         window = PreferencesWindow(self.settings, self.update_settings)
@@ -359,10 +387,10 @@ class MainWindow(Adw.Window):
         start = buffer.get_start_iter()
         end = buffer.get_end_iter()
 
-        self.open_stream(
-            io.StringIO(buffer.get_text(start, end, True))
-        )
-
+        if buffer.get_modified():
+            self.open_stream(
+                io.StringIO(buffer.get_text(start, end, True))
+            )
 
     def show_banner(self, message: str, details: str | None = None):
         toast = Adw.Toast()
