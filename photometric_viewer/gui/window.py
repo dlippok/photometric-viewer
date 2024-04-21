@@ -4,13 +4,13 @@ from datetime import datetime
 from typing import Optional, IO
 
 from gi.repository import Adw, Gtk, Gio, GLib, Gdk
+from gi.repository.Gio import ActionGroup
 from gi.repository.Gtk import FileChooserDialog, DropTarget
 
 import photometric_viewer.formats.csv
 import photometric_viewer.formats.format_json
 import photometric_viewer.formats.png
 import photometric_viewer.formats.svg
-from photometric_viewer.config.accelerators import ACCELERATORS
 from photometric_viewer.formats import ldt, ies
 from photometric_viewer.formats.common import import_from_file
 from photometric_viewer.formats.exceptions import InvalidPhotometricFileFormatException
@@ -31,9 +31,10 @@ from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.utils.gi.GSettings import GSettings
 from photometric_viewer.utils.gi.gio import gio_file_stream, write_string
 from photometric_viewer.utils.project import PROJECT
+from photometric_viewer.utils.gi.actions import action_entry
 
 
-class MainWindow(Adw.Window):
+class MainWindow(Adw.ApplicationWindow):
     def __init__(self, **kwargs):
         super().__init__(
             title=_('Photometry'),
@@ -44,7 +45,6 @@ class MainWindow(Adw.Window):
 
         self.set_default_size(900, 700)
         self.install_actions()
-        self.setup_accelerators()
 
         self.gsettings = GSettings()
 
@@ -110,47 +110,22 @@ class MainWindow(Adw.Window):
         self.navigation_view.replace([self.luminaire_content_page])
 
     def install_actions(self):
+
+        self.add_action_entries(
+            [
+                ("open", self.on_open),
+                ("new", self.on_new),
+            ]
+        )
+
         self.install_action("app.show_about_window", None, self.show_about_dialog)
         self.install_action("app.show_preferences", None, self.show_preferences)
-        self.install_action("app.show_intensity_values", None, self.show_intensity_values)
-        self.install_action("app.show_source", None, self.show_source)
-        self.install_action("app.show_direct_ratios", None, self.show_direct_ratios)
-        self.install_action("app.show_photometry", None, self.show_photometry)
-        self.install_action("app.show_geometry", None, self.show_geometry)
-        self.install_action("app.show_lamp_set", "i", self.show_lamp_set)
-        self.install_action("app.show_ballast", "i", self.show_ballast)
-        self.install_action("app.export_luminaire_as_json", None, self.show_json_export_file_chooser)
-        self.install_action("app.export_intensities_as_csv", None, self.show_csv_export_file_chooser)
-        self.install_action("app.export_ldc_as_image", None, self.show_ldc_export_page)
-        self.install_action("app.export_as_ldt", None, self.show_ldt_export_file_chooser)
-        self.install_action("app.export_as_ies", None, self.show_ies_export_file_chooser)
-        self.install_action("app.new", None, self.on_new)
-        self.install_action("app.open", None, self.on_open)
-        self.install_action("app.save", None, self.on_save)
-        self.install_action("app.save_as", None, self.on_save_as)
-        self.install_action("app.open_url", "s", self.on_open_url)
 
-
-        self.action_set_enabled("app.show_intensity_values", False)
-        self.action_set_enabled("app.show_source", False)
-        self.action_set_enabled("app.show_direct_ratios", False)
-        self.action_set_enabled("app.show_photometry", False)
-        self.action_set_enabled("app.show_geometry", False)
-        self.action_set_enabled("app.show_lamp_set", False)
-        self.action_set_enabled("app.export_luminaire_as_json", False)
-        self.action_set_enabled("app.export_intensities_as_csv", False)
-        self.action_set_enabled("app.export_ldc_as_image", False)
-        self.action_set_enabled("app.export_as_ldt", False)
-        self.action_set_enabled("app.export_as_ies", False)
-        self.action_set_enabled("app.save", False)
-        self.action_set_enabled("app.save_as", False)
-        self.action_set_enabled("app.open_url", True)
 
     def setup_accelerators(self):
         app = self.get_application()
 
-        for accel in ACCELERATORS:
-            app.set_accels_for_action(accel.action, accel.accelerators)
+
 
     def display_photometry_content(self, luminaire: Luminaire):
         self.luminaire_content_page.set_photometry(luminaire)
@@ -291,20 +266,25 @@ class MainWindow(Adw.Window):
 
             self.window_title.set_title(_("Photometry"))
 
-            self.action_set_enabled("app.show_intensity_values", True)
-            self.action_set_enabled("app.show_source", True)
-            self.action_set_enabled("app.show_direct_ratios", True)
-            self.action_set_enabled("app.show_photometry", True)
-            self.action_set_enabled("app.show_geometry", True)
-            self.action_set_enabled("app.show_lamp_set", True)
-            self.action_set_enabled("app.export_luminaire_as_json", True)
-            self.action_set_enabled("app.export_intensities_as_csv", True)
-            self.action_set_enabled("app.export_ldc_as_image", True)
-            self.action_set_enabled("app.export_as_ldt", True)
-            self.action_set_enabled("app.export_as_ies", True)
-            self.action_set_enabled("app.save", True)
-            self.action_set_enabled("app.save_as", True)
-
+            self.add_action_entries(
+                [
+                    ("show_intensity_values", self.show_intensity_values),
+                    ("show_source", self.show_source),
+                    ("show_direct_ratios", self.show_direct_ratios),
+                    ("show_photometry", self.show_photometry),
+                    ("show_geometry", self.show_geometry),
+                    ("show_lamp_set", self.show_lamp_set, "i"),
+                    ("show_ballast", self.show_ballast, "i"),
+                    ("export_luminaire_as_json", self.show_json_export_file_chooser),
+                    ("export_intensities_as_csv", self.show_csv_export_file_chooser),
+                    ("export_ldc_as_image", self.show_ldc_export_page),
+                    ("export_as_ldt", self.show_ldt_export_file_chooser),
+                    ("export_as_ies", self.show_ies_export_file_chooser),
+                    ("save", self.on_save),
+                    ("save_as", self.on_save_as),
+                    ("open_url", self.on_open_url, "s")
+                ]
+            )
             self.show_start_page()
         finally:
             self.is_opening = False
@@ -353,7 +333,7 @@ class MainWindow(Adw.Window):
     def show_geometry(self, *args):
         self.navigation_view.push(self.geometry_page)
 
-    def show_lamp_set(self, window, action, params: GLib.Variant, *args):
+    def show_lamp_set(self, action, params: GLib.Variant, *args):
         if self.opened_photometry is None:
             return
 
@@ -366,7 +346,7 @@ class MainWindow(Adw.Window):
         self.lamp_set_page.set_lamp_set(self.opened_photometry, lamp_set)
         self.navigation_view.push(self.lamp_set_page)
 
-    def show_ballast(self, window, action, params: GLib.Variant, *args):
+    def show_ballast(self, action, params: GLib.Variant, *args):
         if self.opened_photometry is None:
             return
 

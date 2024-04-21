@@ -38,7 +38,7 @@ class LuminairePhotometricProperties(Box):
             icon = Gtk.Image(icon_name="go-next-symbolic")
             row = ActionRow(
                 title=_("Photometric properties"),
-                action_name="app.show_photometry",
+                action_name="win.show_photometry",
                 activatable_widget=icon,
 
             )
@@ -55,7 +55,7 @@ class LuminairePhotometricProperties(Box):
             icon = Gtk.Image(icon_name="go-next-symbolic")
             row = ActionRow(
                 title=_("Direct ratios for room indices"),
-                action_name="app.show_direct_ratios",
+                action_name="win.show_direct_ratios",
                 activatable_widget=icon,
 
             )
@@ -68,7 +68,7 @@ class LuminairePhotometricProperties(Box):
             icon = Gtk.Image(icon_name="go-next-symbolic")
             row = ActionRow(
                 title=_("Intensity values"),
-                action_name="app.show_intensity_values",
+                action_name="win.show_intensity_values",
                 activatable_widget=icon,
 
             )
@@ -81,7 +81,7 @@ class LuminairePhotometricProperties(Box):
             icon = Gtk.Image(icon_name="go-next-symbolic")
             row = ActionRow(
                 title=_("Geometry"),
-                action_name="app.show_geometry",
+                action_name="win.show_geometry",
                 activatable_widget=icon,
             )
             row.add_prefix(Gtk.Image(icon_name="geometry-symbolic"))

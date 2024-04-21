@@ -97,7 +97,7 @@ class IntensityValuesPage(BasePage):
             row = ActionRow(
                 title= _("Too many values to display"),
                 subtitle=_("Select a particular C plane or gamma angle to display the values"),
-                action_name="app.show_direct_ratios",
+                action_name="win.show_direct_ratios",
 
             )
             self.property_list.append(row)
