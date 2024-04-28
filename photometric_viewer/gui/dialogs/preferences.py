@@ -1,9 +1,9 @@
 from gi.repository import Adw, Gtk
 from gi.repository.Gtk import ListBox, Box, Orientation, Label, SelectionMode, ToggleButton, SpinButton, Adjustment
 
-from photometric_viewer.model.settings import Settings, DiagramStyle, SnapValueAnglesTo, DisplayHalfSpaces
-from photometric_viewer.model.units import LengthUnits
 from photometric_viewer.config import plotter_themes
+from photometric_viewer.model.settings import DiagramStyle, SnapValueAnglesTo, DisplayHalfSpaces
+from photometric_viewer.model.units import LengthUnits
 from photometric_viewer.utils.gi.GSettings import SettingsManager
 
 

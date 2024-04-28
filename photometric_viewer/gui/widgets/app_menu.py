@@ -10,6 +10,12 @@ class ApplicationMenuButton(Gtk.MenuButton):
         <menu id='app-menu'>
             <section>
                 <item>
+                    <attribute name='label' translatable='yes'>New Window</attribute>
+                    <attribute name='action'>app.new_window</attribute>
+                </item>
+            </section>
+            <section>
+                <item>
                     <attribute name='label' translatable='yes'>Save</attribute>
                     <attribute name='action'>win.save</attribute>
                 </item>

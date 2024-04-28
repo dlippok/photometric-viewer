@@ -18,5 +18,6 @@ ACCELERATORS = [
     Accelerators(accelerators=["<control>i"], action="win.show_intensity_values"),
     Accelerators(accelerators=["<alt>Left"], action="win.nav.back"),
     Accelerators(accelerators=["<alt>Up"], action="win.nav.top"),
-    Accelerators(accelerators=["<alt>Home"], action="win.nav.home")
+    Accelerators(accelerators=["<alt>Home"], action="win.nav.home"),
+    Accelerators(accelerators=["<control>N"], action="app.new_window")
 ]

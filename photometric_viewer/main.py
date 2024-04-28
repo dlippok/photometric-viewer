@@ -26,13 +26,19 @@ class Application(Adw.Application):
         super().__init__(application_id=APPLICATION_ID,
                          flags=Gio.ApplicationFlags.HANDLES_OPEN | Gio.ApplicationFlags.NON_UNIQUE)
 
+        new_window_action = Gio.SimpleAction.new("new_window", None)
+        new_window_action.connect("activate", self.new_window)
+        self.add_action(new_window_action)
+
     def do_startup(self):
         Adw.Application.do_startup(self)
 
-    def new_window(self):
+    def new_window(self, *args):
         window = MainWindow()
         self.add_window(window)
         window.present()
+
+        print(self.get_windows())
         return window
 
     def do_activate(self):
