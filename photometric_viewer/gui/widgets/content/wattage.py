@@ -4,6 +4,7 @@ from gi.repository.Gtk import Box, Orientation, Label, Expander, Adjustment, Sca
 
 from photometric_viewer.model.settings import Settings
 from photometric_viewer.utils.calc import annual_power_consumption, energy_cost
+from photometric_viewer.utils.gi.GSettings import SettingsManager
 
 
 class WattageBox(Box):
@@ -19,7 +20,9 @@ class WattageBox(Box):
             **kwargs
         )
 
-        self.settings: Settings | None = None
+        self.settings_manager = SettingsManager()
+        self.settings_manager.register_on_update(lambda *args: self._refresh_cost_calculation())
+
         self.wattage: float = wattage
         self.daily_hours_of_operation = 8
 
@@ -98,14 +101,9 @@ class WattageBox(Box):
         )
         self.power_consumption_label.set_label(f"{power_consumption:.1f} kWh")
 
-        if self.settings and self.settings.electricity_price_per_kwh:
-            annual_cost = energy_cost(
-                power_consumption_kwh=power_consumption,
-                price_kwh=self.settings.electricity_price_per_kwh
-            )
+        annual_cost = energy_cost(
+            power_consumption_kwh=power_consumption,
+            price_kwh=self.settings_manager.settings.electricity_price_per_kwh
+        )
 
-            self.annual_cost_label.set_label(locale.currency(annual_cost))
-
-    def update_settings(self, settings: Settings):
-        self.settings = settings
-        self._refresh_cost_calculation()
+        self.annual_cost_label.set_label(locale.currency(annual_cost))

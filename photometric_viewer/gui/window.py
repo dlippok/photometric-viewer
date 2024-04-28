@@ -4,7 +4,6 @@ from datetime import datetime
 from typing import Optional, IO
 
 from gi.repository import Adw, Gtk, Gio, GLib, Gdk
-from gi.repository.Gio import ActionGroup
 from gi.repository.Gtk import FileChooserDialog, DropTarget
 
 import photometric_viewer.formats.csv
@@ -28,10 +27,9 @@ from photometric_viewer.gui.pages.photometry import PhotometryPage
 from photometric_viewer.gui.pages.source import SourceViewPage
 from photometric_viewer.gui.pages.values import IntensityValuesPage
 from photometric_viewer.model.luminaire import Luminaire
-from photometric_viewer.utils.gi.GSettings import GSettings
 from photometric_viewer.utils.gi.gio import gio_file_stream, write_string
 from photometric_viewer.utils.project import PROJECT
-from photometric_viewer.utils.gi.actions import action_entry
+from photometric_viewer.utils.gi.GSettings import SettingsManager
 
 
 class MainWindow(Adw.ApplicationWindow):
@@ -46,9 +44,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.set_default_size(900, 700)
         self.install_actions()
 
-        self.gsettings = GSettings()
-
-        self.settings = self.gsettings.load()
+        self.settings_manager = SettingsManager()
 
         self.navigation_view = Adw.NavigationView()
 
@@ -103,7 +99,7 @@ class MainWindow(Adw.ApplicationWindow):
 
         self.source_view_page.connect("hiding", self.on_hiding_source_page)
 
-        if self.gsettings.settings is None:
+        if not self.settings_manager.gsettings_available:
             self.show_banner(_("Settings schema could not be loaded. Selected settings will be lost on restart"))
 
     def show_start_page(self):
@@ -137,12 +133,6 @@ class MainWindow(Adw.ApplicationWindow):
         self.geometry_page.set_photometry(luminaire)
 
         self.opened_photometry = luminaire
-
-    def update_settings(self):
-        self.luminaire_content_page.update_settings(self.settings)
-        self.lamp_set_page.update_settings(self.settings)
-        self.geometry_page.update_settings(self.settings)
-        self.gsettings.save(self.settings)
 
     def on_new(self, *args):
         self.open_stream(io.StringIO(""))
@@ -260,10 +250,6 @@ class MainWindow(Adw.ApplicationWindow):
             photometry = import_from_file(f)
 
             self.display_photometry_content(photometry)
-            self.luminaire_content_page.update_settings(self.settings)
-            self.geometry_page.update_settings(self.settings)
-            self.lamp_set_page.update_settings(self.settings)
-
             self.window_title.set_title(_("Photometry"))
 
             self.add_action_entries(
@@ -318,7 +304,7 @@ class MainWindow(Adw.ApplicationWindow):
             self.show_banner(_("Could not open {}").format(file.get_path()))
 
     def show_preferences(self, *args):
-        window = PreferencesWindow(self.settings, self.update_settings)
+        window = PreferencesWindow()
         window.show()
 
     def show_source(self, *args):

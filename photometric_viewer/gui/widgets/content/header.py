@@ -88,7 +88,3 @@ class LuminaireHeader(Box):
 
         self.diagram.set_photometry(luminaire)
         self.header_buttons.set_photometry(luminaire)
-
-    def update_settings(self, settings: Settings):
-        self.diagram.update_settings(settings)
-

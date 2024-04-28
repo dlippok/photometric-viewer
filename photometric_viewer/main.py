@@ -39,8 +39,6 @@ class Application(Adw.Application):
         self.setup_css()
         self.setup_accelerators()
         self.new_window()
-        self.new_window()
-        self.new_window()
 
     def do_shutdown(self):
         Adw.Application.do_shutdown(self)
