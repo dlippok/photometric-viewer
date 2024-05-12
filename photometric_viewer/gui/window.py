@@ -154,7 +154,6 @@ class MainWindow(Adw.Window):
 
     def display_photometry_content(self, luminaire: Luminaire):
         self.luminaire_content_page.set_photometry(luminaire)
-        self.source_view_page.set_photometry(luminaire)
         self.values_table_page.set_photometry(luminaire)
         self.ldc_export_page.set_photometry(luminaire)
         self.direct_ratios_page.set_photometry(luminaire)
@@ -170,7 +169,10 @@ class MainWindow(Adw.Window):
         self.gsettings.save(self.settings)
 
     def on_new(self, *args):
-        self.open_stream(io.StringIO(""))
+        stram = io.StringIO("")
+        self.open_stream(stram)
+        stram.seek(0)
+        self.source_view_page.open_stream(io.StringIO(""))
 
     def on_open(self, *args):
         self.open_file_chooser.show()
@@ -323,8 +325,10 @@ class MainWindow(Adw.Window):
 
     def open_file(self, file: Gio.File):
         try:
-            with gio_file_stream(file) as f:
+            with (gio_file_stream(file) as f):
                 self.open_stream(f)
+                f.seek(0)
+                self.source_view_page.open_stream(f)
                 self.update_file(file)
 
         except GLib.GError as e:
