@@ -24,7 +24,7 @@ class HeaderButtons(Box):
         edit_source_button = Button(
             css_classes=["pill"],
             tooltip_text=_("Menu"),
-            action_name="app.show_source"
+            action_name="win.show_source"
 
         )
         edit_source_button.set_child(
@@ -51,7 +51,7 @@ class HeaderButtons(Box):
             display_label = label.title().replace("_", " ").strip()
             item = Gio.MenuItem()
             item.set_label(display_label)
-            item.set_action_and_target_value('app.open_url', Variant.new_string(url))
+            item.set_action_and_target_value('win.open_url', Variant.new_string(url))
             menu.append_item(item)
 
         self.url_button.set_menu_model(menu)

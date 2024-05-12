@@ -36,7 +36,7 @@ class LampAndBallast(Gtk.Box):
             row = ActionRow(
                 title=f"{lamp_set.number_of_lamps or 1} x {lamp_set.description or _('Lamp')}",
                 activatable_widget=action_icon,
-                action_name="app.show_lamp_set",
+                action_name="win.show_lamp_set",
                 action_target=Variant.new_int32(i)
             )
             row.add_prefix(Gtk.Image(icon_name="lamp-symbolic"))
@@ -49,7 +49,7 @@ class LampAndBallast(Gtk.Box):
                 row = ActionRow(
                     title=lamp_set.ballast_description or _('Ballast'),
                     activatable_widget=action_icon,
-                    action_name="app.show_ballast",
+                    action_name="win.show_ballast",
                     action_target=Variant.new_int32(i)
                 )
                 row.add_prefix(Gtk.Image(icon_name="ballast-symbolic"))

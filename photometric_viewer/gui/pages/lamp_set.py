@@ -17,7 +17,6 @@ class LampSetPage(BasePage):
     def __init__(self, **kwargs):
         super().__init__("", **kwargs)
         self.property_list = PropertyList()
-        self.settings = None
         self.wattage_box = None
 
         box = Gtk.Box(
@@ -120,10 +119,4 @@ class LampSetPage(BasePage):
         if lamp_set.wattage:
             self.wattage_box = WattageBox(lamp_set.wattage)
             self.property_list.append(self.wattage_box)
-            self.wattage_box.update_settings(self.settings)
-
-    def update_settings(self, settings: Settings):
-        self.settings = settings
-        if self.wattage_box:
-            self.wattage_box.update_settings(settings)
 

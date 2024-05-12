@@ -5,16 +5,14 @@ from photometric_viewer.gui.pages.base import BasePage
 from photometric_viewer.gui.widgets.common.property_list import PropertyList
 from photometric_viewer.model.luminaire import (Luminaire, LuminousOpeningShape, LuminousOpeningGeometry,
                                                 LuminaireType, LuminaireGeometry, Shape)
-from photometric_viewer.model.settings import Settings
 from photometric_viewer.model.units import LengthUnits, length_factor
+from photometric_viewer.utils.gi.GSettings import SettingsManager
 
 
 class GeometryPage(BasePage):
     def __init__(self, **kwargs):
         super().__init__(_("Geometry"), **kwargs)
         self.luminaire: Luminaire | None = None
-        self.settings: Settings | None = None
-
         self.property_list = PropertyList()
 
         box = Gtk.Box(
@@ -37,19 +35,18 @@ class GeometryPage(BasePage):
         scrolled_window.set_policy(PolicyType.NEVER, PolicyType.AUTOMATIC)
         self.set_content(scrolled_window)
 
+        self.settings_manager = SettingsManager()
+        self.settings_manager.register_on_update(lambda *args: self._refresh_widgets())
+
     def set_photometry(self, luminaire: Luminaire):
         self.luminaire = luminaire
         self._refresh_widgets()
 
-    def update_settings(self, settings: Settings):
-        self.settings = settings
-        self._refresh_widgets()
-
     def _convert(self, value):
-        if not self.settings:
+        if not self.settings_manager.settings:
             return f"{value}m"
 
-        if self.settings.length_units_from_file:
+        if self.settings_manager.settings.length_units_from_file:
             converted_value = value * length_factor(self.luminaire.metadata.file_units)
             match self.luminaire.metadata.file_units:
                 case LengthUnits.METERS:
@@ -59,8 +56,8 @@ class GeometryPage(BasePage):
                 case LengthUnits.FEET:
                     return f"{converted_value:.2f}ft"
         else:
-            converted_value = value * length_factor(self.settings.length_units)
-            match self.settings.length_units:
+            converted_value = value * length_factor(self.settings_manager.settings.length_units)
+            match self.settings_manager.settings.length_units:
                 case LengthUnits.METERS:
                     return f"{converted_value:.2f}m"
                 case LengthUnits.CENTIMETERS:

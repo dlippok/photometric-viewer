@@ -2,6 +2,7 @@ import os
 
 import gi
 
+from photometric_viewer.config.accelerators import ACCELERATORS
 from photometric_viewer.utils.project import ASSETS_PATH
 
 gi.require_version(namespace='Gtk', version='4.0')
@@ -24,11 +25,36 @@ class Application(Adw.Application):
     def __init__(self):
         super().__init__(application_id=APPLICATION_ID,
                          flags=Gio.ApplicationFlags.HANDLES_OPEN | Gio.ApplicationFlags.NON_UNIQUE)
-        self.win: MainWindow | None = None
 
-    def create_window(self):
-        self.win = MainWindow(application=self)
+        new_window_action = Gio.SimpleAction.new("new_window", None)
+        new_window_action.connect("activate", self.new_window)
+        self.add_action(new_window_action)
 
+    def do_startup(self):
+        Adw.Application.do_startup(self)
+
+    def new_window(self, *args):
+        window = MainWindow()
+        self.add_window(window)
+        window.present()
+
+        print(self.get_windows())
+        return window
+
+    def do_activate(self):
+        self.setup_css()
+        self.setup_accelerators()
+        self.new_window()
+
+    def do_shutdown(self):
+        Adw.Application.do_shutdown(self)
+
+    def do_open(self, *args, **kwargs):
+        file: Gio.File = args[0][0]
+        window = self.new_window()
+        window.open_file(file)
+
+    def setup_css(self):
         css_provider = Gtk.CssProvider()
         css_provider.load_from_path(os.path.dirname(__file__) + "/assets/style.css")
 
@@ -36,20 +62,9 @@ class Application(Adw.Application):
             Gdk.Display.get_default(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
         )
 
-    def do_startup(self):
-        Adw.Application.do_startup(self)
-        self.create_window()
-
-    def do_activate(self):
-        self.props.active_window.present()
-
-    def do_shutdown(self):
-        Adw.Application.do_shutdown(self)
-
-    def do_open(self, *args, **kwargs):
-        file: Gio.File = args[0][0]
-        self.win.open_file(file)
-        self.props.active_window.present()
+    def setup_accelerators(self):
+        for accel in ACCELERATORS:
+            self.set_accels_for_action(accel.action, accel.accelerators)
 
 
 def run():
