@@ -29,7 +29,6 @@ class SourceViewPage(BasePage):
 
         self.source_text_view.set_show_line_numbers(True)
         self.source_text_view.get_buffer().connect("changed", self.on_update_content)
-        self.source_text_view.get_buffer().connect("modified-changed", lambda *args: print("modified", self.source_text_view.get_buffer().get_modified()))
 
         self.lang_manager: GtkSource.LanguageManager = GtkSource.LanguageManager.get_default()
         self.lang_manager.append_search_path(SPECS_DIR)

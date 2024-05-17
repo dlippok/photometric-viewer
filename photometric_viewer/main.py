@@ -21,6 +21,7 @@ init_locale(APPLICATION_ID)
 theme: Gtk.IconTheme = Gtk.IconTheme.get_for_display(Gdk.Display.get_default())
 theme.add_search_path(os.path.join(ASSETS_PATH, "icons"))
 
+
 class Application(Adw.Application):
     def __init__(self):
         super().__init__(application_id=APPLICATION_ID,
@@ -38,7 +39,6 @@ class Application(Adw.Application):
         self.add_window(window)
         window.present()
 
-        print(self.get_windows())
         return window
 
     def do_activate(self):
