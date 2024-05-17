@@ -21,13 +21,13 @@ class EmptyPage(BasePage):
 
         buttons_box.append(Gtk.Button(
             label=_("Open File"),
-            action_name="app.open",
+            action_name="win.open",
             css_classes=["suggested-action", "pill"]
         ))
 
         buttons_box.append(Gtk.Button(
             label=_("New file"),
-            action_name="app.new",
+            action_name="win.new",
             css_classes=["pill"]
         ))
 

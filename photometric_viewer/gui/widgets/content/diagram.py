@@ -1,11 +1,12 @@
 import cairo
 from gi.repository import Gtk, Adw
 
-from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.model.settings import Settings
+from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.config import plotter_themes
 from photometric_viewer.utils.plotters import LightDistributionPlotter, DiagramStyle, SnapValueAnglesTo, \
     DisplayHalfSpaces
+from photometric_viewer.utils.gi.GSettings import SettingsManager
 
 
 class PhotometricDiagram(Gtk.DrawingArea):
@@ -19,6 +20,10 @@ class PhotometricDiagram(Gtk.DrawingArea):
         self.set_draw_func(self.on_draw)
         self.luminaire = None
         self.plotter = LightDistributionPlotter()
+
+        self.settings_manager = SettingsManager()
+        self.update_settings(self.settings_manager.settings)
+        self.settings_manager.register_on_update(self.update_settings)
 
     def on_draw(self, _, context: cairo.Context, width, height):
         if self.luminaire is None:

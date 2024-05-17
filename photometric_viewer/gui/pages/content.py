@@ -2,13 +2,11 @@ from gi.repository import Gtk, Adw
 from gi.repository.Gtk import Orientation, PolicyType, ScrolledWindow
 
 from photometric_viewer.gui.pages.base import BasePage
-from photometric_viewer.gui.widgets.common.header import Header
 from photometric_viewer.gui.widgets.content.header import LuminaireHeader
 from photometric_viewer.gui.widgets.content.lamps import LampAndBallast
 from photometric_viewer.gui.widgets.content.photometry import LuminairePhotometricProperties
 from photometric_viewer.gui.widgets.content.properties import LuminaireProperties
 from photometric_viewer.model.luminaire import Luminaire
-from photometric_viewer.model.settings import Settings
 
 
 class PhotometryContentPage(BasePage):
@@ -47,6 +45,3 @@ class PhotometryContentPage(BasePage):
         self.photometric_properties.set_photometry(luminaire)
         self.lamps_and_ballast.set_photometry(luminaire)
         self.properties.set_photometry(luminaire)
-
-    def update_settings(self, settings: Settings):
-        self.header.update_settings(settings)

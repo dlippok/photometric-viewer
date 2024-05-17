@@ -10,35 +10,41 @@ class ApplicationMenuButton(Gtk.MenuButton):
         <menu id='app-menu'>
             <section>
                 <item>
+                    <attribute name='label' translatable='yes'>New Window</attribute>
+                    <attribute name='action'>app.new_window</attribute>
+                </item>
+            </section>
+            <section>
+                <item>
                     <attribute name='label' translatable='yes'>Save</attribute>
-                    <attribute name='action'>app.save</attribute>
+                    <attribute name='action'>win.save</attribute>
                 </item>
                 <item>
                     <attribute name='label' translatable='yes'>Save as...</attribute>
-                    <attribute name='action'>app.save_as</attribute>
+                    <attribute name='action'>win.save_as</attribute>
                 </item>
                     <submenu>
                         <attribute name='label' translatable='yes'>Export</attribute>
                         <section>
                             <item>
                                 <attribute name='label' translatable='yes'>As EULUMDAT</attribute>
-                                <attribute name='action'>app.export_as_ldt</attribute>
+                                <attribute name='action'>win.export_as_ldt</attribute>
                             </item>
                             <item>
                                 <attribute name='label' translatable='yes'>As IESNA</attribute>
-                                <attribute name='action'>app.export_as_ies</attribute>
+                                <attribute name='action'>win.export_as_ies</attribute>
                             </item>
                             <item>
                                 <attribute name='label' translatable='yes'>Light distribution curve</attribute>
-                                <attribute name='action'>app.export_ldc_as_image</attribute>
+                                <attribute name='action'>win.export_ldc_as_image</attribute>
                             </item>
                             <item>
                                 <attribute name='label' translatable='yes'>Intensity values</attribute>
-                                <attribute name='action'>app.export_intensities_as_csv</attribute>
+                                <attribute name='action'>win.export_intensities_as_csv</attribute>
                             </item>
                             <item>
                                 <attribute name='label' translatable='yes'>Luminaire data</attribute>
-                                <attribute name='action'>app.export_luminaire_as_json</attribute>
+                                <attribute name='action'>win.export_luminaire_as_json</attribute>
                             </item>
                         </section>
                     </submenu>
