@@ -14,7 +14,6 @@ def init_locale(application_id):
         locale_dir = root + "/share/locale"
         try:
             normalized_monetary = locale.normalize(locale.getlocale(locale.LC_MONETARY)[0])
-            print(normalized_monetary)
             locale.setlocale(locale.LC_MONETARY, normalized_monetary)
         except locale.Error:
             pass

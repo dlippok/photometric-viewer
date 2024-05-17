@@ -1,4 +1,5 @@
 import os
+import typing
 
 from gi.repository import Adw, Gtk, GtkSource
 from gi.repository.Gtk import ScrolledWindow, PolicyType
@@ -27,6 +28,7 @@ class SourceViewPage(BasePage):
         )
 
         self.source_text_view.set_show_line_numbers(True)
+        self.source_text_view.get_buffer().connect("changed", self.on_update_content)
 
         self.lang_manager: GtkSource.LanguageManager = GtkSource.LanguageManager.get_default()
         self.lang_manager.append_search_path(SPECS_DIR)
@@ -42,12 +44,21 @@ class SourceViewPage(BasePage):
 
         self.update_theme()
 
-    def set_photometry(self, luminaire: Luminaire):
-        self.source_text_view.get_buffer().set_text(luminaire.metadata.file_source)
+    def on_update_content(self, *args):
+        self._update_language()
 
-        buffer: GtkSource.Buffer = self.source_text_view.get_buffer()
+    def open_stream(self, f: typing.IO):
+        self.source_text_view.get_buffer().set_text(f.read())
+        self.source_text_view.get_buffer().set_modified(False)
 
-        if luminaire.metadata.file_format == FileFormat.IES:
+    def _update_language(self):
+        buffer: Gtk.TextBuffer = self.source_text_view.get_buffer()
+        start = buffer.get_start_iter()
+        end: Gtk.TextIter = buffer.get_start_iter()
+        end.forward_line()
+        text = buffer.get_text(start, end, True)
+
+        if text.lower().startswith("iesna"):
             buffer.set_language(self.lang_manager.get_language("ies"))
         else:
             buffer.set_language(self.lang_manager.get_language("ldt"))

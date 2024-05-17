@@ -40,6 +40,7 @@ class MainWindow(Adw.ApplicationWindow):
         )
 
         self.is_opening = False
+        self.pending_action = None
 
         self.set_default_size(900, 700)
         self.install_actions()
@@ -116,16 +117,13 @@ class MainWindow(Adw.ApplicationWindow):
 
         self.install_action("app.show_about_window", None, self.show_about_dialog)
         self.install_action("app.show_preferences", None, self.show_preferences)
-
+        self.connect("close-request", self.on_close_request)
 
     def setup_accelerators(self):
         app = self.get_application()
 
-
-
     def display_photometry_content(self, luminaire: Luminaire):
         self.luminaire_content_page.set_photometry(luminaire)
-        self.source_view_page.set_photometry(luminaire)
         self.values_table_page.set_photometry(luminaire)
         self.ldc_export_page.set_photometry(luminaire)
         self.direct_ratios_page.set_photometry(luminaire)
@@ -135,10 +133,17 @@ class MainWindow(Adw.ApplicationWindow):
         self.opened_photometry = luminaire
 
     def on_new(self, *args):
-        self.open_stream(io.StringIO(""))
+        stram = io.StringIO("")
+        self.open_stream(stram)
+        stram.seek(0)
+        self.source_view_page.open_stream(io.StringIO(""))
 
     def on_open(self, *args):
-        self.open_file_chooser.show()
+        if self.source_view_page.source_text_view.get_buffer().get_modified():
+            self.pending_action = "open"
+            self.show_exit_dialog()
+        else:
+            self.open_file_chooser.show()
 
     def on_save(self, *args):
         if self.opened_file:
@@ -146,6 +151,9 @@ class MainWindow(Adw.ApplicationWindow):
             start = buffer.get_start_iter()
             end = buffer.get_end_iter()
             write_string(self.opened_file, buffer.get_text(start, end, True))
+            self.source_view_page.source_text_view.get_buffer().set_modified(False)
+            self.resume_pending_action()
+
         else:
             self.on_save_as()
 
@@ -155,11 +163,12 @@ class MainWindow(Adw.ApplicationWindow):
     def on_open_url(self, window, action, params: GLib.Variant, *args):
         Gtk.show_uri(window, params.get_string(), Gdk.CURRENT_TIME)
 
-
     def on_open_response(self, dialog: FileChooserDialog, response):
         if response == Gtk.ResponseType.ACCEPT:
             file: Gio.File = dialog.get_file()
             self.open_file(file)
+        self.pending_action = None
+
 
     def on_save_as_response(self, dialog: FileChooserDialog, response):
         if response == Gtk.ResponseType.ACCEPT:
@@ -168,6 +177,10 @@ class MainWindow(Adw.ApplicationWindow):
             end = buffer.get_end_iter()
             write_string(dialog.get_file(), buffer.get_text(start, end, True))
             self.update_file(dialog.get_file())
+            self.source_view_page.source_text_view.get_buffer().set_modified(False)
+            self.resume_pending_action()
+        else:
+            self.pending_action = None
 
     def on_export_json_response(self, dialog: FileChooserDialog, response):
         if not self.opened_photometry:
@@ -289,8 +302,10 @@ class MainWindow(Adw.ApplicationWindow):
 
     def open_file(self, file: Gio.File):
         try:
-            with gio_file_stream(file) as f:
+            with (gio_file_stream(file) as f):
                 self.open_stream(f)
+                f.seek(0)
+                self.source_view_page.open_stream(f)
                 self.update_file(file)
 
         except GLib.GError as e:
@@ -384,6 +399,53 @@ class MainWindow(Adw.ApplicationWindow):
         else:
             toast.set_title(message)
         self.toast_overlay.add_toast(toast)
+
+    def on_close_request(self, *args):
+        if self.pending_action == "close":
+            return False
+
+        is_file_changed = self.source_view_page.source_text_view.get_buffer().get_modified()
+        if not is_file_changed:
+           return False
+
+        self.pending_action = "close"
+        self.show_exit_dialog()
+        return True
+
+    def show_exit_dialog(self):
+        dialog: Adw.MessageDialog = Adw.MessageDialog.new(
+            parent=self,
+            heading=_("Unsaved changes"),
+            body=_("Do you want to save changes to the opened file before closing?"),
+        )
+
+        dialog.add_response("cancel", _("Cancel"))
+        dialog.add_response("discard", _("Discard"))
+        dialog.set_response_appearance("discard", Adw.ResponseAppearance.DESTRUCTIVE)
+        dialog.add_response("save", _("Save"))
+        dialog.set_response_appearance("save", Adw.ResponseAppearance.SUGGESTED)
+        dialog.set_default_response("save")
+        dialog.set_close_response("cancel")
+        dialog.connect("response", self.on_exit_dialog_response)
+        dialog.present()
+
+    def on_exit_dialog_response(self, dialog: Adw.MessageDialog, response: str):
+        match response:
+            case "save":
+                self.on_save()
+            case "discard":
+                self.resume_pending_action()
+            case "cancel":
+                dialog.close()
+                self.pending_action = None
+
+    def resume_pending_action(self):
+        match self.pending_action:
+            case "close":
+                self.close()
+            case "open":
+                self.open_file_chooser.show()
+        self.pending_action = None
 
     @staticmethod
     def show_about_dialog(*args):
