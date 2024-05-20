@@ -10,7 +10,7 @@
     <summary xml:lang="pl">Przeglądaj pliki fotometryczne</summary>
     <description>
         <p>
-            Photometry allows viewing light distribution curves and metadata of IESNA and EULUMDAT photometric
+            Photometry shows light distribution curves and metadata of IESNA and EULUMDAT photometric
             files which describe the light distribution of light sources like lamps and luminaires and
             are used mostly for data transfer in the lighting industry and in 3D graphics.
         </p>
@@ -25,13 +25,14 @@
             transferu danych w przemyśle oświetleniowym i grafice 3D.
         </p>
         <p>
-            Photometry following information of the opened photometric file:
+            Photometry allows editing the source content of the opened photometric file and shows the following
+            information contained in the opened files:
         </p>
         <p xml:lang="de">
-            Photometrie zeigt folgende Informationen über die Photometiredatei an:
+            Photometrie erlaubt den Inhalt der Photometriedateien zu bearbeiten und zeigt folgende Informationen an:
         </p>
         <p xml:lang="pl">
-            Aplikacja pozwala zobaczyć następujące informacje zawarte w plikach fotometrycznych:
+            Aplikacja pozwala eytować kod źródłowy plików fotometrycznych oraz przeglądać następujące informacje:
         </p>
         <ul>
             <li>Light distribution curves</li>
@@ -55,9 +56,6 @@
             <li>Intensity Values for selected C planes and gamma angles</li>
             <li xml:lang="de">Candela-Werte für ausgewählte C-Ebenen und Gammawinkel</li>
             <li xml:lang="pl">Wartości światłości dla wybranych płaszczyzn i kontów gamma</li>
-            <li>Raw text source of photometric file</li>
-            <li xml:lang="de">Textinhalt der Photometriedatei</li>
-            <li xml:lang="pl">Żródło pliku fotometrycznego</li>
         </ul>
     </description>
     <branding>
@@ -132,6 +130,13 @@
     </requires>
 
     <releases>
+        <release version="3.0.0" date="2024-05-20">
+            <description>
+                <p>Allow editing the content of opened photometric files</p>
+                <p xml:lang="de">Ermöglicht die Bearbeitung des Inhalts von geöffneten photometrischen Dateien</p>
+                <p xml:lang="pl">Umożliwienie edycji zawartości otwartych plików fotometrycznych</p>
+            </description>
+        </release>
         <release version="2.1.3" date="2024-04-04">
             <description>
                 <p>Fixed translations of application description</p>
