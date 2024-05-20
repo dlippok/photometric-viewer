@@ -137,6 +137,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.open_stream(stram)
         stram.seek(0)
         self.source_view_page.open_stream(io.StringIO(""))
+        self.show_source()
 
     def on_open(self, *args):
         if self.source_view_page.source_text_view.get_buffer().get_modified():
