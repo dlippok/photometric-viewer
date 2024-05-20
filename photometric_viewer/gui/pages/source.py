@@ -29,6 +29,7 @@ class SourceViewPage(BasePage):
 
         self.source_text_view.set_show_line_numbers(True)
         self.source_text_view.get_buffer().connect("changed", self.on_update_content)
+        self.connect("shown", self.on_shown)
 
         self.lang_manager: GtkSource.LanguageManager = GtkSource.LanguageManager.get_default()
         self.lang_manager.append_search_path(SPECS_DIR)
@@ -46,6 +47,9 @@ class SourceViewPage(BasePage):
 
     def on_update_content(self, *args):
         self._update_language()
+
+    def on_shown(self, *args):
+        self.source_text_view.grab_focus()
 
     def open_stream(self, f: typing.IO):
         self.source_text_view.get_buffer().set_text(f.read())
