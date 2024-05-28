@@ -1,5 +1,6 @@
 import os
 import typing
+from concurrent.futures import ThreadPoolExecutor
 
 from gi.repository import Adw, Gtk, GtkSource
 from gi.repository.Gtk import ScrolledWindow, PolicyType
@@ -27,6 +28,8 @@ class SourceViewPage(BasePage):
             bottom_margin=20,
         )
 
+        self.executor = ThreadPoolExecutor(max_workers=1)
+
         self.source_text_view.set_show_line_numbers(True)
         self.source_text_view.get_buffer().connect("changed", self.on_update_content)
         self.connect("shown", self.on_shown)
@@ -46,7 +49,7 @@ class SourceViewPage(BasePage):
         self.update_theme()
 
     def on_update_content(self, *args):
-        self._update_language()
+        self.executor.submit(self._update_language)
 
     def on_shown(self, *args):
         self.source_text_view.grab_focus()

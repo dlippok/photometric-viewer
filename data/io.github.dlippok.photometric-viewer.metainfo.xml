@@ -130,7 +130,7 @@
     </requires>
 
     <releases>
-        <release version="3.0.0" date="2024-05-20">
+        <release version="3.0.0" date="2024-05-28">
             <description>
                 <p>Allow editing the content of opened photometric files</p>
                 <p xml:lang="de">Ermöglicht die Bearbeitung des Inhalts von geöffneten photometrischen Dateien</p>
