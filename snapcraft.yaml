@@ -1,15 +1,15 @@
 name: photometric-viewer
-base: core24
+base: core22
 adopt-info: photometric-viewer
 confinement: strict
 
 environment:
   PYTHONPATH: ${SNAP}/lib/python3.10/site-packages:${SNAP}/usr/lib/python3/dist-packages
   
-platforms:
-  arm64:
-  armhf:
-  amd64:
+architectures:
+  - build-on: arm64
+  - build-on: armhf
+  - build-on: amd64
   
 apps:
   photometric-viewer:
