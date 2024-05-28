@@ -1,4 +1,5 @@
 import os
+import time
 import typing
 from concurrent.futures import ThreadPoolExecutor
 
@@ -55,10 +56,18 @@ class SourceViewPage(BasePage):
         self.source_text_view.grab_focus()
 
     def open_stream(self, f: typing.IO):
-        self.source_text_view.get_buffer().set_text(f.read())
-        self.source_text_view.get_buffer().set_modified(False)
+        try:
+            self.opening = True
+            self.source_text_view.get_buffer().set_text(f.read())
+            self.source_text_view.get_buffer().set_modified(False)
+        finally:
+            self.opening = False
 
     def _update_language(self):
+        time.sleep(0.1)
+        while self.opening:
+            time.sleep(0.05)
+
         buffer: Gtk.TextBuffer = self.source_text_view.get_buffer()
         start = buffer.get_start_iter()
         end: Gtk.TextIter = buffer.get_start_iter()
