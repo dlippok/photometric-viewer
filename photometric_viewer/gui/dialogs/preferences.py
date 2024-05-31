@@ -1,4 +1,5 @@
 from gi.repository import Adw, Gtk
+from gi.repository.Adw import SwitchRow
 from gi.repository.Gtk import ListBox, Box, Orientation, Label, SelectionMode, ToggleButton, SpinButton, Adjustment
 
 from photometric_viewer.config import plotter_themes
@@ -10,15 +11,20 @@ from photometric_viewer.utils.gi.GSettings import SettingsManager
 class PreferencesWindow(Adw.PreferencesWindow):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.page = Adw.PreferencesPage(
+        self.application_settings_page = Adw.PreferencesPage(
             title=_("Application Settings"),
         )
-        self.add(self.page)
+        self.source_editor_page = Adw.PreferencesPage(
+            title=_("Source Editor"),
+        )
+        self.add(self.application_settings_page)
+        self.add(self.source_editor_page)
 
         self.set_search_enabled(False)
         self.settings_manager = SettingsManager()
         self._add_locale_settings_group()
         self._add_curve_settings_group()
+        self._add_source_editor_behavior_group()
 
     def _add_locale_settings_group(self):
         locale_settings_group = Adw.PreferencesGroup(
@@ -107,7 +113,7 @@ class PreferencesWindow(Adw.PreferencesWindow):
         locale_settings_list.append(electricity_price_box)
         locale_settings_group.add(locale_settings_list)
 
-        self.page.add(locale_settings_group)
+        self.application_settings_page.add(locale_settings_group)
 
     def _add_curve_settings_group(self):
         curve_settings_group = Adw.PreferencesGroup(
@@ -237,7 +243,28 @@ class PreferencesWindow(Adw.PreferencesWindow):
 
         curve_settings_group.add(curve_settings_list)
 
-        self.page.add(curve_settings_group)
+        self.application_settings_page.add(curve_settings_group)
+
+    def _add_source_editor_behavior_group(self):
+        source_editor_behavior_group = Adw.PreferencesGroup(
+            title=_("Behavior")
+        )
+
+        source_editor_behavior_list = ListBox(
+            css_classes=["boxed-list"],
+            selection_mode=SelectionMode.NONE
+        )
+
+        autosave_row = SwitchRow(
+            title=_("Autosave"),
+            subtitle=_("Automatically save changes to the source editor")
+        )
+        source_editor_behavior_list.append(autosave_row)
+
+        source_editor_behavior_group.add(source_editor_behavior_list)
+
+
+        self.source_editor_page.add(source_editor_behavior_group)
 
     def preferred_unit_changed(self, *args):
         match self.preferred_units_dropdown.get_selected():
