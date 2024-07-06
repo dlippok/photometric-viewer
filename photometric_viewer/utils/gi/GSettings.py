@@ -36,6 +36,7 @@ class SettingsManager:
         self._gsettings.set_enum("display-half-spaces", self.settings.display_half_spaces.value)
         self._gsettings.set_enum("snap-value-angles-to", self.settings.snap_value_angles_to.value)
         self._gsettings.set_string("diagram-theme", self.settings.diagram_theme)
+        self._gsettings.set_boolean("autosave", self.settings.autosave)
 
     def load(self):
         if self._gsettings:
@@ -46,7 +47,8 @@ class SettingsManager:
                 diagram_style=DiagramStyle(self._gsettings.get_enum("diagram-style")),
                 display_half_spaces=DisplayHalfSpaces(self._gsettings.get_enum("display-half-spaces")),
                 snap_value_angles_to=SnapValueAnglesTo(self._gsettings.get_enum("snap-value-angles-to")),
-                diagram_theme=self._gsettings.get_string("diagram-theme")
+                diagram_theme=self._gsettings.get_string("diagram-theme"),
+                autosave=self._gsettings.get_boolean("autosave")
             )
 
         self.notify_update()

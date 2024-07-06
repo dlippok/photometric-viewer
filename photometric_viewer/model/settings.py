@@ -27,3 +27,4 @@ class Settings:
     snap_value_angles_to: SnapValueAnglesTo = SnapValueAnglesTo.MAX_VALUE
     display_half_spaces: DisplayHalfSpaces = DisplayHalfSpaces.ONLY_RELEVANT
     diagram_theme: str | None = None
+    autosave: bool = False

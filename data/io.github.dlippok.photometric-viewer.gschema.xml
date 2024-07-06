@@ -55,5 +55,10 @@
             <summary>Scheme of the photometric diagram</summary>
             <description>Name of the scheme to use. If scheme with the specified name is not found, default will be used.</description>
         </key>
+        <key type="b" name="autosave">
+            <default>false</default>
+            <summary>Save opened files automatically</summary>
+            <description>Automatically save opened photometric files whenever text editor loses focus.</description>
+        </key>
     </schema>
 </schemalist>

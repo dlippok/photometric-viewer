@@ -8,7 +8,6 @@ from gi.repository.Gtk import ScrolledWindow, PolicyType
 from gi.repository.GtkSource import View
 
 from photometric_viewer.gui.pages.base import BasePage
-from photometric_viewer.model.luminaire import Luminaire, FileFormat
 from photometric_viewer.utils.project import ASSETS_PATH
 
 SPECS_DIR = os.path.join(ASSETS_PATH, "language-specs")
@@ -32,8 +31,6 @@ class SourceViewPage(BasePage):
         self.executor = ThreadPoolExecutor(max_workers=1)
 
         self.source_text_view.set_show_line_numbers(True)
-        self.source_text_view.get_buffer().connect("changed", self.on_update_content)
-        self.connect("shown", self.on_shown)
 
         self.lang_manager: GtkSource.LanguageManager = GtkSource.LanguageManager.get_default()
         self.lang_manager.append_search_path(SPECS_DIR)
@@ -45,15 +42,19 @@ class SourceViewPage(BasePage):
 
         self.set_content(scrolled_window)
 
-        self.adw_style_manager.connect("notify", self.update_theme)
-
         self.update_theme()
+        self._connect_signals()
+
 
     def on_update_content(self, *args):
         self.executor.submit(self._update_language)
 
     def on_shown(self, *args):
         self.source_text_view.grab_focus()
+
+    def on_source_text_view_focus_change(self, *args):
+        if not self.source_text_view.has_focus():
+            self.activate_action("win.autosave")
 
     def open_stream(self, f: typing.IO):
         try:
@@ -87,3 +88,9 @@ class SourceViewPage(BasePage):
             buffer.set_style_scheme(style_manager.get_scheme('Adwaita-dark'))
         else:
             buffer.set_style_scheme(style_manager.get_scheme('Adwaita'))
+
+    def _connect_signals(self):
+        self.connect("shown", self.on_shown)
+        self.source_text_view.get_buffer().connect("changed", self.on_update_content)
+        self.adw_style_manager.connect("notify", self.update_theme)
+        self.source_text_view.connect("notify::has-focus", self.on_source_text_view_focus_change)
