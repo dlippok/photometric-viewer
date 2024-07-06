@@ -154,15 +154,23 @@ class MainWindow(Adw.ApplicationWindow):
             write_string(self.opened_file, buffer.get_text(start, end, True))
             self.source_view_page.source_text_view.get_buffer().set_modified(False)
             self.resume_pending_action()
-
         else:
             self.on_save_as()
+
+    def on_autosave(self, *args):
+        if not self.opened_file:
+            return
+
+        if not self.settings_manager.settings.autosave:
+            return
+
+        self.on_save()
 
     def on_save_as(self, *args):
         self.save_as_file_chooser.show()
 
-    def on_open_url(self, window, action, params: GLib.Variant, *args):
-        Gtk.show_uri(window, params.get_string(), Gdk.CURRENT_TIME)
+    def on_open_url(self, action, params: GLib.Variant, *args):
+        Gtk.show_uri(self, params.get_string(), Gdk.CURRENT_TIME)
 
     def on_open_response(self, dialog: FileChooserDialog, response):
         if response == Gtk.ResponseType.ACCEPT:
@@ -281,6 +289,7 @@ class MainWindow(Adw.ApplicationWindow):
                     ("export_as_ldt", self.show_ldt_export_file_chooser),
                     ("export_as_ies", self.show_ies_export_file_chooser),
                     ("save", self.on_save),
+                    ("autosave", self.on_autosave),
                     ("save_as", self.on_save_as),
                     ("open_url", self.on_open_url, "s")
                 ]
@@ -387,10 +396,9 @@ class MainWindow(Adw.ApplicationWindow):
         start = buffer.get_start_iter()
         end = buffer.get_end_iter()
 
-        if buffer.get_modified():
-            self.open_stream(
-                io.StringIO(buffer.get_text(start, end, True))
-            )
+        self.open_stream(
+            io.StringIO(buffer.get_text(start, end, True))
+        )
 
     def show_banner(self, message: str, details: str | None = None):
         toast = Adw.Toast()

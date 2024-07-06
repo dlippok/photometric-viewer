@@ -1,4 +1,5 @@
 from gi.repository import Adw, Gtk
+from gi.repository.Adw import SwitchRow
 from gi.repository.Gtk import ListBox, Box, Orientation, Label, SelectionMode, ToggleButton, SpinButton, Adjustment
 
 from photometric_viewer.config import plotter_themes
@@ -9,14 +10,24 @@ from photometric_viewer.utils.gi.GSettings import SettingsManager
 
 class PreferencesWindow(Adw.PreferencesWindow):
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.page = Adw.PreferencesPage(
-            title=_("Application Settings"),
-        )
-        self.add(self.page)
-
-        self.set_search_enabled(False)
+        super().__init__(search_enabled=False, **kwargs)
         self.settings_manager = SettingsManager()
+
+        self.application_settings_page = Adw.PreferencesPage(
+            title=_("Application Settings"),
+            icon_name="settings-symbolic"
+        )
+        self.add(self.application_settings_page)
+        self._populate_application_settings_page()
+
+        self.editor_settings_page = Adw.PreferencesPage(
+            title=_("Editor"),
+            icon_name="text-editor-symbolic"
+        )
+        self.add(self.editor_settings_page)
+        self._populate_editor_settings_page()
+
+    def _populate_application_settings_page(self):
         self._add_locale_settings_group()
         self._add_curve_settings_group()
 
@@ -107,7 +118,7 @@ class PreferencesWindow(Adw.PreferencesWindow):
         locale_settings_list.append(electricity_price_box)
         locale_settings_group.add(locale_settings_list)
 
-        self.page.add(locale_settings_group)
+        self.application_settings_page.add(locale_settings_group)
 
     def _add_curve_settings_group(self):
         curve_settings_group = Adw.PreferencesGroup(
@@ -237,7 +248,33 @@ class PreferencesWindow(Adw.PreferencesWindow):
 
         curve_settings_group.add(curve_settings_list)
 
-        self.page.add(curve_settings_group)
+        self.application_settings_page.add(curve_settings_group)
+
+    def _populate_editor_settings_page(self):
+        self._add_editor_behavior_settings_group()
+
+
+    def _add_editor_behavior_settings_group(self):
+        preferences_group = Adw.PreferencesGroup(
+            title=_("Behavior"),
+            description=_("Behavior of the source text editor")
+        )
+
+        behavior_list = ListBox(
+            css_classes=["boxed-list"],
+            selection_mode=SelectionMode.NONE
+        )
+
+        self.autosave_row = SwitchRow(
+            title=_("Save changes automatically"),
+            subtitle=_("Useful when editing files under source control"),
+            active=self.settings_manager.settings.autosave
+        )
+        self.autosave_row.connect("notify::active", self.on_autosave_toggled)
+
+        behavior_list.append(self.autosave_row)
+        preferences_group.add(behavior_list)
+        self.editor_settings_page.add(preferences_group)
 
     def preferred_unit_changed(self, *args):
         match self.preferred_units_dropdown.get_selected():
@@ -295,6 +332,11 @@ class PreferencesWindow(Adw.PreferencesWindow):
     def diagram_theme_changed(self, *args):
         selected = self.diagram_theme_dropdown.get_selected()
         self.settings_manager.settings.diagram_theme = plotter_themes.THEMES[selected].name
+        self.update()
+
+    def on_autosave_toggled(self, *args):
+        active = self.autosave_row.get_active()
+        self.settings_manager.settings.autosave = active
         self.update()
 
     def update(self):
