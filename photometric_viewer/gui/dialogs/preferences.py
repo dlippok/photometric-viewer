@@ -15,7 +15,7 @@ class PreferencesWindow(Adw.PreferencesWindow):
 
         self.application_settings_page = Adw.PreferencesPage(
             title=_("Application Settings"),
-            icon_name="settings-symbolic"
+            icon_name="preferences-system-symbolic"
         )
         self.add(self.application_settings_page)
         self._populate_application_settings_page()
