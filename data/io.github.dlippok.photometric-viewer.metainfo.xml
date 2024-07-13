@@ -130,6 +130,13 @@
     </requires>
 
     <releases>
+        <release version="3.1.0" date="2024-07-13">
+            <description>
+                <p>Adds autosave support</p>
+                <p xml:lang="de">Fügt Unterstützung für automatisches Speichern hinzu</p>
+                <p xml:lang="pl">Dodaje obsługę automatycznego zapisu</p>
+            </description>
+        </release>
         <release version="3.0.0" date="2024-05-28">
             <description>
                 <p>Allow editing the content of opened photometric files</p>
