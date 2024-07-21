@@ -251,8 +251,43 @@ class PreferencesWindow(Adw.PreferencesWindow):
         self.application_settings_page.add(curve_settings_group)
 
     def _populate_editor_settings_page(self):
+        self._add_editor_appearance_settings_group()
         self._add_editor_behavior_settings_group()
 
+    def _add_editor_appearance_settings_group(self):
+        preferences_group = Adw.PreferencesGroup(
+            title=_("Appearance"),
+            description=_("Appearance of the source text editor")
+        )
+
+        appearance_list = ListBox(
+            css_classes=["boxed-list"],
+            selection_mode=SelectionMode.NONE
+        )
+
+        self.show_line_numbers = SwitchRow(
+            title=_("Show line numbers"),
+            active=self.settings_manager.settings.editor_show_line_numbers
+        )
+        self.show_line_numbers.connect("notify::active", self.on_show_line_numbers_toggled)
+        appearance_list.append(self.show_line_numbers)
+
+        self.highlight_current_line = SwitchRow(
+            title=_("Highlight current line"),
+            active=self.settings_manager.settings.editor_highlight_current_line
+        )
+        self.highlight_current_line.connect("notify::active", self.on_highlight_current_line_toggled)
+        appearance_list.append(self.highlight_current_line)
+
+        self.show_grid = SwitchRow(
+            title=_("Show grid pattern"),
+            active=self.settings_manager.settings.editor_grid
+        )
+        self.show_grid.connect("notify::active", self.on_show_grid_toggled)
+        appearance_list.append(self.show_grid)
+
+        preferences_group.add(appearance_list)
+        self.editor_settings_page.add(preferences_group)
 
     def _add_editor_behavior_settings_group(self):
         preferences_group = Adw.PreferencesGroup(
@@ -265,13 +300,19 @@ class PreferencesWindow(Adw.PreferencesWindow):
             selection_mode=SelectionMode.NONE
         )
 
+        self.word_warp_row = SwitchRow(
+            title=_("Word warp"),
+            active=self.settings_manager.settings.editor_word_warp
+        )
+        self.word_warp_row.connect("notify::active", self.on_word_warp_toggled)
+
         self.autosave_row = SwitchRow(
             title=_("Save changes automatically"),
-            subtitle=_("Useful when editing files under source control"),
             active=self.settings_manager.settings.autosave
         )
         self.autosave_row.connect("notify::active", self.on_autosave_toggled)
 
+        behavior_list.append(self.word_warp_row)
         behavior_list.append(self.autosave_row)
         preferences_group.add(behavior_list)
         self.editor_settings_page.add(preferences_group)
@@ -337,6 +378,26 @@ class PreferencesWindow(Adw.PreferencesWindow):
     def on_autosave_toggled(self, *args):
         active = self.autosave_row.get_active()
         self.settings_manager.settings.autosave = active
+        self.update()
+
+    def on_word_warp_toggled(self, *args):
+        active = self.word_warp_row.get_active()
+        self.settings_manager.settings.editor_word_warp = active
+        self.update()
+
+    def on_show_line_numbers_toggled(self, *args):
+        active = self.show_line_numbers.get_active()
+        self.settings_manager.settings.editor_show_line_numbers = active
+        self.update()
+
+    def on_highlight_current_line_toggled(self, *args):
+        active = self.highlight_current_line.get_active()
+        self.settings_manager.settings.editor_highlight_current_line = active
+        self.update()
+
+    def on_show_grid_toggled(self, *args):
+        active = self.show_grid.get_active()
+        self.settings_manager.settings.editor_grid = active
         self.update()
 
     def update(self):
