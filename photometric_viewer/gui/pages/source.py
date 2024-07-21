@@ -7,7 +7,7 @@ from gi.repository import Adw, Gtk, GtkSource
 from gi.repository.Gtk import ScrolledWindow, PolicyType, WrapMode
 from gi.repository.GtkSource import View
 
-from model.settings import Settings
+from photometric_viewer.model.settings import Settings
 from photometric_viewer.gui.pages.base import BasePage
 from photometric_viewer.utils.project import ASSETS_PATH
 from photometric_viewer.utils.gi.GSettings import SettingsManager
@@ -29,7 +29,6 @@ class SourceViewPage(BasePage):
             top_margin=20,
             bottom_margin=20,
         )
-
 
         self.executor = ThreadPoolExecutor(max_workers=1)
 
