@@ -37,6 +37,10 @@ class SettingsManager:
         self._gsettings.set_enum("snap-value-angles-to", self.settings.snap_value_angles_to.value)
         self._gsettings.set_string("diagram-theme", self.settings.diagram_theme)
         self._gsettings.set_boolean("autosave", self.settings.autosave)
+        self._gsettings.set_boolean("editor-word-warp", self.settings.editor_word_warp)
+        self._gsettings.set_boolean("editor-grid", self.settings.editor_grid)
+        self._gsettings.set_boolean("editor-highlight-current-line", self.settings.editor_highlight_current_line)
+        self._gsettings.set_boolean("editor-show-line-numbers", self.settings.editor_show_line_numbers)
 
     def load(self):
         if self._gsettings:
@@ -48,7 +52,11 @@ class SettingsManager:
                 display_half_spaces=DisplayHalfSpaces(self._gsettings.get_enum("display-half-spaces")),
                 snap_value_angles_to=SnapValueAnglesTo(self._gsettings.get_enum("snap-value-angles-to")),
                 diagram_theme=self._gsettings.get_string("diagram-theme"),
-                autosave=self._gsettings.get_boolean("autosave")
+                autosave=self._gsettings.get_boolean("autosave"),
+                editor_word_warp=self._gsettings.get_boolean("editor-word-warp"),
+                editor_grid=self._gsettings.get_boolean("editor-grid"),
+                editor_highlight_current_line=self._gsettings.get_boolean("editor-highlight-current-line"),
+                editor_show_line_numbers=self._gsettings.get_boolean("editor-show-line-numbers")
             )
 
         self.notify_update()

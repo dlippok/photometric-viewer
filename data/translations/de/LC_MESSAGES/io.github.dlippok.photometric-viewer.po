@@ -1,5 +1,6 @@
 #
 # Damian Lippok <mail.dalee@gmail.com>, 2023-2024.
+# Dmian Lippok <mail.dalee@gmail.com>, 2024.
 #
 msgid ""
 msgstr ""
@@ -26,9 +27,8 @@ msgid "Application Settings"
 msgstr "Einstellungen"
 
 #: photometric_viewer/gui/dialogs/preferences.py:24
-#, fuzzy
 msgid "Editor"
-msgstr "Quelle bearbeiten"
+msgstr "Editor"
 
 #: photometric_viewer/gui/dialogs/preferences.py:36
 #: photometric_viewer/gui/dialogs/preferences.py:25
@@ -213,16 +213,52 @@ msgid "Display half spaces"
 msgstr "Halbräume"
 
 #: photometric_viewer/gui/dialogs/preferences.py:259
+msgid "Appearance"
+msgstr "Erscheinungsbild"
+
+#: photometric_viewer/gui/dialogs/preferences.py:260
+msgid "Appearance of the source text editor"
+msgstr "Erscheinungsbild des Quellcodeeditors"
+
+#: photometric_viewer/gui/dialogs/preferences.py:269
+msgid "Show line numbers"
+msgstr "Zeilennummern anzeigen"
+
+#: photometric_viewer/gui/dialogs/preferences.py:276
+msgid "Highlight current line"
+msgstr "Aktuelle Zeile hervorheben"
+
+#: photometric_viewer/gui/dialogs/preferences.py:283
+msgid "Show grid pattern"
+msgstr "Raster anzeigen"
+
+#: photometric_viewer/gui/dialogs/preferences.py:294
+#: photometric_viewer/gui/dialogs/preferences.py:259
 msgid "Behavior"
 msgstr "Verhalten"
 
+#: photometric_viewer/gui/dialogs/preferences.py:295
 #: photometric_viewer/gui/dialogs/preferences.py:260
 msgid "Behavior of the source text editor"
 msgstr "Verhalten des Quellcodeeditors"
 
+#: photometric_viewer/gui/dialogs/preferences.py:304
+msgid "Word warp"
+msgstr "Textumbruch"
+
+#: photometric_viewer/gui/dialogs/preferences.py:310
 #: photometric_viewer/gui/dialogs/preferences.py:269
 msgid "Save changes automatically"
 msgstr "Änderungen automatisch speichern"
+
+#: photometric_viewer/gui/pages/source.py:19
+#: photometric_viewer/gui/pages/source.py:15
+#: photometric_viewer/gui/window.py:54 photometric_viewer/gui/window.py:50
+#: photometric_viewer/gui/window.py:52 photometric_viewer/gui/window.py:51
+#: photometric_viewer/gui/window.py:48 photometric_viewer/gui/window.py:49
+#: photometric_viewer/gui/window.py:46
+msgid "Source"
+msgstr "Quelle"
 
 #: photometric_viewer/gui/dialogs/preferences.py:270
 msgid "Useful when editing files under source control"
@@ -767,14 +803,6 @@ msgid ""
 msgstr ""
 "Verhältnis des von der Leuchte in dem nach unten gerichteten Halbraum "
 "abgestrahlten Lichtstroms zu dem Gesamtlichtstrom."
-
-#: photometric_viewer/gui/pages/source.py:15
-#: photometric_viewer/gui/window.py:54 photometric_viewer/gui/window.py:50
-#: photometric_viewer/gui/window.py:52 photometric_viewer/gui/window.py:51
-#: photometric_viewer/gui/window.py:48 photometric_viewer/gui/window.py:49
-#: photometric_viewer/gui/window.py:46
-msgid "Source"
-msgstr "Quelle"
 
 #: photometric_viewer/gui/pages/ballast_set.py:41
 #: photometric_viewer/gui/widgets/content/lamps.py:95

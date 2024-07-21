@@ -60,5 +60,25 @@
             <summary>Save opened files automatically</summary>
             <description>Automatically save opened photometric files whenever text editor loses focus.</description>
         </key>
+        <key type="b" name="editor-word-warp">
+            <default>true</default>
+            <summary>Warp long lines</summary>
+            <description>When active, lines that are longer than the editor width will be wrapped into multiple lines.</description>
+        </key>
+        <key type="b" name="editor-grid">
+            <default>false</default>
+            <summary>Show grid pattern</summary>
+            <description>Display grid pattern in the background of the source code editor.</description>
+        </key>
+        <key type="b" name="editor-highlight-current-line">
+            <default>true</default>
+            <summary>Highlight current line</summary>
+            <description>Highlight currently active line in the source code editor.</description>
+        </key>
+        <key type="b" name="editor-show-line-numbers">
+            <default>true</default>
+            <summary>Show line numbers</summary>
+            <description>Display line numbers in the gutter of the source code editor.</description>
+        </key>
     </schema>
 </schemalist>

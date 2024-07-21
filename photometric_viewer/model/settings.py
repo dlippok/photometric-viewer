@@ -28,3 +28,7 @@ class Settings:
     display_half_spaces: DisplayHalfSpaces = DisplayHalfSpaces.ONLY_RELEVANT
     diagram_theme: str | None = None
     autosave: bool = False
+    editor_word_warp: bool = True
+    editor_grid: bool = False
+    editor_highlight_current_line: bool = True
+    editor_show_line_numbers: bool = True

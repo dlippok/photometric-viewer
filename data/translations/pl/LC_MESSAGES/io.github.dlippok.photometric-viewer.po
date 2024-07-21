@@ -1,14 +1,15 @@
 #
 # DaLee <mail.dalee@gmail.com>, 2023.
 # Damian Lippok <mail.dalee@gmail.com>, 2023-2024.
+# Dmian Lippok <mail.dalee@gmail.com>, 2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-13 13:48+0200\n"
-"PO-Revision-Date: 2024-07-13 13:52+0200\n"
-"Last-Translator: Damian Lippok <mail.dalee@gmail.com>\n"
+"POT-Creation-Date: 2024-07-21 16:52+0200\n"
+"PO-Revision-Date: 2024-07-21 16:57+0200\n"
+"Last-Translator: Dmian Lippok <mail.dalee@gmail.com>\n"
 "Language-Team: Polish <mail.dalee@gmail.com>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
@@ -214,16 +215,52 @@ msgid "Display half spaces"
 msgstr "Wyśwetl półprzestrzeń"
 
 #: photometric_viewer/gui/dialogs/preferences.py:259
+msgid "Appearance"
+msgstr "Wygląd"
+
+#: photometric_viewer/gui/dialogs/preferences.py:260
+msgid "Appearance of the source text editor"
+msgstr "Wygląd edytora kodu"
+
+#: photometric_viewer/gui/dialogs/preferences.py:269
+msgid "Show line numbers"
+msgstr "Pokaż numer wiersza"
+
+#: photometric_viewer/gui/dialogs/preferences.py:276
+msgid "Highlight current line"
+msgstr "Podświetl aktualny wiersz"
+
+#: photometric_viewer/gui/dialogs/preferences.py:283
+msgid "Show grid pattern"
+msgstr "Pokaż siatkę"
+
+#: photometric_viewer/gui/dialogs/preferences.py:294
+#: photometric_viewer/gui/dialogs/preferences.py:259
 msgid "Behavior"
 msgstr "Zachowanie"
 
+#: photometric_viewer/gui/dialogs/preferences.py:295
 #: photometric_viewer/gui/dialogs/preferences.py:260
 msgid "Behavior of the source text editor"
 msgstr "Zachowanie edytora kodu"
 
+#: photometric_viewer/gui/dialogs/preferences.py:304
+msgid "Word warp"
+msgstr "Zawiń długie wiersze"
+
+#: photometric_viewer/gui/dialogs/preferences.py:310
 #: photometric_viewer/gui/dialogs/preferences.py:269
 msgid "Save changes automatically"
 msgstr "Zapisz zmiany automatycznie"
+
+#: photometric_viewer/gui/pages/source.py:19
+#: photometric_viewer/gui/pages/source.py:15
+#: photometric_viewer/gui/window.py:54 photometric_viewer/gui/window.py:50
+#: photometric_viewer/gui/window.py:52 photometric_viewer/gui/window.py:51
+#: photometric_viewer/gui/window.py:48 photometric_viewer/gui/window.py:49
+#: photometric_viewer/gui/window.py:46
+msgid "Source"
+msgstr "Żródło"
 
 #: photometric_viewer/gui/dialogs/preferences.py:270
 msgid "Useful when editing files under source control"
@@ -767,14 +804,6 @@ msgstr ""
 "Stosunek strumienia świetlnego emitowanego przez oprawę oświetleniową na "
 "półkuli skierowanej w dół do strumienia świetlnego emitowanego przez oprawę "
 "oświetleniową we wszystkich kierunkach."
-
-#: photometric_viewer/gui/pages/source.py:15
-#: photometric_viewer/gui/window.py:54 photometric_viewer/gui/window.py:50
-#: photometric_viewer/gui/window.py:52 photometric_viewer/gui/window.py:51
-#: photometric_viewer/gui/window.py:48 photometric_viewer/gui/window.py:49
-#: photometric_viewer/gui/window.py:46
-msgid "Source"
-msgstr "Żródło"
 
 #: photometric_viewer/gui/pages/ballast_set.py:41
 #: photometric_viewer/gui/widgets/content/lamps.py:95

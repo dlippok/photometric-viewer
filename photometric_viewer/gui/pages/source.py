@@ -4,11 +4,13 @@ import typing
 from concurrent.futures import ThreadPoolExecutor
 
 from gi.repository import Adw, Gtk, GtkSource
-from gi.repository.Gtk import ScrolledWindow, PolicyType
+from gi.repository.Gtk import ScrolledWindow, PolicyType, WrapMode
 from gi.repository.GtkSource import View
 
+from photometric_viewer.model.settings import Settings
 from photometric_viewer.gui.pages.base import BasePage
 from photometric_viewer.utils.project import ASSETS_PATH
+from photometric_viewer.utils.gi.GSettings import SettingsManager
 
 SPECS_DIR = os.path.join(ASSETS_PATH, "language-specs")
 
@@ -16,11 +18,11 @@ class SourceViewPage(BasePage):
     def __init__(self, **kwargs):
         super().__init__(_("Source"), **kwargs)
         self.adw_style_manager: Adw.StyleManager = Adw.StyleManager.get_default()
+        self.settings_manager = SettingsManager()
 
         self.source_text_view = View(
             editable=True,
             monospace=True,
-            wrap_mode=Gtk.WrapMode.WORD_CHAR,
             pixels_below_lines=1,
             left_margin=20,
             right_margin=20,
@@ -30,21 +32,20 @@ class SourceViewPage(BasePage):
 
         self.executor = ThreadPoolExecutor(max_workers=1)
 
-        self.source_text_view.set_show_line_numbers(True)
-
         self.lang_manager: GtkSource.LanguageManager = GtkSource.LanguageManager.get_default()
         self.lang_manager.append_search_path(SPECS_DIR)
 
-        scrolled_window = ScrolledWindow()
-        scrolled_window.set_child(self.source_text_view)
-        scrolled_window.set_vexpand(True)
-        scrolled_window.set_policy(PolicyType.NEVER, PolicyType.AUTOMATIC)
+        self.scrolled_window = ScrolledWindow()
+        self.scrolled_window.set_child(self.source_text_view)
+        self.scrolled_window.set_vexpand(True)
 
-        self.set_content(scrolled_window)
+        self.set_content(self.scrolled_window)
 
         self.update_theme()
-        self._connect_signals()
 
+        self._on_update_settings(self.settings_manager.settings)
+        self.settings_manager.register_on_update(self._on_update_settings)
+        self._connect_signals()
 
     def on_update_content(self, *args):
         self.executor.submit(self._update_language)
@@ -94,3 +95,19 @@ class SourceViewPage(BasePage):
         self.source_text_view.get_buffer().connect("changed", self.on_update_content)
         self.adw_style_manager.connect("notify", self.update_theme)
         self.source_text_view.connect("notify::has-focus", self.on_source_text_view_focus_change)
+
+    def _on_update_settings(self, settings: Settings):
+        if settings.editor_word_warp:
+            self.source_text_view.set_wrap_mode(WrapMode.WORD_CHAR)
+            self.scrolled_window.set_policy(PolicyType.NEVER, PolicyType.AUTOMATIC)
+        else:
+            self.source_text_view.set_wrap_mode(WrapMode.NONE)
+            self.scrolled_window.set_policy(PolicyType.AUTOMATIC, PolicyType.AUTOMATIC)
+
+        if settings.editor_grid:
+            self.source_text_view.set_background_pattern(GtkSource.BackgroundPatternType.GRID)
+        else:
+            self.source_text_view.set_background_pattern(GtkSource.BackgroundPatternType.NONE)
+
+        self.source_text_view.set_highlight_current_line(settings.editor_highlight_current_line)
+        self.source_text_view.set_show_line_numbers(settings.editor_show_line_numbers)
