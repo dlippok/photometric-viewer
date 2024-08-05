@@ -18,6 +18,11 @@
    background-color: @window_bg_color;
 }
 
+.sidebar-pane {
+ background-color: @window_bg_color;
+
+}
+
 .small {
     font-size: 0.8em;
 }

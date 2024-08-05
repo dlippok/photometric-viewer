@@ -2,6 +2,7 @@ from gi.repository import Adw, Gio, Gtk
 from gi.repository.Gtk import Box, Orientation, Label, PolicyType, ScrolledWindow, FileFilter, FileChooserDialog
 from gi.repository.Pango import WrapMode
 
+from photometric_viewer.config.appearance import CLAMP_MAX_WIDTH
 from photometric_viewer.formats import svg, png
 from photometric_viewer.gui.dialogs.file_chooser import ExportFileChooser
 from photometric_viewer.gui.pages.base import BasePage
@@ -48,7 +49,7 @@ class LdcExportPage(BasePage):
         self.diagram = PhotometricDiagramPreview()
         box.append(self.diagram)
 
-        clamp = Adw.Clamp(maximum_size=800)
+        clamp = Adw.Clamp(maximum_size=CLAMP_MAX_WIDTH)
         clamp.set_child(box)
 
         scrolled_window = ScrolledWindow()

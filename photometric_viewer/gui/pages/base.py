@@ -9,7 +9,7 @@ class BasePage(Adw.NavigationPage):
         super().__init__(title=title, **kwargs)
         self.content_bin = Adw.Bin(hexpand=True, vexpand=True)
 
-        header = headerbar or default_headerbar()
+        header = headerbar or Adw.HeaderBar(css_classes=["flat"])
 
         header.set_show_title(show_title)
 

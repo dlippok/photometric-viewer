@@ -2,6 +2,7 @@ from gi.repository import Adw, Gtk
 from gi.repository.Adw import ActionRow
 from gi.repository.Gtk import ScrolledWindow, PolicyType, Orientation, SelectionMode
 
+from photometric_viewer.config.appearance import CLAMP_MAX_WIDTH
 from photometric_viewer.gui.pages.base import BasePage
 from photometric_viewer.gui.widgets.common.property_list import PropertyList
 from photometric_viewer.model.luminaire import Luminaire
@@ -25,7 +26,7 @@ class DirectRatiosPage(BasePage):
 
         box.append(self.property_list)
 
-        clamp = Adw.Clamp(maximum_size=800)
+        clamp = Adw.Clamp(maximum_size=CLAMP_MAX_WIDTH)
         clamp.set_child(box)
 
         scrolled_window = ScrolledWindow()
