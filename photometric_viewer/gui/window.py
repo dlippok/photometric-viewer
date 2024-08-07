@@ -19,13 +19,13 @@ from photometric_viewer.gui.dialogs.preferences import PreferencesWindow
 from photometric_viewer.gui.pages.ballast_set import BallastPage
 from photometric_viewer.gui.pages.content import PhotometryContentPage
 from photometric_viewer.gui.pages.direct_ratios import DirectRatiosPage
-from photometric_viewer.gui.pages.empty import EmptyPage
 from photometric_viewer.gui.pages.geometry import GeometryPage
 from photometric_viewer.gui.pages.lamp_set import LampSetPage
 from photometric_viewer.gui.pages.ldc_export import LdcExportPage
 from photometric_viewer.gui.pages.photometry import PhotometryPage
 from photometric_viewer.gui.pages.source import SourceViewPage
 from photometric_viewer.gui.pages.values import IntensityValuesPage
+from photometric_viewer.gui.widgets.common.split_view import SplitView
 from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.utils.gi.gio import gio_file_stream, write_string
 from photometric_viewer.utils.project import PROJECT
@@ -67,11 +67,10 @@ class MainWindow(Adw.ApplicationWindow):
         self.on_new()
 
         self.toast_overlay = Adw.ToastOverlay()
-        overlay_split_view = Adw.OverlaySplitView()
-        overlay_split_view.set_sidebar_width_fraction(0.6)
-        overlay_split_view.set_max_sidebar_width(8000)
-        overlay_split_view.set_sidebar(self.source_view_page)
-        overlay_split_view.set_content(self.navigation_view)
+        overlay_split_view = SplitView(
+            navigation_view=self.navigation_view,
+            source_view_page=self.source_view_page
+        )
 
         self.toast_overlay.set_child(overlay_split_view)
 
