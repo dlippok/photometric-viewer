@@ -17,8 +17,7 @@ class LuminaireHeader(Box):
         self.set_homogeneous(True)
         self.diagram = PhotometricDiagram(
             vexpand=False,
-            valign=Align.START,
-            content_width=150
+            valign=Align.START
         )
 
         self.name_label = Label(
@@ -27,7 +26,7 @@ class LuminaireHeader(Box):
             wrap_mode=WrapMode.WORD_CHAR,
             selectable=True,
 
-            css_classes=["title-2"]
+            css_classes=["title-4"]
 
         )
         self.manufacturer_label = Label(
@@ -36,7 +35,7 @@ class LuminaireHeader(Box):
             wrap=True,
             wrap_mode=WrapMode.WORD_CHAR,
             selectable=True,
-            css_classes=["title-3"]
+            css_classes=["heading"]
         )
         self.description_label = Label(
             xalign=0,

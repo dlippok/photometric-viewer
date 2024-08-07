@@ -2,25 +2,9 @@
     font-weight: bold;
 }
 
-#photometric_diagram {
-    background-color: @card_bg_color;
-    border: 1px solid @shade_color;
-    border-radius: 10px;
-}
-
-#photometric_diagram_preview {
-    background-color: white;
-    border: 1px solid @shade_color;
-    border-radius: 10px;
-}
 
 #lamp-switcher-bar>actionbar>revealer>box {
    background-color: @window_bg_color;
-}
-
-.sidebar-pane {
- background-color: @window_bg_color;
-
 }
 
 .small {
