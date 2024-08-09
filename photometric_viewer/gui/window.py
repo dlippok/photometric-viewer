@@ -22,14 +22,15 @@ from photometric_viewer.gui.pages.direct_ratios import DirectRatiosPage
 from photometric_viewer.gui.pages.geometry import GeometryPage
 from photometric_viewer.gui.pages.lamp_set import LampSetPage
 from photometric_viewer.gui.pages.ldc_export import LdcExportPage
+from photometric_viewer.gui.pages.ldc_zoom import LdcZoomPage
 from photometric_viewer.gui.pages.photometry import PhotometryPage
 from photometric_viewer.gui.pages.source import SourceViewPage
 from photometric_viewer.gui.pages.values import IntensityValuesPage
 from photometric_viewer.gui.widgets.common.split_view import SplitView
 from photometric_viewer.model.luminaire import Luminaire
+from photometric_viewer.utils.gi.GSettings import SettingsManager
 from photometric_viewer.utils.gi.gio import gio_file_stream, write_string
 from photometric_viewer.utils.project import PROJECT
-from photometric_viewer.utils.gi.GSettings import SettingsManager
 
 
 class MainWindow(Adw.ApplicationWindow):
@@ -62,6 +63,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.geometry_page = GeometryPage()
         self.lamp_set_page = LampSetPage()
         self.ballast_page = BallastPage()
+        self.ldc_zoom_page = LdcZoomPage()
 
         self.navigation_view.replace([self.luminaire_content_page])
         self.on_new()
@@ -118,6 +120,7 @@ class MainWindow(Adw.ApplicationWindow):
             [
                 ("open", self.on_open),
                 ("new", self.on_new),
+                ("show_ldc_zoom", self.on_show_ldc_zoom)
             ]
         )
 
@@ -135,6 +138,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.direct_ratios_page.set_photometry(luminaire)
         self.photometry_page.set_photometry(luminaire)
         self.geometry_page.set_photometry(luminaire)
+        self.ldc_zoom_page.set_photometry(luminaire)
 
         self.opened_photometry = luminaire
 
@@ -266,6 +270,9 @@ class MainWindow(Adw.ApplicationWindow):
     def on_drop(self, target, file, *args):
         self.open_file(file)
         return True
+
+    def on_show_ldc_zoom(self, *args):
+        self.navigation_view.push(self.ldc_zoom_page)
 
     def open_stream(self, f: IO):
         if self.is_opening:

@@ -1,3 +1,4 @@
+from gi.repository import Adw, Gtk, Gdk
 from gi.repository.Gtk import Box, Orientation, Label, Align
 from gi.repository.Pango import WrapMode
 
@@ -69,7 +70,16 @@ class LuminaireHeader(Box):
         properties_box.append(self.description_label)
         properties_box.append(self.header_buttons)
 
-        self.append(self.diagram)
+        self.diagram_zoom_button = Gtk.Button(
+            css_classes=["card"],
+            valign=Gtk.Align.START,
+            cursor=Gdk.Cursor.new_from_name("zoom-in"),
+            child=self.diagram,
+            visible=False,
+            action_name="win.show_ldc_zoom"
+        )
+
+        self.append(self.diagram_zoom_button)
         self.append(properties_box)
 
     def set_photometry(self, luminaire: Luminaire):
@@ -87,3 +97,4 @@ class LuminaireHeader(Box):
 
         self.diagram.set_photometry(luminaire)
         self.header_buttons.set_photometry(luminaire)
+        self.diagram_zoom_button.set_visible(luminaire.intensity_values)

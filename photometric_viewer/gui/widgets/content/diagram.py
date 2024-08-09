@@ -16,7 +16,6 @@ class PhotometricDiagram(Gtk.DrawingArea):
         self.style_manager.connect("notify", self.on_style_manager_notify)
         self.selected_theme = plotter_themes.THEMES[0]
 
-        self.set_css_classes(["card"])
         self.set_draw_func(self.on_draw)
         self.luminaire = None
         self.plotter = LightDistributionPlotter()
