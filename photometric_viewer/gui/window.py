@@ -19,13 +19,13 @@ from photometric_viewer.gui.dialogs.preferences import PreferencesWindow
 from photometric_viewer.gui.pages.ballast_set import BallastPage
 from photometric_viewer.gui.pages.content import PhotometryContentPage
 from photometric_viewer.gui.pages.direct_ratios import DirectRatiosPage
-from photometric_viewer.gui.pages.empty import EmptyPage
 from photometric_viewer.gui.pages.geometry import GeometryPage
 from photometric_viewer.gui.pages.lamp_set import LampSetPage
 from photometric_viewer.gui.pages.ldc_export import LdcExportPage
 from photometric_viewer.gui.pages.photometry import PhotometryPage
 from photometric_viewer.gui.pages.source import SourceViewPage
 from photometric_viewer.gui.pages.values import IntensityValuesPage
+from photometric_viewer.gui.widgets.common.split_view import SplitView
 from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.utils.gi.gio import gio_file_stream, write_string
 from photometric_viewer.utils.project import PROJECT
@@ -41,8 +41,9 @@ class MainWindow(Adw.ApplicationWindow):
 
         self.is_opening = False
         self.pending_action = None
+        self.is_dirty = False
 
-        self.set_default_size(900, 700)
+        self.set_default_size(1000, 700)
         self.install_actions()
 
         self.settings_manager = SettingsManager()
@@ -62,11 +63,16 @@ class MainWindow(Adw.ApplicationWindow):
         self.lamp_set_page = LampSetPage()
         self.ballast_page = BallastPage()
 
-        empty_page = EmptyPage()
-        self.navigation_view.replace([empty_page])
+        self.navigation_view.replace([self.luminaire_content_page])
+        self.on_new()
 
         self.toast_overlay = Adw.ToastOverlay()
-        self.toast_overlay.set_child(self.navigation_view)
+        overlay_split_view = SplitView(
+            navigation_view=self.navigation_view,
+            source_view_page=self.source_view_page
+        )
+
+        self.toast_overlay.set_child(overlay_split_view)
 
         self.window_title = Adw.WindowTitle()
 
@@ -98,7 +104,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.drop_target.connect("drop", self.on_drop)
         self.add_controller(self.drop_target)
 
-        self.source_view_page.connect("hiding", self.on_hiding_source_page)
+        self.source_view_page.source_text_view.get_buffer().connect("changed", self.on_update_source)
 
         if not self.settings_manager.gsettings_available:
             self.show_banner(_("Settings schema could not be loaded. Selected settings will be lost on restart"))
@@ -136,8 +142,6 @@ class MainWindow(Adw.ApplicationWindow):
         stram = io.StringIO("")
         self.open_stream(stram)
         stram.seek(0)
-        self.source_view_page.open_stream(io.StringIO(""))
-        self.show_source()
 
     def on_open(self, *args):
         if self.source_view_page.source_text_view.get_buffer().get_modified():
@@ -272,7 +276,6 @@ class MainWindow(Adw.ApplicationWindow):
             photometry = import_from_file(f)
 
             self.display_photometry_content(photometry)
-            self.window_title.set_title(_("Photometry"))
 
             self.add_action_entries(
                 [
@@ -391,8 +394,8 @@ class MainWindow(Adw.ApplicationWindow):
     def show_ldc_export_page(self, *args):
         self.navigation_view.push(self.ldc_export_page)
 
-    def on_hiding_source_page(self, source_view_page: SourceViewPage):
-        buffer: Gtk.TextBuffer = source_view_page.source_text_view.get_buffer()
+    def on_update_source(self, buffer: Gtk.TextBuffer):
+        self.is_dirty = True
         start = buffer.get_start_iter()
         end = buffer.get_end_iter()
 

@@ -1,6 +1,7 @@
 from gi.repository import Gtk, Adw
 from gi.repository.Gtk import Orientation, PolicyType, ScrolledWindow
 
+from photometric_viewer.config.appearance import CLAMP_MAX_WIDTH
 from photometric_viewer.gui.pages.base import BasePage
 from photometric_viewer.gui.widgets.content.header import LuminaireHeader
 from photometric_viewer.gui.widgets.content.lamps import LampAndBallast
@@ -31,7 +32,7 @@ class PhotometryContentPage(BasePage):
         box.append(self.lamps_and_ballast)
         box.append(self.properties)
 
-        clamp = Adw.Clamp(maximum_size=800)
+        clamp = Adw.Clamp(maximum_size=CLAMP_MAX_WIDTH)
         clamp.set_child(box)
 
         scrolled_window = ScrolledWindow()

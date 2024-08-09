@@ -7,6 +7,7 @@ from gi.repository import Adw, Gtk, GtkSource
 from gi.repository.Gtk import ScrolledWindow, PolicyType, WrapMode
 from gi.repository.GtkSource import View
 
+from photometric_viewer.gui.widgets.headerbar import default_headerbar
 from photometric_viewer.model.settings import Settings
 from photometric_viewer.gui.pages.base import BasePage
 from photometric_viewer.utils.project import ASSETS_PATH
@@ -16,7 +17,7 @@ SPECS_DIR = os.path.join(ASSETS_PATH, "language-specs")
 
 class SourceViewPage(BasePage):
     def __init__(self, **kwargs):
-        super().__init__(_("Source"), **kwargs)
+        super().__init__(_("Source"), headerbar=default_headerbar(), show_title=False, **kwargs)
         self.adw_style_manager: Adw.StyleManager = Adw.StyleManager.get_default()
         self.settings_manager = SettingsManager()
 

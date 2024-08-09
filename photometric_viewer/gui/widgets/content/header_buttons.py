@@ -21,21 +21,7 @@ class HeaderButtons(Box):
             visible=False
         )
 
-        edit_source_button = Button(
-            css_classes=["pill"],
-            tooltip_text=_("Menu"),
-            action_name="win.show_source"
-
-        )
-        edit_source_button.set_child(
-            ButtonContent(
-                icon_name="document-edit-symbolic",
-                label=_("Edit source"),
-            )
-        )
-
         self.append(self.url_button)
-        self.append(edit_source_button)
 
     def set_photometry(self, luminaire: Luminaire):
         urls = {
