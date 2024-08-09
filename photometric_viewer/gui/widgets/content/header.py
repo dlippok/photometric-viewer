@@ -1,11 +1,10 @@
-from gi.repository import Adw, Gtk, Gdk
+from gi.repository import Gtk, Gdk
 from gi.repository.Gtk import Box, Orientation, Label, Align
 from gi.repository.Pango import WrapMode
 
 from photometric_viewer.gui.widgets.content.diagram import PhotometricDiagram
 from photometric_viewer.gui.widgets.content.header_buttons import HeaderButtons
 from photometric_viewer.model.luminaire import Luminaire
-from photometric_viewer.model.settings import Settings
 
 
 class LuminaireHeader(Box):

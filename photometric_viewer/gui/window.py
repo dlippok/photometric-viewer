@@ -304,7 +304,6 @@ class MainWindow(Adw.ApplicationWindow):
                     ("open_url", self.on_open_url, "s")
                 ]
             )
-            self.show_start_page()
         finally:
             self.is_opening = False
 
@@ -327,6 +326,7 @@ class MainWindow(Adw.ApplicationWindow):
                 f.seek(0)
                 self.source_view_page.open_stream(f)
                 self.update_file(file)
+                self.show_start_page()
 
         except GLib.GError as e:
             logging.exception("Could not open photometric file")
