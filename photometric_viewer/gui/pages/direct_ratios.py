@@ -1,6 +1,6 @@
 from gi.repository import Adw, Gtk
 from gi.repository.Adw import ActionRow
-from gi.repository.Gtk import ScrolledWindow, PolicyType, Orientation, SelectionMode
+from gi.repository.Gtk import ScrolledWindow, PolicyType, Orientation
 
 from photometric_viewer.config.appearance import CLAMP_MAX_WIDTH
 from photometric_viewer.gui.pages.base import BasePage

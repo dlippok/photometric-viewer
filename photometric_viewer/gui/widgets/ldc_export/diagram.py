@@ -8,7 +8,7 @@ from photometric_viewer.utils.plotters import LightDistributionPlotter, LightDis
 class PhotometricDiagramPreview(Gtk.DrawingArea):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.set_css_classes(["boxed-list"])
+        self.set_css_classes(["card"])
         self.set_name("photometric_diagram")
         self.set_draw_func(self.on_draw)
         self.luminaire = None
