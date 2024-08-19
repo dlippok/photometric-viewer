@@ -70,10 +70,10 @@
             <caption xml:lang="pl">Główne okno aplikacji</caption>
         </screenshot>
         <screenshot>
-            <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Properties.png</image>
-            <caption>Property list</caption>
-            <caption xml:lang="de">Eigenschaftenliste</caption>
-            <caption xml:lang="pl">Lista właściwości</caption>
+            <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Eulumdat.png</image>
+            <caption>Editing Eulumdat file</caption>
+            <caption xml:lang="de">Eulumdat-Dateien bearbeiten</caption>
+            <caption xml:lang="pl">Edycja plików Eulumdat</caption>
         </screenshot>
         <screenshot>
             <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Lamps.png</image>
@@ -88,10 +88,10 @@
             <caption xml:lang="pl">Wartości światłości</caption>
         </screenshot>
         <screenshot>
-            <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Source.png</image>
-            <caption>File source</caption>
-            <caption xml:lang="de">Dateiquelle</caption>
-            <caption xml:lang="pl">Źródło pliku</caption>
+            <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Geometry.png</image>
+            <caption>Luminaire Geometry</caption>
+            <caption xml:lang="de">Geometrie der Leuchte</caption>
+            <caption xml:lang="pl">Geometria oprawy oświetleniowej</caption>
         </screenshot>
         <screenshot>
             <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/ExportLdc.png</image>
@@ -130,6 +130,13 @@
     </requires>
 
     <releases>
+        <release version="3.2.0" date="2024-08-19">
+            <description>
+                <p>Introduces sidebar layout for editing sources of photometric files.</p>
+                <p xml:lang="de">Es wird eines Sidebar-Layouts eingeführt, um das Bearbeiten von Quellen der photometrischen Dateien zu vereinfachen.</p>
+                <p xml:lang="pl">Dodaje layout z użyciem paska bocznego do edycji źródeł plików fotometrycznych.</p>
+            </description>
+        </release>
         <release version="3.1.0" date="2024-07-13">
             <description>
                 <p>Adds autosave support</p>
