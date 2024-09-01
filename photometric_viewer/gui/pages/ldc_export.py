@@ -1,11 +1,10 @@
-from gi.repository import Adw, Gio, Gtk
-from gi.repository.Gtk import Box, Orientation, Label, PolicyType, ScrolledWindow, FileFilter, FileChooserDialog
+from gi.repository import Gio, Gtk
+from gi.repository.Gtk import Label, FileFilter, FileChooserDialog
 from gi.repository.Pango import WrapMode
 
-from photometric_viewer.config.appearance import CLAMP_MAX_WIDTH
 from photometric_viewer.formats import svg, png
 from photometric_viewer.gui.dialogs.file_chooser import ExportFileChooser
-from photometric_viewer.gui.pages.base import BasePage
+from photometric_viewer.gui.pages.base import SidebarPage
 from photometric_viewer.gui.widgets.ldc_export.diagram import PhotometricDiagramPreview
 from photometric_viewer.gui.widgets.ldc_export.file_properties import LdcExportFilePropertiesBox, \
     LdcExportFileProperties, LdcExportFileType
@@ -13,7 +12,7 @@ from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.utils.gi.gio import write_bytes
 
 
-class LdcExportPage(BasePage):
+class LdcExportPage(SidebarPage):
     def __init__(self, on_exported, transient_for: Gtk.Window, **kwargs):
         super().__init__(_("Export Light Distribution Curve"), **kwargs)
 
@@ -23,20 +22,11 @@ class LdcExportPage(BasePage):
         self.luminaire = None
         self.on_exported = on_exported
 
-        box = Box(
-            orientation=Orientation.VERTICAL,
-            spacing=16,
-            margin_top=50,
-            margin_bottom=50,
-            margin_start=16,
-            margin_end=16,
-        )
-
         self.properties_box = LdcExportFilePropertiesBox(
             on_properties_changed=self.properties_changed,
             on_export_clicked=self.on_export_clicked
         )
-        box.append(self.properties_box)
+        self.append(self.properties_box)
 
         preview_label = Label(
             xalign=0,
@@ -44,19 +34,10 @@ class LdcExportPage(BasePage):
             wrap_mode=WrapMode.WORD_CHAR,
             label=_("Preview")
         )
-        box.append(preview_label)
+        self.append(preview_label)
 
         self.diagram = PhotometricDiagramPreview()
-        box.append(self.diagram)
-
-        clamp = Adw.Clamp(maximum_size=CLAMP_MAX_WIDTH)
-        clamp.set_child(box)
-
-        scrolled_window = ScrolledWindow()
-        scrolled_window.set_child(clamp)
-        scrolled_window.set_vexpand(True)
-        scrolled_window.set_policy(PolicyType.NEVER, PolicyType.AUTOMATIC)
-        self.set_content(scrolled_window)
+        self.append(self.diagram)
 
     def set_photometry(self, luminaire: Luminaire):
         self.luminaire = luminaire

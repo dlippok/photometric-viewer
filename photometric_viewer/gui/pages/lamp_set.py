@@ -1,45 +1,20 @@
 import re
 
-from gi.repository import Adw, Gtk
-from gi.repository.Gtk import ScrolledWindow, PolicyType, Orientation
-
-from photometric_viewer.config.appearance import CLAMP_MAX_WIDTH
-from photometric_viewer.gui.pages.base import BasePage
+from photometric_viewer.gui.pages.base import SidebarPage
 from photometric_viewer.gui.widgets.common.gauge import Gauge
 from photometric_viewer.gui.widgets.common.property_list import PropertyList
 from photometric_viewer.gui.widgets.content.photometry import _value_with_unit
 from photometric_viewer.gui.widgets.content.temperature import ColorTemperatureGauge
 from photometric_viewer.gui.widgets.content.wattage import WattageBox
 from photometric_viewer.model.luminaire import Lamps, Luminaire
-from photometric_viewer.model.settings import Settings
 
 
-class LampSetPage(BasePage):
+class LampSetPage(SidebarPage):
     def __init__(self, **kwargs):
         super().__init__("", **kwargs)
         self.property_list = PropertyList()
         self.wattage_box = None
-
-        box = Gtk.Box(
-            orientation=Orientation.VERTICAL,
-            spacing=16,
-            margin_top=50,
-            margin_bottom=50,
-            margin_start=16,
-            margin_end=16
-        )
-
-        box.append(self.property_list)
-
-        clamp = Adw.Clamp(maximum_size=CLAMP_MAX_WIDTH)
-        clamp.set_child(box)
-
-        scrolled_window = ScrolledWindow()
-        scrolled_window.set_child(clamp)
-        scrolled_window.set_vexpand(True)
-        scrolled_window.set_policy(PolicyType.NEVER, PolicyType.AUTOMATIC)
-        self.set_content(scrolled_window)
-
+        self.append(self.property_list)
     def set_lamp_set(self, luminaire: Luminaire, lamp_set: Lamps):
         self.property_list.clear()
         self.set_title(f"{lamp_set.number_of_lamps or 1} x {lamp_set.description or _('Lamp')}")

@@ -1,7 +1,7 @@
 from gi.repository import Adw, Gtk
-from gi.repository.Gtk import Orientation
+from gi.repository.Gtk import Orientation, ScrolledWindow, Box, PolicyType
 
-from photometric_viewer.gui.widgets.headerbar import default_headerbar
+from photometric_viewer.config.appearance import CLAMP_MAX_WIDTH
 
 
 class BasePage(Adw.NavigationPage):
@@ -26,3 +26,29 @@ class BasePage(Adw.NavigationPage):
     def set_content(self, content):
         self.content_bin.set_child(content)
 
+
+class SidebarPage(BasePage):
+    def __init__(self, title, show_title=True, headerbar=None, content=None, **kwargs):
+        super().__init__(title=title, **kwargs)
+
+        self._box = Box(
+            orientation=Orientation.VERTICAL,
+            spacing=16,
+            margin_top=50,
+            margin_bottom=50,
+            margin_start=16,
+            margin_end=16,
+        )
+
+        clamp = Adw.Clamp(maximum_size=CLAMP_MAX_WIDTH)
+        clamp.set_child(self._box)
+
+        scrolled_window = ScrolledWindow()
+        scrolled_window.set_child(clamp)
+        scrolled_window.set_vexpand(True)
+        scrolled_window.set_policy(PolicyType.NEVER, PolicyType.AUTOMATIC)
+        super().set_content(scrolled_window)
+
+
+    def append(self, content):
+        self._box.append(content)
