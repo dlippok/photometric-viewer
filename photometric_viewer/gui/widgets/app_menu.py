@@ -27,12 +27,8 @@ class ApplicationMenuButton(Gtk.MenuButton):
                         <attribute name='label' translatable='yes'>Export</attribute>
                         <section>
                             <item>
-                                <attribute name='label' translatable='yes'>As EULUMDAT</attribute>
-                                <attribute name='action'>win.export_as_ldt</attribute>
-                            </item>
-                            <item>
-                                <attribute name='label' translatable='yes'>As IESNA</attribute>
-                                <attribute name='action'>win.export_as_ies</attribute>
+                                <attribute name='label' translatable='yes'>Photometric File</attribute>
+                                <attribute name='action'>win.export_photometry</attribute>
                             </item>
                             <item>
                                 <attribute name='label' translatable='yes'>Light distribution curve</attribute>

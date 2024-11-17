@@ -52,28 +52,6 @@ class ExportFileChooser(FileChooserNative):
 
         return chooser
 
-    @staticmethod
-    def for_ldt(**kwargs):
-        chooser = ExportFileChooser(**kwargs)
-
-        file_filter = FileFilter(name=_("EULUMDAT (*.ldt)"))
-        file_filter.add_pattern("*.ldt")
-        chooser.add_filter(file_filter)
-        chooser._add_all_files_filter()
-
-        return chooser
-
-    @staticmethod
-    def for_ies(**kwargs):
-        chooser = ExportFileChooser(**kwargs)
-
-        file_filter = FileFilter(name=_("IESNA (*.ies)"))
-        file_filter.add_pattern("*.ies")
-        chooser.add_filter(file_filter)
-        chooser._add_all_files_filter()
-
-        return chooser
-
 
 class FileChooser(FileChooserNative):
     def __init__(self, **kwargs):
