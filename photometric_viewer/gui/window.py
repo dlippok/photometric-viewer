@@ -349,9 +349,11 @@ class MainWindow(Adw.ApplicationWindow):
         self.csv_export_file_chooser.show()
 
     def show_photometry_export_page(self, *args):
+        self.show_start_page()
         self.navigation_view.push(self.photometry_export_page)
 
     def show_ldc_export_page(self, *args):
+        self.show_start_page()
         self.navigation_view.push(self.ldc_export_page)
 
     def on_update_source(self, buffer: Gtk.TextBuffer):
