@@ -19,5 +19,6 @@ ACCELERATORS = [
     Accelerators(accelerators=["<alt>Left"], action="win.nav.back"),
     Accelerators(accelerators=["<alt>Up"], action="win.nav.top"),
     Accelerators(accelerators=["<alt>Home"], action="win.nav.home"),
-    Accelerators(accelerators=["<control>N"], action="app.new_window")
+    Accelerators(accelerators=["<control>n"], action="app.new_window"),
+    Accelerators(accelerators=["<control>e"], action="win.export_photometry")
 ]

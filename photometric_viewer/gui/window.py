@@ -24,6 +24,7 @@ from photometric_viewer.gui.pages.lamp_set import LampSetPage
 from photometric_viewer.gui.pages.ldc_export import LdcExportPage
 from photometric_viewer.gui.pages.ldc_zoom import LdcZoomPage
 from photometric_viewer.gui.pages.photometry import PhotometryPage
+from photometric_viewer.gui.pages.photometry_export import PhotometryExportPage
 from photometric_viewer.gui.pages.source import SourceViewPage
 from photometric_viewer.gui.pages.values import IntensityValuesPage
 from photometric_viewer.gui.widgets.common.split_view import SplitView
@@ -57,7 +58,8 @@ class MainWindow(Adw.ApplicationWindow):
         self.luminaire_content_page = PhotometryContentPage()
         self.source_view_page = SourceViewPage()
         self.values_table_page = IntensityValuesPage()
-        self.ldc_export_page = LdcExportPage(on_exported=self.on_export_ldc_response, transient_for=self)
+        self.ldc_export_page = LdcExportPage(on_exported=self.on_export_response, transient_for=self)
+        self.photometry_export_page = PhotometryExportPage(on_exported=self.on_export_response, transient_for=self)
         self.direct_ratios_page = DirectRatiosPage()
         self.photometry_page = PhotometryPage()
         self.geometry_page = GeometryPage()
@@ -89,12 +91,6 @@ class MainWindow(Adw.ApplicationWindow):
 
         self.csv_export_file_chooser = ExportFileChooser.for_csv(transient_for=self)
         self.csv_export_file_chooser.connect("response", self.on_export_csv_response)
-
-        self.ldt_export_file_chooser = ExportFileChooser.for_ldt(transient_for=self)
-        self.ldt_export_file_chooser.connect("response", self.on_export_ldt_response)
-
-        self.ies_export_file_chooser = ExportFileChooser.for_ies(transient_for=self)
-        self.ies_export_file_chooser.connect("response", self.on_export_ies_response)
 
         self.set_content(self.toast_overlay)
 
@@ -139,6 +135,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.photometry_page.set_photometry(luminaire)
         self.geometry_page.set_photometry(luminaire)
         self.ldc_zoom_page.set_photometry(luminaire)
+        self.photometry_export_page.set_photometry(luminaire)
 
         self.opened_photometry = luminaire
 
@@ -223,45 +220,9 @@ class MainWindow(Adw.ApplicationWindow):
         write_string(file, data)
         self.show_banner(_("Exported as {}").format(file.get_basename()))
 
-    def on_export_ldc_response(self, filename):
+    def on_export_response(self, filename):
         self.show_start_page()
         self.show_banner(_("Exported as {}").format(filename))
-
-    def on_export_ldt_response(self, dialog: FileChooserDialog, response):
-        if not self.opened_photometry:
-            return
-
-        if response != Gtk.ResponseType.ACCEPT:
-            return
-
-        file: Gio.File = dialog.get_file()
-
-        with io.StringIO() as f:
-            ldt.export_to_file(f, self.opened_photometry)
-            write_string(file, f.getvalue())
-        self.show_banner(_("Exported as {}").format(file.get_basename()))
-
-    def on_export_ies_response(self, dialog: FileChooserDialog, response):
-        if not self.opened_photometry:
-            return
-
-        if response != Gtk.ResponseType.ACCEPT:
-            return
-
-        file: Gio.File = dialog.get_file()
-
-        export_keywords = {
-            "_EXPORT_TOOL": PROJECT.name,
-            "_EXPORT_TOOL_VERSION": PROJECT.version,
-            "_EXPORT_TOOL_HOMEPAGE": PROJECT.urls.homepage,
-            "_EXPORT_TOOL_ISSUE_TRACKER": PROJECT.urls.bug_tracker,
-            "_EXPORT_TIMESTAMP": datetime.now().isoformat()
-        }
-
-        with io.StringIO() as f:
-            ies.export_to_file(f, self.opened_photometry, export_keywords)
-            write_string(file, f.getvalue())
-        self.show_banner(_("Exported as {}").format(file.get_basename()))
 
     def on_title_visible_changed(self, *args):
         title_visible = self.window_title.get_title_visible()
@@ -296,8 +257,7 @@ class MainWindow(Adw.ApplicationWindow):
                     ("export_luminaire_as_json", self.show_json_export_file_chooser),
                     ("export_intensities_as_csv", self.show_csv_export_file_chooser),
                     ("export_ldc_as_image", self.show_ldc_export_page),
-                    ("export_as_ldt", self.show_ldt_export_file_chooser),
-                    ("export_as_ies", self.show_ies_export_file_chooser),
+                    ("export_photometry", self.show_photometry_export_page),
                     ("save", self.on_save),
                     ("autosave", self.on_autosave),
                     ("save_as", self.on_save_as),
@@ -316,8 +276,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.save_as_file_chooser.set_file(file)
         self.json_export_file_chooser.set_current_name(f"{filename}.json")
         self.csv_export_file_chooser.set_current_name(f"{filename}.csv")
-        self.ldt_export_file_chooser.set_current_name(f"{filename}_exported.ldt")
-        self.ies_export_file_chooser.set_current_name(f"{filename}_exported.ies")
+        self.photometry_export_page.set_current_name(f"{filename}_exported")
 
     def open_file(self, file: Gio.File):
         try:
@@ -389,16 +348,12 @@ class MainWindow(Adw.ApplicationWindow):
     def show_csv_export_file_chooser(self, *args):
         self.csv_export_file_chooser.show()
 
-    def show_ldc_export_file_chooser(self, *args):
-        self.ldc_export_file_chooser.show()
-
-    def show_ldt_export_file_chooser(self, *args):
-        self.ldt_export_file_chooser.show()
-
-    def show_ies_export_file_chooser(self, *args):
-        self.ies_export_file_chooser.show()
+    def show_photometry_export_page(self, *args):
+        self.show_start_page()
+        self.navigation_view.push(self.photometry_export_page)
 
     def show_ldc_export_page(self, *args):
+        self.show_start_page()
         self.navigation_view.push(self.ldc_export_page)
 
     def on_update_source(self, buffer: Gtk.TextBuffer):
