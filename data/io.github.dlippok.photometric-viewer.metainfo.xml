@@ -130,6 +130,13 @@
     </requires>
 
     <releases>
+        <release version="3.2.1" date="2024-11-24">
+           <description>
+                <p>Uses GNOME runtime version 47</p>
+                <p xml:lang="de">Verwendet GNOME-Laufzeitumgebung Version 47</p>
+                <p xml:lang="pl">Używa środowiska GNOME w wersji 47</p>
+           </description>
+        </release>
         <release version="3.2.0" date="2024-08-19">
             <description>
                 <p>Introduces sidebar layout for editing sources of photometric files.</p>
