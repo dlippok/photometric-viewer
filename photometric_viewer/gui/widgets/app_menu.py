@@ -45,7 +45,20 @@ class ApplicationMenuButton(Gtk.MenuButton):
                         </section>
                     </submenu>
             </section>
+            
             <section>
+                 <submenu>
+                        <attribute name='label' translatable='yes'>Calculate</attribute>
+                        <section>
+                            <item>
+                                <attribute name='label' translatable='yes'>Required number of luminaires</attribute>
+                                <attribute name='action'>win.calculate_luminaire_count</attribute>
+                            </item>
+                        </section>
+                    </submenu>
+            </section>
+
+           <section> 
                 <item>
                     <attribute name='label' translatable='yes'>Preferences</attribute>
                     <attribute name='action'>app.show_preferences</attribute>

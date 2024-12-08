@@ -17,12 +17,14 @@ from photometric_viewer.gui.dialogs.about import AboutWindow
 from photometric_viewer.gui.dialogs.file_chooser import ExportFileChooser, FileChooser
 from photometric_viewer.gui.dialogs.preferences import PreferencesWindow
 from photometric_viewer.gui.pages.ballast_set import BallastPage
+from photometric_viewer.gui.pages.base import BasePage
 from photometric_viewer.gui.pages.content import PhotometryContentPage
 from photometric_viewer.gui.pages.direct_ratios import DirectRatiosPage
 from photometric_viewer.gui.pages.geometry import GeometryPage
 from photometric_viewer.gui.pages.lamp_set import LampSetPage
 from photometric_viewer.gui.pages.ldc_export import LdcExportPage
 from photometric_viewer.gui.pages.ldc_zoom import LdcZoomPage
+from photometric_viewer.gui.pages.luminaire_count_calc import NumberOfLuminairesCalculationPage
 from photometric_viewer.gui.pages.photometry import PhotometryPage
 from photometric_viewer.gui.pages.photometry_export import PhotometryExportPage
 from photometric_viewer.gui.pages.source import SourceViewPage
@@ -66,6 +68,8 @@ class MainWindow(Adw.ApplicationWindow):
         self.lamp_set_page = LampSetPage()
         self.ballast_page = BallastPage()
         self.ldc_zoom_page = LdcZoomPage()
+
+        self.number_of_luminaires_calculation_page = NumberOfLuminairesCalculationPage()
 
         self.navigation_view.replace([self.luminaire_content_page])
         self.on_new()
@@ -136,6 +140,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.geometry_page.set_photometry(luminaire)
         self.ldc_zoom_page.set_photometry(luminaire)
         self.photometry_export_page.set_photometry(luminaire)
+        self.number_of_luminaires_calculation_page.set_photometry(luminaire)
 
         self.opened_photometry = luminaire
 
@@ -258,6 +263,7 @@ class MainWindow(Adw.ApplicationWindow):
                     ("export_intensities_as_csv", self.show_csv_export_file_chooser),
                     ("export_ldc_as_image", self.show_ldc_export_page),
                     ("export_photometry", self.show_photometry_export_page),
+                    ("calculate_luminaire_count", self.show_number_of_luminaires_calculation_page),
                     ("save", self.on_save),
                     ("autosave", self.on_autosave),
                     ("save_as", self.on_save_as),
@@ -301,6 +307,10 @@ class MainWindow(Adw.ApplicationWindow):
         window = PreferencesWindow()
         window.show()
 
+
+    def show_page(self, page: BasePage):
+        self.navigation_view.push(page)
+
     def show_source(self, *args):
         self.navigation_view.push(self.source_view_page)
 
@@ -312,6 +322,9 @@ class MainWindow(Adw.ApplicationWindow):
 
     def show_geometry(self, *args):
         self.navigation_view.push(self.geometry_page)
+
+    def show_number_of_luminaires_calculation_page(self, *args):
+        self.navigation_view.push(self.number_of_luminaires_calculation_page)
 
     def show_lamp_set(self, action, params: GLib.Variant, *args):
         if self.opened_photometry is None:
