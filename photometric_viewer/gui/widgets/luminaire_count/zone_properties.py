@@ -1,22 +1,84 @@
+import dataclasses
+
 from gi.repository import Gtk
 from gi.repository.Adw import SpinRow
-from gi.repository.Gtk import ListBox, SelectionMode
+from gi.repository.Gtk import ListBox, SelectionMode, Adjustment
 
 from photometric_viewer.model.settings import Settings
+from photometric_viewer.model.units import length_factor, LengthUnits
 from photometric_viewer.model.zones import ZoneProperties
 from photometric_viewer.utils.gi.GSettings import SettingsManager
 
 
+@dataclasses.dataclass
+class SpinRowProperties:
+    digits: int
+    lower: int
+    upper: int
+    step: float
+    page: float
+    subtitle: str
+
+    def to_adjustment(self) -> Adjustment:
+        return Gtk.Adjustment(
+            lower=self.lower,
+            upper=self.upper,
+            step_increment=self.step,
+            page_increment=self.page
+        )
+
+
 class ZonePropertiesListBox(ListBox):
     LENGTH_PROPERTIES = {
+        LengthUnits.METERS: SpinRowProperties(
+            digits=2,
+            subtitle="Meters",
+            lower=0,
+            upper=200,
+            step=0.1,
+            page=1
+        ),
+        LengthUnits.CENTIMETERS: SpinRowProperties(
+            digits=0,
+            subtitle="Centimeters",
+            lower=0,
+            upper=20000,
+            step=1,
+            page=10
+        ),
+        LengthUnits.MILLIMETERS: SpinRowProperties(
+            digits=0,
+            subtitle="Millimeters",
+            lower=0,
+            upper=200000,
+            step=1,
+            page=100
+        ),
+        LengthUnits.FEET: SpinRowProperties(
+            digits=2,
+            subtitle="Feet",
+            lower=0,
+            upper=650,
+            step=0.1,
+            page=1
+        ),
+        LengthUnits.INCHES: SpinRowProperties(
+            digits=1,
+            subtitle="Inches",
+            lower=0,
+            upper=7800,
+            step=0.1,
+            page=10
+        ),
     }
 
-    def __init__(self, initial_properties: ZoneProperties, on_properties_changed=None):
+    def __init__(self, zone_properties: ZoneProperties, on_properties_changed=None):
         super().__init__(
             css_classes=["boxed-list"],
             selection_mode=SelectionMode.NONE
         )
 
+        self.zone_properties = zone_properties
         self.is_updating = False
 
         self.on_properties_changed = on_properties_changed
@@ -29,9 +91,9 @@ class ZonePropertiesListBox(ListBox):
         self.zone_width_row.connect("notify::value", self.on_update)
         self.append(self.zone_width_row)
 
-        self.zone_height_row = SpinRow(title=_("Zone height"), value=2)
-        self.zone_height_row.connect("notify::value", self.on_update)
-        self.append(self.zone_height_row)
+        self.zone_length_row = SpinRow(title=_("Zone length"), value=2)
+        self.zone_length_row.connect("notify::value", self.on_update)
+        self.append(self.zone_length_row)
 
         self.target_illuminance = SpinRow(
             title=_("Required illuminance"),
@@ -61,65 +123,54 @@ class ZonePropertiesListBox(ListBox):
         self.append(self.maintenance_factor)
 
         self.apply_units()
-        self.apply_values(initial_properties)
+        self.apply_values()
 
     def apply_units(self):
-        print(f"Using units: {self.settings.length_units}")
+        self.is_updating = True
+        try:
+            self.apply_labels()
+            self.apply_values()
+        finally:
+            self.is_updating = False
 
-        digits = 1
-        subtitle = "Meters"
-        lower = 0
-        upper = 200
-        step = 0.1
-        page = 1
+    def apply_labels(self):
+        spin_row_properties = self.LENGTH_PROPERTIES[self.settings.length_units]
 
-        self.zone_width_row.set_digits(digits)
-        self.zone_width_row.set_subtitle(subtitle)
-        self.zone_width_row.set_adjustment(Gtk.Adjustment(
-            lower=lower,
-            upper=upper,
-            step_increment=step,
-            page_increment=page
-        ))
+        self.zone_width_row.set_digits(spin_row_properties.digits)
+        self.zone_width_row.set_subtitle(_(spin_row_properties.subtitle))
+        self.zone_width_row.set_adjustment(spin_row_properties.to_adjustment())
 
-        self.zone_height_row.set_digits(digits)
-        self.zone_height_row.set_subtitle(subtitle)
-        self.zone_height_row.set_adjustment(Gtk.Adjustment(
-            lower=lower,
-            upper=upper,
-            step_increment=step,
-            page_increment=page
-        ))
+        self.zone_length_row.set_digits(spin_row_properties.digits)
+        self.zone_length_row.set_subtitle(_(spin_row_properties.subtitle))
+        self.zone_length_row.set_adjustment(spin_row_properties.to_adjustment())
 
-    def apply_values(self, zone_properties: ZoneProperties):
-        self.zone_width_row.set_value(zone_properties.width)
-        self.zone_height_row.set_value(zone_properties.height)
-        self.target_illuminance.set_value(zone_properties.target_illuminance)
-        self.maintenance_factor.set_value(zone_properties.maintenance_factor)
+    def apply_values(self):
+        f = length_factor(self.settings.length_units)
+
+        self.zone_width_row.set_value(self.zone_properties.width * f)
+        self.zone_length_row.set_value(self.zone_properties.length * f)
+        self.target_illuminance.set_value(self.zone_properties.target_illuminance)
+        self.maintenance_factor.set_value(self.zone_properties.maintenance_factor)
 
     def on_update(self, *args):
         if self.is_updating:
             return
 
-        room_w = self.zone_width_row.get_value()
-        room_h = self.zone_height_row.get_value()
+        f = length_factor(self.settings.length_units)
+
+        zone_w = self.zone_width_row.get_value() / f
+        zone_l = self.zone_length_row.get_value() / f
         illuminance = self.target_illuminance.get_value()
         mf = self.maintenance_factor.get_value()
 
-        values = ZoneProperties(
-            width=room_w,
-            height=room_h,
-            target_illuminance=illuminance,
-            maintenance_factor= mf
-        )
+        self.zone_properties.width = zone_w
+        self.zone_properties.length = zone_l
+        self.zone_properties.target_illuminance = illuminance
+        self.zone_properties.maintenance_factor = mf
 
         if self.on_properties_changed:
-            self.on_properties_changed(values)
+            self.on_properties_changed()
 
     def on_update_settings(self, settings: Settings):
-        self.is_updating = True
-        try:
-            self.settings = settings
-            self.apply_units()
-        finally:
-            self.is_updating = False
+        self.settings = settings
+        self.apply_units()

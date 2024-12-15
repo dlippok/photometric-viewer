@@ -30,7 +30,7 @@ class NumberOfLuminairesCalculationPage(BasePage):
 
         self.zone_properties = self.get_default_zone_properties()
         self.zone_properties_box = ZonePropertiesListBox(
-            initial_properties=self.zone_properties,
+            zone_properties=self.zone_properties,
             on_properties_changed=self.on_update_room_properties
         )
         box.append(self.zone_properties_box)
@@ -45,13 +45,12 @@ class NumberOfLuminairesCalculationPage(BasePage):
     def get_default_zone_properties(self) -> ZoneProperties:
         return ZoneProperties(
             width=1.5,
-            height=1.5,
+            length=1.5,
             target_illuminance=500,
             maintenance_factor=0.8
         )
 
-    def on_update_room_properties(self, room_properties):
-        self.room_properties = room_properties
+    def on_update_room_properties(self):
         self.recalculate()
 
     def recalculate(self):
@@ -67,9 +66,9 @@ class NumberOfLuminairesCalculationPage(BasePage):
         try:
             count = calc.required_number_of_luminaires(
                 fulx_luminaire=photometric_properties.luminous_flux.value,
-                mf=self.room_properties.maintenance_factor,
-                avg_illuminance=self.room_properties.target_illuminance,
-                area=self.room_properties.width * self.room_properties.height
+                mf=self.zone_properties.maintenance_factor,
+                avg_illuminance=self.zone_properties.target_illuminance,
+                area=self.zone_properties.width * self.zone_properties.length
             )
             self.luminaire_count_box.set_count(count)
         except ZeroDivisionError:
