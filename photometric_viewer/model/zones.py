@@ -2,7 +2,7 @@ import dataclasses
 
 
 @dataclasses.dataclass
-class RoomProperties:
+class ZoneProperties:
     width: float
     height: float
     target_illuminance: float

@@ -1,12 +1,12 @@
 from gi.repository import Gtk, Adw
-from gi.repository.Gtk import Orientation, Box, ScrolledWindow, PolicyType, Label
+from gi.repository.Gtk import Orientation, ScrolledWindow, PolicyType
 
 from photometric_viewer.config.appearance import CLAMP_MAX_WIDTH
 from photometric_viewer.gui.pages.base import BasePage
 from photometric_viewer.gui.widgets.luminaire_count.luminaire_count import LuminaireCountListBox
-from photometric_viewer.gui.widgets.luminaire_count.room_properties import RoomPropertiesListBox
+from photometric_viewer.gui.widgets.luminaire_count.zone_properties import ZonePropertiesListBox
 from photometric_viewer.model.luminaire import Luminaire
-from photometric_viewer.model.room_properties import RoomProperties
+from photometric_viewer.model.zones import ZoneProperties
 from photometric_viewer.utils import calc
 
 
@@ -28,12 +28,12 @@ class NumberOfLuminairesCalculationPage(BasePage):
 
         self.luminaire_count_box = LuminaireCountListBox()
 
-        self.room_properties = self.get_default_room_properties()
-        self.room_properties_box = RoomPropertiesListBox(
-            initial_properties=self.room_properties,
+        self.zone_properties = self.get_default_zone_properties()
+        self.zone_properties_box = ZonePropertiesListBox(
+            initial_properties=self.zone_properties,
             on_properties_changed=self.on_update_room_properties
         )
-        box.append(self.room_properties_box)
+        box.append(self.zone_properties_box)
         box.append(self.luminaire_count_box)
 
         scrolled_window = ScrolledWindow()
@@ -42,8 +42,8 @@ class NumberOfLuminairesCalculationPage(BasePage):
         scrolled_window.set_policy(PolicyType.NEVER, PolicyType.AUTOMATIC)
         self.set_content(scrolled_window)
 
-    def get_default_room_properties(self) -> RoomProperties:
-        return RoomProperties(
+    def get_default_zone_properties(self) -> ZoneProperties:
+        return ZoneProperties(
             width=1.5,
             height=1.5,
             target_illuminance=500,
@@ -78,4 +78,3 @@ class NumberOfLuminairesCalculationPage(BasePage):
     def set_photometry(self, luminaire: Luminaire):
         self.luminaire = luminaire
         self.recalculate()
-
