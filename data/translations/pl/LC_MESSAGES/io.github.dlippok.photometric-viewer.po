@@ -1479,4 +1479,4 @@ msgid "Photometric File"
 msgstr "Plik fotometryczny"
 
 msgid "Quick Calculation"
-msgstr ""
+msgstr "Przybliżone obliczanie"
