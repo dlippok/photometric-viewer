@@ -25,6 +25,14 @@ def energy_cost(power_consumption_kwh: float, price_kwh: float):
     return power_consumption_kwh * price_kwh
 
 
+def required_number_of_luminaires(flux_luminaire, mf, avg_illuminance, area):
+    return math.ceil((avg_illuminance * area) / (flux_luminaire * mf))
+
+
+def illuminance(flux_luminaire, mf, area):
+    return flux_luminaire * mf / area
+
+
 def empty_values():
     return LuminairePhotometricProperties(
         is_absolute=False,

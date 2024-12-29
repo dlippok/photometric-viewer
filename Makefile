@@ -32,6 +32,7 @@ build:
 .PHONY: test run clean flatpak-install flatpak-build flatpak-run flatpak-uninstall build
 
 # Translations
+.PHONY: data/translations/io.github.dlippok.photometric-viewer.pot
 data/translations/io.github.dlippok.photometric-viewer.pot: $(SOURCES)
 	xgettext $? data/translations/io.github.dlippok.photometric-viewer.pot \
 		-o data/translations/io.github.dlippok.photometric-viewer.pot
