@@ -48,7 +48,7 @@ class ApplicationMenuButton(Gtk.MenuButton):
             
             <section>
                  <submenu>
-                        <attribute name='label' translatable='yes'>Calculate</attribute>
+                        <attribute name='label' translatable='yes'>Quick Calculation</attribute>
                         <section>
                             <item>
                                 <attribute name='label' translatable='yes'>Required number of luminaires</attribute>

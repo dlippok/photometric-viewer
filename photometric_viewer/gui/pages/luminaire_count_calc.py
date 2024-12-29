@@ -8,6 +8,7 @@ from photometric_viewer.gui.widgets.luminaire_count.zone_properties import ZoneP
 from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.model.zones import ZoneProperties
 from photometric_viewer.utils import calc
+from photometric_viewer.utils.calc import illuminance
 
 
 class NumberOfLuminairesCalculationPage(BasePage):
@@ -56,23 +57,33 @@ class NumberOfLuminairesCalculationPage(BasePage):
     def recalculate(self):
         if not self.luminaire:
             self.luminaire_count_box.set_count(None)
+            self.luminaire_count_box.set_achieved_illuminance(None)
             return
 
         photometric_properties = calc.calculate_photometry(self.luminaire)
         if not photometric_properties.luminous_flux.value:
             self.luminaire_count_box.set_count(None)
+            self.luminaire_count_box.set_achieved_illuminance(None)
             return
 
         try:
             count = calc.required_number_of_luminaires(
-                fulx_luminaire=photometric_properties.luminous_flux.value,
+                flux_luminaire=photometric_properties.luminous_flux.value,
                 mf=self.zone_properties.maintenance_factor,
                 avg_illuminance=self.zone_properties.target_illuminance,
                 area=self.zone_properties.width * self.zone_properties.length
             )
+
+            illuminance = calc.illuminance(
+                flux_luminaire=photometric_properties.luminous_flux.value,
+                mf=self.zone_properties.maintenance_factor,
+                area=self.zone_properties.width * self.zone_properties.length
+            )
             self.luminaire_count_box.set_count(count)
+            self.luminaire_count_box.set_achieved_illuminance(illuminance * count)
         except ZeroDivisionError:
             self.luminaire_count_box.set_count(None)
+            self.luminaire_count_box.set_achieved_illuminance(None)
 
     def set_photometry(self, luminaire: Luminaire):
         self.luminaire = luminaire

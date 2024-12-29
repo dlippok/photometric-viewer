@@ -99,7 +99,7 @@ class TestRquiredNumberOfLuminaires(unittest.TestCase):
             with(self.subTest(case["name"])):
                 self.assertEqual(
                     required_number_of_luminaires(
-                        fulx_luminaire=case["flux_luminaire"],
+                        flux_luminaire=case["flux_luminaire"],
                         mf=case["mf"],
                         avg_illuminance=case["avg_illuminance"],
                         area=case["area"]
