@@ -132,7 +132,7 @@
     <releases>
         <release version="3.2.1" date="2024-11-24">
            <description>
-            <p>Quick calculation of required number of luminaires for illuminated zones.</p>
+                <p>Quick calculation of required number of luminaires for illuminated zones.</p>
                 <p xml:lang="de">Überschlagsrechung der Leuchtenanzahl für zu beleuchtende Bereiche.</p>
                 <p xml:lang="pl">Przybliżone obliczenie potrzebnej liczby opraw dla oświetlanego obszaru.</p>
            </description>
