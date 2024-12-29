@@ -130,7 +130,7 @@
     </requires>
 
     <releases>
-        <release version="3.2.1" date="2024-11-24">
+        <release version="3.3.0" date="2024-12-29">
            <description>
                 <p>Quick calculation of required number of luminaires for illuminated zones.</p>
                 <p xml:lang="de">Überschlagsrechung der Leuchtenanzahl für zu beleuchtende Bereiche.</p>
