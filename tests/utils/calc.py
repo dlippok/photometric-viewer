@@ -1,7 +1,7 @@
 import unittest
 
 from photometric_viewer.utils.calc import annual_power_consumption, energy_cost, calculate_photometry, \
-    required_number_of_luminaires
+    required_number_of_luminaires, illuminance
 from tests.fixtures.photometry import *
 
 
@@ -59,8 +59,8 @@ class TestEnergyCost(unittest.TestCase):
             energy_cost(power_consumption_kwh=1, price_kwh=-0.25)
 
 
-class TestRquiredNumberOfLuminaires(unittest.TestCase):
-    def test_energy_cost_with_correct_values(self):
+class TestRequiredNumberOfLuminaires(unittest.TestCase):
+    def test_required_number_of_luminaires(self):
         cases = [
             {
                 "name": "Post-top luminaire on a small square",
@@ -107,6 +107,42 @@ class TestRquiredNumberOfLuminaires(unittest.TestCase):
                     case["expected"]
                 )
 
+
+class TestIlluminance(unittest.TestCase):
+    def test_illuminance(self):
+        cases = [
+            {
+                "name": "Post-top luminaire on a small square",
+                "flux_luminaire": 911,
+                "mf": 0.8,
+                "area": 250,
+                "expected": 2.9152
+            },
+            {
+                "name": "Parking lot",
+                "flux_luminaire": 10200,
+                "mf": 0.9,
+                "area": 2500,
+                "expected": 3.672
+            },
+            {
+                "name": "Office",
+                "flux_luminaire": 3600,
+                "mf": 0.8,
+                "area": 60,
+                "expected": 48
+            }
+        ]
+        for case in cases:
+            with(self.subTest(case["name"])):
+                self.assertAlmostEqual(
+                    illuminance(
+                        flux_luminaire=case["flux_luminaire"],
+                        mf=case["mf"],
+                        area=case["area"]
+                    ),
+                    case["expected"]
+                )
 
 class TestPhotometricProperties(unittest.TestCase):
     def test_calculates_values_correctly(self):
