@@ -45,6 +45,7 @@ class MainWindow(Adw.ApplicationWindow):
 
         self.is_opening = False
         self.pending_action = None
+        self.pending_drop_file = None
         self.is_dirty = False
 
         self.set_default_size(1000, 700)
@@ -234,7 +235,12 @@ class MainWindow(Adw.ApplicationWindow):
         self.switcher_bar.set_reveal(title_visible)
 
     def on_drop(self, target, file, *args):
-        self.open_file(file)
+        if self.source_view_page.source_text_view.get_buffer().get_modified():
+            self.pending_action = "drop"
+            self.pending_drop_file = file
+            self.show_exit_dialog()
+        else:
+            self.open_file(file)
         return True
 
     def on_show_ldc_zoom(self, *args):
@@ -432,7 +438,11 @@ class MainWindow(Adw.ApplicationWindow):
                 self.close()
             case "open":
                 self.open_file_chooser.show()
+            case "drop":
+                self.open_file(self.pending_drop_file)
+
         self.pending_action = None
+        self.pending_drop_file = None
 
     @staticmethod
     def show_about_dialog(*args):
