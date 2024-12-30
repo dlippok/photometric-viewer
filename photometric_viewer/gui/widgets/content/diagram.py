@@ -57,9 +57,19 @@ class PhotometricDiagram(Gtk.DrawingArea):
             self.selected_theme = selected_theme[0]
         else:
             self.selected_theme = plotter_themes.THEMES[0]
-        self._update_plotter_theme()
 
+        self._update_high_contrast()
+        self._update_plotter_theme()
         self.queue_draw()
+
+    def _update_high_contrast(self):
+        if self.selected_theme.is_high_contrast:
+            return
+
+        if self.style_manager.get_high_contrast():
+            hc_themes = [theme for theme in plotter_themes.THEMES if theme.is_high_contrast]
+            if hc_themes:
+                self.selected_theme = hc_themes[0]
 
     def _update_plotter_theme(self):
         if self.style_manager.get_dark():
@@ -82,5 +92,6 @@ class PhotometricDiagram(Gtk.DrawingArea):
             return
 
     def on_style_manager_notify(self, *args):
+        self._update_high_contrast()
         self._update_plotter_theme()
         self.queue_draw()

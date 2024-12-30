@@ -110,6 +110,7 @@ THEMES = [
     ),
     Theme(
         name="Luxor",
+        is_high_contrast=True,
         plotter_theme=LightDistributionPlotterTheme(
             background_color=None,
             coordinate_line_width=1,
@@ -140,7 +141,7 @@ THEMES = [
         )
     ),
     Theme(
-        name="High Contrast",
+        name="Monochrome",
         is_high_contrast=True,
         plotter_theme=LightDistributionPlotterTheme(
             background_color=None,

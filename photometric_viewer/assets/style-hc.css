@@ -1,0 +1,6 @@
+.temperature-bar {
+    background: var(--card-bg-color);
+    color: var(--border-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+}

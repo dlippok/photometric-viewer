@@ -18,6 +18,7 @@ setup(name='photometric-viewer',
       package_data={
           'photometric_viewer': [
               'assets/style.css',
+              'assets/style-hc.css',
               'assets/language-specs/ies.lang',
               'assets/language-specs/ldt.lang',
               'assets/icons/hicolor/scalable/actions/ballast-symbolic.svg',
