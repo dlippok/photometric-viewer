@@ -1,11 +1,13 @@
 import cairo
+from gi.repository.Gdk import RGBA
 from gi.repository import Gtk, Adw
+from gi.repository.Adw import AccentColor
 
 from photometric_viewer.model.settings import Settings
 from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.config import plotter_themes
 from photometric_viewer.utils.plotters import LightDistributionPlotter, DiagramStyle, SnapValueAnglesTo, \
-    DisplayHalfSpaces
+    DisplayHalfSpaces, LightDistributionPlotterTheme
 from photometric_viewer.utils.gi.GSettings import SettingsManager
 
 
@@ -61,9 +63,23 @@ class PhotometricDiagram(Gtk.DrawingArea):
 
     def _update_plotter_theme(self):
         if self.style_manager.get_dark():
-            self.plotter.settings.theme = self.selected_theme.plotter_theme_dark
+            theme = self.selected_theme.plotter_theme_dark
         else:
-            self.plotter.settings.theme = self.selected_theme.plotter_theme
+            theme = self.selected_theme.plotter_theme
+
+        self._apply_accent_color(theme)
+        self.plotter.settings.theme = theme
+
+    def _apply_accent_color(self, theme: LightDistributionPlotterTheme):
+        try:
+            if self.selected_theme.use_system_accent_color:
+                accent_color: AccentColor = self.style_manager.get_accent_color()
+                rgba: RGBA = AccentColor.to_rgba(accent_color)
+
+                theme.c0_fill = (rgba.red, rgba.green, rgba.blue, theme.c0_fill[3])
+                theme.c0_stroke = (rgba.red, rgba.green, rgba.blue, rgba.alpha)
+        except:
+            return
 
     def on_style_manager_notify(self, *args):
         self._update_plotter_theme()
