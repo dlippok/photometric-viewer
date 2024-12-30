@@ -25,6 +25,8 @@
         rgba(128,255,255,0.8) 80%,
         rgba(87,243,255,0.8) 100%
     );
+    font-weight: 800;
+    border: 0;
     color: black;
     border-radius: 12px;
     padding-left: 3px;

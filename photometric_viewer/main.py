@@ -29,6 +29,10 @@ class Application(Adw.Application):
 
         new_window_action = Gio.SimpleAction.new("new_window", None)
         new_window_action.connect("activate", self.new_window)
+
+        self.style_manager: Adw.StyleManager = Adw.StyleManager.get_default()
+        self.style_manager.connect("notify", self.on_style_manager_notify)
+
         self.add_action(new_window_action)
 
     def do_startup(self):
@@ -58,6 +62,9 @@ class Application(Adw.Application):
         css_provider = Gtk.CssProvider()
         css_provider.load_from_path(os.path.dirname(__file__) + "/assets/style.css")
 
+        if  self.style_manager.get_high_contrast():
+            css_provider.load_from_path(os.path.dirname(__file__) + "/assets/style-hc.css")
+
         Gtk.StyleContext.add_provider_for_display(
             Gdk.Display.get_default(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
         )
@@ -65,6 +72,9 @@ class Application(Adw.Application):
     def setup_accelerators(self):
         for accel in ACCELERATORS:
             self.set_accels_for_action(accel.action, accel.accelerators)
+
+    def on_style_manager_notify(self, *args):
+        self.setup_css()
 
 
 def run():
