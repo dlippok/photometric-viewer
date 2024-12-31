@@ -19,8 +19,8 @@ class PhotometryPage(BasePage):
         box = Gtk.Box(
             orientation=Orientation.VERTICAL,
             spacing=16,
-            margin_top=50,
-            margin_bottom=50,
+            margin_top=16,
+            margin_bottom=16,
             margin_start=16,
             margin_end=16
         )
