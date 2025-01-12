@@ -5,9 +5,11 @@
     <name>Photometry</name>
     <name xml:lang="de">Photometrie</name>
     <name xml:lang="pl">Fotometria</name>
+    <name xml:lang="pt">### TODO ###</name>
     <summary>View photometric files</summary>
     <summary xml:lang="de">Öffne Photometriedateien</summary>
     <summary xml:lang="pl">Przeglądaj pliki fotometryczne</summary>
+    <summary xml:lang="pt">### TODO ###</summary>
     <description>
         <p>
             Photometry shows light distribution curves and metadata of IESNA and EULUMDAT photometric
@@ -24,6 +26,9 @@
             Pliki fotometryczne zawierają informację o lampach i oprawach oświetleniowych i są używane głównie do
             transferu danych w przemyśle oświetleniowym i grafice 3D.
         </p>
+        <p xml:lang="pt">
+            ### TODO ###
+        </p>
         <p>
             Photometry allows editing the source content of the opened photometric file and shows the following
             information contained in the opened files:
@@ -34,28 +39,38 @@
         <p xml:lang="pl">
             Aplikacja pozwala eytować kod źródłowy plików fotometrycznych oraz przeglądać następujące informacje:
         </p>
+        <p xml:lang="pt">
+            ### TODO ###
+        </p>
         <ul>
             <li>Light distribution curves</li>
             <li xml:lang="de">Lichtverteilungskurve</li>
             <li xml:lang="pl">Krzywe fotometrzyczne</li>
+            <li xml:lang="pt">### TODO ###</li>
             <li>General information (Catalog Number, Manufacturer, Description, etc.)</li>
             <li xml:lang="de">Allgemeine Informationen (Katalognummer, Hersteller, Beschreibung, usw.)</li>
             <li xml:lang="pl">Podstawowe informacje (numer katalogowy, producent, opis, itd.)</li>
+            <li xml:lang="pt">### TODO ###</li>
             <li>Photometric properties (Light Output Ratio and Downward Flux Fraction)</li>
             <li xml:lang="de">Photometishce Eigenschaften</li>
             <li xml:lang="pl">Właściwości fotometryczne</li>
+            <li xml:lang="pt">### TODO ###</li>
             <li>Lamps and ballast information</li>
             <li xml:lang="de">Information über Lampen und Vorschaltgeräte</li>
             <li xml:lang="pl">Informacje o lampach i statecznikach</li>
+            <li xml:lang="pt">### TODO ###</li>
             <li>Luminaire and luminous opening geometry information</li>
             <li xml:lang="de">Abmessungen der Leuchte und der Lichtaustrittfläche</li>
             <li xml:lang="pl">Wymiary oprawy oświetleniowej i powierzchni świecącej</li>
+            <li xml:lang="pt">### TODO ###</li>
             <li>Additional properties (Test number, issue date, test laboratory, etc.)</li>
             <li xml:lang="de">Zusätzliche Informationen (Testnummer, Datum, Photometrisches Labor, usw.)</li>
             <li xml:lang="pl">Dodatkowe informacje (numer pomiaru, data, laboratorium, itd.)</li>
+            <li xml:lang="pt">### TODO ###</li>
             <li>Intensity Values for selected C planes and gamma angles</li>
             <li xml:lang="de">Candela-Werte für ausgewählte C-Ebenen und Gammawinkel</li>
             <li xml:lang="pl">Wartości światłości dla wybranych płaszczyzn i kontów gamma</li>
+            <li xml:lang="pt">### TODO ###</li>
         </ul>
     </description>
     <branding>
@@ -68,36 +83,42 @@
             <caption>Main application window</caption>
             <caption xml:lang="de">Hauptfenster der Anwendung</caption>
             <caption xml:lang="pl">Główne okno aplikacji</caption>
+            <caption xml:lang="pt">### TODO ###</caption>
         </screenshot>
         <screenshot>
             <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Eulumdat.png</image>
             <caption>Editing Eulumdat file</caption>
             <caption xml:lang="de">Eulumdat-Dateien bearbeiten</caption>
             <caption xml:lang="pl">Edycja plików Eulumdat</caption>
+            <caption xml:lang="pt">### TODO ###</caption>
         </screenshot>
         <screenshot>
             <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Lamps.png</image>
             <caption>Lamp imformation</caption>
             <caption xml:lang="de">Lampeninformation</caption>
             <caption xml:lang="pl">Informacje o lampach</caption>
+            <caption xml:lang="pt">### TODO ###</caption>
         </screenshot>
         <screenshot>
             <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Intensities.png</image>
             <caption>Intensity values</caption>
             <caption xml:lang="de">Candela-Werte</caption>
             <caption xml:lang="pl">Wartości światłości</caption>
+            <caption xml:lang="pt">### TODO ###</caption>
         </screenshot>
         <screenshot>
             <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/Geometry.png</image>
             <caption>Luminaire Geometry</caption>
             <caption xml:lang="de">Geometrie der Leuchte</caption>
             <caption xml:lang="pl">Geometria oprawy oświetleniowej</caption>
+            <caption xml:lang="pt">### TODO ###</caption>
         </screenshot>
         <screenshot>
             <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/ExportLdc.png</image>
             <caption>Export light distribution curve</caption>
             <caption xml:lang="de">Export von Lichtverteilungskurven</caption>
             <caption xml:lang="pl">Eksport krzywej światłości</caption>
+            <caption xml:lang="pt">### TODO ###</caption>
         </screenshot>
     </screenshots>
     <project_license>MIT</project_license>
@@ -131,18 +152,19 @@
 
     <releases>
         <release version="3.3.0" date="2024-12-29">
-           <description>
+            <description>
                 <p>Quick calculation of required number of luminaires for illuminated zones.</p>
                 <p xml:lang="de">Überschlagsrechung der Leuchtenanzahl für zu beleuchtende Bereiche.</p>
                 <p xml:lang="pl">Przybliżone obliczenie potrzebnej liczby opraw dla oświetlanego obszaru.</p>
-           </description>
+                <p xml:lang="pt">### TODO ###</p>
+            </description>
         </release>
         <release version="3.2.1" date="2024-11-24">
-           <description>
+            <description>
                 <p>Uses GNOME runtime version 47</p>
                 <p xml:lang="de">Verwendet GNOME-Laufzeitumgebung Version 47</p>
                 <p xml:lang="pl">Używa środowiska GNOME w wersji 47</p>
-           </description>
+            </description>
         </release>
         <release version="3.2.0" date="2024-08-19">
             <description>

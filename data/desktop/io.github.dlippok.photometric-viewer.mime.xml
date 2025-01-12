@@ -4,12 +4,14 @@
         <comment>IESNA photometric file</comment>
         <comment xml:lang="de">IESNA Photometriedatei</comment>
         <comment xml:lang="pl">Plik fotometryczny IESNA</comment>
+        <comment xml:lang="pt">### TODO ###</comment>
         <glob pattern="*.ies"/>
     </mime-type>
     <mime-type type="application/x-eulumdat">
         <comment>EULUMDAT photometric file</comment>
         <comment xml:lang="de">EULUMDAT Photometriedatei</comment>
         <comment xml:lang="pl">Plik fotometryczny EULUMDAT</comment>
+        <comment xml:lang="pt">### TODO ###</comment>
         <glob pattern="*.ldt"/>
     </mime-type>
 </mime-info>
