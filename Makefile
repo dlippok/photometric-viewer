@@ -51,7 +51,7 @@ data/translations/pl/LC_MESSAGES/io.github.dlippok.photometric-viewer.po: data/t
 		-o data/translations/pl/LC_MESSAGES/io.github.dlippok.photometric-viewer.po
 
 install-pip:
-	pip3 install . --prefix $(INSTALL_TARGET)
+	pip3 install . --prefix $(INSTALL_TARGET) --no-build-isolation
 
 install-dist:
 	echo "Installing distribution files"
