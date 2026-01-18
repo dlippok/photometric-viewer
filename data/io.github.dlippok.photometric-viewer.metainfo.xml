@@ -112,7 +112,7 @@
     <url type="bugtracker">https://github.com/dlippok/photometric-viewer/issues</url>
     <url type="help">https://github.com/dlippok/photometric-viewer/discussions/categories/q-a</url>
 
-    <content_rating type="oars-1.1" />
+    <content_rating type="oars-1.1"/>
 
     <supports>
         <control>pointing</control>
@@ -130,6 +130,13 @@
     </requires>
 
     <releases>
+        <release version="3.4.0" date="2026-01-18">
+           <description>
+                <p>Uses GNOME runtime version 49</p>
+                <p xml:lang="de">Verwendet GNOME-Laufzeitumgebung Version 49</p>
+                <p xml:lang="pl">Używa środowiska GNOME w wersji 49</p>
+           </description>
+        </release>
         <release version="3.3.0" date="2024-12-29">
            <description>
                 <p>Quick calculation of required number of luminaires for illuminated zones.</p>
@@ -280,3 +287,4 @@
         <release version="0.1.0" date="2023-04-07"/>
     </releases>
 </component>
+
