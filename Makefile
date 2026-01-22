@@ -29,6 +29,10 @@ build:
 	msgfmt data/translations/pl/LC_MESSAGES/io.github.dlippok.photometric-viewer.po \
 		-o build/dist/share/locale/pl/LC_MESSAGES/io.github.dlippok.photometric-viewer.mo
 
+	mkdir -p build/dist/share/locale/pt/LC_MESSAGES
+	msgfmt data/translations/pt/LC_MESSAGES/io.github.dlippok.photometric-viewer.po \
+		-o build/dist/share/locale/pt/LC_MESSAGES/io.github.dlippok.photometric-viewer.mo
+
 .PHONY: test run clean flatpak-install flatpak-build flatpak-run flatpak-uninstall build
 
 # Translations
@@ -49,6 +53,12 @@ data/translations/pl/LC_MESSAGES/io.github.dlippok.photometric-viewer.po: data/t
   		data/translations/pl/LC_MESSAGES/io.github.dlippok.photometric-viewer.po \
   		data/translations/io.github.dlippok.photometric-viewer.pot \
 		-o data/translations/pl/LC_MESSAGES/io.github.dlippok.photometric-viewer.po
+
+data/translations/pt/LC_MESSAGES/io.github.dlippok.photometric-viewer.po: data/translations/io.github.dlippok.photometric-viewer.pot
+	msgmerge \
+  		data/translations/pt/LC_MESSAGES/io.github.dlippok.photometric-viewer.po \
+  		data/translations/io.github.dlippok.photometric-viewer.pot \
+		-o data/translations/pt/LC_MESSAGES/io.github.dlippok.photometric-viewer.po
 
 install-pip:
 	pip3 install . --prefix $(INSTALL_TARGET) --no-build-isolation
