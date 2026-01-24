@@ -1,7 +1,7 @@
 import math
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Tuple, List
+from typing import Tuple, List, Optional
 
 import cairo
 
@@ -54,6 +54,8 @@ class LightDistributionPlotter:
     def __init__(self, settings: LightDistributionPlotterSettings = None):
         self.size = 300
         self.center = (150, 150)
+        self.highlight_angle: Optional[float] = 10.0
+
         if settings is not None:
             self.settings = settings
         else:
@@ -75,6 +77,7 @@ class LightDistributionPlotter:
             pass
 
         self._draw_coordinate_system(context, luminaire)
+        self._draw_value_highlight(context, luminaire)
         self._draw_legend(context)
 
     def _get_center(self, luminaire: Luminaire):
@@ -230,19 +233,12 @@ class LightDistributionPlotter:
             stroke,
             fill
     ):
-        max_candelas_scale = int(self.size * self._get_max_value_ratio())
-        angle_modifier = 1 if c_angle < 180 else -1
-
         context.new_path()
         is_first_point = True
-        for angle, candelas in luminaire.get_values_for_c_angle(c_angle).items():
-            distance = candelas / max_candelas * max_candelas_scale
-            angle = math.radians(angle)
-            cartesian_point = (
-                math.cos(angle_modifier * angle - math.pi / 2) * distance,
-                math.sin(angle_modifier * angle - math.pi / 2) * distance
-            )
-            point = cartesian_to_screen(self.center, cartesian_point)
+        gammas_and_candelas = luminaire.get_values_for_c_angle(c_angle).items()
+
+        for gamma, candelas in gammas_and_candelas:
+            point = self._get_screen_coordinates(c_angle, gamma, candelas, max_candelas)
             if is_first_point:
                 context.move_to(point[0], point[1])
                 is_first_point = False
@@ -257,6 +253,44 @@ class LightDistributionPlotter:
             r, g, b, a = fill
             context.set_source_rgba(r, g, b, a)
             context.fill()
+
+
+    def _get_screen_coordinates(self, c_angle, gamma, candelas, max_candelas):
+            max_candelas_scale = int(self.size * self._get_max_value_ratio())
+            angle_modifier = 1 if c_angle < 180 else -1
+
+            distance = candelas / max_candelas * max_candelas_scale
+            angle = math.radians(gamma)
+            cartesian_point = (
+                math.cos(angle_modifier * angle - math.pi / 2) * distance,
+                math.sin(angle_modifier * angle - math.pi / 2) * distance
+            )
+            return cartesian_to_screen(self.center, cartesian_point)
+
+
+    def _draw_value_highlight(self, context: cairo.Context, luminaire: Luminaire):
+        if not self.highlight_angle:
+            return
+
+        for c_angle in [0, 90, 180, 270]:
+            if c_angle in (90, 270):
+                color = self.settings.theme.c180_stroke
+            else:
+                color = self.settings.theme.c0_stroke
+
+            r, g, b, a = color
+
+            candelas = luminaire.intensity_values[c_angle, self.highlight_angle]
+            max_candelas = self._get_max_candela(luminaire)
+
+            x, y = self._get_screen_coordinates(c_angle, self.highlight_angle, candelas, max_candelas)
+
+            context.new_path()
+            context.set_source_rgba(r, g, b, a)
+            context.set_line_width(3)
+            context.arc(x, y, 5, 0, math.pi * 2)
+            context.fill()
+
 
     def _draw_legend(self, context: cairo.Context):
         if not self.settings.show_legend:
