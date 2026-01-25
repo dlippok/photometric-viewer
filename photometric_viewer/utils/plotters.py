@@ -54,7 +54,7 @@ class LightDistributionPlotter:
     def __init__(self, settings: LightDistributionPlotterSettings = None):
         self.size = 300
         self.center = (150, 150)
-        self.highlight_angle: Optional[float] = 10.0
+        self.highlight_angle: Optional[float] = None
 
         if settings is not None:
             self.settings = settings
@@ -269,7 +269,7 @@ class LightDistributionPlotter:
 
 
     def _draw_value_highlight(self, context: cairo.Context, luminaire: Luminaire):
-        if not self.highlight_angle:
+        if self.highlight_angle is None:
             return
 
         for c_angle in [0, 90, 180, 270]:
@@ -290,6 +290,17 @@ class LightDistributionPlotter:
             context.set_line_width(3)
             context.arc(x, y, 5, 0, math.pi * 2)
             context.fill()
+
+            r, g, b, a = self.settings.theme.coordinate_color
+            context.set_source_rgba(r, g, b, a)
+            context.set_line_width(self.settings.theme.coordinate_line_width)
+            context.set_dash(self.settings.theme.coordinate_line_dash)
+
+            context.new_path()
+            x, y = self._get_screen_coordinates(c_angle, self.highlight_angle, max_candelas * 100, max_candelas)
+            context.move_to(self.center[0], self.center[1])
+            context.line_to(x, y)
+            context.stroke()
 
 
     def _draw_legend(self, context: cairo.Context):

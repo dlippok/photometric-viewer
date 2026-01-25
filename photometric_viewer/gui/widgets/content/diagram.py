@@ -1,4 +1,5 @@
 import cairo
+import math
 from gi.repository.Gdk import RGBA
 from gi.repository import Gtk, Adw
 from gi.repository.Adw import AccentColor
@@ -9,6 +10,7 @@ from photometric_viewer.config import plotter_themes
 from photometric_viewer.utils.plotters import LightDistributionPlotter, DiagramStyle, SnapValueAnglesTo, \
     DisplayHalfSpaces, LightDistributionPlotterTheme
 from photometric_viewer.utils.gi.GSettings import SettingsManager
+from photometric_viewer.utils.coordinates import screen_to_cartesian
 
 
 class PhotometricDiagram(Gtk.DrawingArea):
@@ -25,6 +27,13 @@ class PhotometricDiagram(Gtk.DrawingArea):
         self.settings_manager = SettingsManager()
         self.update_settings(self.settings_manager.settings)
         self.settings_manager.register_on_update(self.update_settings)
+
+
+        move_controller = Gtk.EventControllerMotion()
+        move_controller.connect('enter', self.on_mouse_enter)
+        move_controller.connect('leave', self.on_mouse_left)
+        move_controller.connect('motion', self.on_mouse_move)
+        self.add_controller(move_controller)
 
     def on_draw(self, _, context: cairo.Context, width, height):
         if self.luminaire is None:
@@ -91,7 +100,40 @@ class PhotometricDiagram(Gtk.DrawingArea):
         except:
             return
 
+    def _get_closest_gamma_angle(self, x, y):
+        center = self.plotter.center
+        cartesian = screen_to_cartesian(center, (x, y))
+        angle = abs(math.atan2(cartesian[0], cartesian[1]) * 180 / math.pi)
+
+        min_distance = 360
+        closest_angle = None
+        for luminaire_gamma in self.luminaire.gamma_angles:
+            distance = abs(luminaire_gamma - angle)
+            if distance < min_distance:
+                closest_angle = luminaire_gamma
+                min_distance = distance
+
+        return closest_angle
+
+
     def on_style_manager_notify(self, *args):
         self._update_high_contrast()
         self._update_plotter_theme()
         self.queue_draw()
+
+    def on_mouse_enter(self, motion, x, y):
+        angle =self._get_closest_gamma_angle(x, y)
+        self.plotter.highlight_angle = angle
+        self.queue_draw()
+
+
+    def on_mouse_move(self, motion, x, y):
+        angle =self._get_closest_gamma_angle(x, y)
+        self.plotter.highlight_angle = angle
+        self.queue_draw()
+
+
+    def on_mouse_left(self, _):
+        self.plotter.highlight_angle = None
+        self.queue_draw()
+        
