@@ -280,7 +280,11 @@ class LightDistributionPlotter:
 
             r, g, b, a = color
 
-            candelas = luminaire.intensity_values[c_angle, self.highlight_angle]
+            try:
+                candelas = luminaire.intensity_values[c_angle, self.highlight_angle]
+            except KeyError:
+                candelas = luminaire.intensity_values[0, self.highlight_angle]
+
             max_candelas = self._get_max_candela(luminaire)
 
             x, y = self._get_screen_coordinates(c_angle, self.highlight_angle, candelas, max_candelas)

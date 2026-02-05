@@ -183,3 +183,4 @@ cython_debug/
 .flatpak-builder
 build
 .builder_config
+.buildconfig
