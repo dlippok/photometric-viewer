@@ -16,6 +16,7 @@ class LuminaireHeader(Box):
 
         self.set_homogeneous(True)
         self.diagram = PhotometricDiagram(
+            show_values_under_cursor=False,
             vexpand=False,
             valign=Align.START
         )

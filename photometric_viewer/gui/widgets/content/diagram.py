@@ -14,7 +14,7 @@ from photometric_viewer.utils.coordinates import screen_to_cartesian
 
 
 class PhotometricDiagram(Gtk.DrawingArea):
-    def __init__(self, **kwargs):
+    def __init__(self, show_values_under_cursor: bool = False, **kwargs):
         super().__init__(**kwargs)
         self.style_manager: Adw.StyleManager = Adw.StyleManager.get_default()
         self.style_manager.connect("notify", self.on_style_manager_notify)
@@ -27,6 +27,7 @@ class PhotometricDiagram(Gtk.DrawingArea):
         self.settings_manager = SettingsManager()
         self.update_settings(self.settings_manager.settings)
         self.settings_manager.register_on_update(self.update_settings)
+        self.show_values_under_cursor = show_values_under_cursor
 
 
         move_controller = Gtk.EventControllerMotion()
@@ -122,18 +123,27 @@ class PhotometricDiagram(Gtk.DrawingArea):
         self.queue_draw()
 
     def on_mouse_enter(self, motion, x, y):
+        if not self.show_values_under_cursor:
+            return
+
         angle =self._get_closest_gamma_angle(x, y)
         self.plotter.highlight_angle = angle
         self.queue_draw()
 
 
     def on_mouse_move(self, motion, x, y):
+        if not self.show_values_under_cursor:
+            return
+
         angle =self._get_closest_gamma_angle(x, y)
         self.plotter.highlight_angle = angle
         self.queue_draw()
 
 
     def on_mouse_left(self, _):
+        if not self.show_values_under_cursor:
+            return
+
         self.plotter.highlight_angle = None
         self.queue_draw()
         

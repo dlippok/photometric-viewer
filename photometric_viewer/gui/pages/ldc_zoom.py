@@ -1,4 +1,4 @@
-from gi.repository import Adw
+from gi.repository import Adw, Gdk
 from gi.repository.Gtk import Box, Orientation, PolicyType, ScrolledWindow, Align
 
 from photometric_viewer.config.appearance import CLAMP_MAX_WIDTH
@@ -22,7 +22,8 @@ class LdcZoomPage(BasePage):
             valign=Align.START
         )
 
-        self.diagram = PhotometricDiagram()
+        self.diagram = PhotometricDiagram(show_values_under_cursor=True)
+        self.diagram.set_cursor(Gdk.Cursor.new_from_name("crosshair"))
         box.append(self.diagram)
 
         clamp = Adw.Clamp(maximum_size=CLAMP_MAX_WIDTH)
