@@ -273,6 +273,7 @@ class LightDistributionPlotter:
             return
 
         for c_angle in [0, 90, 180, 270]:
+
             if c_angle in (90, 270):
                 color = self.settings.theme.c180_stroke
             else:
@@ -280,10 +281,11 @@ class LightDistributionPlotter:
 
             r, g, b, a = color
 
-            try:
-                candelas = luminaire.intensity_values[c_angle, self.highlight_angle]
-            except KeyError:
-                candelas = luminaire.intensity_values[0, self.highlight_angle]
+            gammas_and_candelas = luminaire.get_values_for_c_angle(c_angle)
+            if not gammas_and_candelas:
+                continue
+
+            candelas = gammas_and_candelas[self.highlight_angle]
 
             max_candelas = self._get_max_candela(luminaire)
 
