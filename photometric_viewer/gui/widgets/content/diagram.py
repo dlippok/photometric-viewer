@@ -29,6 +29,8 @@ class PhotometricDiagram(Gtk.DrawingArea):
         self.settings_manager.register_on_update(self.update_settings)
         self.show_values_under_cursor = show_values_under_cursor
         self.lock_angle = False
+        self.highlighted_angle = None
+        self.highlighted_angle_changed_callback = None
 
         click_controller = Gtk.GestureClick(button=1)
         click_controller.connect("pressed", self.on_pressed)
@@ -123,7 +125,6 @@ class PhotometricDiagram(Gtk.DrawingArea):
 
         return closest_angle
 
-
     def on_style_manager_notify(self, *args):
         self._update_high_contrast()
         self._update_plotter_theme()
@@ -136,6 +137,9 @@ class PhotometricDiagram(Gtk.DrawingArea):
 
         self.lock_angle = not self.lock_angle
 
+        if self.highlighted_angle_changed_callback:
+            self.highlighted_angle_changed_callback()
+
     def on_mouse_enter(self, motion, x, y):
         if not self.show_values_under_cursor:
             return
@@ -143,8 +147,12 @@ class PhotometricDiagram(Gtk.DrawingArea):
         if self.lock_angle:
             return
 
-        angle =self._get_closest_gamma_angle(x, y)
-        self.plotter.highlight_angle = angle
+        self.highlighted_angle = self._get_closest_gamma_angle(x, y)
+        self.plotter.highlight_angle = self.highlighted_angle
+
+        if self.highlighted_angle_changed_callback:
+            self.highlighted_angle_changed_callback()
+
         self.queue_draw()
 
 
@@ -155,8 +163,15 @@ class PhotometricDiagram(Gtk.DrawingArea):
         if self.lock_angle:
             return
 
-        angle =self._get_closest_gamma_angle(x, y)
-        self.plotter.highlight_angle = angle
+        old_angle = self.highlighted_angle
+        new_angle = self._get_closest_gamma_angle(x, y)
+
+        self.highlighted_angle = new_angle
+        self.plotter.highlight_angle = self.highlighted_angle
+
+        if self.highlighted_angle_changed_callback and new_angle != old_angle:
+            self.highlighted_angle_changed_callback()
+
         self.queue_draw()
 
 
@@ -167,6 +182,11 @@ class PhotometricDiagram(Gtk.DrawingArea):
         if self.lock_angle:
             return
 
-        self.plotter.highlight_angle = None
+        self.highlighted_angle = None
+        self.plotter.highlight_angle = self.highlighted_angle
+
+        if self.highlighted_angle_changed_callback:
+            self.highlighted_angle_changed_callback()
+
         self.queue_draw()
-        
+
