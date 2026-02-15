@@ -28,13 +28,18 @@ class PhotometricDiagram(Gtk.DrawingArea):
         self.update_settings(self.settings_manager.settings)
         self.settings_manager.register_on_update(self.update_settings)
         self.show_values_under_cursor = show_values_under_cursor
+        self.lock_angle = False
 
+        click_controller = Gtk.GestureClick(button=1)
+        click_controller.connect("pressed", self.on_pressed)
 
         move_controller = Gtk.EventControllerMotion()
         move_controller.connect('enter', self.on_mouse_enter)
         move_controller.connect('leave', self.on_mouse_left)
         move_controller.connect('motion', self.on_mouse_move)
+
         self.add_controller(move_controller)
+        self.add_controller(click_controller)
 
     def on_draw(self, _, context: cairo.Context, width, height):
         if self.luminaire is None:
@@ -55,6 +60,8 @@ class PhotometricDiagram(Gtk.DrawingArea):
             self.queue_draw()
         else:
             self.set_visible(False)
+
+        self.lock_angle = False
 
     def update_settings(self, settings: Settings):
         self.plotter.settings.style = DiagramStyle(settings.diagram_style.value)
@@ -122,8 +129,18 @@ class PhotometricDiagram(Gtk.DrawingArea):
         self._update_plotter_theme()
         self.queue_draw()
 
+
+    def on_pressed(self, *args):
+        if not self.show_values_under_cursor:
+            return
+
+        self.lock_angle = not self.lock_angle
+
     def on_mouse_enter(self, motion, x, y):
         if not self.show_values_under_cursor:
+            return
+
+        if self.lock_angle:
             return
 
         angle =self._get_closest_gamma_angle(x, y)
@@ -135,6 +152,9 @@ class PhotometricDiagram(Gtk.DrawingArea):
         if not self.show_values_under_cursor:
             return
 
+        if self.lock_angle:
+            return
+
         angle =self._get_closest_gamma_angle(x, y)
         self.plotter.highlight_angle = angle
         self.queue_draw()
@@ -142,6 +162,9 @@ class PhotometricDiagram(Gtk.DrawingArea):
 
     def on_mouse_left(self, _):
         if not self.show_values_under_cursor:
+            return
+
+        if self.lock_angle:
             return
 
         self.plotter.highlight_angle = None
