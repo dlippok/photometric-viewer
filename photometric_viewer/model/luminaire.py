@@ -157,5 +157,4 @@ class Luminaire:
             angles[1]: candelas
             for (angles, candelas) in self.intensity_values.items()
             if angles[0] == angle
-
         }
