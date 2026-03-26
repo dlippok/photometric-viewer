@@ -35,9 +35,3 @@ class DiagramHighlightDetails(Gtk.ListBox):
                 )
             )
 
-
-
-
-
-
-

@@ -57,8 +57,9 @@ class LdcZoomPage(BasePage):
             candelas = {
                 c_angle: self.luminaire.get_values_for_c_angle(c_angle)[self.diagram.highlighted_angle]
                 for c_angle in [0, 90, 180, 270]
-
+                if self.diagram.highlighted_angle in self.luminaire.get_values_for_c_angle(c_angle)
             }
+
             self.highlight_details.set_visible(True)
             self.highlight_details.update(
                 gamma=self.diagram.highlighted_angle,
@@ -69,4 +70,5 @@ class LdcZoomPage(BasePage):
 
         else:
             self.highlight_details.set_visible(False)
+
 
