@@ -21,12 +21,19 @@ class DiagramHighlightDetails(Gtk.ListBox):
         )
 
         if locked:
-            gamma_row.add_suffix(Gtk.Image(icon_name="lock-small-symbolic"))
+            gamma_row.add_suffix(Gtk.Label(label=_("Locked")))
 
         self.append(gamma_row)
 
         for angle, value in values.items():
-            self.append(Adw.ActionRow(subtitle=f"C{angle}",  title=f"{value} {unit}"))
+            self.append(
+                Adw.ActionRow(
+                    title=f"{value} {unit}",
+                    subtitle=f"C{angle}",
+                    title_selectable=True,
+                    subtitle_selectable=True,
+                )
+            )
 
 
 
