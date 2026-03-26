@@ -1,10 +1,9 @@
 from typing import Dict
-from gi.repository import Gtk
+from gi.repository import Gtk, Adw
 
-class DiagramHighlightDetails(Gtk.Box):
+class DiagramHighlightDetails(Gtk.ListBox):
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.set_orientation(Gtk.Orientation.VERTICAL)
+        super().__init__(css_classes=['boxed-list'], selection_mode=Gtk.SelectionMode.NONE, **kwargs)
 
     def update(self, gamma: float, values: Dict[float, float], locked: bool, unit: str):
         child = self.get_first_child()
@@ -14,11 +13,24 @@ class DiagramHighlightDetails(Gtk.Box):
             child = self.get_first_child()
 
 
-        self.append(Gtk.Label(label=f"Gamma: {gamma}°"))
-        if locked:
-            self.append(Gtk.Label(label=f"Gamma: {gamma}°"))
+        gamma_row = Adw.ActionRow(
+            title=f"{gamma}°",
+            subtitle="Gamma",
+            title_selectable=True,
+            subtitle_selectable=True,
+        )
 
-        for angle, gamma in values.items():
-            self.append(Gtk.Label(label=f"C{angle}: {gamma} {unit}"))
+        if locked:
+            gamma_row.add_suffix(Gtk.Image(icon_name="lock-small-symbolic"))
+
+        self.append(gamma_row)
+
+        for angle, value in values.items():
+            self.append(Adw.ActionRow(subtitle=f"C{angle}",  title=f"{value} {unit}"))
+
+
+
+
+
 
 
