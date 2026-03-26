@@ -282,7 +282,7 @@ class LightDistributionPlotter:
             r, g, b, a = color
 
             gammas_and_candelas = luminaire.get_values_for_c_angle(c_angle)
-            if not gammas_and_candelas:
+            if not gammas_and_candelas or self.highlight_angle not in gammas_and_candelas:
                 continue
 
             candelas = gammas_and_candelas[self.highlight_angle]

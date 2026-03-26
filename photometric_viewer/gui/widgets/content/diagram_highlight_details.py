@@ -28,7 +28,7 @@ class DiagramHighlightDetails(Gtk.ListBox):
         for angle, value in values.items():
             self.append(
                 Adw.ActionRow(
-                    title=f"{value} {unit}",
+                    title=f"{value:.0f} {unit}",
                     subtitle=f"C{angle}",
                     title_selectable=True,
                     subtitle_selectable=True,
