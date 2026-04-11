@@ -76,12 +76,13 @@ class MainWindow(Adw.ApplicationWindow):
         self.on_new()
 
         self.toast_overlay = Adw.ToastOverlay()
-        overlay_split_view = SplitView(
+
+        self.split_view = SplitView(
             navigation_view=self.navigation_view,
             source_view_page=self.source_view_page
         )
 
-        self.toast_overlay.set_child(overlay_split_view)
+        self.toast_overlay.set_child(self.split_view)
 
         self.window_title = Adw.WindowTitle()
 
@@ -109,6 +110,11 @@ class MainWindow(Adw.ApplicationWindow):
 
         self.source_view_page.source_text_view.get_buffer().connect("changed", self.on_update_source)
 
+        breakpoint = Adw.Breakpoint()
+        breakpoint.set_condition(Adw.breakpoint_condition_parse("max-width: 800sp"))
+        breakpoint.add_setter(self.split_view.overlay_split_view, "collapsed", True)
+        self.add_breakpoint(breakpoint)
+
         if not self.settings_manager.gsettings_available:
             self.show_banner(_("Settings schema could not be loaded. Selected settings will be lost on restart"))
 
@@ -121,7 +127,8 @@ class MainWindow(Adw.ApplicationWindow):
             [
                 ("open", self.on_open),
                 ("new", self.on_new),
-                ("show_ldc_zoom", self.on_show_ldc_zoom)
+                ("show_ldc_zoom", self.on_show_ldc_zoom),
+                ("toggle_sidebar", self.on_toggle_sidebar)
             ]
         )
 
@@ -245,6 +252,12 @@ class MainWindow(Adw.ApplicationWindow):
 
     def on_show_ldc_zoom(self, *args):
         self.navigation_view.push(self.ldc_zoom_page)
+
+    def on_toggle_sidebar(self, *args):
+        current = self.split_view.overlay_split_view.get_show_sidebar()
+        show_sidebar = not current
+        self.split_view.overlay_split_view.set_show_sidebar(show_sidebar)
+        self.source_view_page.headerbar.set_visible(not show_sidebar)
 
     def open_stream(self, f: IO):
         if self.is_opening:

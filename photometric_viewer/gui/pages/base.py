@@ -9,16 +9,16 @@ class BasePage(Adw.NavigationPage):
         super().__init__(title=title, **kwargs)
         self.content_bin = Adw.Bin(hexpand=True, vexpand=True)
 
-        header = headerbar or Adw.HeaderBar(css_classes=["flat"])
+        self.headerbar = headerbar or Adw.HeaderBar(css_classes=["flat"])
 
-        header.set_show_title(show_title)
+        self.headerbar.set_show_title(show_title)
 
         if content:
             self.content_bin.set_child(content)
 
         content_box = Gtk.Box(orientation=Orientation.VERTICAL)
 
-        content_box.append(header)
+        content_box.append(self.headerbar)
         content_box.append(self.content_bin)
 
         self.set_child(content_box)

@@ -18,6 +18,8 @@ SPECS_DIR = os.path.join(ASSETS_PATH, "language-specs")
 class SourceViewPage(BasePage):
     def __init__(self, **kwargs):
         super().__init__(_("Source"), headerbar=default_headerbar(), show_title=False, **kwargs)
+        self.headerbar.set_visible(False)
+        
         self.adw_style_manager: Adw.StyleManager = Adw.StyleManager.get_default()
         self.settings_manager = SettingsManager()
 
