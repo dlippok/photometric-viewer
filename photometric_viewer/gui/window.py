@@ -20,6 +20,7 @@ from photometric_viewer.gui.pages.ballast_set import BallastPage
 from photometric_viewer.gui.pages.base import BasePage
 from photometric_viewer.gui.pages.content import PhotometryContentPage
 from photometric_viewer.gui.pages.direct_ratios import DirectRatiosPage
+from photometric_viewer.gui.pages.empty import EmptyContentPage
 from photometric_viewer.gui.pages.geometry import GeometryPage
 from photometric_viewer.gui.pages.lamp_set import LampSetPage
 from photometric_viewer.gui.pages.ldc_export import LdcExportPage
@@ -47,6 +48,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.pending_action = None
         self.pending_drop_file = None
         self.is_dirty = False
+        self.is_empty = True
 
         self.set_default_size(1000, 700)
         self.install_actions()
@@ -58,6 +60,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.opened_photometry: Optional[Luminaire] = None
         self.opened_file: Gio.File | None = None
 
+        self.empty_page = EmptyContentPage()
         self.luminaire_content_page = PhotometryContentPage()
         self.source_view_page = SourceViewPage()
         self.values_table_page = IntensityValuesPage()
@@ -72,7 +75,7 @@ class MainWindow(Adw.ApplicationWindow):
 
         self.number_of_luminaires_calculation_page = NumberOfLuminairesCalculationPage()
 
-        self.navigation_view.replace([self.luminaire_content_page])
+        self.navigation_view.replace([self.empty_page])
         self.on_new()
 
         self.toast_overlay = Adw.ToastOverlay()
@@ -122,7 +125,6 @@ class MainWindow(Adw.ApplicationWindow):
         self.navigation_view.replace([self.luminaire_content_page])
 
     def install_actions(self):
-
         self.add_action_entries(
             [
                 ("open", self.on_open),
@@ -381,11 +383,9 @@ class MainWindow(Adw.ApplicationWindow):
         self.csv_export_file_chooser.show()
 
     def show_photometry_export_page(self, *args):
-        self.show_start_page()
         self.navigation_view.push(self.photometry_export_page)
 
     def show_ldc_export_page(self, *args):
-        self.show_start_page()
         self.navigation_view.push(self.ldc_export_page)
 
     def on_update_source(self, buffer: Gtk.TextBuffer):
@@ -393,8 +393,11 @@ class MainWindow(Adw.ApplicationWindow):
         start = buffer.get_start_iter()
         end = buffer.get_end_iter()
 
+        content = buffer.get_text(start, end, True)
+        self.toggle_empty_page(content)
+
         self.open_stream(
-            io.StringIO(buffer.get_text(start, end, True))
+            io.StringIO(content)
         )
 
     def show_banner(self, message: str, details: str | None = None):
@@ -405,6 +408,15 @@ class MainWindow(Adw.ApplicationWindow):
         else:
             toast.set_title(message)
         self.toast_overlay.add_toast(toast)
+
+    def toggle_empty_page(self, content: str):
+        if content and self.is_empty:
+            self.navigation_view.replace([self.luminaire_content_page])
+            self.is_empty = False
+        elif not content and not self.is_empty:
+            self.navigation_view.replace([self.empty_page])
+            self.is_empty = True
+
 
     def on_close_request(self, *args):
         if self.pending_action == "close":
