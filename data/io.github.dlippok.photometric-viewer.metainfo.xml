@@ -99,6 +99,12 @@
             <caption xml:lang="de">Export von Lichtverteilungskurven</caption>
             <caption xml:lang="pl">Eksport krzywej światłości</caption>
         </screenshot>
+        <screenshot>
+            <image type="source">https://raw.githubusercontent.com/dlippok/photometric-viewer/master/docs/screenshots/QuickCalculation.png</image>
+            <caption>Quick calculation of required number of luminaires</caption>
+            <caption xml:lang="de">Überschlagsrechung der Leuchtenanzahl</caption>
+            <caption xml:lang="pl">Przybliżone obliczanie potrzebnej ilości opraw</caption>
+        </screenshot>
     </screenshots>
     <project_license>MIT</project_license>
     <metadata_license>CC0-1.0</metadata_license>
@@ -126,6 +132,13 @@
     </requires>
 
     <releases>
+        <release version="3.5.0" date="2026-04-18">
+           <description>
+                <p>Adds information about angles and intensity values under the cursor in the LDC zoom page and improves support for mobile screen sizes.</p>
+                <p xml:lang="de">Fügt Informationen über Winkel und Candela-Werte unter dem Cursor auf der LDC-Zoomseite hinzu und verbessert die Unterstützung für mobile Bildschirmgrößen.</p>
+                <p xml:lang="pl">Dodaje informacje o kątach i wartościach światłości pod kursorem na stronie powiększenia LDC i poprawia obsługę rozmiarów ekranów urządzeń mobilnych.</p>
+           </description>
+        </release>
         <release version="3.4.0" date="2026-01-18">
            <description>
                 <p>Uses GNOME runtime version 49</p>
