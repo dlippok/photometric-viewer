@@ -7,12 +7,13 @@ from photometric_viewer.gui.widgets.content.header import LuminaireHeader
 from photometric_viewer.gui.widgets.content.lamps import LampAndBallast
 from photometric_viewer.gui.widgets.content.photometry import LuminairePhotometricProperties
 from photometric_viewer.gui.widgets.content.properties import LuminaireProperties
+from photometric_viewer.gui.widgets.headerbar import default_headerbar
 from photometric_viewer.model.luminaire import Luminaire
 
 
 class PhotometryContentPage(BasePage):
     def __init__(self, **kwargs):
-        super().__init__(_("Photometry"), **kwargs)
+        super().__init__(_("Photometry"), headerbar=default_headerbar(), **kwargs)
         self.header = LuminaireHeader()
         self.photometric_properties = LuminairePhotometricProperties()
         self.lamps_and_ballast = LampAndBallast()

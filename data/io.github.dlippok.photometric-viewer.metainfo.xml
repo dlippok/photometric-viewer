@@ -120,12 +120,8 @@
         <control>touch</control>
     </supports>
 
-    <recommends>
-        <display_length compare="ge">600</display_length>
-    </recommends>
-
     <requires>
-        <display_length compare="gt">360</display_length>
+        <display_length compare="ge">360</display_length>
         <internet>offline-only</internet>
     </requires>
 

@@ -1,6 +1,6 @@
 import locale
 
-from gi.repository.Gtk import Box, Orientation, Label, Expander, Adjustment, Scale
+from gi.repository.Gtk import Box, Orientation, Label, Expander, Adjustment, Scale, Align
 
 from photometric_viewer.model.settings import Settings
 from photometric_viewer.utils.calc import annual_power_consumption, energy_cost
@@ -75,13 +75,13 @@ class WattageBox(Box):
         daily_hours_scale.connect("value-changed", self._on_daily_hours_scale_value_changed)
         content_box.append(daily_hours_scale)
 
-        power_consumption_box = Box(orientation=Orientation.HORIZONTAL, spacing=12, homogeneous=True)
+        power_consumption_box = Box(orientation=Orientation.HORIZONTAL, spacing=6, homogeneous=False, halign=Align.CENTER)
         power_consumption_box.append(Label(label=_("Annual power consumption"), xalign=0))
 
         power_consumption_box.append(self.power_consumption_label)
         content_box.append(power_consumption_box)
 
-        annual_cost_box = Box(orientation=Orientation.HORIZONTAL, spacing=12, homogeneous=True)
+        annual_cost_box = Box(orientation=Orientation.HORIZONTAL, spacing=6, homogeneous=False, halign=Align.CENTER)
         annual_cost_box.append(Label(label=_("Annual cost of operation"), xalign=0))
 
         annual_cost_box.append(self.annual_cost_label)

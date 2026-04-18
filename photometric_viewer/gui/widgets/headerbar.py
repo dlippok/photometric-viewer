@@ -14,4 +14,11 @@ def default_headerbar():
     header_bar.pack_start(open_button)
 
     header_bar.pack_end(ApplicationMenuButton())
+
+    toggle_sidebar_button = Button(
+        child=Adw.ButtonContent(icon_name="sidebar-show-right-symbolic"),
+        action_name="win.toggle_sidebar"
+    )
+    header_bar.pack_end(toggle_sidebar_button)
     return header_bar
+
