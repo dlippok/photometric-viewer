@@ -5,6 +5,7 @@ from gi.repository.Pango import WrapMode
 from photometric_viewer.gui.widgets.content.diagram import PhotometricDiagram
 from photometric_viewer.gui.widgets.content.header_buttons import HeaderButtons
 from photometric_viewer.model.luminaire import Luminaire
+from photometric_viewer.profiling.decorators import profiled
 
 
 class LuminaireHeader(Box):
@@ -82,6 +83,7 @@ class LuminaireHeader(Box):
         self.append(self.diagram_zoom_button)
         self.append(properties_box)
 
+    @profiled()
     def set_photometry(self, luminaire: Luminaire):
         self.name_label.set_label(luminaire.metadata.catalog_number or _("No catalog number"))
         self.manufacturer_label.set_label(luminaire.metadata.manufacturer or _("No manufacturer"))

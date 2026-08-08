@@ -11,6 +11,7 @@ from photometric_viewer.gui.widgets.ldc_export.file_properties import LdcExportF
     LdcExportFileProperties, LdcExportFileType
 from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.utils.gi.gio import write_bytes
+from photometric_viewer.profiling.decorators import profiled
 
 
 class LdcExportPage(BasePage):
@@ -58,6 +59,7 @@ class LdcExportPage(BasePage):
         scrolled_window.set_policy(PolicyType.NEVER, PolicyType.AUTOMATIC)
         self.set_content(scrolled_window)
 
+    @profiled()
     def set_photometry(self, luminaire: Luminaire):
         self.luminaire = luminaire
         self.diagram.set_photometry(luminaire)

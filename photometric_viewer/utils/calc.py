@@ -1,6 +1,8 @@
 import math
 
 from photometric_viewer.model.luminaire import Luminaire, Lamps, LuminairePhotometricProperties, Calculable
+from photometric_viewer.profiling.decorators import profiled
+import functools
 
 DAYS_IN_YEAR = 365
 
@@ -42,12 +44,12 @@ def empty_values():
         efficacy=Calculable()
     )
 
+@profiled()
 def calculate_photometry(luminaire: Luminaire) -> LuminairePhotometricProperties:
     try:
         return _calculate_photometry(luminaire)
     except Exception as e:
         return empty_values()
-
 
 def _calculate_photometry(luminaire: Luminaire) -> LuminairePhotometricProperties:
     assert luminaire.intensity_values

@@ -35,7 +35,7 @@ from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.utils.gi.GSettings import SettingsManager
 from photometric_viewer.utils.gi.gio import gio_file_stream, write_string
 from photometric_viewer.utils.project import PROJECT
-
+from photometric_viewer.profiling.decorators import profiled
 
 class MainWindow(Adw.ApplicationWindow):
     def __init__(self, **kwargs):
@@ -141,6 +141,8 @@ class MainWindow(Adw.ApplicationWindow):
     def setup_accelerators(self):
         app = self.get_application()
 
+
+    @profiled(warn_above=100)
     def display_photometry_content(self, luminaire: Luminaire):
         self.luminaire_content_page.set_photometry(luminaire)
         self.values_table_page.set_photometry(luminaire)

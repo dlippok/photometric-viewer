@@ -6,6 +6,7 @@ from photometric_viewer.config.appearance import CLAMP_MAX_WIDTH
 from photometric_viewer.gui.pages.base import BasePage
 from photometric_viewer.gui.widgets.common.property_list import PropertyList
 from photometric_viewer.model.luminaire import Luminaire
+from photometric_viewer.profiling.decorators import profiled
 
 
 class IntensityValuesPage(BasePage):
@@ -51,7 +52,11 @@ class IntensityValuesPage(BasePage):
         scrolled_window.set_policy(PolicyType.NEVER, PolicyType.AUTOMATIC)
         self.set_content(scrolled_window)
 
+    @profiled()
     def set_photometry(self, luminaire: Luminaire):
+        if not self._needs_update(luminaire):
+            return
+
         self.luminaire = luminaire
         if luminaire.c_planes:
             self.selected_c_angle = luminaire.c_planes[0]
@@ -68,6 +73,16 @@ class IntensityValuesPage(BasePage):
         for gamma_angle in self.luminaire.gamma_angles:
             gamma_angle_model.append(str(gamma_angle))
         self.gamma_angle_selection_row.set_model(gamma_angle_model)
+
+    def _needs_update(self, luminaire: Luminaire):
+        if luminaire and not self.luminaire:
+            return True
+
+        return any([
+            luminaire.gamma_angles != self.luminaire.gamma_angles,
+            luminaire.c_planes != self.luminaire.c_planes,
+
+        ])
 
     def on_update_c_angle(self, *args):
         i = self.c_angle_selection_row.get_selected()
