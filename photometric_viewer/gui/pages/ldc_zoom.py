@@ -6,6 +6,7 @@ from photometric_viewer.gui.pages.base import BasePage
 from photometric_viewer.gui.widgets.content.diagram import PhotometricDiagram
 from photometric_viewer.gui.widgets.content.diagram_highlight_details import DiagramHighlightDetails
 from photometric_viewer.model.luminaire import Luminaire
+from photometric_viewer.profiling.decorators import profiled
 
 from typing import Optional
 
@@ -45,6 +46,7 @@ class LdcZoomPage(BasePage):
         scrolled_window.set_policy(PolicyType.NEVER, PolicyType.AUTOMATIC)
         self.set_content(scrolled_window)
 
+    @profiled()
     def set_photometry(self, luminaire: Luminaire):
         self.luminaire = luminaire
         self.diagram.set_photometry(luminaire)

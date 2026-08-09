@@ -5,7 +5,7 @@ from gi.repository.GLib import Variant
 from photometric_viewer.gui.widgets.common.header import Header
 from photometric_viewer.gui.widgets.common.property_list import PropertyList
 from photometric_viewer.model.luminaire import Luminaire
-
+from photometric_viewer.profiling.decorators import profiled
 
 class LampAndBallast(Gtk.Box):
     def __init__(self, **kwargs):
@@ -17,9 +17,19 @@ class LampAndBallast(Gtk.Box):
         self.append(self.property_list)
         self.set_visible(False)
 
+    @profiled()
     def set_photometry(self, luminaire: Luminaire):
+        if not self._needs_update(luminaire):
+            return
+
         self.luminaire = luminaire
         self._refresh_widgets()
+
+    def _needs_update(self, luminaire: Luminaire):
+        if luminaire and not self.luminaire:
+            return True
+
+        return self.luminaire.lamps != luminaire.lamps
 
     def _refresh_widgets(self):
         self.set_visible(False)

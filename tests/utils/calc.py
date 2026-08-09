@@ -1,6 +1,6 @@
 import unittest
 
-from photometric_viewer.utils.calc import annual_power_consumption, energy_cost, calculate_photometry, \
+from photometric_viewer.utils.calc import annual_power_consumption, energy_cost, PhotometricPropertiesCalculator, \
     required_number_of_luminaires, illuminance
 from tests.fixtures.photometry import *
 
@@ -149,6 +149,8 @@ class TestPhotometricProperties(unittest.TestCase):
         """
         Test uniform radiating light sources
         """
+        calculator = PhotometricPropertiesCalculator()
+
         EXPECTED_FLUX = 1000 * 4 * math.pi
         cases = [
             {
@@ -190,12 +192,14 @@ class TestPhotometricProperties(unittest.TestCase):
 
         for case in cases:
             with(self.subTest(case=case, msg=case["title"])):
-                properties = calculate_photometry(case["source"])
+                properties = calculator.calculate(case["source"])
                 self.assertAlmostEqual(properties.luminous_flux.value, case["expected"][0])
                 self.assertAlmostEqual(properties.lor.value, case["expected"][1])
                 self.assertAlmostEqual(properties.dff.value, case["expected"][2])
 
     def test_do_not_overwrite_existing_values(self):
+        calculator = PhotometricPropertiesCalculator()
+
         CALCULATED_FLUX = 1000 * 4 * math.pi
         CALCULATED_LOR = 1
         CALCULATED_DFF = 0.5
@@ -276,5 +280,5 @@ class TestPhotometricProperties(unittest.TestCase):
             with(self.subTest(case=case["title"])):
                 luminaire = copy.deepcopy(UNIFORM_RADIATING_SOURCE)
                 luminaire.photometry = case["source"]
-                properties = calculate_photometry(luminaire)
+                properties = calculator.calculate(luminaire)
                 self.assertEqual(properties, case["expected"])

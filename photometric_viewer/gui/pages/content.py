@@ -9,7 +9,7 @@ from photometric_viewer.gui.widgets.content.photometry import LuminairePhotometr
 from photometric_viewer.gui.widgets.content.properties import LuminaireProperties
 from photometric_viewer.gui.widgets.headerbar import default_headerbar
 from photometric_viewer.model.luminaire import Luminaire
-
+from photometric_viewer.profiling.decorators import profiled
 
 class PhotometryContentPage(BasePage):
     def __init__(self, **kwargs):
@@ -42,6 +42,7 @@ class PhotometryContentPage(BasePage):
         scrolled_window.set_policy(PolicyType.NEVER, PolicyType.AUTOMATIC)
         self.set_content(scrolled_window)
 
+    @profiled()
     def set_photometry(self, luminaire: Luminaire):
         self.header.set_photometry(luminaire)
         self.photometric_properties.set_photometry(luminaire)

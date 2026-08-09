@@ -9,6 +9,7 @@ from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.model.zones import ZoneProperties
 from photometric_viewer.utils import calc
 from photometric_viewer.utils.calc import illuminance
+from photometric_viewer.profiling.decorators import profiled
 
 
 class NumberOfLuminairesCalculationPage(BasePage):
@@ -60,7 +61,7 @@ class NumberOfLuminairesCalculationPage(BasePage):
             self.luminaire_count_box.set_achieved_illuminance(None)
             return
 
-        photometric_properties = calc.calculate_photometry(self.luminaire)
+        photometric_properties = calc.PHOTOMETRIC_PROPERTY_CALCULATOR.calculate(self.luminaire)
         if not photometric_properties.luminous_flux.value:
             self.luminaire_count_box.set_count(None)
             self.luminaire_count_box.set_achieved_illuminance(None)
@@ -85,6 +86,7 @@ class NumberOfLuminairesCalculationPage(BasePage):
             self.luminaire_count_box.set_count(None)
             self.luminaire_count_box.set_achieved_illuminance(None)
 
+    @profiled()
     def set_photometry(self, luminaire: Luminaire):
         self.luminaire = luminaire
         self.recalculate()

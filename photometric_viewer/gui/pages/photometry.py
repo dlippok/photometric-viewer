@@ -7,6 +7,7 @@ from photometric_viewer.gui.widgets.common.gauge import Gauge
 from photometric_viewer.gui.widgets.common.property_list import PropertyList
 from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.utils import calc
+from photometric_viewer.profiling.decorators import profiled
 
 
 class PhotometryPage(BasePage):
@@ -36,9 +37,14 @@ class PhotometryPage(BasePage):
         scrolled_window.set_policy(PolicyType.NEVER, PolicyType.AUTOMATIC)
         self.set_content(scrolled_window)
 
+    @profiled()
     def set_photometry(self, luminaire: Luminaire):
+        if not self._needs_update(luminaire):
+            return
+
+        self.luminaire = luminaire
         self.property_list.clear()
-        photometric_properties = calc.calculate_photometry(luminaire)
+        photometric_properties = calc.PHOTOMETRIC_PROPERTY_CALCULATOR.calculate(luminaire)
 
         if photometric_properties.luminous_flux.value:
             self.property_list.add(
@@ -84,3 +90,17 @@ class PhotometryPage(BasePage):
                         "Ratio of luminous flux emitted by the luminaire in the downward hemisphere to the luminous flux emitted by the luminaire in all directions.")
                 )
             )
+
+    def _needs_update(self, luminaire: Luminaire):
+        if luminaire and not self.luminaire:
+            return True
+
+        needs_update = any([
+            luminaire.photometry != self.luminaire.photometry,
+            luminaire.lamps != self.luminaire.lamps,
+            luminaire.c_planes != self.luminaire.c_planes,
+            luminaire.gamma_angles != self.luminaire.gamma_angles,
+            luminaire.intensity_values != self.luminaire.intensity_values,
+        ])
+
+        return needs_update

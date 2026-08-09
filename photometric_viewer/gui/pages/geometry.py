@@ -8,6 +8,7 @@ from photometric_viewer.model.luminaire import (Luminaire, LuminousOpeningShape,
                                                 LuminaireType, LuminaireGeometry, Shape)
 from photometric_viewer.model.units import LengthUnits, length_factor
 from photometric_viewer.utils.gi.GSettings import SettingsManager
+from photometric_viewer.profiling.decorators import profiled
 
 
 class GeometryPage(BasePage):
@@ -39,6 +40,7 @@ class GeometryPage(BasePage):
         self.settings_manager = SettingsManager()
         self.settings_manager.register_on_update(lambda *args: self._refresh_widgets())
 
+    @profiled()
     def set_photometry(self, luminaire: Luminaire):
         self.luminaire = luminaire
         self._refresh_widgets()

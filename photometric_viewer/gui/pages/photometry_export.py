@@ -15,6 +15,7 @@ from photometric_viewer.gui.widgets.photomery_export.photometry_export_list impo
 from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.utils.gi.gio import write_bytes, write_string
 from photometric_viewer.utils.project import PROJECT
+from photometric_viewer.profiling.decorators import profiled
 
 
 class PhotometryExportPage(BasePage):
@@ -68,6 +69,7 @@ class PhotometryExportPage(BasePage):
     def set_current_name(self, current_name):
         self.current_name = current_name
 
+    @profiled()
     def set_photometry(self, luminaire: Luminaire):
         self.luminaire = luminaire
 
