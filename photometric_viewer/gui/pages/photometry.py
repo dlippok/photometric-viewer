@@ -44,7 +44,7 @@ class PhotometryPage(BasePage):
 
         self.luminaire = luminaire
         self.property_list.clear()
-        photometric_properties = calc.calculate_photometry(luminaire)
+        photometric_properties = calc.PHOTOMETRIC_PROPERTY_CALCULATOR.calculate(luminaire)
 
         if photometric_properties.luminous_flux.value:
             self.property_list.add(

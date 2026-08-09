@@ -61,7 +61,7 @@ class NumberOfLuminairesCalculationPage(BasePage):
             self.luminaire_count_box.set_achieved_illuminance(None)
             return
 
-        photometric_properties = calc.calculate_photometry(self.luminaire)
+        photometric_properties = calc.PHOTOMETRIC_PROPERTY_CALCULATOR.calculate(self.luminaire)
         if not photometric_properties.luminous_flux.value:
             self.luminaire_count_box.set_count(None)
             self.luminaire_count_box.set_achieved_illuminance(None)

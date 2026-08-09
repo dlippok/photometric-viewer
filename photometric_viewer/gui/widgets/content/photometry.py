@@ -69,7 +69,7 @@ class LuminairePhotometricProperties(Box):
 
     @profiled()
     def set_photometry(self, luminaire: Luminaire):
-        photometric_properties = calc.calculate_photometry(luminaire)
+        photometric_properties = calc.PHOTOMETRIC_PROPERTY_CALCULATOR.calculate(luminaire)
 
         photometric_properties_visible = any((
                 photometric_properties.luminous_flux.value,
