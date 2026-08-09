@@ -132,6 +132,13 @@
     </requires>
 
     <releases>
+        <release version="3.5.1" date="2026-08-09">
+           <description>
+                <p>Improves performance when updating photometric data in the text editor.</p>
+                <p xml:lang="de">Verbessert die Leistung beim Aktualisieren photometrischer Daten im Texteditor.</p>
+                <p xml:lang="pl">Poprawia wydajność podczas aktualizowania danych fotometrycznych w edytorze tekstu.</p>
+           </description>
+        </release>
         <release version="3.5.0" date="2026-04-18">
            <description>
                 <p>Adds information about angles and intensity values under the cursor in the LDC zoom page and improves support for mobile screen sizes.</p>
