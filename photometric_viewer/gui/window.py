@@ -1,6 +1,6 @@
 import io
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional, IO
 
 from gi.repository import Adw, Gtk, Gio, GLib, Gdk
@@ -10,7 +10,6 @@ import photometric_viewer.formats.csv
 import photometric_viewer.formats.format_json
 import photometric_viewer.formats.png
 import photometric_viewer.formats.svg
-from photometric_viewer.formats import ldt, ies
 from photometric_viewer.formats.common import import_from_file
 from photometric_viewer.formats.exceptions import InvalidPhotometricFileFormatException
 from photometric_viewer.gui.dialogs.about import AboutWindow
@@ -32,10 +31,10 @@ from photometric_viewer.gui.pages.source import SourceViewPage
 from photometric_viewer.gui.pages.values import IntensityValuesPage
 from photometric_viewer.gui.widgets.common.split_view import SplitView
 from photometric_viewer.model.luminaire import Luminaire
+from photometric_viewer.profiling.decorators import profiled
 from photometric_viewer.utils.gi.GSettings import SettingsManager
 from photometric_viewer.utils.gi.gio import gio_file_stream, write_string
-from photometric_viewer.utils.project import PROJECT
-from photometric_viewer.profiling.decorators import profiled
+
 
 class MainWindow(Adw.ApplicationWindow):
     def __init__(self, **kwargs):
@@ -59,6 +58,9 @@ class MainWindow(Adw.ApplicationWindow):
 
         self.opened_photometry: Optional[Luminaire] = None
         self.opened_file: Gio.File | None = None
+        self.refresh_after: datetime | None = None
+
+        GLib.timeout_add(100, self.load_textarea_changes_async)
 
         self.empty_page = EmptyContentPage()
         self.luminaire_content_page = PhotometryContentPage()
@@ -157,9 +159,9 @@ class MainWindow(Adw.ApplicationWindow):
         self.opened_photometry = luminaire
 
     def on_new(self, *args):
-        stram = io.StringIO("")
-        self.open_stream(stram)
-        stram.seek(0)
+        stream = io.StringIO("")
+        self.open_stream(stream)
+        stream.seek(0)
 
     def on_open(self, *args):
         if self.source_view_page.source_text_view.get_buffer().get_modified():
@@ -392,15 +394,28 @@ class MainWindow(Adw.ApplicationWindow):
 
     def on_update_source(self, buffer: Gtk.TextBuffer):
         self.is_dirty = True
-        start = buffer.get_start_iter()
-        end = buffer.get_end_iter()
+        self.refresh_after = datetime.now() + timedelta(milliseconds=300)
 
-        content = buffer.get_text(start, end, True)
-        self.toggle_empty_page(content)
+    def load_textarea_changes_async(self):
+        try:
+            if not self.refresh_after or self.refresh_after > datetime.now():
+                return True
 
-        self.open_stream(
-            io.StringIO(content)
-        )
+            buffer = self.source_view_page.source_text_view.get_buffer()
+            start = buffer.get_start_iter()
+            end = buffer.get_end_iter()
+
+            content = buffer.get_text(start, end, True)
+            self.toggle_empty_page(content)
+
+            self.open_stream(
+                io.StringIO(content)
+            )
+        except Exception as e:
+            print(f"Could not refresh article data: {e}")
+
+        self.refresh_after = None
+        return True
 
     def show_banner(self, message: str, details: str | None = None):
         toast = Adw.Toast()

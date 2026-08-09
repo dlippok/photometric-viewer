@@ -65,7 +65,7 @@ class PropertyList(Gtk.ListBox):
 
     def add_if_non_empty(self, name: str, value, hint: str | None = None):
         if value:
-            self.append(self._create_item(name=name, value=value, hint=hint))
+            self.append(self._create_item(name=name, value=str(value), hint=hint))
 
     def clear(self):
         items = [i for i in self]
