@@ -57,7 +57,9 @@ def _calculate_photometry(luminaire: Luminaire) -> LuminairePhotometricPropertie
     is_absolute = luminaire.photometry.is_absolute
     lamps = luminaire.lamps[0]
     ratio = 1 if is_absolute else (lamps.lumens_per_lamp * lamps.number_of_lamps) / 1000
-    gamma_step = luminaire.gamma_angles[1] - luminaire.gamma_angles[0]
+    min_gamma = min(luminaire.gamma_angles)
+    max_gamma = max(luminaire.gamma_angles)
+    gamma_step = max(luminaire.gamma_angles[1] - luminaire.gamma_angles[0], 5)
 
     assert gamma_step > 0
 
@@ -69,8 +71,11 @@ def _calculate_photometry(luminaire: Luminaire) -> LuminairePhotometricPropertie
         plane_flux = 0
         plane_lower_flux = 0
         while gamma < 180:
-            closest_gamma = min(luminaire.gamma_angles, key=lambda x: abs(x - gamma))
-            candelas = luminaire.intensity_values.get((c, closest_gamma), 0) * ratio
+            if min_gamma <= gamma <= max_gamma :
+                closest_gamma = min(luminaire.gamma_angles, key=lambda x: abs(x - gamma))
+                candelas = luminaire.intensity_values.get((c, closest_gamma), 0) * ratio
+            else:
+                candelas = 0
             flux = candelas * (math.cos((n - 1) * math.radians(gamma_step)) - math.cos(n*math.radians(gamma_step)))
             plane_flux += flux
             if gamma < 90:
