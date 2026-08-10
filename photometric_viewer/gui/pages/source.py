@@ -4,6 +4,7 @@ import typing
 from concurrent.futures import ThreadPoolExecutor
 
 from gi.repository import Adw, Gtk, GtkSource
+from gi.repository.GObject import ParamSpecInt
 from gi.repository.Gtk import ScrolledWindow, PolicyType, WrapMode
 from gi.repository.GtkSource import View
 
@@ -45,7 +46,7 @@ class SourceViewPage(BasePage):
         self.scrolled_window.set_vexpand(True)
         box.append(self.scrolled_window)
 
-        self.status_bar = StatusBar()
+        self.status_bar = StatusBar(self.source_text_view)
         box.append(self.status_bar)
 
         self.set_content(box)
@@ -58,6 +59,13 @@ class SourceViewPage(BasePage):
 
     def on_update_content(self, *args):
         self.executor.submit(self._update_language)
+
+    def on_update_cursor_position(self, buffer: Gtk.TextBuffer, spec: ParamSpecInt):
+        pos = buffer.get_property("cursor-position")
+        iter = buffer.get_iter_at_offset(pos)
+        line = iter.get_line() + 1
+        column = iter.get_line_offset() + 1
+        self.status_bar.set_cursor_position(line, column)
 
     def on_shown(self, *args):
         self.source_text_view.grab_focus()
@@ -104,6 +112,7 @@ class SourceViewPage(BasePage):
     def _connect_signals(self):
         self.connect("shown", self.on_shown)
         self.source_text_view.get_buffer().connect("changed", self.on_update_content)
+        self.source_text_view.get_buffer().connect("notify::cursor-position", self.on_update_cursor_position)
         self.adw_style_manager.connect("notify", self.update_theme)
         self.source_text_view.connect("notify::has-focus", self.on_source_text_view_focus_change)
 
