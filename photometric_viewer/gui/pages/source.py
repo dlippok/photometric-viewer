@@ -10,6 +10,7 @@ from gi.repository.GtkSource import View
 from photometric_viewer.gui.widgets.headerbar import default_headerbar
 from photometric_viewer.model.settings import Settings
 from photometric_viewer.gui.pages.base import BasePage
+from photometric_viewer.gui.widgets.source.statusbar import StatusBar
 from photometric_viewer.utils.project import ASSETS_PATH
 from photometric_viewer.utils.gi.GSettings import SettingsManager
 
@@ -38,11 +39,16 @@ class SourceViewPage(BasePage):
         self.lang_manager: GtkSource.LanguageManager = GtkSource.LanguageManager.get_default()
         self.lang_manager.append_search_path(SPECS_DIR)
 
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.scrolled_window = ScrolledWindow()
         self.scrolled_window.set_child(self.source_text_view)
         self.scrolled_window.set_vexpand(True)
+        box.append(self.scrolled_window)
 
-        self.set_content(self.scrolled_window)
+        self.status_bar = StatusBar()
+        box.append(self.status_bar)
+
+        self.set_content(box)
 
         self.update_theme()
 
@@ -70,19 +76,21 @@ class SourceViewPage(BasePage):
 
     def _update_language(self):
         time.sleep(0.1)
-        while self.opening:
-            time.sleep(0.05)
-
         buffer: Gtk.TextBuffer = self.source_text_view.get_buffer()
         start = buffer.get_start_iter()
         end: Gtk.TextIter = buffer.get_start_iter()
         end.forward_line()
         text = buffer.get_text(start, end, True)
 
-        if text.lower().startswith("iesna"):
-            buffer.set_language(self.lang_manager.get_language("ies"))
+        if text.strip() == "":
+            lang = None
+        elif text.lower().startswith("iesna"):
+            lang = self.lang_manager.get_language("ies")
         else:
-            buffer.set_language(self.lang_manager.get_language("ldt"))
+            lang = self.lang_manager.get_language("ldt")
+
+        buffer.set_language(lang)
+        self.status_bar.set_source_language(lang)
 
     def update_theme(self, *args):
         style_manager = GtkSource.StyleSchemeManager.get_default()

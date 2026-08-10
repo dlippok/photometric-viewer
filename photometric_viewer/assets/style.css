@@ -2,7 +2,6 @@
     font-weight: bold;
 }
 
-
 #lamp-switcher-bar>actionbar>revealer>box {
    background-color: @window_bg_color;
 }
@@ -32,4 +31,9 @@
     padding-left: 3px;
     padding-right: 3px;
 
+}
+
+.statusbar {
+    border-top: 1px solid var(--border-color);
+    font-size: 0.9em;
 }
