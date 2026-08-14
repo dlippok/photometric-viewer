@@ -69,6 +69,7 @@ class GotoLinePopover(Gtk.Popover):
                 max(column, 0)
             )
             buffer.place_cursor(iter)
+            self.connected_view.scroll_to_iter(iter, within_margin=0.1, use_align=False, xalign=0, yalign=0.5)
         finally:
             self.connected_view.grab_focus()
             self.set_visible(False)

@@ -60,6 +60,10 @@ class SourceViewPage(BasePage):
     def on_update_content(self, *args):
         self.executor.submit(self._update_language)
 
+    def on_modified_changed(self, *args):
+        is_modified = self.source_text_view.get_buffer().get_modified()
+        self.status_bar.set_unsaved(is_modified)
+
     def on_update_cursor_position(self, buffer: Gtk.TextBuffer, spec: ParamSpecInt):
         pos = buffer.get_property("cursor-position")
         iter = buffer.get_iter_at_offset(pos)
@@ -112,9 +116,11 @@ class SourceViewPage(BasePage):
     def _connect_signals(self):
         self.connect("shown", self.on_shown)
         self.source_text_view.get_buffer().connect("changed", self.on_update_content)
+        self.source_text_view.get_buffer().connect("modified-changed", self.on_modified_changed)
         self.source_text_view.get_buffer().connect("notify::cursor-position", self.on_update_cursor_position)
         self.adw_style_manager.connect("notify", self.update_theme)
         self.source_text_view.connect("notify::has-focus", self.on_source_text_view_focus_change)
+
 
     def _on_update_settings(self, settings: Settings):
         if settings.editor_word_warp:
