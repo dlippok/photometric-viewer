@@ -10,11 +10,15 @@ class StatusBar(Gtk.Box):
         super().__init__(
             orientation=Gtk.Orientation.HORIZONTAL,
             css_classes=["statusbar"],
+            margin_start=12,
+            margin_end=12,
+            margin_top=3,
+            margin_bottom=3,
         )
 
-        self.filename_label = Gtk.Label(margin_start=6,  margin_top=6, margin_bottom=6, ellipsize=EllipsizeMode.MIDDLE)
+        self.filename_label = Gtk.Label(ellipsize=EllipsizeMode.MIDDLE)
         self.unsaved_label = Gtk.Label(label="*", margin_end=6)
-        self.language_label = Gtk.Label(margin_start=6, margin_end=6, margin_top=6, margin_bottom=6)
+        self.language_label = Gtk.Label()
         self.cursor_position_label = Gtk.Label()
         self.goto_line_popover = GotoLinePopover(connected_view)
         self.goto_line_popover.connect("show", self.on_goto_line_popover_show)
@@ -27,15 +31,13 @@ class StatusBar(Gtk.Box):
         self.cursor_positon_button.set_child(self.cursor_position_label)
         self.cursor_positon_button.set_popover(self.goto_line_popover)
 
-        self.append(Gtk.Separator())
-        self.append(Gtk.Image(icon_name="text-x-generic-symbolic", margin_start=12))
+        self.append(Gtk.Image(icon_name="text-x-generic-symbolic", margin_end=6))
         self.append(self.filename_label)
         self.append(self.unsaved_label)
-
         self.append(Gtk.Box(hexpand=True))
-
         self.append(self.cursor_positon_button)
-        self.append(Gtk.Image(icon_name="text-editor-symbolic", margin_start=12))
+        self.append(Gtk.Separator(css_classes=["spacer"], margin_end=12))
+        self.append(Gtk.Image(icon_name="text-editor-symbolic", margin_end=6))
         self.append(self.language_label)
 
         self.set_source_language(None)
