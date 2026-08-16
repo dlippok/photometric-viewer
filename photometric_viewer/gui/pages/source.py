@@ -4,12 +4,14 @@ import typing
 from concurrent.futures import ThreadPoolExecutor
 
 from gi.repository import Adw, Gtk, GtkSource
+from gi.repository.GObject import ParamSpecInt
 from gi.repository.Gtk import ScrolledWindow, PolicyType, WrapMode
 from gi.repository.GtkSource import View
 
 from photometric_viewer.gui.widgets.headerbar import default_headerbar
 from photometric_viewer.model.settings import Settings
 from photometric_viewer.gui.pages.base import BasePage
+from photometric_viewer.gui.widgets.source.statusbar import StatusBar
 from photometric_viewer.utils.project import ASSETS_PATH
 from photometric_viewer.utils.gi.GSettings import SettingsManager
 
@@ -38,11 +40,16 @@ class SourceViewPage(BasePage):
         self.lang_manager: GtkSource.LanguageManager = GtkSource.LanguageManager.get_default()
         self.lang_manager.append_search_path(SPECS_DIR)
 
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.scrolled_window = ScrolledWindow()
         self.scrolled_window.set_child(self.source_text_view)
         self.scrolled_window.set_vexpand(True)
+        box.append(self.scrolled_window)
 
-        self.set_content(self.scrolled_window)
+        self.status_bar = StatusBar(self.source_text_view)
+        box.append(self.status_bar)
+
+        self.set_content(box)
 
         self.update_theme()
 
@@ -52,6 +59,17 @@ class SourceViewPage(BasePage):
 
     def on_update_content(self, *args):
         self.executor.submit(self._update_language)
+
+    def on_modified_changed(self, *args):
+        is_modified = self.source_text_view.get_buffer().get_modified()
+        self.status_bar.set_unsaved(is_modified)
+
+    def on_update_cursor_position(self, buffer: Gtk.TextBuffer, spec: ParamSpecInt):
+        pos = buffer.get_property("cursor-position")
+        iter = buffer.get_iter_at_offset(pos)
+        line = iter.get_line() + 1
+        column = iter.get_line_offset() + 1
+        self.status_bar.set_cursor_position(line, column)
 
     def on_shown(self, *args):
         self.source_text_view.grab_focus()
@@ -70,19 +88,21 @@ class SourceViewPage(BasePage):
 
     def _update_language(self):
         time.sleep(0.1)
-        while self.opening:
-            time.sleep(0.05)
-
         buffer: Gtk.TextBuffer = self.source_text_view.get_buffer()
         start = buffer.get_start_iter()
         end: Gtk.TextIter = buffer.get_start_iter()
         end.forward_line()
         text = buffer.get_text(start, end, True)
 
-        if text.lower().startswith("iesna"):
-            buffer.set_language(self.lang_manager.get_language("ies"))
+        if text.strip() == "":
+            lang = None
+        elif text.lower().startswith("iesna"):
+            lang = self.lang_manager.get_language("ies")
         else:
-            buffer.set_language(self.lang_manager.get_language("ldt"))
+            lang = self.lang_manager.get_language("ldt")
+
+        buffer.set_language(lang)
+        self.status_bar.set_source_language(lang)
 
     def update_theme(self, *args):
         style_manager = GtkSource.StyleSchemeManager.get_default()
@@ -96,8 +116,11 @@ class SourceViewPage(BasePage):
     def _connect_signals(self):
         self.connect("shown", self.on_shown)
         self.source_text_view.get_buffer().connect("changed", self.on_update_content)
+        self.source_text_view.get_buffer().connect("modified-changed", self.on_modified_changed)
+        self.source_text_view.get_buffer().connect("notify::cursor-position", self.on_update_cursor_position)
         self.adw_style_manager.connect("notify", self.update_theme)
         self.source_text_view.connect("notify::has-focus", self.on_source_text_view_focus_change)
+
 
     def _on_update_settings(self, settings: Settings):
         if settings.editor_word_warp:
