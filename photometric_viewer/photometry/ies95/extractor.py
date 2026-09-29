@@ -26,7 +26,7 @@ def extract_content(f: IO) -> IesContent:
 
 
 def _extract_header(f: IO) -> str | None:
-    line = first_non_empty_line(f)
+    line, _ = first_non_empty_line(f)
     if line is None:
         return None
     return line.strip()
@@ -34,13 +34,13 @@ def _extract_header(f: IO) -> str | None:
 
 def _extract_metadata(f: IO) -> List[MetadataTuple]:
     metadata = []
-    next_line = first_non_empty_line(f)
+    next_line, _ = first_non_empty_line(f)
     while next_line and next_line.startswith("["):
         metadata_line = next_line.split("]")
         metadata_key = metadata_line[0].strip("[").strip()
         metadata_value = metadata_line[1].strip()
         metadata.append(MetadataTuple(metadata_key, metadata_value))
-        next_line = first_non_empty_line(f)
+        next_line, _ = first_non_empty_line(f)
     return metadata
 
 
@@ -65,7 +65,7 @@ def _extract_lamp_attributes(f: IO) -> LampAttributes:
 
     return LampAttributes(
         ballast_factor=safe_float(lamp_attr[0]),
-        future_use=lamp_attr[1],
+        ballast_lamp_photometric_factor=safe_float(lamp_attr[1]),
         input_watts=safe_float(lamp_attr[2])
     )
 

@@ -1,6 +1,8 @@
 from dataclasses import dataclass, field
 from typing import List
 
+from photometric_viewer.photometry.validation import ValidationIssueBase
+
 
 @dataclass
 class InlineAttributes:
@@ -38,3 +40,4 @@ class IesContent:
     v_angles: List[float | None] = field(default_factory=list)
     h_angles: List[float | None] = field(default_factory=list)
     intensities: List[float] = field(default_factory=list)
+    validation_issues: List[ValidationIssueBase] = field(default_factory=list)

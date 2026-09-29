@@ -12,7 +12,7 @@ from photometric_viewer.utils.ioutil import first_non_empty_line
 
 
 def import_from_file(f: IO):
-    possible_ies_header = first_non_empty_line(f)
+    possible_ies_header, _ = first_non_empty_line(f)
     f.seek(0)
 
     match possible_ies_header:
@@ -25,6 +25,9 @@ def import_from_file(f: IO):
         case "IESNA91":
             content = ies91_extractor.extract_content(f)
             return ies91_converter.convert_content(content)
+        case _ if possible_ies_header is not None and possible_ies_header.startswith("IESNA"):
+            content = ies02_extractor.extract_content(f)
+            return ies02_converter.convert_content(content)
         case _:
             content = ldt_extractor.extract_content(f)
             return ldt_converter.convert_content(content)

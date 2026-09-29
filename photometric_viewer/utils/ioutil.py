@@ -1,15 +1,17 @@
-from typing import IO
+from typing import IO, Tuple
 
 
-def first_non_empty_line(f: IO) -> str | None:
+def first_non_empty_line(f: IO) -> Tuple[str | None, int]:
     line = f.readline()
+    line_number = 1
     while line != "":
         if line.strip() == "":
             line = f.readline()
+            line_number += 1
             continue
         else:
-            return str(line.strip())
-    return None
+            return str(line.strip()), line_number
+    return None, line_number
 
 
 def read_line(f: IO) -> str | None:
@@ -23,7 +25,7 @@ def get_n_values(f: IO, n: int):
     raw_values = []
     i = n
     while i > 0:
-        line = first_non_empty_line(f)
+        line, _ = first_non_empty_line(f)
         if line is None:
             values = [None] * i
         else:
@@ -39,12 +41,12 @@ def get_n_values(f: IO, n: int):
 
 def read_till_end(f: IO):
     raw_values = []
-    line = first_non_empty_line(f)
+    line, _ = first_non_empty_line(f)
     while line is not None:
         values = line.strip().split(" ")
         for value in values:
             if value == "":
                 continue
             raw_values.append(value)
-        line = first_non_empty_line(f)
+        line, _ = first_non_empty_line(f)
     return raw_values
