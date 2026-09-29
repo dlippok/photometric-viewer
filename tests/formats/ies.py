@@ -41,9 +41,6 @@ class TestIes(unittest.TestCase):
                 iesna_header = exported_value.split("\r\n")[0]
                 self.assertEqual(iesna_header, "IESNA:LM-63-2002")
 
-                photometry.metadata.file_source = ""
-                reimported_photometry.metadata.file_source = ""
-
                 # Ellipses and ellipsoids are not supported and exported as rectangles instead
                 if photometry.luminous_opening_geometry.shape in UNSUPPORTED_EXPORT_SHAPES:
                     photometry.luminous_opening_geometry.shape = LuminousOpeningShape.RECTANGULAR

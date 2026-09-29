@@ -37,8 +37,7 @@ class TestConvertContent(unittest.TestCase):
                 manufacturer=None,
                 date_and_user=None,
                 additional_properties={},
-                file_source="",
-                file_format=FileFormat.IES,
+                file_format=FileFormat.IES_LM63_2002,
                 file_units=LengthUnits.METERS
             ),
             photometry=LuminairePhotometricProperties(
@@ -167,8 +166,7 @@ class TestConvertContent(unittest.TestCase):
                     "TEST": "TD-1234",
                     "TESTLAB": "ACME Labs"
                 },
-                file_source="",
-                file_format=FileFormat.IES,
+                file_format=FileFormat.IES_LM63_2002,
                 file_units=LengthUnits.METERS
             ),
             photometry=LuminairePhotometricProperties(

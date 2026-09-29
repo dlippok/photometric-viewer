@@ -53,7 +53,6 @@ MINIMAL_LUMINAIRE = Luminaire(
         additional_properties={
             "ADDITIONAL": "PROPERTY"
         },
-        file_source="...",
         file_units=LengthUnits.METERS,
         luminaire_type=LuminaireType.LINEAR,
         measurement="MS123",

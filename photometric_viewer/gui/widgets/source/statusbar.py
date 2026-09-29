@@ -2,7 +2,7 @@ from gi.repository import Gtk
 from gi.repository.GtkSource import Language, View
 from gi.repository.Pango import EllipsizeMode
 
-from gui.widgets.source.goto_line_popover import GotoLinePopover
+from photometric_viewer.gui.widgets.source.goto_line_popover import GotoLinePopover
 
 
 class StatusBar(Gtk.Box):

@@ -14,7 +14,7 @@ class TestConvertContent(unittest.TestCase):
         expected = Luminaire(
             photometry=LuminairePhotometricProperties(),
             metadata=PhotometryMetadata(
-                file_format=FileFormat.LDT,
+                file_format=FileFormat.EULUMDAT,
                 file_units=LengthUnits.MILLIMETERS
             )
         )
@@ -41,7 +41,7 @@ class TestConvertContent(unittest.TestCase):
                 number_of_lamps=None
             )],
             metadata=PhotometryMetadata(
-                file_format=FileFormat.LDT,
+                file_format=FileFormat.EULUMDAT,
                 file_units=LengthUnits.MILLIMETERS
             )
         )
@@ -131,9 +131,8 @@ class TestConvertContent(unittest.TestCase):
                 manufacturer="Manufacturer",
                 date_and_user="2024-03-10 Test User",
                 measurement="MEAS1",
-                file_source=None,
                 filename="Lum1.ldt",
-                file_format=FileFormat.LDT,
+                file_format=FileFormat.EULUMDAT,
                 file_units=LengthUnits.MILLIMETERS,
                 luminaire_type=LuminaireType.POINT_SOURCE_WITH_VERTICAL_SYMMETRY,
                 symmetry=Symmetry.NONE,
@@ -217,7 +216,7 @@ class TestConvertContent(unittest.TestCase):
                 )
             ],
             metadata=PhotometryMetadata(
-                file_format=FileFormat.LDT,
+                file_format=FileFormat.EULUMDAT,
                 file_units=LengthUnits.MILLIMETERS,
                 symmetry=Symmetry.NONE
             ),
@@ -286,7 +285,7 @@ class TestConvertContent(unittest.TestCase):
                 )
             ],
             metadata=PhotometryMetadata(
-                file_format=FileFormat.LDT,
+                file_format=FileFormat.EULUMDAT,
                 file_units=LengthUnits.MILLIMETERS,
                 symmetry=Symmetry.TO_VERTICAL_AXIS
             ),
@@ -368,7 +367,7 @@ class TestConvertContent(unittest.TestCase):
                 )
             ],
             metadata=PhotometryMetadata(
-                file_format=FileFormat.LDT,
+                file_format=FileFormat.EULUMDAT,
                 file_units=LengthUnits.MILLIMETERS,
                 symmetry=Symmetry.TO_C0_C180
             ),
@@ -451,7 +450,7 @@ class TestConvertContent(unittest.TestCase):
                 )
             ],
             metadata=PhotometryMetadata(
-                file_format=FileFormat.LDT,
+                file_format=FileFormat.EULUMDAT,
                 file_units=LengthUnits.MILLIMETERS,
                 symmetry=Symmetry.TO_C90_C270
             ),
@@ -532,7 +531,7 @@ class TestConvertContent(unittest.TestCase):
                 )
             ],
             metadata=PhotometryMetadata(
-                file_format=FileFormat.LDT,
+                file_format=FileFormat.EULUMDAT,
                 file_units=LengthUnits.MILLIMETERS,
                 symmetry=Symmetry.TO_C0_C180_C90_C270
             ),
@@ -653,7 +652,7 @@ class TestConvertContent(unittest.TestCase):
                         )
                     ],
                     metadata=PhotometryMetadata(
-                        file_format=FileFormat.LDT,
+                        file_format=FileFormat.EULUMDAT,
                         file_units=LengthUnits.MILLIMETERS,
                         symmetry=case["symmetry"]
                     ),
@@ -707,7 +706,7 @@ class TestConvertContent(unittest.TestCase):
                 )
             ],
             metadata=PhotometryMetadata(
-                file_format=FileFormat.LDT,
+                file_format=FileFormat.EULUMDAT,
                 file_units=LengthUnits.MILLIMETERS,
             ),
             photometry=LuminairePhotometricProperties(
@@ -766,7 +765,7 @@ class TestConvertContent(unittest.TestCase):
                 )
             ],
             metadata=PhotometryMetadata(
-                file_format=FileFormat.LDT,
+                file_format=FileFormat.EULUMDAT,
                 file_units=LengthUnits.MILLIMETERS,
             ),
             photometry=LuminairePhotometricProperties(
@@ -914,8 +913,7 @@ class TestConvertContent(unittest.TestCase):
                         luminaire=None,
                         manufacturer=None,
                         date_and_user=None,
-                        file_source=None,
-                        file_format=FileFormat.LDT,
+                        file_format=FileFormat.EULUMDAT,
                         file_units=LengthUnits.MILLIMETERS
                     ),
                     photometry=LuminairePhotometricProperties(
@@ -988,8 +986,7 @@ class TestConvertContent(unittest.TestCase):
                         luminaire=None,
                         manufacturer=None,
                         date_and_user=None,
-                        file_source=None,
-                        file_format=FileFormat.LDT,
+                        file_format=FileFormat.EULUMDAT,
                         file_units=LengthUnits.MILLIMETERS
                     ),
                     photometry=LuminairePhotometricProperties(
@@ -1055,8 +1052,7 @@ class TestConvertContent(unittest.TestCase):
                 luminaire=None,
                 manufacturer=None,
                 date_and_user=None,
-                file_source=None,
-                file_format=FileFormat.LDT,
+                file_format=FileFormat.EULUMDAT,
                 file_units=LengthUnits.MILLIMETERS
             ),
             photometry=LuminairePhotometricProperties(
