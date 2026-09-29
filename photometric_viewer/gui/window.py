@@ -401,22 +401,21 @@ class MainWindow(Adw.ApplicationWindow):
         self.refresh_after = datetime.now() + timedelta(milliseconds=300)
 
     def load_textarea_changes_async(self):
-        try:
-            if not self.refresh_after or self.refresh_after > datetime.now():
-                return True
 
-            buffer = self.source_view_page.source_text_view.get_buffer()
-            start = buffer.get_start_iter()
-            end = buffer.get_end_iter()
+        if not self.refresh_after or self.refresh_after > datetime.now():
+            return True
 
-            content = buffer.get_text(start, end, True)
-            self.toggle_empty_page(content)
+        buffer = self.source_view_page.source_text_view.get_buffer()
+        start = buffer.get_start_iter()
+        end = buffer.get_end_iter()
 
-            self.open_stream(
-                io.StringIO(content)
-            )
-        except Exception as e:
-            print(f"Could not refresh article data: {e}")
+        content = buffer.get_text(start, end, True)
+        self.toggle_empty_page(content)
+
+        self.open_stream(
+            io.StringIO(content)
+        )
+
 
         self.refresh_after = None
         return True

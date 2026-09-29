@@ -1,5 +1,6 @@
 from typing import IO, List, Tuple, Any
 
+import photometric_viewer
 from photometric_viewer.photometry.ies02.model import MetadataTuple, InlineAttributes, LampAttributes, IesContent
 from photometric_viewer.utils.conversion import safe_int, safe_float
 from photometric_viewer.utils.ioutil import first_non_empty_line, get_n_values, read_till_end
@@ -84,7 +85,7 @@ def _extract_metadata(f: IO, curline: int) -> Tuple[List[MetadataTuple], int, Li
         metadata_line = next_line.split("]")
         metadata_key = metadata_line[0].strip("[")
         metadata_value = metadata_line[1].strip()
-        t = MetadataTuple(metadata_key, metadata_value)
+        t = photometric_viewer.photometry.ies02.model.MetadataTuple(metadata_key, metadata_value)
         tuple_issues = validate_metadata_tuple(t, curline, metadata)
         metadata.append(t)
         validation_issues.extend(tuple_issues)

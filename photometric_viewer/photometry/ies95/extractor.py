@@ -1,18 +1,24 @@
-from typing import IO, List
+from typing import IO, List, Tuple, Any
 
-from photometric_viewer.photometry.ies95.model import MetadataTuple, InlineAttributes, LampAttributes, IesContent
-from photometric_viewer.utils.conversion import safe_int, safe_float
+from photometric_viewer.photometry.ies95.model import MetadataTuple, InlineAttributes, LampAttributes, IesContent, \
+    Attribute
 from photometric_viewer.utils.ioutil import first_non_empty_line, get_n_values, read_till_end
 
-
 def extract_content(f: IO) -> IesContent:
-    header = _extract_header(f)
-    metadata = _extract_metadata(f)
-    inline_attributes = _extract_inline_attributes(f)
-    lamp_attributes = _extract_lamp_attributes(f)
-    v_angles = _extract_v_angles(f, inline_attributes)
-    h_angles = _extract_h_angles(f, inline_attributes)
-    intensities = _extract_intensities(f)
+    header, curline = first_non_empty_line(f)
+    metadata, curline = _extract_metadata(f, curline)
+    inline_attributes, curline = _extract_inline_attributes(f, curline)
+    lamp_attributes, curline = _extract_lamp_attributes(f, curline)
+
+    v_angles = _extract_v_angles(f, inline_attributes, curline)
+    if v_angles:
+        curline = v_angles[-1].line
+
+    h_angles = _extract_h_angles(f, inline_attributes, curline)
+    if h_angles:
+        curline = h_angles[-1].line
+
+    intensities = _extract_intensities(f, curline)
 
     return IesContent(
         header=header,
@@ -21,75 +27,85 @@ def extract_content(f: IO) -> IesContent:
         lamp_attributes=lamp_attributes,
         v_angles=v_angles,
         h_angles=h_angles,
-        intensities=intensities
+        intensities=intensities,
     )
 
 
-def _extract_header(f: IO) -> str | None:
-    line, _ = first_non_empty_line(f)
-    if line is None:
-        return None
-    return line.strip()
+def _extract_metadata(f: IO, curline: int) -> Tuple[List[MetadataTuple], int]:
+    metadata: List[MetadataTuple] = []
 
-
-def _extract_metadata(f: IO) -> List[MetadataTuple]:
-    metadata = []
-    next_line, _ = first_non_empty_line(f)
+    next_line, n = first_non_empty_line(f)
+    curline += n
     while next_line and next_line.startswith("["):
         metadata_line = next_line.split("]")
-        metadata_key = metadata_line[0].strip("[").strip()
+        metadata_key = metadata_line[0].strip("[")
         metadata_value = metadata_line[1].strip()
-        metadata.append(MetadataTuple(metadata_key, metadata_value))
-        next_line, _ = first_non_empty_line(f)
-    return metadata
+        t = MetadataTuple(metadata_key, metadata_value, curline)
+        metadata.append(t)
+        next_line, n = first_non_empty_line(f)
+        curline += n
 
+    return metadata, curline
 
-def _extract_inline_attributes(f: IO) -> InlineAttributes:
-    raw_attributes = get_n_values(f, 10)
-    return InlineAttributes(
-        number_of_lamps=safe_int(raw_attributes[0]),
-        lumens_per_lamp=safe_float(raw_attributes[1]),
-        multiplying_factor=safe_float(raw_attributes[2]),
-        n_v_angles=safe_int(raw_attributes[3]),
-        n_h_angles=safe_int(raw_attributes[4]),
-        photometry_type=safe_int(raw_attributes[5]),
-        luminous_opening_units=safe_int(raw_attributes[6]),
-        luminous_opening_width=safe_float(raw_attributes[7]),
-        luminous_opening_length=safe_float(raw_attributes[8]),
-        luminous_opening_height=safe_float(raw_attributes[9])
+def _extract_inline_attributes(f: IO, curline: int) -> tuple[InlineAttributes, int]:
+    raw_values = get_n_values(f, 10)
+    values = [Attribute(v[0], curline + v[1]) for v in raw_values]
+
+    attributes = InlineAttributes(
+        number_of_lamps=values[0],
+        lumens_per_lamp=values[1],
+        multiplying_factor=values[2],
+        n_v_angles=values[3],
+        n_h_angles=values[4],
+        photometry_type=values[5],
+        luminous_opening_units=values[6],
+        luminous_opening_width=values[7],
+        luminous_opening_length=values[8],
+        luminous_opening_height=values[9]
     )
 
+    return attributes, values[-1].line
 
-def _extract_lamp_attributes(f: IO) -> LampAttributes:
-    lamp_attr = get_n_values(f, 3)
+def _extract_lamp_attributes(f: IO, curline: int) -> Tuple[LampAttributes, int]:
+    raw_values = get_n_values(f, 3)
+    values = [Attribute(v[0], curline + v[1]) for v in raw_values]
 
-    return LampAttributes(
-        ballast_factor=safe_float(lamp_attr[0]),
-        ballast_lamp_photometric_factor=safe_float(lamp_attr[1]),
-        input_watts=safe_float(lamp_attr[2])
+    attributes = LampAttributes(
+        ballast_factor=values[0],
+        ballast_lamp_photometric_factor=values[1],
+        input_watts=values[2]
     )
+    return attributes, values[-1].line
 
 
-def _extract_v_angles(f: IO, attributes: InlineAttributes) -> List[float]:
-    n_angles = attributes.n_v_angles or 0
-    return [
-        safe_float(angle)
-        for angle in get_n_values(f, n_angles)
-        if angle is not None
-    ]
+def _extract_v_angles(f: IO, attributes: InlineAttributes, curline: int) -> List[Attribute]:
+    n_angles = attributes.n_v_angles
+    if n_angles is None or n_angles.value is None:
+        return []
+
+    try:
+        n_angles = int(n_angles.value)
+        raw_angles = get_n_values(f, n_angles)
+        return [Attribute(v[0], curline + v[1]) for v in raw_angles]
+
+    except ValueError:
+        return []
 
 
-def _extract_h_angles(f: IO, attributes: InlineAttributes) -> List[float]:
-    n_angles = attributes.n_h_angles or 0
-    return [
-        safe_float(angle)
-        for angle in get_n_values(f, n_angles)
-        if angle is not None
-    ]
+def _extract_h_angles(f: IO, attributes: InlineAttributes, curline: int) -> List[Attribute]:
+    n_angles = attributes.n_h_angles
+    if n_angles is None or n_angles.value is None:
+        return []
+
+    try:
+        n_angles = int(n_angles.value)
+        raw_angles = get_n_values(f, n_angles)
+        return [Attribute(v[0], curline + v[1]) for v in raw_angles]
+
+    except ValueError:
+        return []
 
 
-def _extract_intensities(f: IO) -> List[float]:
-    return [
-        safe_float(v)
-        for v in read_till_end(f)
-    ]
+def _extract_intensities(f: IO, curline: int) -> List[Attribute]:
+    raw_values = read_till_end(f)
+    return [Attribute(v[0], curline + v[1]) for v in raw_values]
