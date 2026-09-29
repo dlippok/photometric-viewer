@@ -1,6 +1,5 @@
 from typing import Any
 
-
 def safe_int(value: Any | None) -> int | None:
     try:
         return int(value)

@@ -1,10 +1,11 @@
-from typing import IO, List, Tuple
+from typing import IO, List, Tuple, Any
 
 from photometric_viewer.photometry.ies02.model import MetadataTuple, InlineAttributes, LampAttributes, IesContent
 from photometric_viewer.utils.conversion import safe_int, safe_float
 from photometric_viewer.utils.ioutil import first_non_empty_line, get_n_values, read_till_end
 from photometric_viewer.photometry.ies02.validation import *
-from photometric_viewer.photometry.validation import ValidationIssueBase
+from photometric_viewer.photometry.validation import ValidationIssueBase, AttributeInvalidValue, \
+    NumericAttributeOutOfRange, AttributeMissingValue
 
 STANDARD_METADATA_KEYS = [
     "TEST",
@@ -38,8 +39,12 @@ def extract_content(f: IO) -> IesContent:
     metadata, curline, issues = _extract_metadata(f, curline)
     all_issues.extend(issues)
 
-    inline_attributes = _extract_inline_attributes(f)
-    lamp_attributes = _extract_lamp_attributes(f)
+    inline_attributes, curline, issues = _extract_inline_attributes(f, curline)
+    all_issues.extend(issues)
+
+    lamp_attributes, curline, issues = _extract_lamp_attributes(f, curline)
+    all_issues.extend(issues)
+
     v_angles = _extract_v_angles(f, inline_attributes)
     h_angles = _extract_h_angles(f, inline_attributes)
     intensities = _extract_intensities(f)
@@ -175,52 +180,144 @@ def validate_metadata_keys(metadata: List[MetadataTuple]) -> List[ValidationIssu
 
     return issues
 
-def _extract_inline_attributes(f: IO) -> InlineAttributes:
+def _extract_inline_attributes(f: IO, curline: int) -> tuple[InlineAttributes, int, list[ValidationIssueBase]]:
     raw_attributes = get_n_values(f, 10)
-    return InlineAttributes(
-        number_of_lamps=safe_int(raw_attributes[0]),
-        lumens_per_lamp=safe_float(raw_attributes[1]),
-        multiplying_factor=safe_float(raw_attributes[2]),
-        n_v_angles=safe_int(raw_attributes[3]),
-        n_h_angles=safe_int(raw_attributes[4]),
-        photometry_type=safe_int(raw_attributes[5]),
-        luminous_opening_units=safe_int(raw_attributes[6]),
-        luminous_opening_width=safe_float(raw_attributes[7]),
-        luminous_opening_length=safe_float(raw_attributes[8]),
-        luminous_opening_height=safe_float(raw_attributes[9])
+    raw_attributes.reverse()
+
+    issues: List[ValidationIssueBase] = []
+    startline = curline
+
+    number_of_lamps, curline, parse_issues = _next_attribute("number_of_lamps", raw_attributes, int, startline, min_value=1)
+    issues.extend(parse_issues)
+
+    lumens_per_lamp, curline, parse_issues = _next_attribute("lumens_per_lamp", raw_attributes, float, startline)
+    issues.extend(parse_issues)
+
+    if lumens_per_lamp is not None and lumens_per_lamp < 1 and lumens_per_lamp != -1:
+        issues.append(NumericAttributeOutOfRange("lumens_per_lamp", lumens_per_lamp, curline, min_value=1))
+
+    multiplying_factor, curline, parse_issues = _next_attribute("multiplying_factor", raw_attributes, float, startline, min_value=0.0001)
+    issues.extend(parse_issues)
+
+    n_v_angles, curline, parse_issues = _next_attribute("n_v_angles", raw_attributes, int, startline, min_value=1)
+    issues.extend(parse_issues)
+
+    n_h_angles, curline, parse_issues = _next_attribute("n_h_angles", raw_attributes, int, startline, min_value=1)
+    issues.extend(parse_issues)
+
+    photometry_type, curline, parse_issues = _next_attribute("photometry_type", raw_attributes, int, startline, allowed_values=[1, 2, 3])
+    issues.extend(parse_issues)
+
+    luminous_opening_units, curline, parse_issues = _next_attribute("luminous_opening_units", raw_attributes, int, startline, allowed_values=[1, 2])
+    issues.extend(parse_issues)
+
+    luminous_opening_width, curline, parse_issues = _next_attribute("luminous_opening_width", raw_attributes, float, startline)
+    issues.extend(parse_issues)
+
+    luminous_opening_length, curline, parse_issues = _next_attribute("luminous_opening_length", raw_attributes, float, startline)
+    issues.extend(parse_issues)
+
+    luminous_opening_height, curline, parse_issues = _next_attribute("luminous_opening_height", raw_attributes, float, startline)
+    issues.extend(parse_issues)
+
+    attributes = InlineAttributes(
+        number_of_lamps=number_of_lamps,
+        lumens_per_lamp=lumens_per_lamp,
+        multiplying_factor=multiplying_factor,
+        n_v_angles=n_v_angles,
+        n_h_angles=n_h_angles,
+        photometry_type=photometry_type,
+        luminous_opening_units=luminous_opening_units,
+        luminous_opening_width=luminous_opening_width,
+        luminous_opening_length=luminous_opening_length,
+        luminous_opening_height=luminous_opening_height
     )
 
+    return attributes, curline, issues
 
-def _extract_lamp_attributes(f: IO) -> LampAttributes:
-    lamp_attr = get_n_values(f, 3)
 
-    return LampAttributes(
-        ballast_factor=safe_float(lamp_attr[0]),
-        future_use=lamp_attr[1],
-        input_watts=safe_float(lamp_attr[2])
+def _extract_lamp_attributes(f: IO, curline: int) -> Tuple[LampAttributes, int, list[ValidationIssueBase]]:
+    raw_attributes = get_n_values(f, 3)
+    raw_attributes.reverse()
+    issues: List[ValidationIssueBase] = []
+
+    startline = curline
+
+    ballast_factor, curline, parse_issues = _next_attribute("ballast_factor", raw_attributes, float, startline, min_value=0.0001)
+    issues.extend(parse_issues)
+
+    future_use, curline, parse_issues = _next_attribute("future_use", raw_attributes, float, startline)
+    issues.extend(parse_issues)
+    if future_use != 1.0:
+        issues.append(AttributeInvalidValue("future_use", future_use, curline, severity=Severity.WARNING))
+
+    input_watts, curline, parse_issues = _next_attribute("input_watts", raw_attributes, float, startline, min_value=0.0001)
+    issues.extend(parse_issues)
+
+    attributes = LampAttributes(
+        ballast_factor=ballast_factor,
+        future_use="1",
+        input_watts=input_watts
     )
+    return attributes, curline, issues
 
 
 def _extract_v_angles(f: IO, attributes: InlineAttributes) -> List[float]:
     n_angles = attributes.n_v_angles or 0
+    raw_angles = get_n_values(f, n_angles)
+
     return [
-        safe_float(angle)
-        for angle in get_n_values(f, n_angles)
-        if angle is not None
+        safe_float(angle[0])
+        for angle in raw_angles
+        if angle[0] is not None
     ]
 
 
 def _extract_h_angles(f: IO, attributes: InlineAttributes) -> List[float]:
     n_angles = attributes.n_h_angles or 0
     return [
-        safe_float(angle)
+        safe_float(angle[0])
         for angle in get_n_values(f, n_angles)
-        if angle is not None
+        if angle[0] is not None
     ]
 
 
 def _extract_intensities(f: IO) -> List[float]:
     return [
-        safe_float(v)
+        safe_float(v[0])
         for v in read_till_end(f)
     ]
+
+def _next_attribute(
+        name: str,
+        values: List[Tuple[str, int]],
+        parse_func,
+        start_line_number: int,
+        min_value: float | int | None = None,
+        max_value: float | int | None = None,
+        allowed_values: List[Any] | None = None,
+        default_value: Any | None = None
+) -> Tuple[Any | None, int, List[ValidationIssueBase]]:
+    issues: List[ValidationIssueBase] = []
+
+    try:
+        value = values.pop()
+    except IndexError:
+        return default_value, start_line_number, [AttributeMissingValue(name, start_line_number)]
+
+    line_number = start_line_number + value[1]
+    try:
+        parsed_value = parse_func(value[0]) if value[0] is not None else None
+        if parsed_value is None:
+            return default_value, line_number, [AttributeMissingValue(name, line_number)]
+        else:
+            if min_value is not None and parsed_value < min_value:
+                issues.append(NumericAttributeOutOfRange(name, parsed_value, line_number, min_value, max_value))
+            if max_value is not None and parsed_value > max_value:
+                issues.append(NumericAttributeOutOfRange(name, parsed_value, line_number, min_value, max_value))
+            if allowed_values is not None and parsed_value not in allowed_values:
+                issues.append(AttributeInvalidValue(name, parsed_value, line_number))
+            return parsed_value, line_number, issues
+    except (ValueError, TypeError):
+        return default_value, line_number, [AttributeInvalidValue(name, value, line_number)]
+

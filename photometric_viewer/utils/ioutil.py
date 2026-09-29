@@ -1,4 +1,4 @@
-from typing import IO, Tuple
+from typing import IO, Tuple, List
 
 
 def first_non_empty_line(f: IO) -> Tuple[str | None, int]:
@@ -21,11 +21,13 @@ def read_line(f: IO) -> str | None:
     return line.strip()
 
 
-def get_n_values(f: IO, n: int):
+def get_n_values(f: IO, n: int) -> List[Tuple[str, int]]:
     raw_values = []
     i = n
+    line_number = 0
     while i > 0:
-        line, _ = first_non_empty_line(f)
+        line, read_lines = first_non_empty_line(f)
+        line_number += read_lines
         if line is None:
             values = [None] * i
         else:
@@ -34,19 +36,20 @@ def get_n_values(f: IO, n: int):
         for value in values:
             if value == "":
                 continue
-            raw_values.append(value)
+            raw_values.append((value, line_number))
             i -= 1
     return raw_values[:n]
 
 
-def read_till_end(f: IO):
+def read_till_end(f: IO) -> List[Tuple[str, int]]:
     raw_values = []
-    line, _ = first_non_empty_line(f)
+    line, line_number = first_non_empty_line(f)
     while line is not None:
         values = line.strip().split(" ")
         for value in values:
             if value == "":
                 continue
-            raw_values.append(value)
-        line, _ = first_non_empty_line(f)
+            raw_values.append((value, line_number))
+        line, read_lines = first_non_empty_line(f)
+        line_number += read_lines
     return raw_values
