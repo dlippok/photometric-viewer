@@ -4,10 +4,10 @@ from pathlib import Path
 
 from photometric_viewer.formats import ldt, ies
 from photometric_viewer.model.luminaire import LuminousOpeningShape
-from photometric_viewer.photometry.ies95.extractor import extract_content as extract_content_ies95
+from photometry.iesna_common.extractor import extract_content as extract_content_ies95
 from photometric_viewer.photometry.ies95.converter import convert_content as convert_content_ies95
 from photometric_viewer.photometry.ies02.extractor import extract_content as extract_content_ies02
-from photometric_viewer.photometry.ies02.converter import convert_content as convert_content_ies02
+from photometric_viewer.photometry.ies02.converter_backup import convert_content as convert_content_ies02
 from photometric_viewer.photometry.ldt.converter import convert_content as convert_content_ldt
 from photometric_viewer.photometry.ldt.extractor import extract_content as extract_content_ldt
 

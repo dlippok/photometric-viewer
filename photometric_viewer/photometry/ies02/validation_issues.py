@@ -1,4 +1,4 @@
-from photometric_viewer.photometry.ies95.model import MetadataTuple
+from photometry.iesna_common.model import MetadataTuple
 from photometric_viewer.photometry.validation import ValidationIssueBase, Severity
 
 
@@ -10,7 +10,7 @@ class Ies02HeaderNotFound(ValidationIssueBase):
         return "IESNA:LM-63-2002 header not found"
 
 class Ies02HeaderInvalid(ValidationIssueBase):
-    def __init__(self, header: str, line_number: int | None):
+    def __init__(self, header: str | None, line_number: int | None):
         super().__init__(line_number, Severity.ERROR)
         self.header = header
 

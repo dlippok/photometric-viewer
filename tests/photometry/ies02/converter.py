@@ -3,7 +3,7 @@ import unittest
 from photometric_viewer.model.luminaire import Luminaire, Calculable, FileFormat, PhotometryMetadata, \
     LuminairePhotometricProperties, Lamps, LuminousOpeningGeometry, LuminousOpeningShape
 from photometric_viewer.model.units import LengthUnits
-from photometric_viewer.photometry.ies02.converter import convert_content
+from photometric_viewer.photometry.ies02.converter_backup import convert_content
 from photometric_viewer.photometry.ies02.model import IesContent, InlineAttributes, LampAttributes, MetadataTuple
 
 

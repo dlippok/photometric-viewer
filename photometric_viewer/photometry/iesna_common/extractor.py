@@ -1,6 +1,6 @@
-from typing import IO, List, Tuple, Any
+from typing import IO, List, Tuple
 
-from photometric_viewer.photometry.ies95.model import MetadataTuple, InlineAttributes, LampAttributes, IesContent, \
+from photometry.iesna_common.model import MetadataTuple, InlineAttributes, LampAttributes, IesContent, \
     Attribute
 from photometric_viewer.utils.ioutil import first_non_empty_line, get_n_values, read_till_end
 

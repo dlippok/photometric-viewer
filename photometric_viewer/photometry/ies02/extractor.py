@@ -4,7 +4,7 @@ import photometric_viewer
 from photometric_viewer.photometry.ies02.model import MetadataTuple, InlineAttributes, LampAttributes, IesContent
 from photometric_viewer.utils.conversion import safe_int, safe_float
 from photometric_viewer.utils.ioutil import first_non_empty_line, get_n_values, read_till_end
-from photometric_viewer.photometry.ies02.validation import *
+from photometric_viewer.photometry.ies02.validation_issues import *
 from photometric_viewer.photometry.validation import ValidationIssueBase, AttributeInvalidValue, \
     NumericAttributeOutOfRange, AttributeMissingValue
 

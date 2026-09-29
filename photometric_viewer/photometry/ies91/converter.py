@@ -4,7 +4,7 @@ from photometric_viewer.model.luminaire import LuminousOpeningGeometry
 from photometric_viewer.model.luminaire import Luminaire, PhotometryMetadata, FileFormat, Lamps, \
     LuminairePhotometricProperties, Calculable, LuminousOpeningShape
 from photometric_viewer.model.units import LengthUnits
-from photometric_viewer.photometry.ies95.model import IesContent
+from photometry.iesna_common.model import IesContent
 from photometric_viewer.utils.conversion import safe_float
 
 

@@ -49,7 +49,7 @@ def extract_content(f: IO) -> LdtContent:
     gamma_angles = [safe_float(f.readline().strip()) for _ in range(number_of_intensities)] if number_of_intensities else []
 
     intensities = [
-        safe_float(v)
+        safe_float(v[0])
         for v in read_till_end(f)
     ]
 
