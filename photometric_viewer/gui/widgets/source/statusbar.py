@@ -3,6 +3,7 @@ from gi.repository.GtkSource import Language, View
 from gi.repository.Pango import EllipsizeMode
 
 from photometric_viewer.gui.widgets.source.goto_line_popover import GotoLinePopover
+from photometric_viewer.model.luminaire import FileFormat
 
 
 class StatusBar(Gtk.Box):
@@ -55,11 +56,18 @@ class StatusBar(Gtk.Box):
         self.goto_line_popover.goto_line_entry.set_text(self.cursor_position_label.get_text())
         self.goto_line_popover.goto_line_entry.select_region(0, -1)
 
-    def set_source_language(self, lang: Language | None):
-        if lang:
-            self.language_label.set_label(lang.get_name())
-        else:
-            self.language_label.set_label(_("Unknown"))
+    def set_source_language(self, file_format: FileFormat | None):
+        match file_format:
+            case FileFormat.IES_LM63_1995:
+                self.language_label.set_label("ANSI/IESNA LM-63-1995")
+            case FileFormat.IES_LM63_2002:
+                self.language_label.set_label("ANSI/IESNA LM-63-2002")
+            case FileFormat.IES_LM63_1991:
+                self.language_label.set_label("ANSI/IESNA LM-63-1991")
+            case FileFormat.EULUMDAT:
+                self.language_label.set_label("EULUMDAT")
+            case _:
+                self.language_label.set_label(_("Unknown"))
 
     def set_cursor_position(self, line: int, column: int):
         self.goto_line_popover.set_cursor_position(line, column)

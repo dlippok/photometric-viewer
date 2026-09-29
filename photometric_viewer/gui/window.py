@@ -156,6 +156,8 @@ class MainWindow(Adw.ApplicationWindow):
         self.photometry_export_page.set_photometry(luminaire)
         self.number_of_luminaires_calculation_page.set_photometry(luminaire)
 
+        self.source_view_page.status_bar.set_source_language(luminaire.metadata.file_format)
+
         self.opened_photometry = luminaire
 
     def on_new(self, *args):

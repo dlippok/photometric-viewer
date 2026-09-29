@@ -102,7 +102,6 @@ class SourceViewPage(BasePage):
             lang = self.lang_manager.get_language("ldt")
 
         buffer.set_language(lang)
-        self.status_bar.set_source_language(lang)
 
     def update_theme(self, *args):
         style_manager = GtkSource.StyleSchemeManager.get_default()
