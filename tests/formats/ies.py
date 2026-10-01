@@ -3,11 +3,10 @@ import unittest
 from pathlib import Path
 
 from photometric_viewer.formats import ldt, ies
-from photometric_viewer.model.luminaire import LuminousOpeningShape
-from photometry.iesna_common.extractor import extract_content as extract_content_ies95
+from photometric_viewer.model.luminaire import LuminousOpeningShape, FileFormat
+from photometric_viewer.photometry.ies02.converter import convert_content as convert_content_ies02
 from photometric_viewer.photometry.ies95.converter import convert_content as convert_content_ies95
-from photometric_viewer.photometry.ies02.extractor import extract_content as extract_content_ies02
-from photometric_viewer.photometry.ies02.converter_backup import convert_content as convert_content_ies02
+from photometric_viewer.photometry.iesna_common.extractor import extract_content as extract_content_ies
 from photometric_viewer.photometry.ldt.converter import convert_content as convert_content_ldt
 from photometric_viewer.photometry.ldt.extractor import extract_content as extract_content_ldt
 
@@ -27,7 +26,7 @@ class TestIes(unittest.TestCase):
         for path in self.FILES_PATH.iterdir():
             with(self.subTest(path=path)):
                 with path.open() as f:
-                    content = extract_content_ies95(f)
+                    content = extract_content_ies(f)
                     photometry = convert_content_ies95(content)
 
                 with io.StringIO() as f:
@@ -35,7 +34,7 @@ class TestIes(unittest.TestCase):
                     exported_value = f.getvalue()
 
                 with io.StringIO(exported_value) as f:
-                    content = extract_content_ies02(f)
+                    content = extract_content_ies(f)
                     reimported_photometry = convert_content_ies02(content)
 
                 iesna_header = exported_value.split("\r\n")[0]
@@ -44,6 +43,7 @@ class TestIes(unittest.TestCase):
                 # Ellipses and ellipsoids are not supported and exported as rectangles instead
                 if photometry.luminous_opening_geometry.shape in UNSUPPORTED_EXPORT_SHAPES:
                     photometry.luminous_opening_geometry.shape = LuminousOpeningShape.RECTANGULAR
+                photometry.metadata.file_format = FileFormat.IES_LM63_2002
 
                 self.assertEqual(photometry, reimported_photometry)
 
@@ -52,7 +52,7 @@ class TestIes(unittest.TestCase):
         for path in self.FILES_PATH.iterdir():
             with(self.subTest(path=path)):
                 with path.open() as f:
-                    content = extract_content_ies95(f)
+                    content = extract_content_ies(f)
                     luminaire = convert_content_ies95(content)
 
                 with io.StringIO() as f:

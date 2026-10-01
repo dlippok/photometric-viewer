@@ -4,7 +4,7 @@ from photometric_viewer.model.luminaire import LuminousOpeningGeometry
 from photometric_viewer.model.luminaire import Luminaire, PhotometryMetadata, FileFormat, Lamps, \
     LuminairePhotometricProperties, Calculable, LuminousOpeningShape
 from photometric_viewer.model.units import LengthUnits
-from photometry.iesna_common.model import IesContent
+from photometric_viewer.photometry.iesna_common.model import IesContent
 from photometric_viewer.utils.conversion import safe_float, safe_int
 
 
@@ -77,10 +77,10 @@ def _convert_candela_values(content: IesContent) -> Dict[Tuple[float, float], fl
     la = content.lamp_attributes
     intensities = content.intensities
 
-    lumens_per_lamp = safe_int(ia.lumens_per_lamp and ia.lumens_per_lamp.value) or 0
-    number_of_lamps = safe_int(ia.number_of_lamps and ia.number_of_lamps.value) or 0
-    multiplying_factor = safe_float(ia.multiplying_factor and ia.multiplying_factor) or 1
-    ballast_factor = safe_float(la.ballast_factor and la.ballast_factor.value) or 1
+    lumens_per_lamp = safe_float(ia.lumens_per_lamp.value) or 0
+    number_of_lamps = safe_int(ia.number_of_lamps.value) or 0
+    multiplying_factor = safe_float(ia.multiplying_factor.value) or 1
+    ballast_factor = safe_float(la.ballast_factor.value) or 1
 
     lumens = lumens_per_lamp * number_of_lamps
     relative_photometry_divider = lumens / 1000 if lumens_per_lamp >= 0 else 1
@@ -101,7 +101,7 @@ def _convert_candela_values(content: IesContent) -> Dict[Tuple[float, float], fl
 
 
 def _convert_file_units(content: IesContent) -> LengthUnits:
-    return LengthUnits.FEET if content.inline_attributes.luminous_opening_units == "1" else LengthUnits.METERS
+    return LengthUnits.FEET if content.inline_attributes.luminous_opening_units.value == "1" else LengthUnits.METERS
 
 
 def _convert_luminous_opening_geometry(content: IesContent) -> LuminousOpeningGeometry | None:
@@ -158,11 +158,11 @@ def _create_luminous_opening(w: float, l: float, h: float) -> LuminousOpeningGeo
 
 
 def _get_is_absolute(content: IesContent) -> bool:
-    if content.inline_attributes.lumens_per_lamp is None:
+    if content.inline_attributes.lumens_per_lamp.value is None:
         return False
 
     ia = content.inline_attributes
-    lumens_per_lamp = safe_int(ia.lumens_per_lamp and ia.lumens_per_lamp.value) or 0
+    lumens_per_lamp = safe_float(ia.lumens_per_lamp.value) or 0
 
     if lumens_per_lamp >= 0:
         return False

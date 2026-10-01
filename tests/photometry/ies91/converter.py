@@ -3,17 +3,18 @@ import unittest
 from photometric_viewer.model.luminaire import Luminaire, Calculable, FileFormat, PhotometryMetadata, \
     LuminairePhotometricProperties, Lamps, LuminousOpeningGeometry, LuminousOpeningShape
 from photometric_viewer.model.units import LengthUnits
-from photometric_viewer.photometry.ies02.converter import convert_content
-from photometric_viewer.photometry.iesna_common.model import IesContent, InlineAttributes, LampAttributes, MetadataTuple
-from photometric_viewer.photometry.iesna_common.model import Attribute
+from photometric_viewer.photometry.ies91.converter import convert_content
+from photometric_viewer.photometry.iesna_common.model import IesContent, InlineAttributes, LampAttributes, \
+    MetadataTuple, Attribute
+
 
 def default_content() -> IesContent:
     return IesContent(
-        header="IESNA:LM-63-2002",
+        header="IESNA:LM-63-1995",
         metadata=[
             MetadataTuple(key='TEST', value='TD-1234', line=1),
             MetadataTuple(key='TESTLAB', value='ACME Labs', line=1),
-            MetadataTuple(key='ISSUEDATE', value='2023-01-20', line=1),
+            MetadataTuple(key='DATE', value='2023-01-20', line=1),
             MetadataTuple(key='MANUFAC', value='ACME Inc.', line=1),
             MetadataTuple(key='LUMCAT', value='LUM-1234', line=1),
             MetadataTuple(key='LUMINAIRE', value='Test Luminaire', line=1),
@@ -167,7 +168,6 @@ def default_content() -> IesContent:
 class TestConvertContent(unittest.TestCase):
     def test_complete_content(self):
         content = default_content()
-
         expected = Luminaire(
             gamma_angles=[
                 0.0, 2.5, 5.0, 7.5, 10.0, 12.5, 15.0, 17.5, 20.0, 22.5, 25.0, 27.5, 30.0,
@@ -227,7 +227,7 @@ class TestConvertContent(unittest.TestCase):
                     "TEST": "TD-1234",
                     "TESTLAB": "ACME Labs"
                 },
-                file_format=FileFormat.IES_LM63_2002,
+                file_format=FileFormat.IES_LM63_1995,
                 file_units=LengthUnits.METERS
             ),
             photometry=LuminairePhotometricProperties(
@@ -297,7 +297,7 @@ class TestConvertContent(unittest.TestCase):
     def test_luminous_opening_calculation(self):
         test_cases = [
             {
-                "title": "Point",
+                "title": "Point source",
                 "given": (0, 0, 0, 1),
                 "expected": LuminousOpeningGeometry(
                     width=0,
@@ -307,28 +307,7 @@ class TestConvertContent(unittest.TestCase):
                 )
             },
             {
-                "title": "Rectangular (feet)",
-                "given": (0.1, 0.2, 0, 1),
-                "expected": LuminousOpeningGeometry(
-                    width=0.1 * 0.3048,
-                    length=0.2 * 0.3048,
-                    height=0,
-                    shape=LuminousOpeningShape.RECTANGULAR
-                ),
-            },
-            {
-                "title": "Rectangular (meters)",
-                "given": (0.1, 0.2, 0, 2),
-                "expected": LuminousOpeningGeometry(
-                    width=0.1,
-                    length=0.2,
-                    height=0,
-                    shape=LuminousOpeningShape.RECTANGULAR
-                ),
-            },
-            {
-
-                "title": "Rectangular with Luminous Sides (feet)",
+                "title": "Rectangular opening in feet",
                 "given": (0.1, 0.2, 0.3, 1),
                 "expected": LuminousOpeningGeometry(
                     width=0.1 * 0.3048,
@@ -338,7 +317,7 @@ class TestConvertContent(unittest.TestCase):
                 ),
             },
             {
-                "title": "Rectangular with Luminous Sides (meters)",
+                "title": "Rectangular opening in meters",
                 "given": (0.1, 0.2, 0.3, 2),
                 "expected": LuminousOpeningGeometry(
                     width=0.1,
@@ -348,67 +327,67 @@ class TestConvertContent(unittest.TestCase):
                 ),
             },
             {
-                "title": "Circular (feet)",
-                "given": (-0.1, -0.1, 0, 1),
-                "expected": LuminousOpeningGeometry(
-                    width=0.1 * 0.3048,
-                    length=0.1 * 0.3048,
-                    height=0,
-                    shape=LuminousOpeningShape.ROUND
-                ),
-            },
-            {
-                "title": "Circular (meters)",
-                "given": (-0.1, -0.1, 0, 2),
-                "expected": LuminousOpeningGeometry(
-                    width=0.1,
-                    length=0.1,
-                    height=0,
-                    shape=LuminousOpeningShape.ROUND
-                ),
-            },
-            {
-                "title": "Ellipse (feet)",
-                "given": (-0.1, -0.2, 0, 1),
+                "title": "Rectangular opening in feet without height",
+                "given": (0.1, 0.2, 0, 1),
                 "expected": LuminousOpeningGeometry(
                     width=0.1 * 0.3048,
                     length=0.2 * 0.3048,
                     height=0,
-                    shape=LuminousOpeningShape.ROUND
+                    shape=LuminousOpeningShape.RECTANGULAR
                 ),
             },
             {
-                "title": "Ellipse (meters)",
-                "given": (-0.1, -0.2, 0, 2),
+                "title": "Rectangular opening in meters without height",
+                "given": (0.1, 0.2, 0, 2),
                 "expected": LuminousOpeningGeometry(
                     width=0.1,
                     length=0.2,
                     height=0,
-                    shape=LuminousOpeningShape.ROUND
+                    shape=LuminousOpeningShape.RECTANGULAR
                 ),
             },
             {
-                "title": "Vertical Cylinder (feet)",
-                "given": (-0.1, -0.1, 0.3, 1),
+                "title": "Rectangular opening in feet without width",
+                "given": (0, 0.2, 0.3, 1),
+                "expected": LuminousOpeningGeometry(
+                    width=0.2 * 0.3048,
+                    length=0.2 * 0.3048,
+                    height=0.3 * 0.3048,
+                    shape=LuminousOpeningShape.RECTANGULAR
+                ),
+            },
+            {
+                "title": "Rectangular opening in meters without width",
+                "given": (0, 0.2, 0.3, 2),
+                "expected": LuminousOpeningGeometry(
+                    width=0.2,
+                    length=0.2,
+                    height=0.3,
+                    shape=LuminousOpeningShape.RECTANGULAR
+                ),
+            },
+            {
+                "title": "Rectangular opening in feet without length",
+                "given": (0.1, 0, 0.3, 1),
                 "expected": LuminousOpeningGeometry(
                     width=0.1 * 0.3048,
                     length=0.1 * 0.3048,
                     height=0.3 * 0.3048,
-                    shape=LuminousOpeningShape.ROUND
+                    shape=LuminousOpeningShape.RECTANGULAR
                 ),
             },
             {
-                "title": "Vertical Cylinder (meters)",
-                "given": (-0.1, -0.1, 0.3, 2),
+                "title": "Rectangular opening in meters without length",
+                "given": (0.1, 0, 0.3, 2),
                 "expected": LuminousOpeningGeometry(
                     width=0.1,
                     length=0.1,
                     height=0.3,
-                    shape=LuminousOpeningShape.ROUND
+                    shape=LuminousOpeningShape.RECTANGULAR
                 ),
             },
             {
-                "title": "Vertical Ellipsoidal Cylinder (feet)",
+                "title": "Round opening in feet",
                 "given": (-0.1, -0.2, 0.3, 1),
                 "expected": LuminousOpeningGeometry(
                     width=0.1 * 0.3048,
@@ -418,7 +397,7 @@ class TestConvertContent(unittest.TestCase):
                 ),
             },
             {
-                "title": "Vertical Ellipsoidal Cylinder (meters)",
+                "title": "Round opening in meters without length",
                 "given": (-0.1, -0.2, 0.3, 2),
                 "expected": LuminousOpeningGeometry(
                     width=0.1,
@@ -428,8 +407,68 @@ class TestConvertContent(unittest.TestCase):
                 ),
             },
             {
-                "title": "Sphere (feet)",
-                "given": (-0.1, -0.1, -0.1, 1),
+                "title": "Round opening in feet without height",
+                "given": (-0.1, -0.2, 0, 1),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1 * 0.3048,
+                    length=0.2 * 0.3048,
+                    height=0,
+                    shape=LuminousOpeningShape.ROUND
+                ),
+            },
+            {
+                "title": "Round opening in meters without height",
+                "given": (-0.1, -0.2, 0, 2),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1,
+                    length=0.2,
+                    height=0,
+                    shape=LuminousOpeningShape.ROUND
+                ),
+            },
+            {
+                "title": "Round opening in feet without width",
+                "given": (0, -0.2, 0.3, 1),
+                "expected": LuminousOpeningGeometry(
+                    width=0.2 * 0.3048,
+                    length=0.2 * 0.3048,
+                    height=0.3 * 0.3048,
+                    shape=LuminousOpeningShape.ROUND
+                ),
+            },
+            {
+                "title": "Round opening in meters without width",
+                "given": (0, -0.2, 0.3, 2),
+                "expected": LuminousOpeningGeometry(
+                    width=0.2,
+                    length=0.2,
+                    height=0.3,
+                    shape=LuminousOpeningShape.ROUND
+                ),
+            },
+            {
+                "title": "Round opening in feet without length",
+                "given": (-0.1, 0, 0.3, 1),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1 * 0.3048,
+                    length=0.1 * 0.3048,
+                    height=0.3 * 0.3048,
+                    shape=LuminousOpeningShape.ROUND
+                ),
+            },
+            {
+                "title": "Round opening in meters without length",
+                "given": (-0.1, 0, 0.3, 2),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1,
+                    length=0.1,
+                    height=0.3,
+                    shape=LuminousOpeningShape.ROUND
+                ),
+            },
+            {
+                "title": "Sphere opening in feet",
+                "given": (-0.1, 0, -0.1, 1),
                 "expected": LuminousOpeningGeometry(
                     width=0.1 * 0.3048,
                     length=0.1 * 0.3048,
@@ -438,8 +477,8 @@ class TestConvertContent(unittest.TestCase):
                 ),
             },
             {
-                "title": "Sphere (meters)",
-                "given": (-0.1, -0.1, -0.1, 2),
+                "title": "Sphere opening in meters",
+                "given": (-0.1, 0, -0.1, 2),
                 "expected": LuminousOpeningGeometry(
                     width=0.1,
                     length=0.1,
@@ -448,143 +487,123 @@ class TestConvertContent(unittest.TestCase):
                 ),
             },
             {
-                "title": "Ellipsoidal Spheroid (feet)",
-                "given": (-0.1, -0.2, -0.3, 1),
+                "title": "Horizontal cylinder along length opening in feet",
+                "given": (0, 0.2, -0.3, 1),
+                "expected": LuminousOpeningGeometry(
+                    width=0.2 * 0.3048,
+                    length=0.2 * 0.3048,
+                    height=0.3 * 0.3048,
+                    shape=LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_LENGTH
+                ),
+            },
+            {
+                "title": "Horizontal cylinder along length opening in meters",
+                "given": (0, 0.2, -0.3, 2),
+                "expected": LuminousOpeningGeometry(
+                    width=0.2,
+                    length=0.2,
+                    height=0.3,
+                    shape=LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_LENGTH
+                ),
+            },
+            {
+                "title": "Horizontal cylinder along width opening in feet",
+                "given": (0.1, 0, -0.3, 1),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1 * 0.3048,
+                    length=0.1 * 0.3048,
+                    height=0.3 * 0.3048,
+                    shape=LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_WIDTH
+                ),
+            },
+            {
+                "title": "Horizontal cylinder along width opening in meters",
+                "given": (0.1, 0, -0.3, 2),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1,
+                    length=0.1,
+                    height=0.3,
+                    shape=LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_WIDTH
+                ),
+            },
+            {
+                "title": "Ellipse along length opening in feet",
+                "given": (-0.1, 0.2, 0.3, 1),
                 "expected": LuminousOpeningGeometry(
                     width=0.1 * 0.3048,
                     length=0.2 * 0.3048,
                     height=0.3 * 0.3048,
-                    shape=LuminousOpeningShape.SPHERE
+                    shape=LuminousOpeningShape.ELLIPSE_ALONG_LENGTH
                 ),
             },
             {
-                "title": "Ellipsoidal Spheroid (meters)",
-                "given": (-0.1, -0.2, -0.3, 2),
+                "title": "Ellipse along length opening in meters",
+                "given": (-0.1, 0.2, 0.3, 2),
                 "expected": LuminousOpeningGeometry(
                     width=0.1,
                     length=0.2,
                     height=0.3,
-                    shape=LuminousOpeningShape.SPHERE
+                    shape=LuminousOpeningShape.ELLIPSE_ALONG_LENGTH
                 ),
             },
             {
-                "title": "Horizontal Cylinder along Photometric Horizontal (feet)",
-                "given": (-0.1, 0.2, -0.1, 1),
+                "title": "Ellipse along width opening in feet",
+                "given": (0.1, -0.2, 0.3, 1),
                 "expected": LuminousOpeningGeometry(
                     width=0.1 * 0.3048,
                     length=0.2 * 0.3048,
-                    height=0.1 * 0.3048,
-                    shape=LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_WIDTH
+                    height=0.3 * 0.3048,
+                    shape=LuminousOpeningShape.ELLIPSE_ALONG_WIDTH
                 ),
             },
             {
-                "title": "Horizontal Cylinder along Photometric Horizontal (meters)",
+                "title": "Ellipse along width opening in meters",
+                "given": (0.1, -0.2, 0.3, 2),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1,
+                    length=0.2,
+                    height=0.3,
+                    shape=LuminousOpeningShape.ELLIPSE_ALONG_WIDTH
+                ),
+            },
+            {
+                "title": "Ellipsoid along length opening in feet",
+                "given": (-0.1, 0.2, -0.3, 1),
+                "expected": LuminousOpeningGeometry(
+                    width=0.1 * 0.3048,
+                    length=0.2 * 0.3048,
+                    height=0.3 * 0.3048,
+                    shape=LuminousOpeningShape.ELLIPSOID_ALONG_LENGTH
+                ),
+            },
+            {
+                "title": "Ellipsoid along length opening in meters",
                 "given": (-0.1, 0.2, -0.3, 2),
                 "expected": LuminousOpeningGeometry(
                     width=0.1,
                     length=0.2,
                     height=0.3,
-                    shape=LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_WIDTH
+                    shape=LuminousOpeningShape.ELLIPSOID_ALONG_LENGTH
                 ),
             },
             {
-                "title": "Horizontal Ellipsoidal Cylinder along Photometric Horizontal (feet)",
-                "given": (-0.1, 0.2, -0.1, 1),
-                "expected": LuminousOpeningGeometry(
-                    width=0.1 * 0.3048,
-                    length=0.2 * 0.3048,
-                    height=0.1 * 0.3048,
-                    shape=LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_WIDTH
-                ),
-            },
-            {
-                "title": "Horizontal Ellipsoidal Cylinder along Photometric Horizontal (meters)",
-                "given": (-0.1, 0.2, -0.3, 2),
-                "expected": LuminousOpeningGeometry(
-                    width=0.1,
-                    length=0.2,
-                    height=0.3,
-                    shape=LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_WIDTH
-                ),
-            },
-            {
-                "title": "Horizontal Cylinder Perpendicular to Photometric Horizontal (feet)",
-                "given": (0.1, -0.2, -0.2, 1),
-                "expected": LuminousOpeningGeometry(
-                    width=0.1 * 0.3048,
-                    length=0.2 * 0.3048,
-                    height=0.2 * 0.3048,
-                    shape=LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_LENGTH
-                ),
-            },
-            {
-                "title": "Horizontal Cylinder Perpendicular to Photometric Horizontal (meters)",
-                "given": (0.1, -0.2, -0.2, 2),
-                "expected": LuminousOpeningGeometry(
-                    width=0.1,
-                    length=0.2,
-                    height=0.2,
-                    shape=LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_LENGTH
-                ),
-            },
-            {
-                "title": "Horizontal Ellipsoidal Cylinder Perpendicular to Photometric Horizontal (feet)",
+                "title": "Ellipsoid along width opening in feet",
                 "given": (0.1, -0.2, -0.3, 1),
                 "expected": LuminousOpeningGeometry(
                     width=0.1 * 0.3048,
                     length=0.2 * 0.3048,
                     height=0.3 * 0.3048,
-                    shape=LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_LENGTH
+                    shape=LuminousOpeningShape.ELLIPSOID_ALONG_WIDTH
                 ),
             },
             {
-                "title": "Horizontal Ellipsoidal Cylinder Perpendicular to Photometric Horizontal (meters)",
+                "title": "Ellipsoid along width opening in meters",
                 "given": (0.1, -0.2, -0.3, 2),
                 "expected": LuminousOpeningGeometry(
                     width=0.1,
                     length=0.2,
                     height=0.3,
-                    shape=LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_LENGTH
-                ),
-            },
-            {
-                "title": "Vertical Circle Facing Photometric Horizontal (feet)",
-                "given": (-0.1, 0, -0.1, 1),
-                "expected": LuminousOpeningGeometry(
-                    width=0.1 * 0.3048,
-                    length=0,
-                    height=0.1 * 0.3048,
-                    shape=LuminousOpeningShape.ELLIPSE_ALONG_LENGTH
-                ),
-            },
-            {
-                "title": "Vertical Circle Facing Photometric Horizontal (meters)",
-                "given": (-0.1, 0, -0.1, 2),
-                "expected": LuminousOpeningGeometry(
-                    width=0.1,
-                    length=0,
-                    height=0.1,
-                    shape=LuminousOpeningShape.ELLIPSE_ALONG_LENGTH
-                ),
-            },
-            {
-                "title": "Vertical Ellipse Facing Photometric Horizontal (feet)",
-                "given": (-0.1, 0, -0.3, 1),
-                "expected": LuminousOpeningGeometry(
-                    width=0.1 * 0.3048,
-                    length=0,
-                    height=0.3 * 0.3048,
-                    shape=LuminousOpeningShape.ELLIPSE_ALONG_LENGTH
-                ),
-            },
-            {
-                "title": "Vertical Ellipse Facing Photometric Horizontal (meters)",
-                "given": (-0.1, 0, -0.3, 2),
-                "expected": LuminousOpeningGeometry(
-                    width=0.1,
-                    length=0,
-                    height=0.3,
-                    shape=LuminousOpeningShape.ELLIPSE_ALONG_LENGTH
+                    shape=LuminousOpeningShape.ELLIPSOID_ALONG_WIDTH
                 ),
             },
             {
@@ -617,10 +636,10 @@ class TestConvertContent(unittest.TestCase):
         for case in test_cases:
             with self.subTest(title=case["title"]):
                 content = default_content()
-                content.inline_attributes.luminous_opening_units = Attribute(str(case["given"][3]), line=0)
-                content.inline_attributes.luminous_opening_width = Attribute(str(case["given"][0]), line=0)
-                content.inline_attributes.luminous_opening_length = Attribute(str(case["given"][1]), line=0)
-                content.inline_attributes.luminous_opening_height = Attribute(str(case["given"][2]), line=0)
+                content.inline_attributes.luminous_opening_units = Attribute(str(case["given"][3]), line=1)
+                content.inline_attributes.luminous_opening_width = Attribute(str(case["given"][0]), line=1)
+                content.inline_attributes.luminous_opening_length = Attribute(str(case["given"][1]), line=1)
+                content.inline_attributes.luminous_opening_height = Attribute(str(case["given"][2]), line=1)
                 converted = convert_content(content)
 
                 self.assertEqual(converted.luminous_opening_geometry, case["expected"])
@@ -642,12 +661,11 @@ class TestConvertContent(unittest.TestCase):
         for case in test_cases:
             with self.subTest(title=case["title"]):
                 content = default_content()
-                content.inline_attributes.luminous_opening_units = Attribute(str(case["given"][3]), line=0)
-                content.inline_attributes.luminous_opening_width = Attribute(str(case["given"][0]), line=0)
-                content.inline_attributes.luminous_opening_length = Attribute(str(case["given"][1]), line=0)
-                content.inline_attributes.luminous_opening_height = Attribute(str(case["given"][2]), line=0)
+                content.inline_attributes.luminous_opening_units = Attribute(str(case["given"][3]), line=1)
+                content.inline_attributes.luminous_opening_width = Attribute(str(case["given"][0]), line=1)
+                content.inline_attributes.luminous_opening_length = Attribute(str(case["given"][1]), line=1)
+                content.inline_attributes.luminous_opening_height = Attribute(str(case["given"][2]), line=1)
                 converted = convert_content(content)
-
                 self.assertEqual(converted.metadata.file_units, case["expected"])
 
     def test_detect_absolute_photometry(self):
@@ -667,7 +685,7 @@ class TestConvertContent(unittest.TestCase):
         for case in test_cases:
             with self.subTest(title=case["title"]):
                 content = default_content()
-                content.inline_attributes.lumens_per_lamp = Attribute(str(case["given"]),line=1)
+                content.inline_attributes.lumens_per_lamp = Attribute(str(case["given"]), line=1)
                 self.assertEqual(convert_content(content).photometry.is_absolute, case["expected"])
 
     def test_calculating_intensities(self):
@@ -678,6 +696,7 @@ class TestConvertContent(unittest.TestCase):
                 "lumens_per_lamp": -1,
                 "multiplying_factor": 1,
                 "ballast_factor": 1,
+                "ballast_lamp_photometric_factor": 1.0,
                 "intensities": [1, 2, 3],
                 "expected": {
                     (0, 0): 1,
@@ -691,6 +710,7 @@ class TestConvertContent(unittest.TestCase):
                 "lumens_per_lamp": 500,
                 "multiplying_factor": 1,
                 "ballast_factor": 1,
+                "ballast_lamp_photometric_factor": 1.0,
                 "intensities": [1, 2, 3],
                 "expected": {
                     (0, 0): 2,
@@ -704,6 +724,7 @@ class TestConvertContent(unittest.TestCase):
                 "lumens_per_lamp": 500,
                 "multiplying_factor": None,
                 "ballast_factor": None,
+                "ballast_lamp_photometric_factor": 1.0,
                 "intensities": [1, 2, 3],
                 "expected": {
                     (0, 0): 2,
@@ -712,11 +733,26 @@ class TestConvertContent(unittest.TestCase):
                 }
             },
             {
+                "title": "Relative photometry 500 lm, applied ballast lamp photometric factor",
+                "number_of_lamps": 1,
+                "lumens_per_lamp": 500,
+                "multiplying_factor": 1,
+                "ballast_factor": 1.0,
+                "ballast_lamp_photometric_factor": 2.0,
+                "intensities": [1, 2, 3],
+                "expected": {
+                    (0, 0): 4,
+                    (0, 90): 8,
+                    (0, 180): 12
+                }
+            },
+            {
                 "title": "Relative photometry 500 lm, applied multiplying factor",
                 "number_of_lamps": 1,
                 "lumens_per_lamp": 500,
-                "multiplying_factor": 2,
-                "ballast_factor": 1.0,
+                "multiplying_factor": 1,
+                "ballast_factor": 2.0,
+                "ballast_lamp_photometric_factor": 1.0,
                 "intensities": [1, 2, 3],
                 "expected": {
                     (0, 0): 4,
@@ -730,6 +766,7 @@ class TestConvertContent(unittest.TestCase):
                 "lumens_per_lamp": 500,
                 "multiplying_factor": 1.0,
                 "ballast_factor": 2,
+                "ballast_lamp_photometric_factor": 1.0,
                 "intensities": [1, 2, 3],
                 "expected": {
                     (0, 0): 4,
@@ -742,24 +779,26 @@ class TestConvertContent(unittest.TestCase):
         for case in test_cases:
             with self.subTest(title=case["title"]):
                 content = default_content()
-                content.inline_attributes.n_h_angles = Attribute("3",line=1)
+                content.inline_attributes.n_h_angles = Attribute("3", line=1)
                 content.inline_attributes.n_v_angles = Attribute("1", line=1)
                 content.inline_attributes.number_of_lamps = Attribute(str(case["number_of_lamps"]), line=1)
                 content.inline_attributes.lumens_per_lamp = Attribute(str(case["lumens_per_lamp"]), line=1)
                 content.inline_attributes.multiplying_factor = Attribute(str(case["multiplying_factor"]), line=1)
                 content.lamp_attributes.ballast_factor = Attribute(str(case["ballast_factor"]), line=1)
-                content.h_angles = [ Attribute("0", line=2) ]
-                content.v_angles = [
-                    Attribute("0", line=2),
-                    Attribute("90", line=2),
-                    Attribute("180", line=2)
+                content.lamp_attributes.ballast_lamp_photometric_factor = Attribute(str(case["ballast_lamp_photometric_factor"]), line=1)
+                content.h_angles = [
+                    Attribute("0", line=1)
                 ]
-
-                content.intensities=[
-                    Attribute(i, line = 3)
-                    for i in case["intensities"]
+                content.v_angles = [
+                    Attribute("0", line=1),
+                    Attribute("90", line=1),
+                    Attribute("180", line=1)
+                ]
+                content.intensities = [
+                    Attribute(str(i), line=1) for i in case["intensities"]
                 ]
                 self.assertEqual(convert_content(content).intensity_values, case["expected"])
+
 
 if __name__ == '__main__':
     unittest.main()

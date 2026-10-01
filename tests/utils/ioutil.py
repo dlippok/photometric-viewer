@@ -19,7 +19,7 @@ class TestReadNonEmptyLine(unittest.TestCase):
             with(self.subTest(case=case[0])):
                 f = python_io.StringIO(case[1])
                 for expected_line in lines_expected:
-                    self.assertEqual(first_non_empty_line(f), expected_line)
+                    self.assertEqual(first_non_empty_line(f)[0], expected_line)
 
     def test_empty_lines_in_the_beginning(self):
         lines_given = ["", "a", "b", "c"]
@@ -33,7 +33,7 @@ class TestReadNonEmptyLine(unittest.TestCase):
             with(self.subTest(case=case[0])):
                 f = python_io.StringIO(case[1])
                 for expected_line in lines_expected:
-                    self.assertEqual(first_non_empty_line(f), expected_line)
+                    self.assertEqual(first_non_empty_line(f)[0], expected_line)
 
     def test_empty_lines_in_the_end(self):
         lines_given = ["a", "b", "c", ""]
@@ -47,7 +47,7 @@ class TestReadNonEmptyLine(unittest.TestCase):
             with(self.subTest(case=case[0])):
                 f = python_io.StringIO(case[1])
                 for expected_line in lines_expected:
-                    self.assertEqual(first_non_empty_line(f), expected_line)
+                    self.assertEqual(first_non_empty_line(f)[0], expected_line)
 
     def test_empty_between_content(self):
         lines_given = ["a", "", "b", "", "c"]
@@ -61,4 +61,4 @@ class TestReadNonEmptyLine(unittest.TestCase):
             with(self.subTest(case=case[0])):
                 f = python_io.StringIO(case[1])
                 for expected_line in lines_expected:
-                    self.assertEqual(first_non_empty_line(f), expected_line)
+                    self.assertEqual(first_non_empty_line(f)[0], expected_line)
