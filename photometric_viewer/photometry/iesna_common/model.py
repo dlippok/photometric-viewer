@@ -1,32 +1,32 @@
 from dataclasses import dataclass, field
-from typing import List, Tuple
+from typing import List
 
 
 @dataclass
 class Attribute:
-    value: str
-    line: int
+    value: str | None
+    line: int # Actual line or expected line number if the value is missing
 
 
 @dataclass
 class InlineAttributes:
-    number_of_lamps: Attribute | None = None
-    lumens_per_lamp: Attribute | None = None
-    multiplying_factor: Attribute | None = None
-    n_v_angles: Attribute | None = None
-    n_h_angles: Attribute | None = None
-    photometry_type: Attribute | None = None
-    luminous_opening_units: Attribute | None = None
-    luminous_opening_width: Attribute | None = None
-    luminous_opening_length: Attribute | None = None
-    luminous_opening_height: Attribute | None = None
+    number_of_lamps: Attribute
+    lumens_per_lamp: Attribute
+    multiplying_factor: Attribute
+    n_v_angles: Attribute
+    n_h_angles: Attribute
+    photometry_type: Attribute
+    luminous_opening_units: Attribute
+    luminous_opening_width: Attribute
+    luminous_opening_length: Attribute
+    luminous_opening_height: Attribute
 
 
 @dataclass
 class LampAttributes:
-    ballast_factor: Attribute | None = None
-    ballast_lamp_photometric_factor: Attribute | None = None
-    input_watts: Attribute | None = None
+    ballast_factor: Attribute
+    ballast_lamp_photometric_factor: Attribute
+    input_watts: Attribute
 
 
 @dataclass

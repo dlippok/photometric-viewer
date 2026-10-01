@@ -300,6 +300,8 @@ class MainWindow(Adw.ApplicationWindow):
                     ("open_url", self.on_open_url, "s")
                 ]
             )
+        except Exception as e:
+            logging.exception("Could not open photometric file")
         finally:
             self.is_opening = False
 

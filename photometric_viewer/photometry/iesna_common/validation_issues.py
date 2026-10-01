@@ -2,22 +2,7 @@ from photometric_viewer.photometry.iesna_common.model import MetadataTuple
 from photometric_viewer.photometry.validation import ValidationIssueBase, Severity
 
 
-class Ies02HeaderNotFound(ValidationIssueBase):
-    def __init__(self, line_number: int | None):
-        super().__init__(line_number, Severity.ERROR)
-
-    def __str__(self):
-        return "IESNA:LM-63-2002 header not found"
-
-class Ies02HeaderInvalid(ValidationIssueBase):
-    def __init__(self, header: str | None, line_number: int | None, severity: Severity = Severity.ERROR):
-        super().__init__(line_number, severity)
-        self.header = header
-
-    def __str__(self) -> str:
-        return f"IESNA:LM-63-2002 header invalid: {self.header}"
-
-class Ies02MetadataKeyMissing(ValidationIssueBase):
+class IesMetadataKeyMissing(ValidationIssueBase):
     def __init__(self, metadata: MetadataTuple, line_number: int):
         super().__init__(line_number, Severity.WARNING)
         self.metadata = metadata
@@ -25,7 +10,7 @@ class Ies02MetadataKeyMissing(ValidationIssueBase):
     def __str__(self) -> str:
         return f"Metadata key missing: {self.metadata.key}"
 
-class Ies02MetadataKeyLeadingTrailingWhitespace(ValidationIssueBase):
+class IesMetadataKeyLeadingTrailingWhitespace(ValidationIssueBase):
     def __init__(self, metadata: MetadataTuple, line_number: int):
         super().__init__(line_number, Severity.WARNING)
         self.metadata = metadata
@@ -33,7 +18,7 @@ class Ies02MetadataKeyLeadingTrailingWhitespace(ValidationIssueBase):
     def __str__(self) -> str:
         return f"Metadata key has leading or trailing whitespace: '{self.metadata.key}'"
 
-class Ies02MetadataValueMissing(ValidationIssueBase):
+class IesMetadataValueMissing(ValidationIssueBase):
     def __init__(self, metadata: MetadataTuple, line_number: int):
         super().__init__(line_number, Severity.WARNING)
         self.metadata = metadata
@@ -41,7 +26,7 @@ class Ies02MetadataValueMissing(ValidationIssueBase):
     def __str__(self) -> str:
         return f"Metadata value missing for key: {self.metadata.key}"
 
-class Ies02MetadataKeyMissingRequired(ValidationIssueBase):
+class IesMetadataKeyMissingRequired(ValidationIssueBase):
     def __init__(self, missing_key: str, line_number: int | None = None):
         super().__init__(line_number, Severity.WARNING)
         self.missing_key = missing_key
@@ -49,15 +34,7 @@ class Ies02MetadataKeyMissingRequired(ValidationIssueBase):
     def __str__(self) -> str:
         return f"Required metadata key missing: {self.missing_key}"
 
-class Ies02MetadataKeyMissingSuggested(ValidationIssueBase):
-    def __init__(self, missing_key: str, line_number: int | None = None):
-        super().__init__(line_number, Severity.INFO)
-        self.missing_key = missing_key
-
-    def __str__(self) -> str:
-        return f"Suggested metadata key missing: {self.missing_key}"
-
-class Ies02MetadataKeyDeprecated(ValidationIssueBase):
+class IesMetadataKeyDeprecated(ValidationIssueBase):
     def __init__(self, key: str, line_number: int, replaced_by: str | None = None):
         super().__init__(line_number, Severity.WARNING)
         self.key = key
@@ -66,7 +43,7 @@ class Ies02MetadataKeyDeprecated(ValidationIssueBase):
     def __str__(self) -> str:
         return f"Metadata key deprecated: {self.key}"
 
-class Ies02MetadataKeyInvalidCharacters(ValidationIssueBase):
+class IesMetadataKeyInvalidCharacters(ValidationIssueBase):
     def __init__(self, metadata: MetadataTuple, line_number: int):
         super().__init__(line_number, Severity.WARNING)
         self.metadata = metadata
@@ -74,7 +51,7 @@ class Ies02MetadataKeyInvalidCharacters(ValidationIssueBase):
     def __str__(self) -> str:
         return f"Metadata key contains invalid characters: {self.metadata.key}"
 
-class Ies02MetadataKeyNotUppercase(ValidationIssueBase):
+class IesMetadataKeyNotUppercase(ValidationIssueBase):
     def __init__(self, metadata: MetadataTuple, line_number: int):
         super().__init__(line_number, Severity.WARNING)
         self.metadata = metadata
@@ -82,7 +59,7 @@ class Ies02MetadataKeyNotUppercase(ValidationIssueBase):
     def __str__(self) -> str:
         return f"Metadata key is not uppercase: {self.metadata.key}"
 
-class Ies02MetadataKeyDuplicate(ValidationIssueBase):
+class IesMetadataKeyDuplicate(ValidationIssueBase):
     def __init__(self, metadata: MetadataTuple, line_number: int):
         super().__init__(line_number, Severity.WARNING)
         self.metadata = metadata
@@ -91,7 +68,7 @@ class Ies02MetadataKeyDuplicate(ValidationIssueBase):
         return f"Metadata key is duplicated: {self.metadata.key}"
 
 
-class Ies02MetadataKeyTooLong(ValidationIssueBase):
+class IesMetadataKeyTooLong(ValidationIssueBase):
     def __init__(self, metadata: MetadataTuple, line_number: int):
         super().__init__(line_number, Severity.WARNING)
         self.metadata = metadata
@@ -99,7 +76,7 @@ class Ies02MetadataKeyTooLong(ValidationIssueBase):
     def __str__(self) -> str:
         return f"Metadata key is too long (more than 18 characters): {self.metadata.key}"
 
-class Ies02MetadataUserKeyWithoutUnderscore(ValidationIssueBase):
+class IesMetadataUserKeyWithoutUnderscore(ValidationIssueBase):
     def __init__(self, metadata: MetadataTuple, line_number: int):
         super().__init__(line_number, Severity.WARNING)
         self.metadata = metadata
@@ -108,7 +85,7 @@ class Ies02MetadataUserKeyWithoutUnderscore(ValidationIssueBase):
         return f"User-defined metadata key does not start with an underscore: {self.metadata.key}"
 
 
-class Ies02MetadataNearfieldInvalidValue(ValidationIssueBase):
+class IesMetadataNearfieldInvalidValue(ValidationIssueBase):
     def __init__(self, metadata: MetadataTuple, line_number: int):
         super().__init__(line_number, Severity.ERROR)
         self.metadata = metadata
@@ -117,7 +94,7 @@ class Ies02MetadataNearfieldInvalidValue(ValidationIssueBase):
         return f"NEARFIELD metadata value is invalid: {self.metadata.value}"
 
 
-class Ies02MetadataMaintcatInvalidValue(ValidationIssueBase):
+class IesMetadataMaintcatInvalidValue(ValidationIssueBase):
     def __init__(self, metadata: MetadataTuple, line_number: int):
         super().__init__(line_number, Severity.ERROR)
         self.metadata = metadata
@@ -125,7 +102,7 @@ class Ies02MetadataMaintcatInvalidValue(ValidationIssueBase):
     def __str__(self) -> str:
         return f"MAINTCAT metadata value is invalid: {self.metadata.value}"
 
-class Ies02MetadataFlashareaNotNumber(ValidationIssueBase):
+class IesMetadataFlashareaNotNumber(ValidationIssueBase):
     def __init__(self, metadata: MetadataTuple, line_number: int):
         super().__init__(line_number, Severity.ERROR)
         self.metadata = metadata
@@ -133,7 +110,7 @@ class Ies02MetadataFlashareaNotNumber(ValidationIssueBase):
     def __str__(self) -> str:
         return f"FLASHAREA metadata value is not a number: {self.metadata.value}"
 
-class Ies02MetadataFlashareaNotPositive(ValidationIssueBase):
+class IesMetadataFlashareaNotPositive(ValidationIssueBase):
     def __init__(self, metadata: MetadataTuple, line_number: int):
         super().__init__(line_number, Severity.ERROR)
         self.metadata = metadata
@@ -141,7 +118,7 @@ class Ies02MetadataFlashareaNotPositive(ValidationIssueBase):
     def __str__(self) -> str:
         return f"FLASHAREA metadata value is not positive: {self.metadata.value}"
 
-class Ies02MetadataFlashareaUnusualSize(ValidationIssueBase):
+class IesMetadataFlashareaUnusualSize(ValidationIssueBase):
     def __init__(self, metadata: MetadataTuple, line_number: int):
         super().__init__(line_number, Severity.INFO)
         self.metadata = metadata
@@ -149,7 +126,7 @@ class Ies02MetadataFlashareaUnusualSize(ValidationIssueBase):
     def __str__(self) -> str:
         return f"FLASHAREA metadata value is unusually large or small: {self.metadata.value}"
 
-class Ies02LampPositionTwoValuesExpected(ValidationIssueBase):
+class IesLampPositionTwoValuesExpected(ValidationIssueBase):
     def __init__(self, metadata: MetadataTuple, line_number: int):
         super().__init__(line_number, Severity.ERROR)
         self.metadata = metadata
@@ -157,7 +134,7 @@ class Ies02LampPositionTwoValuesExpected(ValidationIssueBase):
     def __str__(self) -> str:
         return f"LAMPPOSITION metadata value does not contain two values: {self.metadata.value}"
 
-class Ies02LampPositionNotNumbers(ValidationIssueBase):
+class IesLampPositionNotNumbers(ValidationIssueBase):
     def __init__(self, metadata: MetadataTuple, line_number: int):
         super().__init__(line_number, Severity.ERROR)
         self.metadata = metadata
@@ -165,7 +142,7 @@ class Ies02LampPositionNotNumbers(ValidationIssueBase):
     def __str__(self) -> str:
         return f"LAMPPOSITION metadata value does not contain valid numbers: {self.metadata.value}"
 
-class Ies02LampPositionOutOfRange(ValidationIssueBase):
+class IesLampPositionOutOfRange(ValidationIssueBase):
     def __init__(self, metadata: MetadataTuple, line_number: int):
         super().__init__(line_number, Severity.ERROR)
         self.metadata = metadata
@@ -173,7 +150,7 @@ class Ies02LampPositionOutOfRange(ValidationIssueBase):
     def __str__(self) -> str:
         return f"LAMPPOSITION metadata value is out of range: {self.metadata.value}"
 
-class Ies02IntensityValueNotNumber(ValidationIssueBase):
+class IesIntensityValueNotNumber(ValidationIssueBase):
     def __init__(self, value, line_number: int | None):
         super().__init__(line_number, Severity.ERROR)
         self.value = value
@@ -182,7 +159,7 @@ class Ies02IntensityValueNotNumber(ValidationIssueBase):
         return f"Intensity value is not a number: {self.value}"
 
 
-class Ies02IntensityValueNegative(ValidationIssueBase):
+class IesIntensityValueNegative(ValidationIssueBase):
     def __init__(self, value, line_number: int | None):
         super().__init__(line_number, Severity.ERROR)
         self.value = value
@@ -191,7 +168,7 @@ class Ies02IntensityValueNegative(ValidationIssueBase):
         return f"Intensity value is negative: {self.value}"
 
 
-class Ies02VAnglesValueNotNumber(ValidationIssueBase):
+class IesVAnglesValueNotNumber(ValidationIssueBase):
     def __init__(self, value, line_number: int | None):
         super().__init__(line_number, Severity.ERROR)
         self.value = value
@@ -200,7 +177,7 @@ class Ies02VAnglesValueNotNumber(ValidationIssueBase):
         return f"Vertical angle value is not a number: {self.value}"
 
 
-class Ies02VAnglesValueOutOfOrder(ValidationIssueBase):
+class IesVAnglesValueOutOfOrder(ValidationIssueBase):
     def __init__(self, value, line_number: int | None):
         super().__init__(line_number, Severity.ERROR)
         self.value = value
@@ -209,7 +186,7 @@ class Ies02VAnglesValueOutOfOrder(ValidationIssueBase):
         return f"Vertical angles are not in ascending order: {self.value}"
 
 
-class Ies02VAnglesTypeCFirstValueInvalid(ValidationIssueBase):
+class IesVAnglesTypeCFirstValueInvalid(ValidationIssueBase):
     def __init__(self, value, line_number: int | None):
         super().__init__(line_number, Severity.ERROR)
         self.value = value
@@ -218,7 +195,7 @@ class Ies02VAnglesTypeCFirstValueInvalid(ValidationIssueBase):
         return f"Type C photometry first vertical angle is invalid: {self.value}. Expected 0 or 90."
 
 
-class Ies02VAnglesTypeCLastValueInvalid(ValidationIssueBase):
+class IesVAnglesTypeCLastValueInvalid(ValidationIssueBase):
     def __init__(self, value, line_number: int | None):
         super().__init__(line_number, Severity.ERROR)
         self.value = value
@@ -227,7 +204,7 @@ class Ies02VAnglesTypeCLastValueInvalid(ValidationIssueBase):
         return f"Type C photometry last vertical angle is invalid: {self.value}. Expected 90 or 180."
 
 
-class Ies02VAnglesTypeBFirstValueInvalid(ValidationIssueBase):
+class IesVAnglesTypeBFirstValueInvalid(ValidationIssueBase):
     def __init__(self, value, line_number: int | None):
         super().__init__(line_number, Severity.ERROR)
         self.value = value
@@ -236,7 +213,7 @@ class Ies02VAnglesTypeBFirstValueInvalid(ValidationIssueBase):
         return f"Type B photometry first vertical angle is invalid: {self.value}. Expected -90 or 0."
 
 
-class Ies02VAnglesTypeBLastValueInvalid(ValidationIssueBase):
+class IesVAnglesTypeBLastValueInvalid(ValidationIssueBase):
     def __init__(self, value, line_number: int | None):
         super().__init__(line_number, Severity.ERROR)
         self.value = value
@@ -245,7 +222,7 @@ class Ies02VAnglesTypeBLastValueInvalid(ValidationIssueBase):
         return f"Type B photometry last vertical angle is invalid: {self.value}. Expected 90."
 
 
-class Ies02VAnglesTypeAFirstValueInvalid(ValidationIssueBase):
+class IesVAnglesTypeAFirstValueInvalid(ValidationIssueBase):
     def __init__(self, value, line_number: int | None):
         super().__init__(line_number, Severity.ERROR)
         self.value = value
@@ -254,7 +231,7 @@ class Ies02VAnglesTypeAFirstValueInvalid(ValidationIssueBase):
         return f"Type A photometry first vertical angle is invalid: {self.value}. Expected -90 or 0."
 
 
-class Ies02VAnglesTypeALastValueInvalid(ValidationIssueBase):
+class IesVAnglesTypeALastValueInvalid(ValidationIssueBase):
     def __init__(self, value, line_number: int | None):
         super().__init__(line_number, Severity.ERROR)
         self.value = value
@@ -263,7 +240,7 @@ class Ies02VAnglesTypeALastValueInvalid(ValidationIssueBase):
         return f"Type A photometry last vertical angle is invalid: {self.value}. Expected 90."
 
 
-class Ies02HAnglesValueNotNumber(ValidationIssueBase):
+class IesHAnglesValueNotNumber(ValidationIssueBase):
     def __init__(self, value, line_number: int | None):
         super().__init__(line_number, Severity.ERROR)
         self.value = value
@@ -272,7 +249,7 @@ class Ies02HAnglesValueNotNumber(ValidationIssueBase):
         return f"Horizontal angle value is not a number: {self.value}"
 
 
-class Ies02HAnglesValueOutOfOrder(ValidationIssueBase):
+class IesHAnglesValueOutOfOrder(ValidationIssueBase):
     def __init__(self, value, line_number: int | None):
         super().__init__(line_number, Severity.ERROR)
         self.value = value
@@ -281,7 +258,7 @@ class Ies02HAnglesValueOutOfOrder(ValidationIssueBase):
         return f"Horizontal angles are not in ascending order: {self.value}"
 
 
-class Ies02HAnglesTypeCFirstValueInvalid(ValidationIssueBase):
+class IesHAnglesTypeCFirstValueInvalid(ValidationIssueBase):
     def __init__(self, value, line_number: int | None):
         super().__init__(line_number, Severity.ERROR)
         self.value = value
@@ -290,7 +267,7 @@ class Ies02HAnglesTypeCFirstValueInvalid(ValidationIssueBase):
         return f"Type C photometry first horizontal angle is invalid: {self.value}. Expected 0."
 
 
-class Ies02HAnglesTypeCLastValueInvalid(ValidationIssueBase):
+class IesHAnglesTypeCLastValueInvalid(ValidationIssueBase):
     def __init__(self, value, line_number: int | None):
         super().__init__(line_number, Severity.ERROR)
         self.value = value
@@ -299,7 +276,7 @@ class Ies02HAnglesTypeCLastValueInvalid(ValidationIssueBase):
         return f"Type C photometry last horizontal angle is invalid: {self.value}. Expected 0, 90, 180, or 360."
 
 
-class Ies02HAnglesTypeBFirstValueInvalid(ValidationIssueBase):
+class IesHAnglesTypeBFirstValueInvalid(ValidationIssueBase):
     def __init__(self, value, line_number: int | None):
         super().__init__(line_number, Severity.ERROR)
         self.value = value
@@ -308,7 +285,7 @@ class Ies02HAnglesTypeBFirstValueInvalid(ValidationIssueBase):
         return f"Type B photometry first horizontal angle is invalid: {self.value}. Expected 0 or -90."
 
 
-class Ies02HAnglesTypeBLastValueInvalid(ValidationIssueBase):
+class IesHAnglesTypeBLastValueInvalid(ValidationIssueBase):
     def __init__(self, value, line_number: int | None):
         super().__init__(line_number, Severity.ERROR)
         self.value = value
@@ -317,7 +294,7 @@ class Ies02HAnglesTypeBLastValueInvalid(ValidationIssueBase):
         return f"Type B photometry last horizontal angle is invalid: {self.value}. Expected 90."
 
 
-class Ies02HAnglesTypeAFirstValueInvalid(ValidationIssueBase):
+class IesHAnglesTypeAFirstValueInvalid(ValidationIssueBase):
     def __init__(self, value, line_number: int | None):
         super().__init__(line_number, Severity.ERROR)
         self.value = value
@@ -326,7 +303,7 @@ class Ies02HAnglesTypeAFirstValueInvalid(ValidationIssueBase):
         return f"Type A photometry first horizontal angle is invalid: {self.value}. Expected 0 or -90."
 
 
-class Ies02HAnglesTypeALastValueInvalid(ValidationIssueBase):
+class IesHAnglesTypeALastValueInvalid(ValidationIssueBase):
     def __init__(self, value, line_number: int | None):
         super().__init__(line_number, Severity.ERROR)
         self.value = value
@@ -335,7 +312,7 @@ class Ies02HAnglesTypeALastValueInvalid(ValidationIssueBase):
         return f"Type A photometry last horizontal angle is invalid: {self.value}. Expected 90."
 
 
-class Ies02LuminousOpeningGeometryInvalid(ValidationIssueBase):
+class IesLuminousOpeningGeometryInvalid(ValidationIssueBase):
     def __init__(self, width, length, height, line_number: int | None):
         super().__init__(line_number, Severity.ERROR)
         self.width = width
@@ -348,8 +325,9 @@ class Ies02LuminousOpeningGeometryInvalid(ValidationIssueBase):
             f"width={self.width}, length={self.length}, height={self.height}"
         )
 
-class Ies02NumberOfIntensitiesInvalid(ValidationIssueBase):
-    def __init__(self, number, expected, line_number: int | None = None):
+
+class IesNumberOfIntensitiesInvalid(ValidationIssueBase):
+    def __init__(self, number: object, expected: object, line_number: int | None = None) -> None:
         super().__init__(line_number, Severity.ERROR)
         self.expected = expected
         self.number = number
@@ -357,10 +335,3 @@ class Ies02NumberOfIntensitiesInvalid(ValidationIssueBase):
     def __str__(self) -> str:
         return f"Number of intensity values invalid (Given: {self.number}, Expected: {self.expected})"
 
-class Ies02BallastLampPhotometricFactorDeprecated(ValidationIssueBase):
-    def __init__(self, value, line_number: int | None = None):
-        super().__init__(line_number, Severity.ERROR)
-        self.value = value
-
-    def __str__(self) -> str:
-        return f"Ballast-lamp photometric factor is deprecated. Use 1.0 value instead (Given: {self.value})"

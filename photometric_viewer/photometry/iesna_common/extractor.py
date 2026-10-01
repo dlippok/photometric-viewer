@@ -39,7 +39,7 @@ def _extract_metadata(f: IO, curline: int) -> Tuple[List[MetadataTuple], int]:
     while next_line and next_line.startswith("["):
         metadata_line = next_line.split("]")
         metadata_key = metadata_line[0].strip("[")
-        metadata_value = metadata_line[1].strip()
+        metadata_value = metadata_line[1].strip() if len(metadata_line) > 1 else ""
         t = MetadataTuple(metadata_key, metadata_value, curline)
         metadata.append(t)
         next_line, n = first_non_empty_line(f)
