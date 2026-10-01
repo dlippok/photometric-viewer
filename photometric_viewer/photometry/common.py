@@ -1,6 +1,5 @@
 from typing import IO
 
-from model import luminaire
 from photometric_viewer.photometry.iesna_common import extractor as iesna_extractor
 from photometric_viewer.photometry.ies02 import converter as ies02_converter
 from photometric_viewer.photometry.ies02 import validator as ies02_validator

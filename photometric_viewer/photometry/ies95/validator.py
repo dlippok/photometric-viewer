@@ -4,7 +4,7 @@ from typing import List
 from photometric_viewer.photometry.ies95.validation_issues import Ies95HeaderInvalid, \
     Ies95LuminousOpeningGeometryInvalid, Ies95HAnglesTypeCLastValueInvalid, Ies95HAnglesTypeCFirstValueInvalid, \
     Ies95HAnglesTypeBFirstValueInvalid, Ies95HAnglesTypeBLastValueInvalid, Ies95MetadataKeyMissingRecommended, \
-    Ies95BallastLampPhotometricFactorDeprecated
+    Ies95BallastLampPhotometricFactorDeprecated, Ies95HAnglesTypeAFirstValueInvalid, Ies95HAnglesTypeALastValueInvalid
 from photometric_viewer.photometry.iesna_common.model import IesContent, Attribute
 from photometric_viewer.photometry.iesna_common.validator import validate as iesna_common_validate
 from photometric_viewer.photometry.validation import (
@@ -171,8 +171,8 @@ def _validate_h_angles(content: IesContent) -> List[ValidationIssueBase]:
     elif photometry_type in (2, 3):
         valid_first_values = (-90.0, 0.0)
         if first_value not in valid_first_values:
-            issues.append(Ies95HAnglesTypeBFirstValueInvalid(first_value, first_line) if photometry_type == 2 else Ies02HAnglesTypeAFirstValueInvalid(first_value, first_line))
+            issues.append(Ies95HAnglesTypeBFirstValueInvalid(first_value, first_line) if photometry_type == 2 else Ies95HAnglesTypeAFirstValueInvalid(first_value, first_line))
         if last_value != 90.0:
-            issues.append(Ies95HAnglesTypeBLastValueInvalid(last_value, last_line) if photometry_type == 2 else Ies02HAnglesTypeALastValueInvalid(last_value, last_line))
+            issues.append(Ies95HAnglesTypeBLastValueInvalid(last_value, last_line) if photometry_type == 2 else Ies95HAnglesTypeALastValueInvalid(last_value, last_line))
 
     return issues

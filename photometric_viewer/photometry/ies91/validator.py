@@ -4,7 +4,7 @@ from typing import List
 from photometric_viewer.photometry.ies91.validation_issues import Ies91LuminousOpeningGeometryInvalid, \
     Ies91HAnglesTypeCLastValueInvalid, Ies91HAnglesTypeCFirstValueInvalid, \
     Ies91HAnglesTypeBFirstValueInvalid, Ies91HAnglesTypeBLastValueInvalid, Ies91HeaderInvalid, \
-    Ies91MetadataKeyMissingRequired
+    Ies91MetadataKeyMissingRequired, Ies91HAnglesTypeAFirstValueInvalid, Ies91HAnglesTypeALastValueInvalid
 from photometric_viewer.photometry.iesna_common.model import IesContent, Attribute
 from photometric_viewer.photometry.iesna_common.validator import validate as iesna_common_validate
 from photometric_viewer.photometry.validation import (
@@ -12,7 +12,6 @@ from photometric_viewer.photometry.validation import (
     ValidationIssueBase, AttributeInvalidValue, NumericAttributeOutOfRange, Severity,
 )
 from photometric_viewer.utils.conversion import safe_float, safe_int
-from photometry.ies02.validation_issues import Ies02HAnglesTypeAFirstValueInvalid, Ies02HAnglesTypeALastValueInvalid
 
 
 def validate(content: IesContent) -> List[ValidationIssueBase]:
@@ -161,8 +160,8 @@ def _validate_h_angles(content: IesContent) -> List[ValidationIssueBase]:
     elif photometry_type in (2, 3):
         valid_first_values = (-90.0, 0.0)
         if first_value not in valid_first_values:
-            issues.append(Ies91HAnglesTypeBFirstValueInvalid(first_value, first_line) if photometry_type == 2 else Ies02HAnglesTypeAFirstValueInvalid(first_value, first_line))
+            issues.append(Ies91HAnglesTypeBFirstValueInvalid(first_value, first_line) if photometry_type == 2 else Ies91HAnglesTypeAFirstValueInvalid(first_value, first_line))
         if last_value != 90.0:
-            issues.append(Ies91HAnglesTypeBLastValueInvalid(last_value, last_line) if photometry_type == 2 else Ies02HAnglesTypeALastValueInvalid(last_value, last_line))
+            issues.append(Ies91HAnglesTypeBLastValueInvalid(last_value, last_line) if photometry_type == 2 else Ies91HAnglesTypeALastValueInvalid(last_value, last_line))
 
     return issues

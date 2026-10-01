@@ -79,6 +79,14 @@ class Ies95HAnglesTypeAFirstValueInvalid(ValidationIssueBase):
     def __str__(self) -> str:
         return f"Type A photometry first horizontal angle is invalid: {self.value}. Expected 0 or -90."
 
+class Ies95HAnglesTypeALastValueInvalid(ValidationIssueBase):
+    def __init__(self, value, line_number: int | None):
+        super().__init__(line_number, Severity.ERROR)
+        self.value = value
+
+    def __str__(self) -> str:
+        return f"Type A photometry last horizontal angle is invalid: {self.value}. Expected 90."
+
 class Ies95BallastLampPhotometricFactorDeprecated(ValidationIssueBase):
     def __init__(self, value, line_number: int | None = None):
         super().__init__(line_number, Severity.ERROR)
