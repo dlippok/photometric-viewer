@@ -5,7 +5,8 @@ from photometric_viewer.photometry.ies91.validation_issues import Ies91LuminousO
     Ies91HAnglesTypeCLastValueInvalid, Ies91HAnglesTypeCFirstValueInvalid, \
     Ies91HAnglesTypeBFirstValueInvalid, Ies91HAnglesTypeBLastValueInvalid, Ies91HeaderInvalid, \
     Ies91MetadataKeyMissingRequired, Ies91HAnglesTypeAFirstValueInvalid, Ies91HAnglesTypeALastValueInvalid
-from photometric_viewer.photometry.iesna_common.model import IesContent, Attribute
+from photometric_viewer.photometry.iesna_common.model import IesContent
+from photometric_viewer.photometry.common import Attribute
 from photometric_viewer.photometry.iesna_common.validator import validate as iesna_common_validate
 from photometric_viewer.photometry.validation import (
     AttributeMissingValue,

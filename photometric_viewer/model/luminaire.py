@@ -3,6 +3,7 @@ from enum import Enum
 from typing import Dict, Tuple, List, Any
 
 from photometric_viewer.model.units import LengthUnits
+from photometric_viewer.utils.conversion import safe_float
 
 
 class LuminaireType(Enum):
@@ -105,9 +106,10 @@ class Calculable:
             return self
 
     def from_percent(self):
-        if self.value is None:
+        value = safe_float(self.value)
+        if value is None:
             return Calculable(None, self.is_calculated)
-        return Calculable(self.value / 100, self.is_calculated)
+        return Calculable(value / 100, self.is_calculated)
 
 
 @dataclass()

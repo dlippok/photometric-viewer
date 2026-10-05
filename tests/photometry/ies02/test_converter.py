@@ -5,7 +5,8 @@ from photometric_viewer.model.luminaire import Luminaire, Calculable, FileFormat
 from photometric_viewer.model.units import LengthUnits
 from photometric_viewer.photometry.ies02.converter import convert_content
 from photometric_viewer.photometry.iesna_common.model import IesContent, InlineAttributes, LampAttributes, MetadataTuple
-from photometric_viewer.photometry.iesna_common.model import Attribute
+from photometric_viewer.photometry.common import Attribute
+
 
 def default_content() -> IesContent:
     return IesContent(

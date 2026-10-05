@@ -1,7 +1,8 @@
 from typing import IO, List, Tuple
 
 from photometric_viewer.photometry.iesna_common.model import (MetadataTuple, InlineAttributes, LampAttributes,
-                                                              IesContent, Attribute)
+                                                              IesContent)
+from photometric_viewer.photometry.common import Attribute
 from photometric_viewer.utils.ioutil import first_non_empty_line, get_n_values, read_till_end
 
 def extract_content(f: IO) -> IesContent:

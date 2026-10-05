@@ -1,11 +1,7 @@
 from dataclasses import dataclass, field
 from typing import List
 
-
-@dataclass
-class Attribute:
-    value: str | None
-    line: int # Actual line or expected line number if the value is missing
+from photometric_viewer.photometry.common import Attribute
 
 
 @dataclass

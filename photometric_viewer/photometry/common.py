@@ -1,18 +1,24 @@
+from dataclasses import dataclass
 from typing import IO
 
-from photometric_viewer.photometry.iesna_common import extractor as iesna_extractor
-from photometric_viewer.photometry.ies02 import converter as ies02_converter
-from photometric_viewer.photometry.ies02 import validator as ies02_validator
-from photometric_viewer.photometry.ies95 import converter as ies95_converter
-from photometric_viewer.photometry.ies95 import validator as ies95_validator
-from photometric_viewer.photometry.ies91 import converter as ies91_converter
-from photometric_viewer.photometry.ies91 import validator as ies91_validator
-from photometric_viewer.photometry.ldt import converter as ldt_converter
-from photometric_viewer.photometry.ldt import extractor as ldt_extractor
-from photometric_viewer.utils.ioutil import first_non_empty_line
+
+@dataclass
+class Attribute:
+    value: str | None
+    line: int # Actual line or expected line number if the value is missing
 
 
 def import_from_file(f: IO):
+    from photometric_viewer.photometry.iesna_common import extractor as iesna_extractor
+    from photometric_viewer.photometry.ies02 import converter as ies02_converter
+    from photometric_viewer.photometry.ies02 import validator as ies02_validator
+    from photometric_viewer.photometry.ies95 import converter as ies95_converter
+    from photometric_viewer.photometry.ies95 import validator as ies95_validator
+    from photometric_viewer.photometry.ies91 import converter as ies91_converter
+    from photometric_viewer.photometry.ies91 import validator as ies91_validator
+    from photometric_viewer.photometry.ldt import converter as ldt_converter
+    from photometric_viewer.photometry.ldt import extractor as ldt_extractor
+    from photometric_viewer.utils.ioutil import first_non_empty_line
     possible_ies_header, _ = first_non_empty_line(f)
     f.seek(0)
 

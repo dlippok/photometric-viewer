@@ -1,47 +1,48 @@
 from dataclasses import dataclass, field
-from typing import List
+from typing import Any, List
 
+from photometric_viewer.photometry.common import Attribute
 
 @dataclass
 class LampSet:
-    number_of_lamps: int | None = None
-    type_of_lamp: str | None = None
-    total_lumens: float | None = None
-    light_color: str | None = None
-    cri: str | None = None
-    wattage: float | None = None
-
+    number_of_lamps: Attribute
+    type_of_lamp: Attribute
+    total_lumens: Attribute
+    light_color: Attribute
+    cri: Attribute
+    wattage: Attribute
 
 @dataclass
 class LdtContent:
-    header: str | None = None
-    type_indicator: int | None = None
-    symmetry_indicator: int | None = None
-    number_of_c_planes: int | None = None
-    distance_between_c_planes: float | None = None
-    number_of_intensities: int | None = None
-    distance_between_intensities: float | None = None
-    measurement_report: str | None = None
-    luminaire_name: str | None = None
-    luminaire_number: str | None = None
-    file_name: str | None = None
-    date_and_user: str | None = None
-    length_of_luminaire: float | None = None
-    width_of_luminaire: float | None = None
-    height_of_luminaire: float | None = None
-    length_of_luminous_area: float | None = None
-    width_of_luminous_area: float | None = None
-    height_of_luminous_area_c0: float | None = None
-    height_of_luminous_area_c90: float | None = None
-    height_of_luminous_area_c180: float | None = None
-    height_of_luminous_area_c270: float | None = None
-    dff_percent: float | None = None
-    lor_percent: float | None = None
-    conversion_factor: float | None = None
-    tilt: float | None = None
-    number_of_lamp_sets: int | None = None
+    header: Attribute
+    type_indicator: Attribute
+    symmetry_indicator: Attribute
+    number_of_c_planes: Attribute
+    distance_between_c_planes: Attribute
+    number_of_intensities: Attribute
+    distance_between_intensities: Attribute
+    measurement_report: Attribute
+    luminaire_name: Attribute
+    luminaire_number: Attribute
+    file_name: Attribute
+    date_and_user: Attribute
+    length_of_luminaire: Attribute
+    width_of_luminaire: Attribute
+    height_of_luminaire: Attribute
+    length_of_luminous_area: Attribute
+    width_of_luminous_area: Attribute
+    height_of_luminous_area_c0: Attribute
+    height_of_luminous_area_c90: Attribute
+    height_of_luminous_area_c180: Attribute
+    height_of_luminous_area_c270: Attribute
+    dff_percent: Attribute
+    lor_percent: Attribute
+    conversion_factor: Attribute
+    tilt: Attribute
+    number_of_lamp_sets: Attribute
     lamp_sets: List[LampSet] = field(default_factory=list)
-    direct_ratios_for_room_indices: List[float | None] = field(default_factory=list)
-    c_angles: List[float | None] = field(default_factory=list)
-    gamma_angles: List[float | None] = field(default_factory=list)
-    intensities: List[float] = field(default_factory=list)
+    direct_ratios_for_room_indices: List[Attribute] = field(default_factory=list)
+    c_angles: List[Attribute] = field(default_factory=list)
+    gamma_angles: List[Attribute] = field(default_factory=list)
+    intensities: List[Attribute] = field(default_factory=list)
+

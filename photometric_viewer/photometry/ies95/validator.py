@@ -5,7 +5,8 @@ from photometric_viewer.photometry.ies95.validation_issues import Ies95HeaderInv
     Ies95LuminousOpeningGeometryInvalid, Ies95HAnglesTypeCLastValueInvalid, Ies95HAnglesTypeCFirstValueInvalid, \
     Ies95HAnglesTypeBFirstValueInvalid, Ies95HAnglesTypeBLastValueInvalid, Ies95MetadataKeyMissingRecommended, \
     Ies95BallastLampPhotometricFactorDeprecated, Ies95HAnglesTypeAFirstValueInvalid, Ies95HAnglesTypeALastValueInvalid
-from photometric_viewer.photometry.iesna_common.model import IesContent, Attribute
+from photometric_viewer.photometry.iesna_common.model import IesContent
+from photometric_viewer.photometry.common import Attribute
 from photometric_viewer.photometry.iesna_common.validator import validate as iesna_common_validate
 from photometric_viewer.photometry.validation import (
     AttributeMissingValue,

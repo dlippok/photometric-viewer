@@ -1,7 +1,8 @@
 import math
 from typing import List
 
-from photometric_viewer.photometry.iesna_common.model import IesContent, Attribute
+from photometric_viewer.photometry.iesna_common.model import IesContent
+from photometric_viewer.photometry.common import Attribute
 from photometric_viewer.photometry.iesna_common.validation_issues import (
     IesMetadataKeyMissing,
     IesMetadataKeyNotUppercase, IesMetadataKeyTooLong, IesMetadataKeyLeadingTrailingWhitespace,

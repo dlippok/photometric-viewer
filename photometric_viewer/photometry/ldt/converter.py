@@ -1,10 +1,12 @@
-from typing import List
+from typing import List, Dict, Tuple
 
 from photometric_viewer.model.luminaire import Luminaire, LuminaireGeometry, Shape, LuminousOpeningGeometry, \
     LuminousOpeningShape, \
     LuminairePhotometricProperties, Calculable, Lamps, PhotometryMetadata, FileFormat, Symmetry, LuminaireType
 from photometric_viewer.model.units import LengthUnits
+from photometric_viewer.photometry.iesna_common.model import Attribute
 from photometric_viewer.photometry.ldt.model import LdtContent, LampSet
+from photometric_viewer.utils.conversion import safe_float, safe_int
 
 
 def _extract_intensity(intensities: List[float]) -> float | None:
@@ -13,36 +15,52 @@ def _extract_intensity(intensities: List[float]) -> float | None:
 
 def _is_absolute(content: LdtContent):
     return any(
-        lamp_set.number_of_lamps is not None
-        and lamp_set.number_of_lamps < 0
+        safe_int(lamp_set.number_of_lamps.value) is not None
+        and safe_int(lamp_set.number_of_lamps.value) < 0
         for lamp_set
         in content.lamp_sets
     )
 
+def _extract_angles(attributes: List[Attribute]) -> List[float ]:
+    result = []
+    for a in attributes:
+        value = safe_float(a.value)
+        if value is not None:
+            result.append(value)
 
-def _extract_candela_values(content: LdtContent) -> dict[tuple[float, float], float]:
+    return result
+
+
+def _extract_candela_values(content: LdtContent, c_angles: List[float], gamma_angles: List[float]) -> Dict[Tuple[float, float], float]:
     symmetry = _extract_symmetry(content)
-
-    c_angles = [c for c in content.c_angles if c is not None]
-    gamma_angles = [g for g in content.gamma_angles if g is not None]
-
     if content.lamp_sets and _is_absolute(content):
-        factor = content.lamp_sets[0].total_lumens / 1000
+        total_lumens = safe_float(content.lamp_sets[0].total_lumens.value)
+        factor = total_lumens / 1000 if total_lumens is not None and total_lumens > 0 else 1.0
     else:
-        factor = 1
-    converted_intensities = [(v or 0) * factor for v in content.intensities]
+        factor = 1.0
 
-    values = {}
+    converted_intensities: List[float] = [
+        (safe_float(v.value) or 0) * factor
+        for v
+        in content.intensities
+    ]
+
+    values: Dict[
+        Tuple[float | None, float | None],
+        float | None
+    ] = {}
 
     if symmetry == Symmetry.NONE:
         for c in c_angles:
             for gamma in gamma_angles:
                 values[(c, gamma)] = _extract_intensity(converted_intensities)
+
     elif symmetry == Symmetry.TO_VERTICAL_AXIS:
         for gamma in gamma_angles:
             value = _extract_intensity(converted_intensities)
             for c in c_angles:
                 values[(c, gamma)] = value
+
     elif symmetry == Symmetry.TO_C0_C180:
         for c in c_angles:
             if c <= 180:
@@ -51,10 +69,11 @@ def _extract_candela_values(content: LdtContent) -> dict[tuple[float, float], fl
                     values[(c, gamma)] = value
                     if c != 0:
                         values[(360 - c, gamma)] = value
+
     elif symmetry == Symmetry.TO_C90_C270:
-        angles = [c for c in c_angles if 270 <= c < 360]
-        angles += [c for c in c_angles if c <= 90]
-        angles += [c for c in c_angles if 90 < c < 270]
+        angles: List[float | None] = [c for c in c_angles if 270 <= c < 360]
+        angles.extend([c for c in c_angles if c <= 90])
+        angles.extend([c for c in c_angles if 90 < c < 270])
 
         for c in angles:
             if 270 <= c < 360:
@@ -79,7 +98,12 @@ def _extract_candela_values(content: LdtContent) -> dict[tuple[float, float], fl
                         values[(360 - c, gamma)] = value
                         values[(180 - c, gamma)] = value
 
-    return {k: v for k, v in values.items() if v is not None}
+    result = {}
+    for k, v in values.items():
+        if k[0] is not None and k[1] is not None and v is not None:
+            result[k] = v
+
+    return result
 
 
 def _extract_luminaire_geometry(content: LdtContent) -> LuminaireGeometry | None:
@@ -98,8 +122,9 @@ def _extract_luminaire_geometry(content: LdtContent) -> LuminaireGeometry | None
     )
 
 
-def _to_meters(value: float | None) -> float | None:
-    return value / 1000 if value is not None else None
+def _to_meters(value: Attribute) -> float | None:
+    float_value = safe_float(value.value)
+    return float_value / 1000 if float_value is not None else None
 
 
 def _extract_luminous_opening_geometry(content: LdtContent) -> LuminousOpeningGeometry | None:
@@ -114,13 +139,12 @@ def _extract_luminous_opening_geometry(content: LdtContent) -> LuminousOpeningGe
         return None
 
     shape = None
-    match content.length_of_luminous_area, content.width_of_luminous_area:
-        case 0, 0:
-            shape = LuminousOpeningShape.POINT
-        case l, 0:
-            shape = LuminousOpeningShape.ROUND
-        case l, w:
-            shape = LuminousOpeningShape.RECTANGULAR
+    if width == 0.0 and length == 0.0:
+        shape = LuminousOpeningShape.POINT
+    elif width == 0.0 and length != 0.0:
+        shape = LuminousOpeningShape.ROUND
+    else:
+        shape = LuminousOpeningShape.RECTANGULAR
 
     return LuminousOpeningGeometry(
         length=length,
@@ -134,49 +158,63 @@ def _extract_luminous_opening_geometry(content: LdtContent) -> LuminousOpeningGe
 
 
 def _extract_lamp_set(lamp_set: LampSet) -> Lamps:
+    number_of_lamps = safe_int(lamp_set.number_of_lamps.value)
+    total_lumens = safe_float(lamp_set.total_lumens.value)
+
     return Lamps(
-        number_of_lamps=abs(lamp_set.number_of_lamps) if lamp_set.number_of_lamps else None,
-        lumens_per_lamp=lamp_set.total_lumens / abs(lamp_set.number_of_lamps) if lamp_set.total_lumens else None,
-        wattage=lamp_set.wattage,
-        color=lamp_set.light_color,
-        cri=lamp_set.cri,
-        description=lamp_set.type_of_lamp
+        number_of_lamps=abs(number_of_lamps) if number_of_lamps is not None else None,
+        lumens_per_lamp=total_lumens / abs(number_of_lamps) if number_of_lamps is not None and number_of_lamps != 0 else None,
+        wattage=safe_float(lamp_set.wattage.value),
+        color=lamp_set.light_color.value,
+        cri=lamp_set.cri.value,
+        description=lamp_set.type_of_lamp.value
     )
 
 
-def _extract_direct_ratios_for_room_indices(content):
-    return {
-        index: value for index, value in zip(
-            [0.60, 0.80, 1.00, 1.25, 1.50, 2.00, 2.50, 3.00, 4.00, 5.00],
-            content.direct_ratios_for_room_indices
-        )
-        if value is not None
-    }
+def _extract_direct_ratios_for_room_indices(content) -> Dict[float, float]:
+    result = {}
+
+    for index, value in zip(
+        [0.60, 0.80, 1.00, 1.25, 1.50, 2.00, 2.50, 3.00, 4.00, 5.00],
+        content.direct_ratios_for_room_indices
+    ):
+        if safe_float(value.value) is not None:
+            result[index] = safe_float(value.value)
+
+    return result
 
 
 def _extract_light_source_type(content: LdtContent):
-    match content.type_indicator:
-        case 1:
+    match content.type_indicator.value:
+        case "1":
             return LuminaireType.POINT_SOURCE_WITH_VERTICAL_SYMMETRY
-        case 2:
+        case "2":
             return LuminaireType.LINEAR
-        case 3:
+        case _:
             return LuminaireType.POINT_SOURCE_WITH_OTHER_SYMMETRY
 
 
 def _extract_lor(content: LdtContent) -> Calculable:
-    if content.lor_percent is None:
+    if content.lor_percent.value is None:
         return Calculable(None)
 
-    return Calculable(content.lor_percent / 100)
+    lor_percent = safe_float(content.lor_percent.value)
+    if not lor_percent or lor_percent < 0 or lor_percent > 100:
+        return Calculable(None)
+
+    return Calculable(lor_percent / 100)
 
 
 def _extract_luminous_flux(content: LdtContent) -> Calculable:
     if not _is_absolute(content):
         return Calculable(None)
 
-    if content.lamp_sets and content.lamp_sets[0].total_lumens:
-        return Calculable(content.lamp_sets[0].total_lumens)
+    if not content.lamp_sets:
+        return Calculable(None)
+
+    total_lumens = safe_float(content.lamp_sets[0].total_lumens.value)
+    if content.lamp_sets and total_lumens is not None:
+        return Calculable(total_lumens)
 
     return Calculable(None)
 
@@ -185,31 +223,41 @@ def _extract_efficacy(content: LdtContent) -> Calculable:
     if not _is_absolute(content):
         return Calculable(None)
 
-    if content.lamp_sets and content.lamp_sets[0].total_lumens and content.lamp_sets[0].wattage:
-        return Calculable(content.lamp_sets[0].total_lumens / content.lamp_sets[0].wattage)
+    if not content.lamp_sets:
+        return Calculable(None)
+
+    total_lumens = safe_float(content.lamp_sets[0].total_lumens.value)
+    wattage = safe_float(content.lamp_sets[0].wattage.value)
+
+    if total_lumens and wattage and wattage > 0:
+        return Calculable(total_lumens / wattage)
 
     return Calculable(None)
 
 
 def _extract_symmetry(content: LdtContent) -> Symmetry:
-    match content.symmetry_indicator:
-        case 1:
+    match content.symmetry_indicator.value:
+        case "1":
             return Symmetry.TO_VERTICAL_AXIS
-        case 2:
+        case "2":
             return Symmetry.TO_C0_C180
-        case 3:
+        case "3":
             return Symmetry.TO_C90_C270
-        case 4:
+        case "4":
             return Symmetry.TO_C0_C180_C90_C270
         case _:
             return Symmetry.NONE
 
 
+
 def convert_content(content: LdtContent) -> Luminaire:
+    c_angles = _extract_angles(content.c_angles)
+    gamma_angles = _extract_angles(content.gamma_angles)
+
     return Luminaire(
-        gamma_angles=content.gamma_angles,
-        c_planes=content.c_angles,
-        intensity_values=_extract_candela_values(content),
+        gamma_angles=gamma_angles,
+        c_planes=c_angles,
+        intensity_values=_extract_candela_values(content, c_angles, gamma_angles),
         geometry=_extract_luminaire_geometry(content),
         luminous_opening_geometry=_extract_luminous_opening_geometry(content),
         photometry=LuminairePhotometricProperties(
@@ -221,16 +269,16 @@ def convert_content(content: LdtContent) -> Luminaire:
         ),
         lamps=[_extract_lamp_set(lamp_set) for lamp_set in content.lamp_sets],
         metadata=PhotometryMetadata(
-            catalog_number=content.luminaire_number,
-            luminaire=content.luminaire_name,
-            manufacturer=content.header,
+            catalog_number=content.luminaire_number.value,
+            luminaire=content.luminaire_name.value,
+            manufacturer=content.header.value,
             file_format=FileFormat.EULUMDAT,
             file_units=LengthUnits.MILLIMETERS,
             luminaire_type=_extract_light_source_type(content),
-            measurement=content.measurement_report,
-            date_and_user=content.date_and_user,
-            conversion_factor=content.conversion_factor,
-            filename=content.file_name,
+            measurement=content.measurement_report.value,
+            date_and_user=content.date_and_user.value,
+            conversion_factor=safe_float(content.conversion_factor.value),
+            filename=content.file_name.value,
             additional_properties={},
             symmetry=_extract_symmetry(content),
             direct_ratios_for_room_indices=_extract_direct_ratios_for_room_indices(content)
