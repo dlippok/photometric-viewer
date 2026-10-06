@@ -1,7 +1,5 @@
 from typing import IO, Any, Tuple, List
 
-from firewall.core.io.helper import helper_writer
-
 from photometric_viewer.photometry.common import Attribute
 from photometric_viewer.photometry.ldt.model import LdtContent, LampSet
 from photometric_viewer.utils.ioutil import read_till_end

@@ -53,6 +53,23 @@ class AttributeInvalidValue(ValidationIssueBase):
     def __str__(self) -> str:
         return f"Invalid value for attribute {self.attribute}: {self.value!r}"
 
+class AttributeTooLong(ValidationIssueBase):
+    def __init__(
+            self,
+            attribute: str,
+            value: str,
+            max_length: int,
+            line_number: int | None,
+            severity: Severity = Severity.WARNING
+    ):
+        super().__init__(line_number, severity)
+        self.attribute = attribute
+        self.value = value
+        self.max_length = max_length
+
+    def __str__(self) -> str:
+        return f"Attribute {self.attribute} exceeds maximum length of {self.max_length}: {self.value!r}"
+
 
 class NumericAttributeOutOfRange(ValidationIssueBase):
     def __init__(
@@ -61,9 +78,10 @@ class NumericAttributeOutOfRange(ValidationIssueBase):
             value: float | int,
             line_number: int | None,
             min_value: float | int | None = None,
-            max_value: float | int | None = None
+            max_value: float | int | None = None,
+            severity: Severity = Severity.INFO
     ):
-        super().__init__(line_number, Severity.INFO)
+        super().__init__(line_number, severity)
         self.attribute = attribute
         self.value = value
         self.min_value = min_value

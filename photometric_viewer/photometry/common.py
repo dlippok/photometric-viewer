@@ -18,6 +18,7 @@ def import_from_file(f: IO):
     from photometric_viewer.photometry.ies91 import validator as ies91_validator
     from photometric_viewer.photometry.ldt import converter as ldt_converter
     from photometric_viewer.photometry.ldt import extractor as ldt_extractor
+    from photometric_viewer.photometry.ldt import validator as ldt_validator
     from photometric_viewer.utils.ioutil import first_non_empty_line
     possible_ies_header, _ = first_non_empty_line(f)
     f.seek(0)
@@ -45,6 +46,7 @@ def import_from_file(f: IO):
             luminaire = ies02_converter.convert_content(content)
         case _:
             content = ldt_extractor.extract_content(f)
+            issues = ldt_validator.validate(content)
             luminaire = ldt_converter.convert_content(content)
 
     if issues:
