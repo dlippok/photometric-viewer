@@ -1,5 +1,8 @@
 from dataclasses import dataclass
-from typing import IO
+from typing import IO, Tuple, List
+
+from photometric_viewer.model.luminaire import Luminaire
+from photometric_viewer.photometry.validation import ValidationIssueBase
 
 
 @dataclass
@@ -8,7 +11,7 @@ class Attribute:
     line: int # Actual line or expected line number if the value is missing
 
 
-def import_from_file(f: IO):
+def import_from_file(f: IO) -> Tuple[Luminaire, List[ValidationIssueBase]]:
     from photometric_viewer.photometry.iesna_common import extractor as iesna_extractor
     from photometric_viewer.photometry.ies02 import converter as ies02_converter
     from photometric_viewer.photometry.ies02 import validator as ies02_validator
@@ -49,11 +52,4 @@ def import_from_file(f: IO):
             issues = ldt_validator.validate(content)
             luminaire = ldt_converter.convert_content(content)
 
-    if issues:
-        print(f"Found {len(issues)} issues:")
-        for issue in issues:
-            print(f"[{issue.line_number}] [{issue.severity}]: {issue}")
-    else:
-        print("No issues found")
-
-    return luminaire
+    return luminaire, issues

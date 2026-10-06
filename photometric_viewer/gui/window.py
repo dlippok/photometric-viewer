@@ -1,7 +1,7 @@
 import io
 import logging
 from datetime import datetime, timedelta
-from typing import Optional, IO
+from typing import Optional, IO, List
 
 from gi.repository import Adw, Gtk, Gio, GLib, Gdk
 from gi.repository.Gtk import FileChooserDialog, DropTarget
@@ -34,6 +34,7 @@ from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.profiling.decorators import profiled
 from photometric_viewer.utils.gi.GSettings import SettingsManager
 from photometric_viewer.utils.gi.gio import gio_file_stream, write_string
+from photometric_viewer.photometry.validation import ValidationIssueBase
 
 
 class MainWindow(Adw.ApplicationWindow):
@@ -160,6 +161,9 @@ class MainWindow(Adw.ApplicationWindow):
 
         self.opened_photometry = luminaire
 
+    def update_issues(self, issues: List[ValidationIssueBase]):
+        self.source_view_page.status_bar.update_issues(issues)
+
     def on_new(self, *args):
         stream = io.StringIO("")
         self.open_stream(stream)
@@ -276,9 +280,11 @@ class MainWindow(Adw.ApplicationWindow):
 
         try:
             self.is_opening = True
-            photometry = import_from_file(f)
+            photometry, issues = import_from_file(f)
 
             self.display_photometry_content(photometry)
+            self.update_issues(issues)
+
 
             self.add_action_entries(
                 [
