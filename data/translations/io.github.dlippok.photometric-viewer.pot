@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-26 20:31+0100\n"
+"POT-Creation-Date: 2026-10-07 21:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,6 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: photometric_viewer/gui/dialogs/file_chooser.py:15
+#: photometric_viewer/gui/pages/photometry_export.py:99
 #: photometric_viewer/gui/pages/photometry_export.py:97
 msgid "All files"
 msgstr ""
@@ -31,6 +32,7 @@ msgid "CSV files"
 msgstr ""
 
 #: photometric_viewer/gui/dialogs/file_chooser.py:45
+#: photometric_viewer/gui/pages/ldc_export.py:77
 #: photometric_viewer/gui/pages/ldc_export.py:75
 #: photometric_viewer/gui/pages/ldc_export.py:74
 #: photometric_viewer/gui/pages/ldc_export.py:82
@@ -38,6 +40,7 @@ msgid "PNG raster graphics"
 msgstr ""
 
 #: photometric_viewer/gui/dialogs/file_chooser.py:48
+#: photometric_viewer/gui/pages/ldc_export.py:83
 #: photometric_viewer/gui/pages/ldc_export.py:81
 #: photometric_viewer/gui/pages/ldc_export.py:80
 #: photometric_viewer/gui/pages/ldc_export.py:88
@@ -57,6 +60,7 @@ msgid "All photometric files"
 msgstr ""
 
 #: photometric_viewer/gui/dialogs/file_chooser.py:66
+#: photometric_viewer/gui/pages/photometry_export.py:94
 #: photometric_viewer/gui/pages/photometry_export.py:92
 #: photometric_viewer/gui/dialogs/file_chooser.py:70
 #: photometric_viewer/gui/dialogs/file_chooser.py:88
@@ -71,6 +75,7 @@ msgid "IESNA (*.ies)"
 msgstr ""
 
 #: photometric_viewer/gui/dialogs/file_chooser.py:69
+#: photometric_viewer/gui/pages/photometry_export.py:89
 #: photometric_viewer/gui/pages/photometry_export.py:87
 #: photometric_viewer/gui/dialogs/file_chooser.py:59
 #: photometric_viewer/gui/dialogs/file_chooser.py:91
@@ -333,6 +338,7 @@ msgstr ""
 #: photometric_viewer/gui/pages/ballast_set.py:12
 #: photometric_viewer/gui/pages/ballast_set.py:39
 #: photometric_viewer/gui/pages/ballast_set.py:41
+#: photometric_viewer/gui/widgets/content/lamps.py:60
 #: photometric_viewer/gui/widgets/content/lamps.py:50
 #: photometric_viewer/gui/pages/ballast_set.py:11
 #: photometric_viewer/gui/pages/ballast_set.py:38
@@ -357,258 +363,13 @@ msgstr ""
 msgid "Ballast catalog no."
 msgstr ""
 
-#: photometric_viewer/gui/pages/content.py:15
-#: photometric_viewer/gui/window.py:42 photometric_viewer/gui/window.py:40
-#: photometric_viewer/gui/window.py:39 photometric_viewer/gui/window.py:38
-#: photometric_viewer/gui/window.py:266 photometric_viewer/gui/window.py:253
-#: photometric_viewer/gui/pages/content.py:14
-#: photometric_viewer/gui/pages/empty.py:16
-#: photometric_viewer/gui/pages/content.py:16
-#: photometric_viewer/gui/window.py:292 photometric_viewer/gui/window.py:35
-#: photometric_viewer/gui/window.py:234
-#: photometric_viewer/gui/pages/content.py:17
-#: photometric_viewer/gui/window.py:34 photometric_viewer/gui/window.py:229
-#: photometric_viewer/gui/dialogs/about.py:7
-#: photometric_viewer/gui/window.py:33 photometric_viewer/gui/window.py:198
-#: photometric_viewer/gui/window.py:228 photometric_viewer/gui/window.py:51
-#: photometric_viewer/gui/window.py:47 photometric_viewer/gui/window.py:48
-#: photometric_viewer/gui/window.py:46 photometric_viewer/gui/window.py:44
-#: photometric_viewer/gui/window.py:45
-msgid "Photometry"
-msgstr ""
-
-#: photometric_viewer/gui/pages/direct_ratios.py:13
-#: photometric_viewer/gui/widgets/content/photometry.py:57
-#: photometric_viewer/gui/pages/direct_ratios.py:12
-#: photometric_viewer/gui/widgets/content/photometry.py:80
-msgid "Direct ratios for room indices"
-msgstr ""
-
-#: photometric_viewer/gui/pages/direct_ratios.py:44
-#: photometric_viewer/gui/pages/direct_ratios.py:43
-msgid "Room index: {:.2f}"
-msgstr ""
-
-#: photometric_viewer/gui/pages/geometry.py:15
-#: photometric_viewer/gui/widgets/content/photometry.py:83
-#: photometric_viewer/gui/pages/geometry.py:14
-#: photometric_viewer/gui/pages/content.py:36
-#: photometric_viewer/gui/pages/content.py:35
-#: photometric_viewer/gui/pages/content.py:42
-#: photometric_viewer/gui/pages/content.py:43
-msgid "Geometry"
-msgstr ""
-
-#: photometric_viewer/gui/pages/geometry.py:81
-#: photometric_viewer/gui/pages/geometry.py:84
-#: photometric_viewer/gui/pages/geometry.py:80
-#: photometric_viewer/gui/pages/geometry.py:83
-#: photometric_viewer/gui/widgets/content/geometry.py:60
-#: photometric_viewer/gui/widgets/content/geometry.py:63
-#: photometric_viewer/gui/widgets/content/geometry.py:59
-msgid "Luminaire shape"
-msgstr ""
-
-#: photometric_viewer/gui/pages/geometry.py:81
-#: photometric_viewer/gui/pages/geometry.py:90
-#: photometric_viewer/gui/pages/geometry.py:80
-#: photometric_viewer/gui/pages/geometry.py:89
-#: photometric_viewer/gui/widgets/content/geometry.py:60
-#: photometric_viewer/gui/widgets/content/geometry.py:69
-#: photometric_viewer/gui/widgets/content/geometry.py:68
-#: photometric_viewer/gui/widgets/content/geometry.py:59
-#: photometric_viewer/gui/widgets/content/geometry.py:67
-msgid "Rectangular"
-msgstr ""
-
-#: photometric_viewer/gui/pages/geometry.py:82
-#: photometric_viewer/gui/pages/geometry.py:85
-#: photometric_viewer/gui/pages/geometry.py:81
-#: photometric_viewer/gui/pages/geometry.py:84
-#: photometric_viewer/gui/widgets/content/geometry.py:61
-#: photometric_viewer/gui/widgets/content/geometry.py:64
-#: photometric_viewer/gui/widgets/content/geometry.py:60
-msgid "Luminaire dimensions"
-msgstr ""
-
-#: photometric_viewer/gui/pages/geometry.py:84
-#: photometric_viewer/gui/pages/geometry.py:92
-#: photometric_viewer/gui/pages/geometry.py:83
-#: photometric_viewer/gui/pages/geometry.py:91
-#: photometric_viewer/gui/widgets/content/geometry.py:63
-#: photometric_viewer/gui/widgets/content/geometry.py:71
-#: photometric_viewer/gui/widgets/content/geometry.py:70
-#: photometric_viewer/gui/widgets/content/geometry.py:62
-msgid "Round"
-msgstr ""
-
-#: photometric_viewer/gui/pages/geometry.py:90
-#: photometric_viewer/gui/pages/geometry.py:92
-#: photometric_viewer/gui/pages/geometry.py:94
-#: photometric_viewer/gui/pages/geometry.py:96
-#: photometric_viewer/gui/pages/geometry.py:98
-#: photometric_viewer/gui/pages/geometry.py:100
-#: photometric_viewer/gui/pages/geometry.py:102
-#: photometric_viewer/gui/pages/geometry.py:104
-#: photometric_viewer/gui/pages/geometry.py:106
-#: photometric_viewer/gui/pages/geometry.py:108
-#: photometric_viewer/gui/pages/geometry.py:89
-#: photometric_viewer/gui/pages/geometry.py:91
-#: photometric_viewer/gui/pages/geometry.py:93
-#: photometric_viewer/gui/pages/geometry.py:95
-#: photometric_viewer/gui/pages/geometry.py:97
-#: photometric_viewer/gui/pages/geometry.py:99
-#: photometric_viewer/gui/pages/geometry.py:101
-#: photometric_viewer/gui/pages/geometry.py:103
-#: photometric_viewer/gui/pages/geometry.py:105
-#: photometric_viewer/gui/pages/geometry.py:107
-#: photometric_viewer/gui/widgets/content/geometry.py:69
-#: photometric_viewer/gui/widgets/content/geometry.py:71
-#: photometric_viewer/gui/widgets/content/geometry.py:73
-#: photometric_viewer/gui/widgets/content/geometry.py:75
-#: photometric_viewer/gui/widgets/content/geometry.py:77
-#: photometric_viewer/gui/widgets/content/geometry.py:79
-#: photometric_viewer/gui/widgets/content/geometry.py:81
-#: photometric_viewer/gui/widgets/content/geometry.py:83
-#: photometric_viewer/gui/widgets/content/geometry.py:85
-#: photometric_viewer/gui/widgets/content/geometry.py:87
-#: photometric_viewer/gui/widgets/content/geometry.py:68
-#: photometric_viewer/gui/widgets/content/geometry.py:70
-#: photometric_viewer/gui/widgets/content/geometry.py:72
-#: photometric_viewer/gui/widgets/content/geometry.py:74
-#: photometric_viewer/gui/widgets/content/geometry.py:76
-#: photometric_viewer/gui/widgets/content/geometry.py:78
-#: photometric_viewer/gui/widgets/content/geometry.py:80
-#: photometric_viewer/gui/widgets/content/geometry.py:82
-#: photometric_viewer/gui/widgets/content/geometry.py:84
-#: photometric_viewer/gui/widgets/content/geometry.py:86
-#: photometric_viewer/gui/widgets/content/geometry.py:67
-msgid "Luminous opening shape"
-msgstr ""
-
-#: photometric_viewer/gui/pages/geometry.py:94
-#: photometric_viewer/gui/pages/geometry.py:93
-#: photometric_viewer/gui/widgets/content/geometry.py:73
-#: photometric_viewer/gui/widgets/content/geometry.py:72
-msgid "Sphere"
-msgstr ""
-
-#: photometric_viewer/gui/pages/geometry.py:96
-#: photometric_viewer/gui/pages/geometry.py:95
-#: photometric_viewer/gui/widgets/content/geometry.py:75
-#: photometric_viewer/gui/widgets/content/geometry.py:74
-msgid "Point"
-msgstr ""
-
-#: photometric_viewer/gui/pages/geometry.py:98
-#: photometric_viewer/gui/pages/geometry.py:97
-#: photometric_viewer/gui/widgets/content/geometry.py:77
-#: photometric_viewer/gui/widgets/content/geometry.py:76
-msgid "Horizontal cylinder oriented along luminaire width"
-msgstr ""
-
-#: photometric_viewer/gui/pages/geometry.py:100
-#: photometric_viewer/gui/pages/geometry.py:99
-#: photometric_viewer/gui/widgets/content/geometry.py:79
-#: photometric_viewer/gui/widgets/content/geometry.py:78
-msgid "Horizontal cylinder oriented along luminaire length"
-msgstr ""
-
-#: photometric_viewer/gui/pages/geometry.py:102
-#: photometric_viewer/gui/pages/geometry.py:101
-#: photometric_viewer/gui/widgets/content/geometry.py:81
-#: photometric_viewer/gui/widgets/content/geometry.py:80
-msgid "Ellipse oriented along luminaire width"
-msgstr ""
-
-#: photometric_viewer/gui/pages/geometry.py:104
-#: photometric_viewer/gui/pages/geometry.py:103
-#: photometric_viewer/gui/widgets/content/geometry.py:83
-#: photometric_viewer/gui/widgets/content/geometry.py:82
-msgid "Ellipse oriented along luminaire length"
-msgstr ""
-
-#: photometric_viewer/gui/pages/geometry.py:106
-#: photometric_viewer/gui/pages/geometry.py:105
-#: photometric_viewer/gui/widgets/content/geometry.py:85
-#: photometric_viewer/gui/widgets/content/geometry.py:84
-msgid "Ellipsoid oriented along luminaire width"
-msgstr ""
-
-#: photometric_viewer/gui/pages/geometry.py:108
-#: photometric_viewer/gui/pages/geometry.py:107
-#: photometric_viewer/gui/widgets/content/geometry.py:87
-#: photometric_viewer/gui/widgets/content/geometry.py:86
-msgid "Ellipsoid oriented along luminaire length"
-msgstr ""
-
-#: photometric_viewer/gui/pages/geometry.py:114
-#: photometric_viewer/gui/pages/geometry.py:116
-#: photometric_viewer/gui/pages/geometry.py:120
-#: photometric_viewer/gui/pages/geometry.py:113
-#: photometric_viewer/gui/pages/geometry.py:115
-#: photometric_viewer/gui/pages/geometry.py:119
-#: photometric_viewer/gui/widgets/content/geometry.py:93
-#: photometric_viewer/gui/widgets/content/geometry.py:95
-#: photometric_viewer/gui/widgets/content/geometry.py:97
-#: photometric_viewer/gui/widgets/content/geometry.py:92
-#: photometric_viewer/gui/widgets/content/geometry.py:94
-#: photometric_viewer/gui/widgets/content/geometry.py:96
-#: photometric_viewer/gui/widgets/content/geometry.py:68
-#: photometric_viewer/gui/widgets/content/geometry.py:71
-msgid "Luminous opening dimensions"
-msgstr ""
-
-#: photometric_viewer/gui/pages/geometry.py:122
-#: photometric_viewer/gui/pages/geometry.py:121
-#: photometric_viewer/gui/widgets/content/geometry.py:99
-#: photometric_viewer/gui/widgets/content/geometry.py:98
-msgid "Luminous opening height"
-msgstr ""
-
-#: photometric_viewer/gui/pages/geometry.py:126
-#: photometric_viewer/gui/pages/geometry.py:125
-#: photometric_viewer/gui/widgets/content/geometry.py:103
-#: photometric_viewer/gui/widgets/content/geometry.py:102
-#: photometric_viewer/gui/widgets/content/general.py:20
-#: photometric_viewer/formats/ldt.py:161
-msgid "Luminaire type"
-msgstr ""
-
-#: photometric_viewer/gui/pages/geometry.py:132
-#: photometric_viewer/gui/pages/geometry.py:131
-#: photometric_viewer/gui/widgets/content/geometry.py:110
-#: photometric_viewer/gui/widgets/content/geometry.py:109
-#: photometric_viewer/gui/widgets/content/general.py:26
-#: photometric_viewer/formats/ldt.py:26
-msgid "Point source with symmetry about the vertical axis"
-msgstr ""
-
-#: photometric_viewer/gui/pages/geometry.py:134
-#: photometric_viewer/gui/pages/geometry.py:133
-#: photometric_viewer/gui/widgets/content/geometry.py:112
-#: photometric_viewer/gui/widgets/content/geometry.py:111
-#: photometric_viewer/gui/widgets/content/general.py:28
-#: photometric_viewer/formats/ldt.py:27
-msgid "Linear luminaire"
-msgstr ""
-
-#: photometric_viewer/gui/pages/geometry.py:136
-#: photometric_viewer/gui/pages/geometry.py:135
-#: photometric_viewer/gui/widgets/content/geometry.py:114
-#: photometric_viewer/gui/widgets/content/geometry.py:113
-#: photometric_viewer/gui/widgets/content/general.py:30
-#: photometric_viewer/formats/ldt.py:28
-msgid "Point source with any other symmetry"
-msgstr ""
-
 #: photometric_viewer/gui/pages/lamp_set.py:45
 #: photometric_viewer/gui/pages/lamp_set.py:48
+#: photometric_viewer/gui/widgets/content/lamps.py:47
 #: photometric_viewer/gui/widgets/content/lamps.py:37
 #: photometric_viewer/gui/pages/lamp_set.py:47
 #: photometric_viewer/gui/widgets/content/lamps.py:50
 #: photometric_viewer/gui/widgets/content/lamps.py:48
-#: photometric_viewer/gui/widgets/content/lamps.py:47
 #: photometric_viewer/gui/widgets/content/lamps.py:40
 #: photometric_viewer/gui/widgets/content/lamps.py:36
 msgid "Lamp"
@@ -653,6 +414,7 @@ msgid "Luminous flux emitted by the lamp."
 msgstr ""
 
 #: photometric_viewer/gui/pages/lamp_set.py:65
+#: photometric_viewer/gui/pages/photometry.py:72
 #: photometric_viewer/gui/pages/photometry.py:66
 #: photometric_viewer/gui/pages/photometry.py:65
 #: photometric_viewer/gui/pages/lamp_set.py:64
@@ -732,28 +494,291 @@ msgid ""
 "objects faithfully in comparison with an ideal or natural light source."
 msgstr ""
 
+#: photometric_viewer/gui/pages/direct_ratios.py:14
+#: photometric_viewer/gui/widgets/content/photometry.py:40
+#: photometric_viewer/gui/pages/direct_ratios.py:13
+#: photometric_viewer/gui/widgets/content/photometry.py:57
+#: photometric_viewer/gui/pages/direct_ratios.py:12
+#: photometric_viewer/gui/widgets/content/photometry.py:80
+msgid "Direct ratios for room indices"
+msgstr ""
+
+#: photometric_viewer/gui/pages/direct_ratios.py:46
+#: photometric_viewer/gui/pages/direct_ratios.py:44
+#: photometric_viewer/gui/pages/direct_ratios.py:43
+msgid "Room index: {:.2f}"
+msgstr ""
+
+#: photometric_viewer/gui/pages/geometry.py:16
+#: photometric_viewer/gui/widgets/content/photometry.py:62
+#: photometric_viewer/gui/pages/geometry.py:15
+#: photometric_viewer/gui/widgets/content/photometry.py:83
+#: photometric_viewer/gui/pages/geometry.py:14
+#: photometric_viewer/gui/pages/content.py:36
+#: photometric_viewer/gui/pages/content.py:35
+#: photometric_viewer/gui/pages/content.py:42
+#: photometric_viewer/gui/pages/content.py:43
+msgid "Geometry"
+msgstr ""
+
+#: photometric_viewer/gui/pages/geometry.py:83
+#: photometric_viewer/gui/pages/geometry.py:86
+#: photometric_viewer/gui/pages/geometry.py:81
+#: photometric_viewer/gui/pages/geometry.py:84
+#: photometric_viewer/gui/pages/geometry.py:80
+#: photometric_viewer/gui/widgets/content/geometry.py:60
+#: photometric_viewer/gui/widgets/content/geometry.py:63
+#: photometric_viewer/gui/widgets/content/geometry.py:59
+msgid "Luminaire shape"
+msgstr ""
+
+#: photometric_viewer/gui/pages/geometry.py:83
+#: photometric_viewer/gui/pages/geometry.py:92
+#: photometric_viewer/gui/pages/geometry.py:81
+#: photometric_viewer/gui/pages/geometry.py:90
+#: photometric_viewer/gui/pages/geometry.py:80
+#: photometric_viewer/gui/pages/geometry.py:89
+#: photometric_viewer/gui/widgets/content/geometry.py:60
+#: photometric_viewer/gui/widgets/content/geometry.py:69
+#: photometric_viewer/gui/widgets/content/geometry.py:68
+#: photometric_viewer/gui/widgets/content/geometry.py:59
+#: photometric_viewer/gui/widgets/content/geometry.py:67
+msgid "Rectangular"
+msgstr ""
+
+#: photometric_viewer/gui/pages/geometry.py:84
+#: photometric_viewer/gui/pages/geometry.py:87
+#: photometric_viewer/gui/pages/geometry.py:82
+#: photometric_viewer/gui/pages/geometry.py:85
+#: photometric_viewer/gui/pages/geometry.py:81
+#: photometric_viewer/gui/widgets/content/geometry.py:61
+#: photometric_viewer/gui/widgets/content/geometry.py:64
+#: photometric_viewer/gui/widgets/content/geometry.py:60
+msgid "Luminaire dimensions"
+msgstr ""
+
+#: photometric_viewer/gui/pages/geometry.py:86
+#: photometric_viewer/gui/pages/geometry.py:94
+#: photometric_viewer/gui/pages/geometry.py:84
+#: photometric_viewer/gui/pages/geometry.py:92
+#: photometric_viewer/gui/pages/geometry.py:83
+#: photometric_viewer/gui/pages/geometry.py:91
+#: photometric_viewer/gui/widgets/content/geometry.py:63
+#: photometric_viewer/gui/widgets/content/geometry.py:71
+#: photometric_viewer/gui/widgets/content/geometry.py:70
+#: photometric_viewer/gui/widgets/content/geometry.py:62
+msgid "Round"
+msgstr ""
+
+#: photometric_viewer/gui/pages/geometry.py:92
+#: photometric_viewer/gui/pages/geometry.py:94
+#: photometric_viewer/gui/pages/geometry.py:96
+#: photometric_viewer/gui/pages/geometry.py:98
+#: photometric_viewer/gui/pages/geometry.py:100
+#: photometric_viewer/gui/pages/geometry.py:102
+#: photometric_viewer/gui/pages/geometry.py:104
+#: photometric_viewer/gui/pages/geometry.py:106
+#: photometric_viewer/gui/pages/geometry.py:108
+#: photometric_viewer/gui/pages/geometry.py:110
+#: photometric_viewer/gui/pages/geometry.py:90
+#: photometric_viewer/gui/pages/geometry.py:89
+#: photometric_viewer/gui/pages/geometry.py:91
+#: photometric_viewer/gui/pages/geometry.py:93
+#: photometric_viewer/gui/pages/geometry.py:95
+#: photometric_viewer/gui/pages/geometry.py:97
+#: photometric_viewer/gui/pages/geometry.py:99
+#: photometric_viewer/gui/pages/geometry.py:101
+#: photometric_viewer/gui/pages/geometry.py:103
+#: photometric_viewer/gui/pages/geometry.py:105
+#: photometric_viewer/gui/pages/geometry.py:107
+#: photometric_viewer/gui/widgets/content/geometry.py:69
+#: photometric_viewer/gui/widgets/content/geometry.py:71
+#: photometric_viewer/gui/widgets/content/geometry.py:73
+#: photometric_viewer/gui/widgets/content/geometry.py:75
+#: photometric_viewer/gui/widgets/content/geometry.py:77
+#: photometric_viewer/gui/widgets/content/geometry.py:79
+#: photometric_viewer/gui/widgets/content/geometry.py:81
+#: photometric_viewer/gui/widgets/content/geometry.py:83
+#: photometric_viewer/gui/widgets/content/geometry.py:85
+#: photometric_viewer/gui/widgets/content/geometry.py:87
+#: photometric_viewer/gui/widgets/content/geometry.py:68
+#: photometric_viewer/gui/widgets/content/geometry.py:70
+#: photometric_viewer/gui/widgets/content/geometry.py:72
+#: photometric_viewer/gui/widgets/content/geometry.py:74
+#: photometric_viewer/gui/widgets/content/geometry.py:76
+#: photometric_viewer/gui/widgets/content/geometry.py:78
+#: photometric_viewer/gui/widgets/content/geometry.py:80
+#: photometric_viewer/gui/widgets/content/geometry.py:82
+#: photometric_viewer/gui/widgets/content/geometry.py:84
+#: photometric_viewer/gui/widgets/content/geometry.py:86
+#: photometric_viewer/gui/widgets/content/geometry.py:67
+msgid "Luminous opening shape"
+msgstr ""
+
+#: photometric_viewer/gui/pages/geometry.py:96
+#: photometric_viewer/gui/pages/geometry.py:94
+#: photometric_viewer/gui/pages/geometry.py:93
+#: photometric_viewer/gui/widgets/content/geometry.py:73
+#: photometric_viewer/gui/widgets/content/geometry.py:72
+msgid "Sphere"
+msgstr ""
+
+#: photometric_viewer/gui/pages/geometry.py:98
+#: photometric_viewer/gui/pages/geometry.py:96
+#: photometric_viewer/gui/pages/geometry.py:95
+#: photometric_viewer/gui/widgets/content/geometry.py:75
+#: photometric_viewer/gui/widgets/content/geometry.py:74
+msgid "Point"
+msgstr ""
+
+#: photometric_viewer/gui/pages/geometry.py:100
+#: photometric_viewer/gui/pages/geometry.py:98
+#: photometric_viewer/gui/pages/geometry.py:97
+#: photometric_viewer/gui/widgets/content/geometry.py:77
+#: photometric_viewer/gui/widgets/content/geometry.py:76
+msgid "Horizontal cylinder oriented along luminaire width"
+msgstr ""
+
+#: photometric_viewer/gui/pages/geometry.py:102
+#: photometric_viewer/gui/pages/geometry.py:100
+#: photometric_viewer/gui/pages/geometry.py:99
+#: photometric_viewer/gui/widgets/content/geometry.py:79
+#: photometric_viewer/gui/widgets/content/geometry.py:78
+msgid "Horizontal cylinder oriented along luminaire length"
+msgstr ""
+
+#: photometric_viewer/gui/pages/geometry.py:104
+#: photometric_viewer/gui/pages/geometry.py:102
+#: photometric_viewer/gui/pages/geometry.py:101
+#: photometric_viewer/gui/widgets/content/geometry.py:81
+#: photometric_viewer/gui/widgets/content/geometry.py:80
+msgid "Ellipse oriented along luminaire width"
+msgstr ""
+
+#: photometric_viewer/gui/pages/geometry.py:106
+#: photometric_viewer/gui/pages/geometry.py:104
+#: photometric_viewer/gui/pages/geometry.py:103
+#: photometric_viewer/gui/widgets/content/geometry.py:83
+#: photometric_viewer/gui/widgets/content/geometry.py:82
+msgid "Ellipse oriented along luminaire length"
+msgstr ""
+
+#: photometric_viewer/gui/pages/geometry.py:108
+#: photometric_viewer/gui/pages/geometry.py:106
+#: photometric_viewer/gui/pages/geometry.py:105
+#: photometric_viewer/gui/widgets/content/geometry.py:85
+#: photometric_viewer/gui/widgets/content/geometry.py:84
+msgid "Ellipsoid oriented along luminaire width"
+msgstr ""
+
+#: photometric_viewer/gui/pages/geometry.py:110
+#: photometric_viewer/gui/pages/geometry.py:108
+#: photometric_viewer/gui/pages/geometry.py:107
+#: photometric_viewer/gui/widgets/content/geometry.py:87
+#: photometric_viewer/gui/widgets/content/geometry.py:86
+msgid "Ellipsoid oriented along luminaire length"
+msgstr ""
+
+#: photometric_viewer/gui/pages/geometry.py:116
+#: photometric_viewer/gui/pages/geometry.py:118
+#: photometric_viewer/gui/pages/geometry.py:122
+#: photometric_viewer/gui/pages/geometry.py:114
+#: photometric_viewer/gui/pages/geometry.py:120
+#: photometric_viewer/gui/pages/geometry.py:113
+#: photometric_viewer/gui/pages/geometry.py:115
+#: photometric_viewer/gui/pages/geometry.py:119
+#: photometric_viewer/gui/widgets/content/geometry.py:93
+#: photometric_viewer/gui/widgets/content/geometry.py:95
+#: photometric_viewer/gui/widgets/content/geometry.py:97
+#: photometric_viewer/gui/widgets/content/geometry.py:92
+#: photometric_viewer/gui/widgets/content/geometry.py:94
+#: photometric_viewer/gui/widgets/content/geometry.py:96
+#: photometric_viewer/gui/widgets/content/geometry.py:68
+#: photometric_viewer/gui/widgets/content/geometry.py:71
+msgid "Luminous opening dimensions"
+msgstr ""
+
+#: photometric_viewer/gui/pages/geometry.py:124
+#: photometric_viewer/gui/pages/geometry.py:122
+#: photometric_viewer/gui/pages/geometry.py:121
+#: photometric_viewer/gui/widgets/content/geometry.py:99
+#: photometric_viewer/gui/widgets/content/geometry.py:98
+msgid "Luminous opening height"
+msgstr ""
+
+#: photometric_viewer/gui/pages/geometry.py:128
+#: photometric_viewer/gui/pages/geometry.py:126
+#: photometric_viewer/gui/pages/geometry.py:125
+#: photometric_viewer/gui/widgets/content/geometry.py:103
+#: photometric_viewer/gui/widgets/content/geometry.py:102
+#: photometric_viewer/gui/widgets/content/general.py:20
+#: photometric_viewer/formats/ldt.py:161
+msgid "Luminaire type"
+msgstr ""
+
+#: photometric_viewer/gui/pages/geometry.py:134
+#: photometric_viewer/gui/pages/geometry.py:132
+#: photometric_viewer/gui/pages/geometry.py:131
+#: photometric_viewer/gui/widgets/content/geometry.py:110
+#: photometric_viewer/gui/widgets/content/geometry.py:109
+#: photometric_viewer/gui/widgets/content/general.py:26
+#: photometric_viewer/formats/ldt.py:26
+msgid "Point source with symmetry about the vertical axis"
+msgstr ""
+
+#: photometric_viewer/gui/pages/geometry.py:136
+#: photometric_viewer/gui/pages/geometry.py:134
+#: photometric_viewer/gui/pages/geometry.py:133
+#: photometric_viewer/gui/widgets/content/geometry.py:112
+#: photometric_viewer/gui/widgets/content/geometry.py:111
+#: photometric_viewer/gui/widgets/content/general.py:28
+#: photometric_viewer/formats/ldt.py:27
+msgid "Linear luminaire"
+msgstr ""
+
+#: photometric_viewer/gui/pages/geometry.py:138
+#: photometric_viewer/gui/pages/geometry.py:136
+#: photometric_viewer/gui/pages/geometry.py:135
+#: photometric_viewer/gui/widgets/content/geometry.py:114
+#: photometric_viewer/gui/widgets/content/geometry.py:113
+#: photometric_viewer/gui/widgets/content/general.py:30
+#: photometric_viewer/formats/ldt.py:28
+msgid "Point source with any other symmetry"
+msgstr ""
+
+#: photometric_viewer/gui/pages/ldc_export.py:19
 #: photometric_viewer/gui/pages/ldc_export.py:18
 #: photometric_viewer/gui/pages/ldc_export.py:17
 #: photometric_viewer/gui/pages/ldc_export.py:37
 msgid "Export Light Distribution Curve"
 msgstr ""
 
+#: photometric_viewer/gui/pages/ldc_export.py:46
 #: photometric_viewer/gui/pages/ldc_export.py:45
 #: photometric_viewer/gui/pages/ldc_export.py:44
 #: photometric_viewer/gui/pages/ldc_export.py:51
 msgid "Preview"
 msgstr ""
 
-#: photometric_viewer/gui/pages/luminaire_count_calc.py:16
+#: photometric_viewer/gui/pages/ldc_zoom.py:16
+#: photometric_viewer/gui/pages/ldc_zoom.py:15
+#: photometric_viewer/gui/pages/ldc_zoom.py:12
+msgid "Light Distribution Curve"
+msgstr ""
+
+#: photometric_viewer/gui/pages/luminaire_count_calc.py:17
 #: photometric_viewer/gui/widgets/luminaire_count/luminaire_count.py:13
+#: photometric_viewer/gui/pages/luminaire_count_calc.py:16
 msgid "Required number of luminaires"
 msgstr ""
 
+#: photometric_viewer/gui/pages/photometry.py:15
 #: photometric_viewer/gui/pages/photometry.py:14
 #: photometric_viewer/gui/pages/photometry.py:13
 msgid "Photometric Properties"
 msgstr ""
 
+#: photometric_viewer/gui/pages/photometry.py:51
 #: photometric_viewer/gui/pages/photometry.py:45
 #: photometric_viewer/gui/pages/photometry.py:44
 #: photometric_viewer/gui/widgets/content/photometry.py:35
@@ -761,6 +786,7 @@ msgstr ""
 msgid "Luminous flux"
 msgstr ""
 
+#: photometric_viewer/gui/pages/photometry.py:54
 #: photometric_viewer/gui/pages/photometry.py:48
 #: photometric_viewer/gui/pages/photometry.py:47
 #: photometric_viewer/gui/widgets/content/photometry.py:38
@@ -768,6 +794,7 @@ msgstr ""
 msgid "Total amount of light emitted by the luminaire."
 msgstr ""
 
+#: photometric_viewer/gui/pages/photometry.py:60
 #: photometric_viewer/gui/pages/photometry.py:54
 #: photometric_viewer/gui/pages/photometry.py:53
 #: photometric_viewer/gui/widgets/content/photometry.py:44
@@ -778,6 +805,7 @@ msgstr ""
 msgid "Light output ratio"
 msgstr ""
 
+#: photometric_viewer/gui/pages/photometry.py:66
 #: photometric_viewer/gui/pages/photometry.py:60
 #: photometric_viewer/gui/pages/photometry.py:59
 #: photometric_viewer/gui/widgets/content/photometry.py:50
@@ -787,6 +815,7 @@ msgid ""
 "by the lamps."
 msgstr ""
 
+#: photometric_viewer/gui/pages/photometry.py:77
 #: photometric_viewer/gui/pages/photometry.py:71
 #: photometric_viewer/gui/pages/photometry.py:70
 #: photometric_viewer/gui/widgets/content/photometry.py:61
@@ -796,6 +825,7 @@ msgid ""
 "luminaire."
 msgstr ""
 
+#: photometric_viewer/gui/pages/photometry.py:83
 #: photometric_viewer/gui/pages/photometry.py:77
 #: photometric_viewer/gui/pages/photometry.py:76
 #: photometric_viewer/gui/widgets/content/photometry.py:67
@@ -806,6 +836,7 @@ msgstr ""
 msgid "Downward flux fraction (DFF)"
 msgstr ""
 
+#: photometric_viewer/gui/pages/photometry.py:90
 #: photometric_viewer/gui/pages/photometry.py:84
 #: photometric_viewer/gui/pages/photometry.py:83
 #: photometric_viewer/gui/widgets/content/photometry.py:73
@@ -815,22 +846,112 @@ msgid ""
 "to the luminous flux emitted by the luminaire in all directions."
 msgstr ""
 
+#: photometric_viewer/gui/pages/photometry_export.py:23
 #: photometric_viewer/gui/pages/photometry_export.py:22
 msgid "Export Photometric File"
 msgstr ""
 
+#: photometric_viewer/gui/pages/photometry_export.py:24
 #: photometric_viewer/gui/pages/photometry_export.py:23
 msgid "untitled"
 msgstr ""
 
-#: photometric_viewer/gui/pages/photometry_export.py:54
+#: photometric_viewer/gui/pages/photometry_export.py:55
 #: photometric_viewer/gui/widgets/ldc_export/file_properties.py:134
+#: photometric_viewer/gui/pages/photometry_export.py:54
 #: photometric_viewer/gui/widgets/content/header_buttons.py:69
 #: photometric_viewer/gui/widgets/content/header_buttons.py:64
 #: photometric_viewer/gui/window.py:67
 msgid "Export"
 msgstr ""
 
+#: photometric_viewer/gui/pages/values.py:14
+#: photometric_viewer/gui/widgets/content/photometry.py:51
+#: photometric_viewer/gui/pages/values.py:13
+#: photometric_viewer/gui/widgets/content/photometry.py:70
+#: photometric_viewer/gui/pages/values.py:12
+#: photometric_viewer/gui/pages/values.py:11
+#: photometric_viewer/gui/widgets/app_menu.py
+msgid "Intensity values"
+msgstr ""
+
+#: photometric_viewer/gui/pages/values.py:25
+#: photometric_viewer/gui/pages/values.py:24
+#: photometric_viewer/gui/pages/values.py:23
+#: photometric_viewer/gui/pages/values.py:22
+#: photometric_viewer/gui/pages/values.py:21
+msgid "C Plane"
+msgstr ""
+
+#: photometric_viewer/gui/pages/values.py:30
+#: photometric_viewer/gui/pages/values.py:29
+#: photometric_viewer/gui/pages/values.py:28
+#: photometric_viewer/gui/pages/values.py:27
+#: photometric_viewer/gui/pages/values.py:26
+msgid "Gamma angle"
+msgstr ""
+
+#: photometric_viewer/gui/pages/values.py:66
+#: photometric_viewer/gui/pages/values.py:72
+#: photometric_viewer/gui/pages/values.py:61
+#: photometric_viewer/gui/pages/values.py:67
+#: photometric_viewer/gui/pages/values.py:60
+#: photometric_viewer/gui/pages/values.py:59
+#: photometric_viewer/gui/pages/values.py:65
+#: photometric_viewer/gui/pages/values.py:58
+#: photometric_viewer/gui/pages/values.py:64
+#: photometric_viewer/gui/pages/values.py:57
+#: photometric_viewer/gui/pages/values.py:63
+msgid "Show all"
+msgstr ""
+
+#: photometric_viewer/gui/pages/values.py:114
+#: photometric_viewer/gui/pages/values.py:99
+#: photometric_viewer/gui/pages/values.py:98
+#: photometric_viewer/gui/pages/values.py:97
+#: photometric_viewer/gui/pages/values.py:96
+#: photometric_viewer/gui/pages/values.py:95
+msgid "Too many values to display"
+msgstr ""
+
+#: photometric_viewer/gui/pages/values.py:115
+#: photometric_viewer/gui/pages/values.py:100
+#: photometric_viewer/gui/pages/values.py:99
+#: photometric_viewer/gui/pages/values.py:98
+#: photometric_viewer/gui/pages/values.py:97
+#: photometric_viewer/gui/pages/values.py:96
+msgid "Select a particular C plane or gamma angle to display the values"
+msgstr ""
+
+#: photometric_viewer/gui/pages/content.py:16
+#: photometric_viewer/gui/pages/empty.py:24 photometric_viewer/gui/window.py:43
+#: photometric_viewer/gui/pages/content.py:15
+#: photometric_viewer/gui/window.py:42 photometric_viewer/gui/window.py:40
+#: photometric_viewer/gui/window.py:39 photometric_viewer/gui/window.py:38
+#: photometric_viewer/gui/window.py:266 photometric_viewer/gui/window.py:253
+#: photometric_viewer/gui/pages/content.py:14
+#: photometric_viewer/gui/pages/empty.py:16
+#: photometric_viewer/gui/window.py:292 photometric_viewer/gui/window.py:35
+#: photometric_viewer/gui/window.py:234
+#: photometric_viewer/gui/pages/content.py:17
+#: photometric_viewer/gui/window.py:34 photometric_viewer/gui/window.py:229
+#: photometric_viewer/gui/dialogs/about.py:7
+#: photometric_viewer/gui/window.py:33 photometric_viewer/gui/window.py:198
+#: photometric_viewer/gui/window.py:228 photometric_viewer/gui/window.py:51
+#: photometric_viewer/gui/window.py:47 photometric_viewer/gui/window.py:48
+#: photometric_viewer/gui/window.py:46 photometric_viewer/gui/window.py:44
+#: photometric_viewer/gui/window.py:45
+msgid "Photometry"
+msgstr ""
+
+#: photometric_viewer/gui/pages/empty.py:25
+#: photometric_viewer/gui/pages/empty.py:17
+#: photometric_viewer/gui/pages/empty.py:15
+#: photometric_viewer/gui/pages/empty.py:11
+msgid "Open photometric file to display it here"
+msgstr ""
+
+#: photometric_viewer/gui/pages/source.py:22
 #: photometric_viewer/gui/pages/source.py:20
 #: photometric_viewer/gui/pages/source.py:19
 #: photometric_viewer/gui/pages/source.py:15
@@ -841,72 +962,17 @@ msgstr ""
 msgid "Source"
 msgstr ""
 
-#: photometric_viewer/gui/pages/values.py:13
-#: photometric_viewer/gui/widgets/content/photometry.py:70
-#: photometric_viewer/gui/pages/values.py:12
-#: photometric_viewer/gui/pages/values.py:11
-#: photometric_viewer/gui/widgets/app_menu.py
-msgid "Intensity values"
-msgstr ""
-
-#: photometric_viewer/gui/pages/values.py:24
-#: photometric_viewer/gui/pages/values.py:23
-#: photometric_viewer/gui/pages/values.py:22
-#: photometric_viewer/gui/pages/values.py:21
-msgid "C Plane"
-msgstr ""
-
-#: photometric_viewer/gui/pages/values.py:29
-#: photometric_viewer/gui/pages/values.py:28
-#: photometric_viewer/gui/pages/values.py:27
-#: photometric_viewer/gui/pages/values.py:26
-msgid "Gamma angle"
-msgstr ""
-
-#: photometric_viewer/gui/pages/values.py:61
-#: photometric_viewer/gui/pages/values.py:67
-#: photometric_viewer/gui/pages/values.py:60
-#: photometric_viewer/gui/pages/values.py:66
-#: photometric_viewer/gui/pages/values.py:59
-#: photometric_viewer/gui/pages/values.py:65
-#: photometric_viewer/gui/pages/values.py:58
-#: photometric_viewer/gui/pages/values.py:64
-#: photometric_viewer/gui/pages/values.py:57
-#: photometric_viewer/gui/pages/values.py:63
-msgid "Show all"
-msgstr ""
-
-#: photometric_viewer/gui/pages/values.py:99
-#: photometric_viewer/gui/pages/values.py:98
-#: photometric_viewer/gui/pages/values.py:97
-#: photometric_viewer/gui/pages/values.py:96
-#: photometric_viewer/gui/pages/values.py:95
-msgid "Too many values to display"
-msgstr ""
-
-#: photometric_viewer/gui/pages/values.py:100
-#: photometric_viewer/gui/pages/values.py:99
-#: photometric_viewer/gui/pages/values.py:98
-#: photometric_viewer/gui/pages/values.py:97
-#: photometric_viewer/gui/pages/values.py:96
-msgid "Select a particular C plane or gamma angle to display the values"
-msgstr ""
-
-#: photometric_viewer/gui/pages/ldc_zoom.py:15
-#: photometric_viewer/gui/pages/ldc_zoom.py:12
-msgid "Light Distribution Curve"
-msgstr ""
-
 #: photometric_viewer/gui/widgets/common/badges.py:4
 msgid ""
 "Value was calculated from other properties and may not be accurate. Please "
 "refer to manufacturer's data sheet if available."
 msgstr ""
 
-#: photometric_viewer/gui/widgets/common/property_list.py:48
+#: photometric_viewer/gui/widgets/common/property_list.py:47
 #: photometric_viewer/gui/widgets/luminaire_count/luminaire_count.py:29
 #: photometric_viewer/gui/widgets/luminaire_count/luminaire_count.py:35
-#: photometric_viewer/gui/widgets/common/property_list.py:47
+#: photometric_viewer/gui/widgets/source/statusbar.py:91
+#: photometric_viewer/gui/widgets/common/property_list.py:48
 #: photometric_viewer/gui/widgets/common/property_list.py:33
 #: photometric_viewer/gui/widgets/common/property_list.py:26
 msgid "Unknown"
@@ -915,29 +981,6 @@ msgstr ""
 #: photometric_viewer/gui/widgets/content/header_buttons.py:20
 #: photometric_viewer/gui/widgets/content/header_buttons.py:75
 msgid "Open in browser"
-msgstr ""
-
-#: photometric_viewer/gui/widgets/content/lamps.py:16
-#: photometric_viewer/gui/pages/content.py:39
-#: photometric_viewer/gui/pages/content.py:38
-#: photometric_viewer/gui/pages/content.py:45
-#: photometric_viewer/gui/pages/content.py:46
-msgid "Lamps and ballast"
-msgstr ""
-
-#: photometric_viewer/gui/widgets/content/photometry.py:40
-#: photometric_viewer/gui/widgets/content/photometry.py:26
-#: photometric_viewer/gui/widgets/content/photometry.py:24
-#: photometric_viewer/gui/widgets/content/photometry.py:23
-#: photometric_viewer/gui/pages/content.py:40
-msgid "Photometric properties"
-msgstr ""
-
-#: photometric_viewer/gui/widgets/content/properties.py:18
-#: photometric_viewer/gui/widgets/content/properties.py:17
-#: photometric_viewer/gui/widgets/content/properties.py:16
-#: photometric_viewer/gui/pages/content.py:49
-msgid "Additional properties"
 msgstr ""
 
 #: photometric_viewer/gui/widgets/content/temperature.py:19
@@ -1031,6 +1074,10 @@ msgstr ""
 msgid "Similar to: {} ({})"
 msgstr ""
 
+#: photometric_viewer/gui/widgets/content/diagram_highlight_details.py:24
+msgid "Locked"
+msgstr ""
+
 #: photometric_viewer/gui/widgets/content/wattage.py:29
 #: photometric_viewer/gui/widgets/content/wattage.py:26
 #: photometric_viewer/gui/widgets/content/lamps.py:55
@@ -1062,46 +1109,64 @@ msgstr ""
 msgid "Annual cost of operation"
 msgstr ""
 
+#: photometric_viewer/gui/widgets/content/header.py:88
 #: photometric_viewer/gui/widgets/content/header.py:86
 #: photometric_viewer/gui/widgets/content/header.py:85
 #: photometric_viewer/gui/widgets/content/header.py:77
 msgid "No catalog number"
 msgstr ""
 
+#: photometric_viewer/gui/widgets/content/header.py:89
 #: photometric_viewer/gui/widgets/content/header.py:87
 #: photometric_viewer/gui/widgets/content/header.py:86
 #: photometric_viewer/gui/widgets/content/header.py:78
 msgid "No manufacturer"
 msgstr ""
 
+#: photometric_viewer/gui/widgets/content/header.py:90
 #: photometric_viewer/gui/widgets/content/header.py:88
 #: photometric_viewer/gui/widgets/content/header.py:87
 #: photometric_viewer/gui/widgets/content/header.py:79
 msgid "No description"
 msgstr ""
 
+#: photometric_viewer/gui/widgets/content/header.py:91
 #: photometric_viewer/gui/widgets/content/header.py:89
 #: photometric_viewer/gui/widgets/content/header.py:88
 #: photometric_viewer/gui/widgets/content/header.py:80
 msgid "Measurement date unknown"
 msgstr ""
 
+#: photometric_viewer/gui/widgets/content/header.py:94
 #: photometric_viewer/gui/widgets/content/header.py:92
 #: photometric_viewer/gui/widgets/content/general.py:18
 #: photometric_viewer/formats/ldt.py:162
 msgid "Measurement"
 msgstr ""
 
-#: photometric_viewer/gui/widgets/content/diagram_highlight_details.py:24
-msgid "Locked"
+#: photometric_viewer/gui/widgets/content/lamps.py:16
+#: photometric_viewer/gui/pages/content.py:39
+#: photometric_viewer/gui/pages/content.py:38
+#: photometric_viewer/gui/pages/content.py:45
+#: photometric_viewer/gui/pages/content.py:46
+msgid "Lamps and ballast"
 msgstr ""
 
-#: photometric_viewer/gui/widgets/headerbar.py:9
-#: photometric_viewer/gui/window.py:71 photometric_viewer/gui/window.py:67
-#: photometric_viewer/gui/window.py:69 photometric_viewer/gui/window.py:68
-#: photometric_viewer/gui/window.py:65 photometric_viewer/gui/window.py:66
-#: photometric_viewer/gui/window.py:64 photometric_viewer/gui/window.py:62
-msgid "Open"
+#: photometric_viewer/gui/widgets/content/photometry.py:29
+#: photometric_viewer/gui/widgets/content/photometry.py:40
+#: photometric_viewer/gui/widgets/content/photometry.py:26
+#: photometric_viewer/gui/widgets/content/photometry.py:24
+#: photometric_viewer/gui/widgets/content/photometry.py:23
+#: photometric_viewer/gui/pages/content.py:40
+msgid "Photometric properties"
+msgstr ""
+
+#: photometric_viewer/gui/widgets/content/properties.py:22
+#: photometric_viewer/gui/widgets/content/properties.py:18
+#: photometric_viewer/gui/widgets/content/properties.py:17
+#: photometric_viewer/gui/widgets/content/properties.py:16
+#: photometric_viewer/gui/pages/content.py:49
+msgid "Additional properties"
 msgstr ""
 
 #: photometric_viewer/gui/widgets/ldc_export/file_properties.py:57
@@ -1172,12 +1237,44 @@ msgstr ""
 msgid "IES"
 msgstr ""
 
-#: photometric_viewer/gui/window.py:113 photometric_viewer/gui/window.py:112
-#: photometric_viewer/gui/window.py:108 photometric_viewer/gui/window.py:104
-#: photometric_viewer/gui/window.py:103 photometric_viewer/gui/window.py:107
-#: photometric_viewer/gui/window.py:91 photometric_viewer/gui/window.py:89
-#: photometric_viewer/gui/window.py:88 photometric_viewer/gui/window.py:122
-#: photometric_viewer/gui/window.py:119 photometric_viewer/gui/window.py:124
+#: photometric_viewer/gui/widgets/source/goto_line_popover.py:15
+msgid "Go to line"
+msgstr ""
+
+#: photometric_viewer/gui/widgets/source/goto_line_popover.py:27
+msgid "line[:column]"
+msgstr ""
+
+#: photometric_viewer/gui/widgets/source/goto_line_popover.py:36
+msgid "Go to"
+msgstr ""
+
+#: photometric_viewer/gui/widgets/source/statusbar.py:71
+msgid "Unnamed file"
+msgstr ""
+
+#: photometric_viewer/gui/widgets/source/issues_popover.py:18
+msgid "Issues"
+msgstr ""
+
+#: photometric_viewer/gui/widgets/source/issues_popover.py:69
+msgid "Line: "
+msgstr ""
+
+#: photometric_viewer/gui/widgets/headerbar.py:9
+#: photometric_viewer/gui/window.py:71 photometric_viewer/gui/window.py:67
+#: photometric_viewer/gui/window.py:69 photometric_viewer/gui/window.py:68
+#: photometric_viewer/gui/window.py:65 photometric_viewer/gui/window.py:66
+#: photometric_viewer/gui/window.py:64 photometric_viewer/gui/window.py:62
+msgid "Open"
+msgstr ""
+
+#: photometric_viewer/gui/window.py:124 photometric_viewer/gui/window.py:113
+#: photometric_viewer/gui/window.py:112 photometric_viewer/gui/window.py:108
+#: photometric_viewer/gui/window.py:104 photometric_viewer/gui/window.py:103
+#: photometric_viewer/gui/window.py:107 photometric_viewer/gui/window.py:91
+#: photometric_viewer/gui/window.py:89 photometric_viewer/gui/window.py:88
+#: photometric_viewer/gui/window.py:122 photometric_viewer/gui/window.py:119
 #: photometric_viewer/gui/window.py:118 photometric_viewer/gui/window.py:114
 #: photometric_viewer/gui/window.py:109 photometric_viewer/gui/window.py:98
 #: photometric_viewer/gui/window.py:38 photometric_viewer/gui/window.py:36
@@ -1187,17 +1284,18 @@ msgid ""
 "restart"
 msgstr ""
 
-#: photometric_viewer/gui/window.py:215 photometric_viewer/gui/window.py:227
-#: photometric_viewer/gui/window.py:231 photometric_viewer/gui/window.py:214
-#: photometric_viewer/gui/window.py:226 photometric_viewer/gui/window.py:230
-#: photometric_viewer/gui/window.py:209 photometric_viewer/gui/window.py:221
-#: photometric_viewer/gui/window.py:225 photometric_viewer/gui/window.py:212
-#: photometric_viewer/gui/window.py:224 photometric_viewer/gui/window.py:228
-#: photometric_viewer/gui/window.py:242 photometric_viewer/gui/window.py:264
-#: photometric_viewer/gui/window.py:195 photometric_viewer/gui/window.py:207
-#: photometric_viewer/gui/window.py:211 photometric_viewer/gui/window.py:247
-#: photometric_viewer/gui/window.py:182 photometric_viewer/gui/window.py:194
-#: photometric_viewer/gui/window.py:198 photometric_viewer/gui/window.py:234
+#: photometric_viewer/gui/window.py:234 photometric_viewer/gui/window.py:246
+#: photometric_viewer/gui/window.py:250 photometric_viewer/gui/window.py:215
+#: photometric_viewer/gui/window.py:227 photometric_viewer/gui/window.py:231
+#: photometric_viewer/gui/window.py:214 photometric_viewer/gui/window.py:226
+#: photometric_viewer/gui/window.py:230 photometric_viewer/gui/window.py:209
+#: photometric_viewer/gui/window.py:221 photometric_viewer/gui/window.py:225
+#: photometric_viewer/gui/window.py:212 photometric_viewer/gui/window.py:224
+#: photometric_viewer/gui/window.py:228 photometric_viewer/gui/window.py:242
+#: photometric_viewer/gui/window.py:264 photometric_viewer/gui/window.py:195
+#: photometric_viewer/gui/window.py:207 photometric_viewer/gui/window.py:211
+#: photometric_viewer/gui/window.py:247 photometric_viewer/gui/window.py:182
+#: photometric_viewer/gui/window.py:194 photometric_viewer/gui/window.py:198
 #: photometric_viewer/gui/window.py:217 photometric_viewer/gui/window.py:229
 #: photometric_viewer/gui/window.py:233 photometric_viewer/gui/window.py:269
 #: photometric_viewer/gui/window.py:162 photometric_viewer/gui/window.py:174
@@ -1220,63 +1318,1109 @@ msgstr ""
 msgid "Exported as {}"
 msgstr ""
 
-#: photometric_viewer/gui/window.py:307 photometric_viewer/gui/window.py:301
-#: photometric_viewer/gui/window.py:295 photometric_viewer/gui/window.py:336
-#: photometric_viewer/gui/window.py:316 photometric_viewer/gui/window.py:335
-#: photometric_viewer/gui/window.py:258 photometric_viewer/gui/window.py:252
-#: photometric_viewer/gui/window.py:251 photometric_viewer/gui/window.py:277
-#: photometric_viewer/gui/window.py:293 photometric_viewer/gui/window.py:274
-#: photometric_viewer/gui/window.py:244 photometric_viewer/gui/window.py:221
-#: photometric_viewer/gui/window.py:197 photometric_viewer/gui/window.py:196
-#: photometric_viewer/gui/window.py:191 photometric_viewer/gui/window.py:168
-#: photometric_viewer/gui/window.py:165 photometric_viewer/gui/window.py:158
-#: photometric_viewer/gui/window.py:125
+#: photometric_viewer/gui/window.py:340 photometric_viewer/gui/window.py:307
+#: photometric_viewer/gui/window.py:301 photometric_viewer/gui/window.py:295
+#: photometric_viewer/gui/window.py:336 photometric_viewer/gui/window.py:316
+#: photometric_viewer/gui/window.py:335 photometric_viewer/gui/window.py:258
+#: photometric_viewer/gui/window.py:252 photometric_viewer/gui/window.py:251
+#: photometric_viewer/gui/window.py:277 photometric_viewer/gui/window.py:293
+#: photometric_viewer/gui/window.py:274 photometric_viewer/gui/window.py:244
+#: photometric_viewer/gui/window.py:221 photometric_viewer/gui/window.py:197
+#: photometric_viewer/gui/window.py:196 photometric_viewer/gui/window.py:191
+#: photometric_viewer/gui/window.py:168 photometric_viewer/gui/window.py:165
+#: photometric_viewer/gui/window.py:158 photometric_viewer/gui/window.py:125
 msgid "Invalid content of photometric file {}"
 msgstr ""
 
-#: photometric_viewer/gui/window.py:310 photometric_viewer/gui/window.py:304
-#: photometric_viewer/gui/window.py:298 photometric_viewer/gui/window.py:339
-#: photometric_viewer/gui/window.py:319 photometric_viewer/gui/window.py:338
-#: photometric_viewer/gui/window.py:261 photometric_viewer/gui/window.py:255
-#: photometric_viewer/gui/window.py:254 photometric_viewer/gui/window.py:280
-#: photometric_viewer/gui/window.py:296 photometric_viewer/gui/window.py:277
-#: photometric_viewer/gui/window.py:247 photometric_viewer/gui/window.py:224
-#: photometric_viewer/gui/window.py:200 photometric_viewer/gui/window.py:199
-#: photometric_viewer/gui/window.py:194 photometric_viewer/gui/window.py:171
-#: photometric_viewer/gui/window.py:168 photometric_viewer/gui/window.py:161
-#: photometric_viewer/gui/window.py:128
+#: photometric_viewer/gui/window.py:343 photometric_viewer/gui/window.py:310
+#: photometric_viewer/gui/window.py:304 photometric_viewer/gui/window.py:298
+#: photometric_viewer/gui/window.py:339 photometric_viewer/gui/window.py:319
+#: photometric_viewer/gui/window.py:338 photometric_viewer/gui/window.py:261
+#: photometric_viewer/gui/window.py:255 photometric_viewer/gui/window.py:254
+#: photometric_viewer/gui/window.py:280 photometric_viewer/gui/window.py:296
+#: photometric_viewer/gui/window.py:277 photometric_viewer/gui/window.py:247
+#: photometric_viewer/gui/window.py:224 photometric_viewer/gui/window.py:200
+#: photometric_viewer/gui/window.py:199 photometric_viewer/gui/window.py:194
+#: photometric_viewer/gui/window.py:171 photometric_viewer/gui/window.py:168
+#: photometric_viewer/gui/window.py:161 photometric_viewer/gui/window.py:128
 msgid "Could not open {}"
 msgstr ""
 
-#: photometric_viewer/gui/window.py:411 photometric_viewer/gui/window.py:405
-#: photometric_viewer/gui/window.py:392 photometric_viewer/gui/window.py:437
-#: photometric_viewer/gui/window.py:418
+#: photometric_viewer/gui/window.py:464 photometric_viewer/gui/window.py:411
+#: photometric_viewer/gui/window.py:405 photometric_viewer/gui/window.py:392
+#: photometric_viewer/gui/window.py:437 photometric_viewer/gui/window.py:418
 msgid "Unsaved changes"
 msgstr ""
 
-#: photometric_viewer/gui/window.py:412 photometric_viewer/gui/window.py:406
-#: photometric_viewer/gui/window.py:393 photometric_viewer/gui/window.py:438
-#: photometric_viewer/gui/window.py:419
+#: photometric_viewer/gui/window.py:465 photometric_viewer/gui/window.py:412
+#: photometric_viewer/gui/window.py:406 photometric_viewer/gui/window.py:393
+#: photometric_viewer/gui/window.py:438 photometric_viewer/gui/window.py:419
 msgid "Do you want to save changes to the opened file before closing?"
 msgstr ""
 
-#: photometric_viewer/gui/window.py:415 photometric_viewer/gui/window.py:409
-#: photometric_viewer/gui/window.py:396 photometric_viewer/gui/window.py:441
-#: photometric_viewer/gui/window.py:422
+#: photometric_viewer/gui/window.py:468 photometric_viewer/gui/window.py:415
+#: photometric_viewer/gui/window.py:409 photometric_viewer/gui/window.py:396
+#: photometric_viewer/gui/window.py:441 photometric_viewer/gui/window.py:422
 msgid "Cancel"
 msgstr ""
 
-#: photometric_viewer/gui/window.py:416 photometric_viewer/gui/window.py:410
-#: photometric_viewer/gui/window.py:397 photometric_viewer/gui/window.py:442
-#: photometric_viewer/gui/window.py:423
+#: photometric_viewer/gui/window.py:469 photometric_viewer/gui/window.py:416
+#: photometric_viewer/gui/window.py:410 photometric_viewer/gui/window.py:397
+#: photometric_viewer/gui/window.py:442 photometric_viewer/gui/window.py:423
 msgid "Discard"
 msgstr ""
 
-#: photometric_viewer/gui/window.py:418 photometric_viewer/gui/window.py:412
-#: photometric_viewer/gui/window.py:399 photometric_viewer/gui/window.py:444
-#: photometric_viewer/gui/window.py:425
+#: photometric_viewer/gui/window.py:471 photometric_viewer/gui/window.py:418
+#: photometric_viewer/gui/window.py:412 photometric_viewer/gui/window.py:399
+#: photometric_viewer/gui/window.py:444 photometric_viewer/gui/window.py:425
 #: photometric_viewer/gui/widgets/app_menu.py
 msgid "Save"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:133
+msgid "future use"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:134
+msgid "ballast-lamp photometric factor"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:135
+msgid "lumens per lamp"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:136
+msgid "multiplying factor"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:137
+msgid "number of vertical angles"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:138
+msgid "number of horizontal angles"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:139
+msgid "photometry type"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:140
+msgid "luminous opening units"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:141
+msgid "luminous opening width"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:142
+msgid "luminous opening length"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:143
+msgid "luminous opening height"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:144
+msgid "ballast factor"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:145
+msgid "input watts"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:146
+msgid "symmetry indicator"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:147
+msgid "distance between C planes"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:148
+msgid "number of intensities"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:149
+msgid "distance between intensities"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:150
+msgid "measurement report"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:151
+msgid "luminaire name"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:152
+msgid "luminaire number"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:153
+msgid "file name"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:154
+msgid "date and user"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:155
+msgid "manufacturer"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:156
+msgid "length of luminaire"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:157
+msgid "width of luminaire"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:158
+msgid "height of luminaire"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:159
+msgid "length of luminous area"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:160
+msgid "width of luminous area"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:161
+msgid "height of luminous area C0"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:162
+msgid "height of luminous area C90"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:163
+msgid "height of luminous area C180"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:164
+msgid "height of luminous area C270"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:165
+msgid "DFF percent"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:166
+msgid "LOR percent"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:167
+msgid "conversion factor"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:168
+msgid "tilt"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:169
+msgid "number of lamp sets"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:170
+msgid "lamp sets"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:171
+msgid "direct ratios for room indices"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:172
+msgid "number of C planes"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:173
+msgid "C angles"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:174
+msgid "gamma angles"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:175
+msgid "intensities"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:176
+msgid "intensity"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:177
+msgid "number of lamps"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:178
+msgid "type of lamp"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:179
+msgid "total lumens"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:180
+msgid "light color"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:181
+msgid "CRI"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:182
+msgid "wattage"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:183
+msgid "type indicator"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:184
+msgid "direct ratio for room index k = 0.60"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:185
+msgid "direct ratio for room index k = 0.80"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:186
+msgid "direct ratio for room index k = 1.00"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:187
+msgid "direct ratio for room index k = 1.25"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:188
+msgid "direct ratio for room index k = 1.50"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:189
+msgid "direct ratio for room index k = 2.00"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:190
+msgid "direct ratio for room index k = 2.50"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:191
+msgid "direct ratio for room index k = 3.00"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:192
+msgid "direct ratio for room index k = 4.00"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:193
+msgid "direct ratio for room index k = 5.00"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:202
+#: photometric_viewer/gui/utils/issues/issue_translation.py:192
+msgid "Missing required value"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:203
+#: photometric_viewer/gui/utils/issues/issue_translation.py:193
+#, python-brace-format
+msgid "Value for {attribute} is empty"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:207
+#: photometric_viewer/gui/utils/issues/issue_translation.py:197
+msgid "Attribute has invalid value"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:208
+#: photometric_viewer/gui/utils/issues/issue_translation.py:198
+#, python-brace-format
+msgid "Value {value} is not valid for attribute {attribute}"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:214
+#: photometric_viewer/gui/utils/issues/issue_translation.py:204
+msgid "Value exceeds maximum length"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:215
+#: photometric_viewer/gui/utils/issues/issue_translation.py:205
+#, python-brace-format
+msgid "Value for {attribute} exceeds {max_length} characters"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:221
+#: photometric_viewer/gui/utils/issues/issue_translation.py:211
+msgid "Value is out of range"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:222
+#: photometric_viewer/gui/utils/issues/issue_translation.py:212
+#, python-brace-format
+msgid "{attribute} is outside the expected range: {value}"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:228
+#: photometric_viewer/gui/utils/issues/issue_translation.py:218
+msgid "Missing lamp set value"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:229
+#: photometric_viewer/gui/utils/issues/issue_translation.py:219
+#, python-brace-format
+msgid "Value for {attribute} is empty in lamp set {lamp_set_number}"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:235
+#: photometric_viewer/gui/utils/issues/issue_translation.py:225
+msgid "Lamp set value is invalid"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:236
+#: photometric_viewer/gui/utils/issues/issue_translation.py:226
+#, python-brace-format
+msgid ""
+"Value {value} is not valid for {attribute} in lamp set {lamp_set_number}"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:246
+#: photometric_viewer/gui/utils/issues/issue_translation.py:236
+msgid "Lamp set value exceeds maximum length"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:247
+#: photometric_viewer/gui/utils/issues/issue_translation.py:237
+#, python-brace-format
+msgid ""
+"Value for {attribute} exceeds {max_length} characters in lamp set "
+"{lamp_set_number}"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:257
+#: photometric_viewer/gui/utils/issues/issue_translation.py:247
+msgid "Lamp set value is out of range"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:258
+#: photometric_viewer/gui/utils/issues/issue_translation.py:248
+#, python-brace-format
+msgid ""
+"Value {value} for {attribute} in lamp set {lamp_set_number} is outside the "
+"expected range"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:268
+#: photometric_viewer/gui/utils/issues/issue_translation.py:472
+#: photometric_viewer/gui/utils/issues/issue_translation.py:258
+#: photometric_viewer/gui/utils/issues/issue_translation.py:462
+msgid "Metadata key missing"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:269
+#: photometric_viewer/gui/utils/issues/issue_translation.py:473
+#: photometric_viewer/gui/utils/issues/issue_translation.py:259
+#: photometric_viewer/gui/utils/issues/issue_translation.py:463
+#, python-brace-format
+msgid "Metadata key {key} is missing"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:273
+#: photometric_viewer/gui/utils/issues/issue_translation.py:477
+#: photometric_viewer/gui/utils/issues/issue_translation.py:263
+#: photometric_viewer/gui/utils/issues/issue_translation.py:467
+msgid "Metadata key has whitespace"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:274
+#: photometric_viewer/gui/utils/issues/issue_translation.py:478
+#: photometric_viewer/gui/utils/issues/issue_translation.py:264
+#: photometric_viewer/gui/utils/issues/issue_translation.py:468
+#, python-brace-format
+msgid "Metadata key {key} has leading or trailing whitespace"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:278
+#: photometric_viewer/gui/utils/issues/issue_translation.py:482
+#: photometric_viewer/gui/utils/issues/issue_translation.py:268
+#: photometric_viewer/gui/utils/issues/issue_translation.py:472
+msgid "Metadata value missing"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:279
+#: photometric_viewer/gui/utils/issues/issue_translation.py:483
+#: photometric_viewer/gui/utils/issues/issue_translation.py:269
+#: photometric_viewer/gui/utils/issues/issue_translation.py:473
+#, python-brace-format
+msgid "Metadata value for {key} is empty"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:283
+#: photometric_viewer/gui/utils/issues/issue_translation.py:487
+#: photometric_viewer/gui/utils/issues/issue_translation.py:688
+#: photometric_viewer/gui/utils/issues/issue_translation.py:273
+#: photometric_viewer/gui/utils/issues/issue_translation.py:477
+#: photometric_viewer/gui/utils/issues/issue_translation.py:678
+msgid "Required metadata missing"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:284
+#: photometric_viewer/gui/utils/issues/issue_translation.py:488
+#: photometric_viewer/gui/utils/issues/issue_translation.py:689
+#: photometric_viewer/gui/utils/issues/issue_translation.py:274
+#: photometric_viewer/gui/utils/issues/issue_translation.py:478
+#: photometric_viewer/gui/utils/issues/issue_translation.py:679
+#, python-brace-format
+msgid "Required metadata key {key} is missing"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:288
+#: photometric_viewer/gui/utils/issues/issue_translation.py:497
+#: photometric_viewer/gui/utils/issues/issue_translation.py:278
+#: photometric_viewer/gui/utils/issues/issue_translation.py:487
+msgid "Deprecated metadata key"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:289
+#: photometric_viewer/gui/utils/issues/issue_translation.py:498
+#: photometric_viewer/gui/utils/issues/issue_translation.py:279
+#: photometric_viewer/gui/utils/issues/issue_translation.py:488
+#, python-brace-format
+msgid "Metadata key {key} is deprecated"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:293
+#: photometric_viewer/gui/utils/issues/issue_translation.py:502
+#: photometric_viewer/gui/utils/issues/issue_translation.py:283
+#: photometric_viewer/gui/utils/issues/issue_translation.py:492
+msgid "Metadata key contains invalid characters"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:294
+#: photometric_viewer/gui/utils/issues/issue_translation.py:503
+#: photometric_viewer/gui/utils/issues/issue_translation.py:284
+#: photometric_viewer/gui/utils/issues/issue_translation.py:493
+#, python-brace-format
+msgid "Metadata key {key} contains invalid characters"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:298
+#: photometric_viewer/gui/utils/issues/issue_translation.py:507
+#: photometric_viewer/gui/utils/issues/issue_translation.py:288
+#: photometric_viewer/gui/utils/issues/issue_translation.py:497
+msgid "Metadata key should be uppercase"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:299
+#: photometric_viewer/gui/utils/issues/issue_translation.py:508
+#: photometric_viewer/gui/utils/issues/issue_translation.py:289
+#: photometric_viewer/gui/utils/issues/issue_translation.py:498
+#, python-brace-format
+msgid "Metadata key {key} should use uppercase letters only"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:303
+#: photometric_viewer/gui/utils/issues/issue_translation.py:512
+#: photometric_viewer/gui/utils/issues/issue_translation.py:293
+#: photometric_viewer/gui/utils/issues/issue_translation.py:502
+msgid "Duplicate metadata key"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:304
+#: photometric_viewer/gui/utils/issues/issue_translation.py:513
+#: photometric_viewer/gui/utils/issues/issue_translation.py:294
+#: photometric_viewer/gui/utils/issues/issue_translation.py:503
+#, python-brace-format
+msgid "Metadata key {key} is duplicated"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:308
+#: photometric_viewer/gui/utils/issues/issue_translation.py:517
+#: photometric_viewer/gui/utils/issues/issue_translation.py:298
+#: photometric_viewer/gui/utils/issues/issue_translation.py:507
+msgid "Metadata key is too long"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:309
+#: photometric_viewer/gui/utils/issues/issue_translation.py:299
+#, python-brace-format
+msgid "Metadata key {key} exceeds the maximum length of 20 characters"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:313
+#: photometric_viewer/gui/utils/issues/issue_translation.py:522
+#: photometric_viewer/gui/utils/issues/issue_translation.py:303
+#: photometric_viewer/gui/utils/issues/issue_translation.py:512
+msgid "Metadata key format is invalid"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:314
+#: photometric_viewer/gui/utils/issues/issue_translation.py:523
+#: photometric_viewer/gui/utils/issues/issue_translation.py:304
+#: photometric_viewer/gui/utils/issues/issue_translation.py:513
+#, python-brace-format
+msgid "User metadata key {key} should start with an underscore"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:318
+#: photometric_viewer/gui/utils/issues/issue_translation.py:527
+#: photometric_viewer/gui/utils/issues/issue_translation.py:308
+#: photometric_viewer/gui/utils/issues/issue_translation.py:517
+msgid "Invalid NEARFIELD value"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:319
+#: photometric_viewer/gui/utils/issues/issue_translation.py:528
+#: photometric_viewer/gui/utils/issues/issue_translation.py:309
+#: photometric_viewer/gui/utils/issues/issue_translation.py:518
+#, python-brace-format
+msgid "NEARFIELD metadata value {value} is invalid"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:323
+#: photometric_viewer/gui/utils/issues/issue_translation.py:532
+#: photometric_viewer/gui/utils/issues/issue_translation.py:313
+#: photometric_viewer/gui/utils/issues/issue_translation.py:522
+msgid "Invalid MAINTCAT value"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:324
+#: photometric_viewer/gui/utils/issues/issue_translation.py:533
+#: photometric_viewer/gui/utils/issues/issue_translation.py:314
+#: photometric_viewer/gui/utils/issues/issue_translation.py:523
+#, python-brace-format
+msgid "MAINTCAT metadata value {value} is invalid"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:328
+#: photometric_viewer/gui/utils/issues/issue_translation.py:537
+#: photometric_viewer/gui/utils/issues/issue_translation.py:318
+#: photometric_viewer/gui/utils/issues/issue_translation.py:527
+msgid "FLASHAREA is not numeric"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:329
+#: photometric_viewer/gui/utils/issues/issue_translation.py:538
+#: photometric_viewer/gui/utils/issues/issue_translation.py:319
+#: photometric_viewer/gui/utils/issues/issue_translation.py:528
+#, python-brace-format
+msgid "FLASHAREA metadata value {value} is not a number"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:333
+#: photometric_viewer/gui/utils/issues/issue_translation.py:542
+#: photometric_viewer/gui/utils/issues/issue_translation.py:323
+#: photometric_viewer/gui/utils/issues/issue_translation.py:532
+msgid "FLASHAREA must be positive"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:334
+#: photometric_viewer/gui/utils/issues/issue_translation.py:543
+#: photometric_viewer/gui/utils/issues/issue_translation.py:324
+#: photometric_viewer/gui/utils/issues/issue_translation.py:533
+#, python-brace-format
+msgid "FLASHAREA metadata value {value} must be positive"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:338
+#: photometric_viewer/gui/utils/issues/issue_translation.py:547
+#: photometric_viewer/gui/utils/issues/issue_translation.py:328
+#: photometric_viewer/gui/utils/issues/issue_translation.py:537
+msgid "Unusual FLASHAREA value"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:339
+#: photometric_viewer/gui/utils/issues/issue_translation.py:548
+#: photometric_viewer/gui/utils/issues/issue_translation.py:329
+#: photometric_viewer/gui/utils/issues/issue_translation.py:538
+#, python-brace-format
+msgid "FLASHAREA metadata value {value} is unusually large or small"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:343
+#: photometric_viewer/gui/utils/issues/issue_translation.py:552
+#: photometric_viewer/gui/utils/issues/issue_translation.py:333
+#: photometric_viewer/gui/utils/issues/issue_translation.py:542
+msgid "LAMPPOSITION has invalid number of values"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:344
+#: photometric_viewer/gui/utils/issues/issue_translation.py:553
+#: photometric_viewer/gui/utils/issues/issue_translation.py:334
+#: photometric_viewer/gui/utils/issues/issue_translation.py:543
+#, python-brace-format
+msgid "LAMPPOSITION metadata value {value} does not contain two values"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:348
+#: photometric_viewer/gui/utils/issues/issue_translation.py:557
+#: photometric_viewer/gui/utils/issues/issue_translation.py:338
+#: photometric_viewer/gui/utils/issues/issue_translation.py:547
+msgid "LAMPPOSITION must contain numbers"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:349
+#: photometric_viewer/gui/utils/issues/issue_translation.py:558
+#: photometric_viewer/gui/utils/issues/issue_translation.py:339
+#: photometric_viewer/gui/utils/issues/issue_translation.py:548
+#, python-brace-format
+msgid "LAMPPOSITION metadata value {value} does not contain valid numbers"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:353
+#: photometric_viewer/gui/utils/issues/issue_translation.py:562
+#: photometric_viewer/gui/utils/issues/issue_translation.py:567
+#: photometric_viewer/gui/utils/issues/issue_translation.py:343
+#: photometric_viewer/gui/utils/issues/issue_translation.py:552
+#: photometric_viewer/gui/utils/issues/issue_translation.py:557
+msgid "LAMPPOSITION is out of range"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:354
+#: photometric_viewer/gui/utils/issues/issue_translation.py:344
+#, python-brace-format
+msgid ""
+"Given value {value} is out of range. First angle must be between 0.00 to "
+"359.99 degrees. Second angle must be between 0.00 to 180.00 degrees."
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:358
+#: photometric_viewer/gui/utils/issues/issue_translation.py:572
+#: photometric_viewer/gui/utils/issues/issue_translation.py:348
+#: photometric_viewer/gui/utils/issues/issue_translation.py:562
+msgid "Intensity value is not numeric"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:359
+#: photometric_viewer/gui/utils/issues/issue_translation.py:573
+#: photometric_viewer/gui/utils/issues/issue_translation.py:349
+#: photometric_viewer/gui/utils/issues/issue_translation.py:563
+#, python-brace-format
+msgid "Intensity value {value} is not a number"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:363
+#: photometric_viewer/gui/utils/issues/issue_translation.py:577
+#: photometric_viewer/gui/utils/issues/issue_translation.py:353
+#: photometric_viewer/gui/utils/issues/issue_translation.py:567
+msgid "Intensity value is negative"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:364
+#: photometric_viewer/gui/utils/issues/issue_translation.py:578
+#: photometric_viewer/gui/utils/issues/issue_translation.py:354
+#: photometric_viewer/gui/utils/issues/issue_translation.py:568
+#, python-brace-format
+msgid "Intensity value {value} is negative"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:368
+#: photometric_viewer/gui/utils/issues/issue_translation.py:582
+#: photometric_viewer/gui/utils/issues/issue_translation.py:358
+#: photometric_viewer/gui/utils/issues/issue_translation.py:572
+msgid "Vertical angle value is invalid"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:369
+#: photometric_viewer/gui/utils/issues/issue_translation.py:583
+#: photometric_viewer/gui/utils/issues/issue_translation.py:359
+#: photometric_viewer/gui/utils/issues/issue_translation.py:573
+#, python-brace-format
+msgid "Vertical angle value {value} is not a number"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:373
+#: photometric_viewer/gui/utils/issues/issue_translation.py:587
+#: photometric_viewer/gui/utils/issues/issue_translation.py:363
+#: photometric_viewer/gui/utils/issues/issue_translation.py:577
+msgid "Vertical angles are out of order"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:374
+#: photometric_viewer/gui/utils/issues/issue_translation.py:364
+#, python-brace-format
+msgid "Value {value} is not in ascending order"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:378
+#: photometric_viewer/gui/utils/issues/issue_translation.py:388
+#: photometric_viewer/gui/utils/issues/issue_translation.py:398
+#: photometric_viewer/gui/utils/issues/issue_translation.py:592
+#: photometric_viewer/gui/utils/issues/issue_translation.py:602
+#: photometric_viewer/gui/utils/issues/issue_translation.py:612
+#: photometric_viewer/gui/utils/issues/issue_translation.py:368
+#: photometric_viewer/gui/utils/issues/issue_translation.py:582
+msgid "Invalid first vertical angle"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:379
+#: photometric_viewer/gui/utils/issues/issue_translation.py:593
+#: photometric_viewer/gui/utils/issues/issue_translation.py:369
+#: photometric_viewer/gui/utils/issues/issue_translation.py:583
+#, python-brace-format
+msgid ""
+"Type C photometry first vertical angle is invalid: {value}. Expected 0 or 90."
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:383
+#: photometric_viewer/gui/utils/issues/issue_translation.py:393
+#: photometric_viewer/gui/utils/issues/issue_translation.py:403
+#: photometric_viewer/gui/utils/issues/issue_translation.py:597
+#: photometric_viewer/gui/utils/issues/issue_translation.py:607
+#: photometric_viewer/gui/utils/issues/issue_translation.py:617
+#: photometric_viewer/gui/utils/issues/issue_translation.py:373
+#: photometric_viewer/gui/utils/issues/issue_translation.py:587
+msgid "Invalid last vertical angle"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:384
+#: photometric_viewer/gui/utils/issues/issue_translation.py:598
+#: photometric_viewer/gui/utils/issues/issue_translation.py:374
+#: photometric_viewer/gui/utils/issues/issue_translation.py:588
+#, python-brace-format
+msgid ""
+"Type C photometry last vertical angle is invalid: {value}. Expected 90 or "
+"180."
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:389
+#: photometric_viewer/gui/utils/issues/issue_translation.py:603
+#: photometric_viewer/gui/utils/issues/issue_translation.py:379
+#: photometric_viewer/gui/utils/issues/issue_translation.py:593
+#, python-brace-format
+msgid ""
+"Type B photometry first vertical angle is invalid: {value}. Expected -90 or "
+"0."
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:394
+#: photometric_viewer/gui/utils/issues/issue_translation.py:608
+#: photometric_viewer/gui/utils/issues/issue_translation.py:384
+#: photometric_viewer/gui/utils/issues/issue_translation.py:598
+#, python-brace-format
+msgid "Type B photometry last vertical angle is invalid: {value}. Expected 90."
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:399
+#: photometric_viewer/gui/utils/issues/issue_translation.py:613
+#: photometric_viewer/gui/utils/issues/issue_translation.py:389
+#: photometric_viewer/gui/utils/issues/issue_translation.py:603
+#, python-brace-format
+msgid ""
+"Type A photometry first vertical angle is invalid: {value}. Expected -90 or "
+"0."
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:404
+#: photometric_viewer/gui/utils/issues/issue_translation.py:618
+#: photometric_viewer/gui/utils/issues/issue_translation.py:394
+#: photometric_viewer/gui/utils/issues/issue_translation.py:608
+#, python-brace-format
+msgid "Type A photometry last vertical angle is invalid: {value}. Expected 90."
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:408
+#: photometric_viewer/gui/utils/issues/issue_translation.py:622
+#: photometric_viewer/gui/utils/issues/issue_translation.py:398
+#: photometric_viewer/gui/utils/issues/issue_translation.py:612
+msgid "Horizontal angle value is invalid"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:409
+#: photometric_viewer/gui/utils/issues/issue_translation.py:623
+#: photometric_viewer/gui/utils/issues/issue_translation.py:399
+#: photometric_viewer/gui/utils/issues/issue_translation.py:613
+#, python-brace-format
+msgid "Horizontal angle value {value} is not a number"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:413
+#: photometric_viewer/gui/utils/issues/issue_translation.py:627
+#: photometric_viewer/gui/utils/issues/issue_translation.py:403
+#: photometric_viewer/gui/utils/issues/issue_translation.py:617
+msgid "Horizontal angles are out of order"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:414
+#: photometric_viewer/gui/utils/issues/issue_translation.py:628
+#: photometric_viewer/gui/utils/issues/issue_translation.py:404
+#: photometric_viewer/gui/utils/issues/issue_translation.py:618
+#, python-brace-format
+msgid "Horizontal angles are not in ascending order: {value}"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:418
+#: photometric_viewer/gui/utils/issues/issue_translation.py:428
+#: photometric_viewer/gui/utils/issues/issue_translation.py:438
+#: photometric_viewer/gui/utils/issues/issue_translation.py:632
+#: photometric_viewer/gui/utils/issues/issue_translation.py:642
+#: photometric_viewer/gui/utils/issues/issue_translation.py:652
+#: photometric_viewer/gui/utils/issues/issue_translation.py:700
+#: photometric_viewer/gui/utils/issues/issue_translation.py:712
+#: photometric_viewer/gui/utils/issues/issue_translation.py:722
+#: photometric_viewer/gui/utils/issues/issue_translation.py:749
+#: photometric_viewer/gui/utils/issues/issue_translation.py:761
+#: photometric_viewer/gui/utils/issues/issue_translation.py:771
+#: photometric_viewer/gui/utils/issues/issue_translation.py:408
+#: photometric_viewer/gui/utils/issues/issue_translation.py:622
+#: photometric_viewer/gui/utils/issues/issue_translation.py:690
+#: photometric_viewer/gui/utils/issues/issue_translation.py:702
+#: photometric_viewer/gui/utils/issues/issue_translation.py:739
+#: photometric_viewer/gui/utils/issues/issue_translation.py:751
+msgid "Invalid first horizontal angle"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:419
+#: photometric_viewer/gui/utils/issues/issue_translation.py:633
+#: photometric_viewer/gui/utils/issues/issue_translation.py:701
+#: photometric_viewer/gui/utils/issues/issue_translation.py:750
+#: photometric_viewer/gui/utils/issues/issue_translation.py:409
+#: photometric_viewer/gui/utils/issues/issue_translation.py:623
+#: photometric_viewer/gui/utils/issues/issue_translation.py:691
+#: photometric_viewer/gui/utils/issues/issue_translation.py:740
+#, python-brace-format
+msgid ""
+"Type C photometry first horizontal angle is invalid: {value}. Expected 0."
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:423
+#: photometric_viewer/gui/utils/issues/issue_translation.py:433
+#: photometric_viewer/gui/utils/issues/issue_translation.py:443
+#: photometric_viewer/gui/utils/issues/issue_translation.py:637
+#: photometric_viewer/gui/utils/issues/issue_translation.py:647
+#: photometric_viewer/gui/utils/issues/issue_translation.py:657
+#: photometric_viewer/gui/utils/issues/issue_translation.py:705
+#: photometric_viewer/gui/utils/issues/issue_translation.py:717
+#: photometric_viewer/gui/utils/issues/issue_translation.py:727
+#: photometric_viewer/gui/utils/issues/issue_translation.py:754
+#: photometric_viewer/gui/utils/issues/issue_translation.py:766
+#: photometric_viewer/gui/utils/issues/issue_translation.py:776
+#: photometric_viewer/gui/utils/issues/issue_translation.py:413
+#: photometric_viewer/gui/utils/issues/issue_translation.py:627
+#: photometric_viewer/gui/utils/issues/issue_translation.py:695
+#: photometric_viewer/gui/utils/issues/issue_translation.py:707
+#: photometric_viewer/gui/utils/issues/issue_translation.py:744
+#: photometric_viewer/gui/utils/issues/issue_translation.py:756
+msgid "Invalid last horizontal angle"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:424
+#: photometric_viewer/gui/utils/issues/issue_translation.py:638
+#: photometric_viewer/gui/utils/issues/issue_translation.py:414
+#: photometric_viewer/gui/utils/issues/issue_translation.py:628
+#, python-brace-format
+msgid ""
+"Type C photometry last horizontal angle is invalid: {value}. Expected 0, 90, "
+"180, or 360."
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:429
+#: photometric_viewer/gui/utils/issues/issue_translation.py:643
+#: photometric_viewer/gui/utils/issues/issue_translation.py:713
+#: photometric_viewer/gui/utils/issues/issue_translation.py:762
+#: photometric_viewer/gui/utils/issues/issue_translation.py:419
+#: photometric_viewer/gui/utils/issues/issue_translation.py:633
+#: photometric_viewer/gui/utils/issues/issue_translation.py:703
+#: photometric_viewer/gui/utils/issues/issue_translation.py:752
+#, python-brace-format
+msgid ""
+"Type B photometry first horizontal angle is invalid: {value}. Expected 0 or "
+"-90."
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:434
+#: photometric_viewer/gui/utils/issues/issue_translation.py:648
+#: photometric_viewer/gui/utils/issues/issue_translation.py:718
+#: photometric_viewer/gui/utils/issues/issue_translation.py:767
+#: photometric_viewer/gui/utils/issues/issue_translation.py:424
+#: photometric_viewer/gui/utils/issues/issue_translation.py:638
+#: photometric_viewer/gui/utils/issues/issue_translation.py:708
+#: photometric_viewer/gui/utils/issues/issue_translation.py:757
+#, python-brace-format
+msgid ""
+"Type B photometry last horizontal angle is invalid: {value}. Expected 90."
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:439
+#: photometric_viewer/gui/utils/issues/issue_translation.py:653
+#: photometric_viewer/gui/utils/issues/issue_translation.py:723
+#: photometric_viewer/gui/utils/issues/issue_translation.py:772
+#: photometric_viewer/gui/utils/issues/issue_translation.py:429
+#: photometric_viewer/gui/utils/issues/issue_translation.py:643
+#: photometric_viewer/gui/utils/issues/issue_translation.py:713
+#: photometric_viewer/gui/utils/issues/issue_translation.py:762
+#, python-brace-format
+msgid ""
+"Type A photometry first horizontal angle is invalid: {value}. Expected 0 or "
+"-90."
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:444
+#: photometric_viewer/gui/utils/issues/issue_translation.py:658
+#: photometric_viewer/gui/utils/issues/issue_translation.py:728
+#: photometric_viewer/gui/utils/issues/issue_translation.py:777
+#: photometric_viewer/gui/utils/issues/issue_translation.py:434
+#: photometric_viewer/gui/utils/issues/issue_translation.py:648
+#: photometric_viewer/gui/utils/issues/issue_translation.py:718
+#: photometric_viewer/gui/utils/issues/issue_translation.py:767
+#, python-brace-format
+msgid ""
+"Type A photometry last horizontal angle is invalid: {value}. Expected 90."
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:448
+#: photometric_viewer/gui/utils/issues/issue_translation.py:662
+#: photometric_viewer/gui/utils/issues/issue_translation.py:693
+#: photometric_viewer/gui/utils/issues/issue_translation.py:742
+#: photometric_viewer/gui/utils/issues/issue_translation.py:438
+#: photometric_viewer/gui/utils/issues/issue_translation.py:652
+#: photometric_viewer/gui/utils/issues/issue_translation.py:683
+#: photometric_viewer/gui/utils/issues/issue_translation.py:732
+msgid "Invalid luminous opening geometry"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:449
+#: photometric_viewer/gui/utils/issues/issue_translation.py:663
+#: photometric_viewer/gui/utils/issues/issue_translation.py:694
+#: photometric_viewer/gui/utils/issues/issue_translation.py:743
+#: photometric_viewer/gui/utils/issues/issue_translation.py:439
+#: photometric_viewer/gui/utils/issues/issue_translation.py:653
+#: photometric_viewer/gui/utils/issues/issue_translation.py:684
+#: photometric_viewer/gui/utils/issues/issue_translation.py:733
+#, python-brace-format
+msgid ""
+"Luminous opening geometry is invalid: width={width}, length={length}, "
+"height={height}"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:455
+#: photometric_viewer/gui/utils/issues/issue_translation.py:669
+#: photometric_viewer/gui/utils/issues/issue_translation.py:445
+#: photometric_viewer/gui/utils/issues/issue_translation.py:659
+msgid "Invalid number of intensities"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:456
+#: photometric_viewer/gui/utils/issues/issue_translation.py:670
+#: photometric_viewer/gui/utils/issues/issue_translation.py:446
+#: photometric_viewer/gui/utils/issues/issue_translation.py:660
+#, python-brace-format
+msgid "Expected {expected} intensity values, got {number}"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:462
+#: photometric_viewer/gui/utils/issues/issue_translation.py:452
+msgid "Header not found"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:463
+#: photometric_viewer/gui/utils/issues/issue_translation.py:453
+msgid "IESNA:LM-63-2002 header was not found in the file"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:467
+#: photometric_viewer/gui/utils/issues/issue_translation.py:683
+#: photometric_viewer/gui/utils/issues/issue_translation.py:732
+#: photometric_viewer/gui/utils/issues/issue_translation.py:457
+#: photometric_viewer/gui/utils/issues/issue_translation.py:673
+#: photometric_viewer/gui/utils/issues/issue_translation.py:722
+msgid "Invalid header"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:468
+#: photometric_viewer/gui/utils/issues/issue_translation.py:458
+#, python-brace-format
+msgid "IESNA:LM-63-2002 header is invalid: {header}"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:492
+#: photometric_viewer/gui/utils/issues/issue_translation.py:737
+#: photometric_viewer/gui/utils/issues/issue_translation.py:482
+#: photometric_viewer/gui/utils/issues/issue_translation.py:727
+msgid "Suggested metadata missing"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:493
+#: photometric_viewer/gui/utils/issues/issue_translation.py:483
+#, python-brace-format
+msgid "Suggested metadata key {key} is missing"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:518
+#: photometric_viewer/gui/utils/issues/issue_translation.py:508
+#, python-brace-format
+msgid "Metadata key {key} exceeds the maximum length"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:563
+#: photometric_viewer/gui/utils/issues/issue_translation.py:553
+#, python-brace-format
+msgid ""
+"Horizontal (first) value of LAMPPOSITION must be between 0.00 and 359.99 "
+"degrees. Given: {value}"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:568
+#: photometric_viewer/gui/utils/issues/issue_translation.py:558
+#, python-brace-format
+msgid ""
+"Vertical (second) value of LAMPPOSITION must be between 0.00 and 180.00 "
+"degrees. Given: {value}"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:588
+#: photometric_viewer/gui/utils/issues/issue_translation.py:578
+#, python-brace-format
+msgid "Vertical angles are not in ascending order: {value}"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:676
+#: photometric_viewer/gui/utils/issues/issue_translation.py:781
+#: photometric_viewer/gui/utils/issues/issue_translation.py:666
+#: photometric_viewer/gui/utils/issues/issue_translation.py:771
+msgid "Deprecated ballast-lamp photometric factor"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:677
+#: photometric_viewer/gui/utils/issues/issue_translation.py:782
+#: photometric_viewer/gui/utils/issues/issue_translation.py:667
+#: photometric_viewer/gui/utils/issues/issue_translation.py:772
+#, python-brace-format
+msgid ""
+"Ballast-lamp photometric factor is deprecated. Use a value of 1.0 instead "
+"(given: {value})"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:684
+#: photometric_viewer/gui/utils/issues/issue_translation.py:674
+#, python-brace-format
+msgid "IESNA:LM-63-1991 header is invalid: {header}"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:706
+#: photometric_viewer/gui/utils/issues/issue_translation.py:755
+#: photometric_viewer/gui/utils/issues/issue_translation.py:696
+#: photometric_viewer/gui/utils/issues/issue_translation.py:745
+#, python-brace-format
+msgid ""
+"Type C photometry last horizontal angle is invalid: {value}. Expected "
+"{expected}"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:733
+#: photometric_viewer/gui/utils/issues/issue_translation.py:723
+#, python-brace-format
+msgid "IESNA:LM-63-1995 header is invalid: {header}"
+msgstr ""
+
+#: photometric_viewer/gui/utils/issues/issue_translation.py:738
+#: photometric_viewer/gui/utils/issues/issue_translation.py:728
+#, python-brace-format
+msgid "Recommended metadata key {key} is missing"
 msgstr ""
 
 #: photometric_viewer/gui/dialogs/preferences.py:270
@@ -1295,12 +2439,6 @@ msgstr ""
 
 #: photometric_viewer/gui/pages/empty.py:9
 msgid "Empty page"
-msgstr ""
-
-#: photometric_viewer/gui/pages/empty.py:17
-#: photometric_viewer/gui/pages/empty.py:15
-#: photometric_viewer/gui/pages/empty.py:11
-msgid "Open photometric file to display it here"
 msgstr ""
 
 #: photometric_viewer/gui/pages/empty.py:23

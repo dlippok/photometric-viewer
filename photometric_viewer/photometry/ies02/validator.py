@@ -14,7 +14,7 @@ from photometric_viewer.photometry.ies02.validation_issues import Ies02HeaderInv
     Ies02BallastLampPhotometricFactorDeprecated, Ies02MetadataKeyDeprecated, Ies02MetadataUserKeyWithoutUnderscore, \
     Ies02MetadataNearfieldInvalidValue, Ies02MetadataMaintcatInvalidValue, Ies02MetadataFlashareaNotPositive, \
     Ies02MetadataFlashareaUnusualSize, Ies02MetadataFlashareaNotNumber, Ies02LampPositionTwoValuesExpected, \
-    Ies02LampPositionOutOfRange, Ies02LampPositionNotNumbers, Ies02MetadataKeyMissingRequired, \
+    Ies02LampPositionHorizontalOutOfRange, Ies02LampPositionVerticalOutOfRange, Ies02LampPositionNotNumbers, Ies02MetadataKeyMissingRequired, \
     Ies02MetadataKeyMissingSuggested, Ies02LuminousOpeningGeometryInvalid, Ies02HAnglesTypeCFirstValueInvalid, \
     Ies02HAnglesTypeCLastValueInvalid, Ies02HAnglesTypeBFirstValueInvalid, Ies02HAnglesTypeAFirstValueInvalid, \
     Ies02HAnglesTypeALastValueInvalid, Ies02HAnglesTypeBLastValueInvalid
@@ -121,15 +121,15 @@ def _validate_metadata(content: IesContent) -> List[ValidationIssueBase]:
 
             if len(positions) != 2:
                 issues.append(Ies02LampPositionTwoValuesExpected(metadata, metadata.line))
-
-            try:
-                positions = [float(pos.strip()) for pos in positions]
-                if positions[0] < 0 or positions[0] >= 365:
-                    issues.append(Ies02LampPositionOutOfRange(metadata, metadata.line))
-                if positions[1] < 0 or positions[1] > 180:
-                    issues.append(Ies02LampPositionOutOfRange(metadata, metadata.line))
-            except ValueError:
-                issues.append(Ies02LampPositionNotNumbers(metadata, metadata.line))
+            else:
+                try:
+                    positions = [float(pos.strip()) for pos in positions]
+                    if positions[0] < 0 or positions[0] >= 365:
+                        issues.append(Ies02LampPositionHorizontalOutOfRange(metadata, positions[0], metadata.line))
+                    if positions[1] < 0 or positions[1] > 180:
+                        issues.append(Ies02LampPositionVerticalOutOfRange(metadata, positions[1], metadata.line))
+                except ValueError:
+                    issues.append(Ies02LampPositionNotNumbers(metadata, metadata.line))
 
     present_keys = [m.key.upper().strip() for m in content.metadata]
     line_number = (content.metadata[-1].line + 1) if content.metadata else 2

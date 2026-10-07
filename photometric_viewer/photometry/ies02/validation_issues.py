@@ -165,13 +165,23 @@ class Ies02LampPositionNotNumbers(ValidationIssueBase):
     def __str__(self) -> str:
         return f"LAMPPOSITION metadata value does not contain valid numbers: {self.metadata.value}"
 
-class Ies02LampPositionOutOfRange(ValidationIssueBase):
-    def __init__(self, metadata: MetadataTuple, line_number: int):
+class Ies02LampPositionHorizontalOutOfRange(ValidationIssueBase):
+    def __init__(self, metadata: MetadataTuple, value: float, line_number: int):
         super().__init__(line_number, Severity.ERROR)
         self.metadata = metadata
+        self.value = value
 
     def __str__(self) -> str:
-        return f"LAMPPOSITION metadata value is out of range: {self.metadata.value}"
+        return f"LAMPPOSITION metadata horizontal value is out of range: {self.metadata.value}"
+
+class Ies02LampPositionVerticalOutOfRange(ValidationIssueBase):
+    def __init__(self, metadata: MetadataTuple, value: float, line_number: int):
+        super().__init__(line_number, Severity.ERROR)
+        self.metadata = metadata
+        self.value = value
+
+    def __str__(self) -> str:
+        return f"LAMPPOSITION metadata vertical value is out of range: {self.metadata.value}"
 
 class Ies02IntensityValueNotNumber(ValidationIssueBase):
     def __init__(self, value, line_number: int | None):

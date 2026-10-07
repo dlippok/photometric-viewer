@@ -3,6 +3,7 @@ from typing import List
 from gi.repository import Gtk, Adw
 from gi.repository.GtkSource import View
 
+from photometric_viewer.gui.utils.issues.issue_translation import get_translations
 from photometric_viewer.photometry.validation import ValidationIssueBase, Severity
 
 
@@ -10,10 +11,7 @@ class IssuesPopover(Gtk.Popover):
     def __init__(self, connected_view: View):
         super().__init__()
         self.connected_view = connected_view
-        box = Gtk.Box(
-            orientation=Gtk.Orientation.VERTICAL,
-
-        )
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
         box.append(
             Gtk.Label(
@@ -54,10 +52,15 @@ class IssuesPopover(Gtk.Popover):
             self.issues_list.append(row)
 
     def _create_list_item(self, issue: ValidationIssueBase) -> Adw.ActionRow:
+        translations = get_translations(issue)
+
         row = Adw.ActionRow(
-            title=str(issue),
+            title=translations.translation,
             css_classes=self._css_class(issue)
         )
+        if translations.details:
+            row.set_subtitle(translations.details)
+
         row.add_prefix(Gtk.Image(icon_name=self._icon_name(issue)))
 
         if issue.line_number is not None:
@@ -107,3 +110,4 @@ class IssuesPopover(Gtk.Popover):
                 return ["warning"]
             case _:
                 return []
+
