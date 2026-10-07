@@ -4,109 +4,170 @@ from photometric_viewer.model.luminaire import Luminaire, Calculable, FileFormat
     LuminairePhotometricProperties, Lamps, LuminousOpeningGeometry, LuminousOpeningShape
 from photometric_viewer.model.units import LengthUnits
 from photometric_viewer.photometry.ies02.converter import convert_content
-from photometric_viewer.photometry.ies02.model import IesContent, InlineAttributes, LampAttributes, MetadataTuple
+from photometric_viewer.photometry.iesna_common.model import IesContent, InlineAttributes, LampAttributes, MetadataTuple
+from photometric_viewer.photometry.common import Attribute
+
+
+def default_content() -> IesContent:
+    return IesContent(
+        header="IESNA:LM-63-2002",
+        metadata=[
+            MetadataTuple(key='TEST', value='TD-1234', line=1),
+            MetadataTuple(key='TESTLAB', value='ACME Labs', line=1),
+            MetadataTuple(key='ISSUEDATE', value='2023-01-20', line=1),
+            MetadataTuple(key='MANUFAC', value='ACME Inc.', line=1),
+            MetadataTuple(key='LUMCAT', value='LUM-1234', line=1),
+            MetadataTuple(key='LUMINAIRE', value='Test Luminaire', line=1),
+            MetadataTuple(key='LAMPCAT', value='LAMP-1234', line=1),
+            MetadataTuple(key='LAMP', value='Test Lamp 30W 3000K', line=1),
+            MetadataTuple(key='LAMPPOSITION', value='Test Position', line=1),
+            MetadataTuple(key='BALLASTCAT', value='BALLAST-1234', line=1),
+            MetadataTuple(key='BALLAST', value='Test Ballast', line=1),
+            MetadataTuple(key='COLORTEMP', value='3000K', line=1),
+            MetadataTuple(key='CRI', value='80', line=1)
+        ],
+        inline_attributes=InlineAttributes(
+            number_of_lamps=Attribute("1", line=1),
+            lumens_per_lamp=Attribute("-1.0", line=1),
+            multiplying_factor=Attribute("1.0", line=1),
+            n_v_angles=Attribute("37", line=1),
+            n_h_angles=Attribute("2", line=1),
+            photometry_type=Attribute("1", line=1),
+            luminous_opening_units=Attribute("2", line=1),
+            luminous_opening_width=Attribute("0.12", line=1),
+            luminous_opening_length=Attribute("0.34", line=1),
+            luminous_opening_height=Attribute("0.56", line=1),
+        ),
+        lamp_attributes=LampAttributes(
+            ballast_factor=Attribute("1.0", line=1),
+            ballast_lamp_photometric_factor=Attribute("1.0", line=1),
+            input_watts=Attribute("15.0", line=1)
+        ),
+        v_angles=[
+            Attribute("0.0", line=1),
+            Attribute("2.5", line=1),
+            Attribute("5.0", line=1),
+            Attribute("7.5", line=1),
+            Attribute("10.0", line=1),
+            Attribute("12.5", line=1),
+            Attribute("15.0", line=1),
+            Attribute("17.5", line=1),
+            Attribute("20.0", line=1),
+            Attribute("22.5", line=1),
+            Attribute("25.0", line=1),
+            Attribute("27.5", line=1),
+            Attribute("30.0", line=1),
+            Attribute("32.5", line=1),
+            Attribute("35.0", line=1),
+            Attribute("37.5", line=1),
+            Attribute("40.0", line=1),
+            Attribute("42.5", line=1),
+            Attribute("45.0", line=1),
+            Attribute("47.5", line=1),
+            Attribute("50.0", line=1),
+            Attribute("52.5", line=1),
+            Attribute("55.0", line=1),
+            Attribute("57.5", line=1),
+            Attribute("60.0", line=1),
+            Attribute("62.5", line=1),
+            Attribute("65.0", line=1),
+            Attribute("67.5", line=1),
+            Attribute("70.0", line=1),
+            Attribute("72.5", line=1),
+            Attribute("75.0", line=1),
+            Attribute("77.5", line=1),
+            Attribute("80.0", line=1),
+            Attribute("82.5", line=1),
+            Attribute("85.0", line=1),
+            Attribute("87.5", line=1),
+            Attribute("90.0", line=1)
+        ],
+        h_angles=[
+            Attribute("0.0", line=1),
+            Attribute("90.0", line=1)
+        ],
+        intensities=[
+            Attribute("2200.0", line=1),
+            Attribute("2000.2", line=1),
+            Attribute("1950.0", line=1),
+            Attribute("1700.1", line=1),
+            Attribute("1328.4", line=1),
+            Attribute("1115.1", line=1),
+            Attribute("900.5", line=1),
+            Attribute("700.4", line=1),
+            Attribute("600.3", line=1),
+            Attribute("501.2", line=1),
+            Attribute("400.1", line=1),
+            Attribute("398.3", line=1),
+            Attribute("380.9", line=1),
+            Attribute("400.2", line=1),
+            Attribute("390.5", line=1),
+            Attribute("320.0", line=1),
+            Attribute("185.0", line=1),
+            Attribute("100.6", line=1),
+            Attribute("40.1", line=1),
+            Attribute("20.0", line=1),
+            Attribute("15.2", line=1),
+            Attribute("15.0", line=1),
+            Attribute("14.0", line=1),
+            Attribute("11.0", line=1),
+            Attribute("10.8", line=1),
+            Attribute("10.8", line=1),
+            Attribute("10.0", line=1),
+            Attribute("7.0", line=1),
+            Attribute("4.0", line=1),
+            Attribute("1.2", line=1),
+            Attribute("0.0", line=1),
+            Attribute("0.0", line=1),
+            Attribute("0.0", line=1),
+            Attribute("0.0", line=1),
+            Attribute("0.0", line=1),
+            Attribute("1.0", line=1),
+            Attribute("0.0", line=1),
+            Attribute("2201.0", line=1),
+            Attribute("2000.2", line=1),
+            Attribute("1950.0", line=1),
+            Attribute("1700.1", line=1),
+            Attribute("1328.4", line=1),
+            Attribute("1115.1", line=1),
+            Attribute("900.5", line=1),
+            Attribute("700.4", line=1),
+            Attribute("600.3", line=1),
+            Attribute("501.2", line=1),
+            Attribute("400.1", line=1),
+            Attribute("398.3", line=1),
+            Attribute("380.9", line=1),
+            Attribute("400.2", line=1),
+            Attribute("390.5", line=1),
+            Attribute("320.0", line=1),
+            Attribute("185.0", line=1),
+            Attribute("100.6", line=1),
+            Attribute("40.1", line=1),
+            Attribute("20.0", line=1),
+            Attribute("15.2", line=1),
+            Attribute("15.0", line=1),
+            Attribute("14.0", line=1),
+            Attribute("11.0", line=1),
+            Attribute("10.8", line=1),
+            Attribute("10.8", line=1),
+            Attribute("10.0", line=1),
+            Attribute("7.0", line=1),
+            Attribute("4.0", line=1),
+            Attribute("1.2", line=1),
+            Attribute("0.0", line=1),
+            Attribute("0.0", line=1),
+            Attribute("0.0", line=1),
+            Attribute("0.0", line=1),
+            Attribute("0.0", line=1),
+            Attribute("1.0", line=1),
+            Attribute("1.0", line=1),
+        ]
+    )
 
 
 class TestConvertContent(unittest.TestCase):
-    def test_empty_content(self):
-        content = IesContent()
-
-        expected = Luminaire(
-            gamma_angles=[],
-            c_planes=[],
-            intensity_values={},
-            luminous_opening_geometry=None,
-            geometry=None,
-            lamps=[
-                Lamps(
-                    number_of_lamps=None,
-                    description=None,
-                    catalog_number=None,
-                    position=None,
-                    lumens_per_lamp=None,
-                    wattage=None,
-                    color=None,
-                    cri=None,
-                    ballast_description=None,
-                    ballast_catalog_number=None
-                )
-            ],
-            metadata=PhotometryMetadata(
-                catalog_number=None,
-                luminaire=None,
-                manufacturer=None,
-                date_and_user=None,
-                additional_properties={},
-                file_source="",
-                file_format=FileFormat.IES,
-                file_units=LengthUnits.METERS
-            ),
-            photometry=LuminairePhotometricProperties(
-                is_absolute=False,
-                luminous_flux=Calculable(None),
-                lor=Calculable(None),
-                dff=Calculable(None),
-                efficacy=Calculable(None)
-            )
-        )
-
-        self.assertEqual(convert_content(content), expected)
-
     def test_complete_content(self):
-        content = IesContent(
-            header="IESNA:LM-63-2002",
-            metadata=[
-                MetadataTuple(key='TEST', value='TD-1234'),
-                MetadataTuple(key='TESTLAB', value='ACME Labs'),
-                MetadataTuple(key='ISSUEDATE', value='2023-01-20'),
-                MetadataTuple(key='MANUFAC', value='ACME Inc.'),
-                MetadataTuple(key='LUMCAT', value='LUM-1234'),
-                MetadataTuple(key='LUMINAIRE', value='Test Luminaire'),
-                MetadataTuple(key='LAMPCAT', value='LAMP-1234'),
-                MetadataTuple(key='LAMP', value='Test Lamp 30W 3000K'),
-                MetadataTuple(key='LAMPPOSITION', value='Test Position'),
-                MetadataTuple(key='BALLASTCAT', value='BALLAST-1234'),
-                MetadataTuple(key='BALLAST', value='Test Ballast'),
-                MetadataTuple(key='COLORTEMP', value='3000K'),
-                MetadataTuple(key='CRI', value='80')
-            ],
-            inline_attributes=InlineAttributes(
-                number_of_lamps=1,
-                lumens_per_lamp=-1.0,
-                multiplying_factor=1.0,
-                n_v_angles=37,
-                n_h_angles=2,
-                photometry_type=1,
-                luminous_opening_units=2,
-                luminous_opening_width=0.12,
-                luminous_opening_length=0.34,
-                luminous_opening_height=0.56,
-            ),
-            lamp_attributes=LampAttributes(
-                ballast_factor=1.0,
-                future_use=1.0,
-                input_watts=15.0
-            ),
-            v_angles=[
-                0.0, 2.5, 5.0, 7.5, 10.0, 12.5, 15.0, 17.5, 20.0, 22.5, 25.0, 27.5, 30.0,
-                32.5, 35.0, 37.5, 40.0, 42.5, 45.0, 47.5, 50.0, 52.5, 55.0, 57.5, 60.0,
-                62.5, 65.0, 67.5, 70.0, 72.5, 75.0, 77.5, 80.0, 82.5, 85.0, 87.5, 90.0
-            ],
-            h_angles=[0.0, 90.0],
-            intensities=[
-                2200.0, 2000.2, 1950.0, 1700.1, 1328.4, 1115.1, 900.5,
-                700.4, 600.3, 501.2, 400.1, 398.3, 380.9, 400.2, 390.5,
-                320.0, 185.0, 100.6, 40.1, 20.0, 15.2, 15.0, 14.0, 11.0,
-                10.8, 10.8, 10.0, 7.0, 4.0, 1.2, 0.0, 0.0, 0.0, 0.0, 0.0,
-                1.0, 0.0,
-                2201.0, 2000.2, 1950.0, 1700.1, 1328.4, 1115.1, 900.5,
-                700.4, 600.3, 501.2, 400.1, 398.3, 380.9, 400.2, 390.5,
-                320.0, 185.0, 100.6, 40.1, 20.0, 15.2, 15.0, 14.0, 11.0,
-                10.8, 10.8, 10.0, 7.0, 4.0, 1.2, 0.0, 0.0, 0.0, 0.0, 0.0,
-                1.0, 1.0,
-
-            ]
-        )
+        content = default_content()
 
         expected = Luminaire(
             gamma_angles=[
@@ -167,8 +228,7 @@ class TestConvertContent(unittest.TestCase):
                     "TEST": "TD-1234",
                     "TESTLAB": "ACME Labs"
                 },
-                file_source="",
-                file_format=FileFormat.IES,
+                file_format=FileFormat.IES_LM63_2002,
                 file_units=LengthUnits.METERS
             ),
             photometry=LuminairePhotometricProperties(
@@ -187,7 +247,7 @@ class TestConvertContent(unittest.TestCase):
             {
                 "title": "Single property",
                 "given": [
-                    MetadataTuple(key='PROPERTY', value='Single value'),
+                    MetadataTuple(key='PROPERTY', value='Single value', line=1),
                 ],
                 "expected": {
                     "PROPERTY": "Single value",
@@ -196,12 +256,12 @@ class TestConvertContent(unittest.TestCase):
             {
                 "title": "Multiline property with MORE",
                 "given": [
-                    MetadataTuple(key='MULTILINE_PROPERTY1', value='First line'),
-                    MetadataTuple(key='MORE', value='Second line'),
-                    MetadataTuple(key='SINGLE_LINE_PROPERTY', value='Line'),
-                    MetadataTuple(key='MULTILINE_PROPERTY2', value='First line'),
-                    MetadataTuple(key='MORE', value='Second line'),
-                    MetadataTuple(key='MORE', value='Third line')
+                    MetadataTuple(key='MULTILINE_PROPERTY1', value='First line', line=1),
+                    MetadataTuple(key='MORE', value='Second line', line=1),
+                    MetadataTuple(key='SINGLE_LINE_PROPERTY', value='Line', line=1),
+                    MetadataTuple(key='MULTILINE_PROPERTY2', value='First line', line=1),
+                    MetadataTuple(key='MORE', value='Second line', line=1),
+                    MetadataTuple(key='MORE', value='Third line', line=1)
                 ],
                 "expected": {
                     "MULTILINE_PROPERTY1": "First line\nSecond line",
@@ -212,12 +272,12 @@ class TestConvertContent(unittest.TestCase):
             {
                 "title": "Multiline property with repeated keyword",
                 "given": [
-                    MetadataTuple(key='MULTILINE_PROPERTY1', value='First line'),
-                    MetadataTuple(key='MULTILINE_PROPERTY1', value='Second line'),
-                    MetadataTuple(key='MULTILINE_PROPERTY2', value='First line'),
-                    MetadataTuple(key='SINGLE_LINE_PROPERTY', value='Line'),
-                    MetadataTuple(key='MULTILINE_PROPERTY2', value='Second line'),
-                    MetadataTuple(key='MULTILINE_PROPERTY2', value='Third line')
+                    MetadataTuple(key='MULTILINE_PROPERTY1', value='First line', line=1),
+                    MetadataTuple(key='MULTILINE_PROPERTY1', value='Second line', line=1),
+                    MetadataTuple(key='MULTILINE_PROPERTY2', value='First line', line=1),
+                    MetadataTuple(key='SINGLE_LINE_PROPERTY', value='Line', line=1),
+                    MetadataTuple(key='MULTILINE_PROPERTY2', value='Second line', line=1),
+                    MetadataTuple(key='MULTILINE_PROPERTY2', value='Third line', line=1)
                 ],
                 "expected": {
                     "MULTILINE_PROPERTY1": "First line\nSecond line",
@@ -230,9 +290,8 @@ class TestConvertContent(unittest.TestCase):
 
         for case in test_cases:
             with self.subTest(title=case["title"]):
-                content = IesContent(
-                    metadata=case["given"]
-                )
+                content = default_content()
+                content.metadata = case["given"]
 
                 self.assertEqual(convert_content(content).metadata.additional_properties, case["expected"])
 
@@ -558,16 +617,11 @@ class TestConvertContent(unittest.TestCase):
 
         for case in test_cases:
             with self.subTest(title=case["title"]):
-                content = IesContent(
-                    header="IESNA:LM-63-2002",
-                    inline_attributes=InlineAttributes(
-                        luminous_opening_units=case["given"][3],
-                        luminous_opening_width=case["given"][0],
-                        luminous_opening_length=case["given"][1],
-                        luminous_opening_height=case["given"][2],
-                    )
-                )
-
+                content = default_content()
+                content.inline_attributes.luminous_opening_units = Attribute(str(case["given"][3]), line=0)
+                content.inline_attributes.luminous_opening_width = Attribute(str(case["given"][0]), line=0)
+                content.inline_attributes.luminous_opening_length = Attribute(str(case["given"][1]), line=0)
+                content.inline_attributes.luminous_opening_height = Attribute(str(case["given"][2]), line=0)
                 converted = convert_content(content)
 
                 self.assertEqual(converted.luminous_opening_geometry, case["expected"])
@@ -588,18 +642,14 @@ class TestConvertContent(unittest.TestCase):
 
         for case in test_cases:
             with self.subTest(title=case["title"]):
-                content = IesContent(
-                    inline_attributes=InlineAttributes(
-                        luminous_opening_units=case["given"][3],
-                        luminous_opening_width=case["given"][0],
-                        luminous_opening_length=case["given"][1],
-                        luminous_opening_height=case["given"][2],
-                    )
-                )
-
+                content = default_content()
+                content.inline_attributes.luminous_opening_units = Attribute(str(case["given"][3]), line=0)
+                content.inline_attributes.luminous_opening_width = Attribute(str(case["given"][0]), line=0)
+                content.inline_attributes.luminous_opening_length = Attribute(str(case["given"][1]), line=0)
+                content.inline_attributes.luminous_opening_height = Attribute(str(case["given"][2]), line=0)
                 converted = convert_content(content)
 
-                self.assertAlmostEqual(converted.metadata.file_units, case["expected"])
+                self.assertEqual(converted.metadata.file_units, case["expected"])
 
     def test_detect_absolute_photometry(self):
         test_cases = [
@@ -617,11 +667,8 @@ class TestConvertContent(unittest.TestCase):
 
         for case in test_cases:
             with self.subTest(title=case["title"]):
-                content = IesContent(
-                    inline_attributes=InlineAttributes(
-                        lumens_per_lamp=case["given"]
-                    )
-                )
+                content = default_content()
+                content.inline_attributes.lumens_per_lamp = Attribute(str(case["given"]),line=1)
                 self.assertEqual(convert_content(content).photometry.is_absolute, case["expected"])
 
     def test_calculating_intensities(self):
@@ -695,21 +742,24 @@ class TestConvertContent(unittest.TestCase):
 
         for case in test_cases:
             with self.subTest(title=case["title"]):
-                content = IesContent(
-                    inline_attributes=InlineAttributes(
-                        n_h_angles=3,
-                        n_v_angles=1,
-                        number_of_lamps=case["number_of_lamps"],
-                        lumens_per_lamp=case["lumens_per_lamp"],
-                        multiplying_factor=case["multiplying_factor"],
-                    ),
-                    h_angles=[0],
-                    v_angles=[0, 90, 180],
-                    lamp_attributes=LampAttributes(
-                        ballast_factor=case["ballast_factor"]
-                    ),
-                    intensities=case["intensities"]
-                )
+                content = default_content()
+                content.inline_attributes.n_h_angles = Attribute("3",line=1)
+                content.inline_attributes.n_v_angles = Attribute("1", line=1)
+                content.inline_attributes.number_of_lamps = Attribute(str(case["number_of_lamps"]), line=1)
+                content.inline_attributes.lumens_per_lamp = Attribute(str(case["lumens_per_lamp"]), line=1)
+                content.inline_attributes.multiplying_factor = Attribute(str(case["multiplying_factor"]), line=1)
+                content.lamp_attributes.ballast_factor = Attribute(str(case["ballast_factor"]), line=1)
+                content.h_angles = [ Attribute("0", line=2) ]
+                content.v_angles = [
+                    Attribute("0", line=2),
+                    Attribute("90", line=2),
+                    Attribute("180", line=2)
+                ]
+
+                content.intensities=[
+                    Attribute(i, line = 3)
+                    for i in case["intensities"]
+                ]
                 self.assertEqual(convert_content(content).intensity_values, case["expected"])
 
 if __name__ == '__main__':

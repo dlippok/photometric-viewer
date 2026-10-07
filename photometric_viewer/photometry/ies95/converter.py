@@ -4,18 +4,23 @@ from photometric_viewer.model.luminaire import LuminousOpeningGeometry
 from photometric_viewer.model.luminaire import Luminaire, PhotometryMetadata, FileFormat, Lamps, \
     LuminairePhotometricProperties, Calculable, LuminousOpeningShape
 from photometric_viewer.model.units import LengthUnits
-from photometric_viewer.photometry.ies95.model import IesContent
-from photometric_viewer.utils.conversion import safe_float
+from photometric_viewer.photometry.iesna_common.model import IesContent
+from photometric_viewer.utils.conversion import safe_float, safe_int
 
 
 def convert_content(content: IesContent) -> Luminaire:
+    ia = content.inline_attributes
+    la = content.lamp_attributes
+
     metadata = _convert_metadata(content)
     candela_values = _convert_candela_values(content)
     is_absolute = _get_is_absolute(content)
 
+    v_angles = [safe_float(a.value) for a in content.v_angles]
+    h_angles = [safe_float(a.value) for a in content.h_angles]
     return Luminaire(
-        gamma_angles=content.v_angles,
-        c_planes=content.h_angles,
+        gamma_angles=[x for x in v_angles if x is not None],
+        c_planes=[x for x in h_angles if x is not None],
         intensity_values=candela_values,
         geometry=None,
         luminous_opening_geometry=_convert_luminous_opening_geometry(content),
@@ -27,14 +32,14 @@ def convert_content(content: IesContent) -> Luminaire:
             efficacy=Calculable(None)
         ),
         lamps=[Lamps(
-            number_of_lamps=content.inline_attributes.number_of_lamps,
-            lumens_per_lamp=content.inline_attributes.lumens_per_lamp if not is_absolute else None,
+            number_of_lamps=safe_int(ia.number_of_lamps and ia.number_of_lamps.value),
+            lumens_per_lamp=safe_int(content.inline_attributes.lumens_per_lamp) if not is_absolute else None,
             description=metadata.pop("LAMP", None),
             catalog_number=metadata.pop("LAMPCAT", None),
             position=metadata.pop("LAMPPOSITION", None),
             ballast_catalog_number=metadata.pop("BALLASTCAT", None),
             ballast_description=metadata.pop("BALLAST", None),
-            wattage=content.lamp_attributes.input_watts,
+            wattage=safe_float(la.input_watts and la.input_watts.value),
             color=metadata.pop("COLORTEMP", None),
             cri=metadata.pop("CRI", None),
         )],
@@ -44,8 +49,7 @@ def convert_content(content: IesContent) -> Luminaire:
             manufacturer=metadata.pop("MANUFAC", None),
             date_and_user=metadata.pop("DATE", None),
             additional_properties=metadata,
-            file_source="",
-            file_format=FileFormat.IES,
+            file_format=FileFormat.IES_LM63_1995,
             file_units=_convert_file_units(content)
         )
     )
@@ -69,10 +73,14 @@ def _convert_metadata(content: IesContent) -> Dict[str, str]:
 
 
 def _convert_candela_values(content: IesContent) -> Dict[Tuple[float, float], float]:
-    lumens_per_lamp = content.inline_attributes.lumens_per_lamp or 0
-    number_of_lamps = content.inline_attributes.number_of_lamps or 0
-    multiplying_factor = content.inline_attributes.multiplying_factor or 1
-    ballast_factor = content.lamp_attributes.ballast_factor or 1
+    ia = content.inline_attributes
+    la = content.lamp_attributes
+    intensities = content.intensities
+
+    lumens_per_lamp = safe_float(ia.lumens_per_lamp.value) or 0
+    number_of_lamps = safe_int(ia.number_of_lamps.value) or 0
+    multiplying_factor = safe_float(ia.multiplying_factor.value) or 1
+    ballast_factor = safe_float(la.ballast_factor.value) or 1
 
     lumens = lumens_per_lamp * number_of_lamps
     relative_photometry_divider = lumens / 1000 if lumens_per_lamp >= 0 else 1
@@ -81,10 +89,10 @@ def _convert_candela_values(content: IesContent) -> Dict[Tuple[float, float], fl
 
     n = 0
     for h_angle in content.h_angles:
-        h_angle = safe_float(h_angle)
+        h_angle = safe_float(h_angle.value)
         for v_angle in content.v_angles:
-            v_angle = safe_float(v_angle)
-            raw_value = safe_float(content.intensities[n]) if len(content.intensities) >= n else None
+            v_angle = safe_float(v_angle.value)
+            raw_value = safe_float(intensities[n] and intensities[n].value) if len(content.intensities) >= n else None
             value = raw_value * multiplying_factor * ballast_factor
             candela_values[(h_angle, v_angle)] = round(value / relative_photometry_divider, ndigits=2)
             n += 1
@@ -93,19 +101,21 @@ def _convert_candela_values(content: IesContent) -> Dict[Tuple[float, float], fl
 
 
 def _convert_file_units(content: IesContent) -> LengthUnits:
-    return LengthUnits.FEET if content.inline_attributes.luminous_opening_units == 1 else LengthUnits.METERS
+    return LengthUnits.FEET if content.inline_attributes.luminous_opening_units.value == "1" else LengthUnits.METERS
 
 
 def _convert_luminous_opening_geometry(content: IesContent) -> LuminousOpeningGeometry | None:
+    ia = content.inline_attributes
+
     # Factor for unit conversion (internally always stored in meters)
     if _convert_file_units(content) == LengthUnits.FEET:
         f = 0.3048
     else:
         f = 1
 
-    w = content.inline_attributes.luminous_opening_width
-    l = content.inline_attributes.luminous_opening_length
-    h = content.inline_attributes.luminous_opening_height
+    w = safe_float(ia.luminous_opening_width and ia.luminous_opening_width.value)
+    l = safe_float(ia.luminous_opening_length and ia.luminous_opening_length.value)
+    h = safe_float(ia.luminous_opening_height and ia.luminous_opening_height.value)
 
     if w is None or l is None or h is None:
         return None
@@ -113,11 +123,7 @@ def _convert_luminous_opening_geometry(content: IesContent) -> LuminousOpeningGe
     return _create_luminous_opening(w * f, l * f, h * f)
 
 
-def _create_luminous_opening(
-        w: float | None,
-        l: float | None,
-        h: float | None
-) -> LuminousOpeningGeometry | None:
+def _create_luminous_opening(w: float, l: float, h: float) -> LuminousOpeningGeometry | None:
     match (w, l, h):
         case 0, 0, 0:
             return LuminousOpeningGeometry(0, 0, 0, shape=LuminousOpeningShape.POINT)
@@ -152,9 +158,12 @@ def _create_luminous_opening(
 
 
 def _get_is_absolute(content: IesContent) -> bool:
-    if content.inline_attributes.lumens_per_lamp is None:
+    if content.inline_attributes.lumens_per_lamp.value is None:
         return False
 
-    if content.inline_attributes.lumens_per_lamp >= 0:
+    ia = content.inline_attributes
+    lumens_per_lamp = safe_float(ia.lumens_per_lamp.value) or 0
+
+    if lumens_per_lamp >= 0:
         return False
     return True

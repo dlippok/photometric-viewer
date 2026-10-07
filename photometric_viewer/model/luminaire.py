@@ -3,6 +3,7 @@ from enum import Enum
 from typing import Dict, Tuple, List, Any
 
 from photometric_viewer.model.units import LengthUnits
+from photometric_viewer.utils.conversion import safe_float
 
 
 class LuminaireType(Enum):
@@ -20,8 +21,10 @@ class Symmetry(Enum):
 
 
 class FileFormat(Enum):
-    IES = 1
-    LDT = 2
+    IES_LM63_1991 = 1
+    IES_LM63_1995 = 2
+    IES_LM63_2002 = 3
+    EULUMDAT = 4
 
 
 @dataclass
@@ -29,7 +32,6 @@ class PhotometryMetadata:
     luminaire: str | None = None
     catalog_number: str | None = None
     manufacturer: str | None = None
-    file_source: str | None = None
     file_units: LengthUnits = LengthUnits.METERS
     luminaire_type: LuminaireType | None = None
     measurement: str | None = None
@@ -104,9 +106,10 @@ class Calculable:
             return self
 
     def from_percent(self):
-        if self.value is None:
+        value = safe_float(self.value)
+        if value is None:
             return Calculable(None, self.is_calculated)
-        return Calculable(self.value / 100, self.is_calculated)
+        return Calculable(value / 100, self.is_calculated)
 
 
 @dataclass()

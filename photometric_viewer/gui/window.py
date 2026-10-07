@@ -1,7 +1,7 @@
 import io
 import logging
 from datetime import datetime, timedelta
-from typing import Optional, IO
+from typing import Optional, IO, List
 
 from gi.repository import Adw, Gtk, Gio, GLib, Gdk
 from gi.repository.Gtk import FileChooserDialog, DropTarget
@@ -10,7 +10,7 @@ import photometric_viewer.formats.csv
 import photometric_viewer.formats.format_json
 import photometric_viewer.formats.png
 import photometric_viewer.formats.svg
-from photometric_viewer.formats.common import import_from_file
+from photometric_viewer.photometry.common import import_from_file
 from photometric_viewer.formats.exceptions import InvalidPhotometricFileFormatException
 from photometric_viewer.gui.dialogs.about import AboutWindow
 from photometric_viewer.gui.dialogs.file_chooser import ExportFileChooser, FileChooser
@@ -34,6 +34,7 @@ from photometric_viewer.model.luminaire import Luminaire
 from photometric_viewer.profiling.decorators import profiled
 from photometric_viewer.utils.gi.GSettings import SettingsManager
 from photometric_viewer.utils.gi.gio import gio_file_stream, write_string
+from photometric_viewer.photometry.validation import ValidationIssueBase
 
 
 class MainWindow(Adw.ApplicationWindow):
@@ -156,7 +157,12 @@ class MainWindow(Adw.ApplicationWindow):
         self.photometry_export_page.set_photometry(luminaire)
         self.number_of_luminaires_calculation_page.set_photometry(luminaire)
 
+        self.source_view_page.status_bar.set_source_language(luminaire.metadata.file_format)
+
         self.opened_photometry = luminaire
+
+    def update_issues(self, issues: List[ValidationIssueBase]):
+        self.source_view_page.status_bar.update_issues(issues)
 
     def on_new(self, *args):
         stream = io.StringIO("")
@@ -274,9 +280,11 @@ class MainWindow(Adw.ApplicationWindow):
 
         try:
             self.is_opening = True
-            photometry = import_from_file(f)
+            photometry, issues = import_from_file(f)
 
             self.display_photometry_content(photometry)
+            self.update_issues(issues)
+
 
             self.add_action_entries(
                 [
@@ -298,6 +306,8 @@ class MainWindow(Adw.ApplicationWindow):
                     ("open_url", self.on_open_url, "s")
                 ]
             )
+        except Exception as e:
+            logging.exception("Could not open photometric file")
         finally:
             self.is_opening = False
 
@@ -399,22 +409,21 @@ class MainWindow(Adw.ApplicationWindow):
         self.refresh_after = datetime.now() + timedelta(milliseconds=300)
 
     def load_textarea_changes_async(self):
-        try:
-            if not self.refresh_after or self.refresh_after > datetime.now():
-                return True
 
-            buffer = self.source_view_page.source_text_view.get_buffer()
-            start = buffer.get_start_iter()
-            end = buffer.get_end_iter()
+        if not self.refresh_after or self.refresh_after > datetime.now():
+            return True
 
-            content = buffer.get_text(start, end, True)
-            self.toggle_empty_page(content)
+        buffer = self.source_view_page.source_text_view.get_buffer()
+        start = buffer.get_start_iter()
+        end = buffer.get_end_iter()
 
-            self.open_stream(
-                io.StringIO(content)
-            )
-        except Exception as e:
-            print(f"Could not refresh article data: {e}")
+        content = buffer.get_text(start, end, True)
+        self.toggle_empty_page(content)
+
+        self.open_stream(
+            io.StringIO(content)
+        )
+
 
         self.refresh_after = None
         return True
