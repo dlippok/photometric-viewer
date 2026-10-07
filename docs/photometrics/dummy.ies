@@ -1,17 +1,22 @@
-IESNA:LM-63-1995
+IESNA:LM-63-2002
 [TESTLAB] ACME Photometrics
+[TEST] 26.7357.001
+[TESTDATE] 2026-05-01
 [MANUFAC] ACME Inc.
-[LUMCAT] BD0150
-[LUMINAIRE] Dummy IES file. Can be used for testing, creating screenshots, etc.
+[LUMINAIRE] Example Luminaire
+[LUMCAT] 7357-2026
+[ISSUEDATE] 2026-10-07
+[OTHER] This is a Dummy IES file. It can be used for testing, creating screenshots, etc. This file is a part of "Photometry", software for viewing photometric files under Linux.
+[MORE]
 [MORE] Licensed under MIT License
-[ISSUEDATE] 2023-05-01
 [LAMPCAT] LED Module
 [LAMP] Generic 15W LED module
-[BALLAST] BC15345
-[PROJECT] This file is a part of "Photometry" software for viewing photometric files under Linux.
-[PROJECT_WEBSITE] https://github.com/dlippok/photometric-viewer
+[BALLAST] BC7357
+[_PROJECT_WEBSITE] https://github.com/dlippok/photometric-viewer
+[WARNING] Custom attribute w/o underscore
+
 TILT=NONE
-1 -1 1.0 37 1 1 2 -0.75 0.000 0.000
+1 -2 1.0 37 1 1 2 0.55 1.5 0.22
 1.0 1.0 15
 0.0 2.5 5.0 7.5 10.0 12.5 15.0 17.5 20.0 22.5 25.0 27.5 30.0 32.5 35.0 37.5 40.0 42.5 45.0 47.5 50.0 52.5 55.0
 57.5 60.0 62.5 65.0 67.5 70.0 72.5 75.0 77.5 80.0 82.5 85.0 87.5 90.0

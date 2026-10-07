@@ -36,6 +36,7 @@ class PhotometryMetadata:
     luminaire_type: LuminaireType | None = None
     measurement: str | None = None
     date_and_user: str | None = None
+    description: str | None = None
     conversion_factor: float | None = None
     filename: str | None = None
     additional_properties: Dict[str, str] = field(default_factory=dict)
