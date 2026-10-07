@@ -1,9 +1,9 @@
 from typing import List
 
-from gi.repository import Gtk
+from gi.repository import Gtk, Adw
 from gi.repository.GtkSource import View
 
-from photometric_viewer.photometry.validation import ValidationIssueBase
+from photometric_viewer.photometry.validation import ValidationIssueBase, Severity
 
 
 class IssuesPopover(Gtk.Popover):
@@ -11,66 +11,73 @@ class IssuesPopover(Gtk.Popover):
         super().__init__()
         self.connected_view = connected_view
         box = Gtk.Box(
-            orientation=Gtk.Orientation.VERTICAL
+            orientation=Gtk.Orientation.VERTICAL,
+
         )
 
         box.append(
             Gtk.Label(
-                label=_("Go to line"),
+                label=_("Issues"),
                 css_classes=["heading"],
                 margin_top=12,
                 margin_bottom=12
             )
         )
 
-        goto_line_box = Gtk.Box(
-            orientation=Gtk.Orientation.HORIZONTAL
+        self.issues_list = Gtk.ListBox(
+            selection_mode=Gtk.SelectionMode.NONE,
+            css_classes=['boxed-list'],
+            width_request=400
+
         )
 
-        self.goto_line_entry = Gtk.Entry(
-            placeholder_text=_("line[:column]"),
-            activates_default=True,
-            margin_bottom=12,
-            margin_start=12,
+        scrolled_window = Gtk.ScrolledWindow(
+            child=self.issues_list,
+            vexpand=True,
+            hscrollbar_policy=Gtk.PolicyType.NEVER,
+            vscrollbar_policy=Gtk.PolicyType.AUTOMATIC,
+            max_content_height=500,
+            propagate_natural_height=True
         )
-        self.goto_line_entry.set_alignment(0.5)
-        self.goto_line_entry.connect("changed", self.on_goto_line_text_changed)
 
-        self.goto_line_button = Gtk.Button(
-            label=_("Go to"),
-            css_classes=["suggested-action"],
-            margin_bottom=12,
-            margin_start=6,
-            margin_end=12
-        )
-        self.goto_line_button.connect('clicked', self.goto_line_button_clicked)
+        box.append(scrolled_window)
 
-        goto_line_box.append(self.goto_line_entry)
-        goto_line_box.append(self.goto_line_button)
-        box.append(goto_line_box)
-
-        self.set_default_widget(self.goto_line_button)
         self.set_child(box)
 
-    def update_issues(self, issues: List[ValidationIssueBase]):
-        self.goto_line_entry.set_text(f"{line}:{column}")
+    def update_issues(self, issues: List[ValidationIssueBase]) -> None:
+        self.issues_list.remove_all()
+        decorated_issues = [i for i in issues]
+        decorated_issues.sort(key=lambda x: x.line_number)
+        decorated_issues.sort(key=lambda x: x.severity.value)
+        for issue in decorated_issues:
+            row = self._create_list_item(issue)
+            self.issues_list.append(row)
 
-    def goto_line_button_clicked(self, *args):
-        value = self.goto_line_entry.get_text()
+    def _create_list_item(self, issue: ValidationIssueBase) -> Adw.ActionRow:
+        row = Adw.ActionRow(
+            title=str(issue),
+            css_classes=self._css_class(issue)
+        )
+        row.add_prefix(Gtk.Image(icon_name=self._icon_name(issue)))
 
-        if value.strip() == '':
-            self.connected_view.grab_focus()
-            self.set_visible(False)
-            return
+        if issue.line_number is not None:
+            row.add_suffix(
+                Gtk.Label(
+                    label=_("Line: ") + str(issue.line_number),
+                )
+            )
+            row.set_activatable(True)
+            row.connect('activated', lambda _: self._goto_line(issue.line_number))
 
+        return row
+
+    def _goto_line(self, number: int):
         try:
-            values = value.split(":")
-            line = int(values[0]) - 1
-            column = int(values[1]) - 1 if len(values) > 1 else 0
             buffer = self.connected_view.get_buffer()
+
             (_, iter) = buffer.get_iter_at_line_offset(
-                max(line, 0),
-                max(column, 0)
+                max(number - 1, 0),
+                0
             )
             buffer.place_cursor(iter)
             self.connected_view.scroll_to_iter(iter, within_margin=0.1, use_align=False, xalign=0, yalign=0.5)
@@ -78,11 +85,25 @@ class IssuesPopover(Gtk.Popover):
             self.connected_view.grab_focus()
             self.set_visible(False)
 
-    def on_goto_line_text_changed(self, entry: Gtk.Entry):
-        current_text = entry.get_text()
-        allowed_chars = "1234567890:"
+    @staticmethod
+    def _icon_name(issue: ValidationIssueBase) -> str:
+        match issue.severity:
+            case Severity.ERROR:
+                return "errors-symbolic"
+            case Severity.WARNING:
+                return "warnings-symbolic"
+            case Severity.INFO:
+                return "infos-symbolic"
+            case Severity.STYLE:
+                return "styles-symbolic"
 
-        if all(char in allowed_chars for char in current_text):
-            self.goto_line_button.set_sensitive(True)
-        else:
-            self.goto_line_button.set_sensitive(False)
+
+    @staticmethod
+    def _css_class(issue: ValidationIssueBase) -> List[str]:
+        match issue.severity:
+            case Severity.ERROR:
+                return ["error"]
+            case Severity.WARNING:
+                return ["warning"]
+            case _:
+                return []
