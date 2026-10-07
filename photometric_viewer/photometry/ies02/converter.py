@@ -48,6 +48,7 @@ def convert_content(content: IesContent) -> Luminaire:
             luminaire=metadata.pop("LUMINAIRE", None),
             manufacturer=metadata.pop("MANUFAC", None),
             date_and_user=metadata.pop("ISSUEDATE", None),
+            description=metadata.pop("OTHER", None),
             additional_properties=metadata,
             file_format=FileFormat.IES_LM63_2002,
             file_units=_convert_file_units(content)

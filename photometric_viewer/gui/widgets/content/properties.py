@@ -1,5 +1,6 @@
 from gi.repository import Gtk
 from gi.repository.Adw import ActionRow
+from gi.repository.GLib import Variant
 from gi.repository.Gtk import Orientation
 
 from photometric_viewer.gui.widgets.common.header import Header
@@ -24,17 +25,9 @@ class LuminaireProperties(Gtk.Box):
 
     @profiled()
     def set_photometry(self, luminaire: Luminaire):
-        properties = [(k, v) for k, v in luminaire.metadata.additional_properties.items()]
+        self.property_list.remove_all()
 
-        list_item_len = len(list(self.property_list))
-        additional_properties_len = len(properties)
-
-        to_remove = []
-
-        for i in range(max(list_item_len, additional_properties_len)):
-            if i >= list_item_len:
-                key, value = properties[i]
-
+        for key, value in luminaire.metadata.additional_properties.items():
                 row = ActionRow(
                     title=key.title().replace("_", " ").strip(),
                     subtitle=value,
@@ -43,22 +36,17 @@ class LuminaireProperties(Gtk.Box):
                     css_classes=["property"] if value else []
 
                 )
+
+                if is_url(value):
+                    url_icon = Gtk.Image(icon_name='web-browser-symbolic')
+                    row.add_suffix(url_icon)
+                    row.set_activatable(True)
+                    row.set_action_name('win.open_url')
+                    row.set_action_target_value(Variant.new_string(value))
+                else:
+                    row.set_activatable(False)
+
                 self.property_list.append(row)
 
-            elif i >= additional_properties_len:
-                row = list(self.property_list)[i]
-                to_remove.append(row)
 
-            else:
-                key, value = properties[i]
-                row: ActionRow = list(self.property_list)[i]
-                row.set_title(key.title().replace("_", " ").strip())
-                row.set_subtitle(value)
-
-        for row in to_remove:
-            self.property_list.remove(row)
-
-        self.set_visible(additional_properties_len > 0)
-
-    def _needs_update(self, luminaire: Luminaire):
-        return True
+        self.set_visible(len(luminaire.metadata.additional_properties) > 0)
