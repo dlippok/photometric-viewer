@@ -350,7 +350,7 @@ class MainWindow(Adw.ApplicationWindow):
 
     def show_preferences(self, *args):
         window = PreferencesWindow()
-        window.show()
+        window.present(self)
 
     def show_keyboard_shortcuts(self, *args):
         window = ShortcutsWindow(self)

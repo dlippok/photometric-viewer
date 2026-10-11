@@ -8,7 +8,7 @@ from photometric_viewer.model.units import LengthUnits
 from photometric_viewer.utils.gi.GSettings import SettingsManager
 
 
-class PreferencesWindow(Adw.PreferencesWindow):
+class PreferencesWindow(Adw.PreferencesDialog):
     def __init__(self, **kwargs):
         super().__init__(search_enabled=False, **kwargs)
         self.settings_manager = SettingsManager()
