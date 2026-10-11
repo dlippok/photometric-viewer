@@ -6,6 +6,7 @@ class ShortcutsWindow:
         self._parent = parent
 
         s = Adw.ShortcutsSection(title=_("Editing"))
+
         s.add(Adw.ShortcutsItem(title=_("Open file"), action_name="win.open"))
         s.add(Adw.ShortcutsItem(title=_("Save"), action_name="win.save"))
         s.add(Adw.ShortcutsItem(title=_("Save as"), action_name="win.save_as"))
@@ -30,11 +31,12 @@ class ShortcutsWindow:
 
         s = Adw.ShortcutsSection()
         s.add(Adw.ShortcutsItem(title=_("Export photometry"), action_name="win.export_photometry"))
-        s.add(Adw.ShortcutsItem(title=_("Export light distribution curve"), action_name="win.export_photometry"))
+        s.add(Adw.ShortcutsItem(title=_("Export light distribution curve"), action_name="win.export_ldc_as_image"))
         self._window.add(s)
 
         s = Adw.ShortcutsSection(title=_("Application"))
         s.add(Adw.ShortcutsItem(title=_("New window"), action_name="app.new_window"))
+        s.add(Adw.ShortcutsItem(title=_("Close window"), action_name="win.close"))
         s.add(Adw.ShortcutsItem(title=_("Preferences"), action_name="app.show_preferences"))
         s.add(Adw.ShortcutsItem(title=_("Keyboard shortcuts"), action_name="app.show_keyboard_shortcuts"))
         self._window.add(s)

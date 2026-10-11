@@ -135,7 +135,8 @@ class MainWindow(Adw.ApplicationWindow):
                 ("show_ldc_zoom", self.on_show_ldc_zoom),
                 ("toggle_sidebar", self.on_toggle_sidebar),
                 ("goto_line", self.on_goto_line),
-                ("show_issues", self.on_show_issues)
+                ("show_issues", self.on_show_issues),
+                ("close", self.on_close)
             ]
         )
 
@@ -454,6 +455,8 @@ class MainWindow(Adw.ApplicationWindow):
             self.navigation_view.replace([self.empty_page])
             self.is_empty = True
 
+    def on_close(self, *args):
+        self.close()
 
     def on_close_request(self, *args):
         if self.pending_action == "close":
