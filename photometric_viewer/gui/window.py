@@ -134,7 +134,8 @@ class MainWindow(Adw.ApplicationWindow):
                 ("new", self.on_new),
                 ("show_ldc_zoom", self.on_show_ldc_zoom),
                 ("toggle_sidebar", self.on_toggle_sidebar),
-                ("goto_line", self.on_goto_line)
+                ("goto_line", self.on_goto_line),
+                ("show_issues", self.on_show_issues)
             ]
         )
 
@@ -269,6 +270,9 @@ class MainWindow(Adw.ApplicationWindow):
 
     def on_goto_line(self, *args):
         self.source_view_page.status_bar.cursor_positon_button.activate()
+
+    def on_show_issues(self, *args):
+        self.source_view_page.status_bar.issues_button.activate()
 
     def on_toggle_sidebar(self, *args):
         current = self.split_view.overlay_split_view.get_show_sidebar()
