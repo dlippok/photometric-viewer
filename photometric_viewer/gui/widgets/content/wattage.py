@@ -2,7 +2,6 @@ import locale
 
 from gi.repository.Gtk import Box, Orientation, Label, Expander, Adjustment, Scale, Align, PositionType
 
-from photometric_viewer.model.settings import Settings
 from photometric_viewer.utils.calc import annual_power_consumption, energy_cost
 from photometric_viewer.utils.gi.GSettings import SettingsManager
 
