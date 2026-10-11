@@ -15,6 +15,12 @@ class DirectRatiosPage(BasePage):
         self.luminaire = None
 
         self.property_list = PropertyList()
+        self.no_content_page = Adw.StatusPage(
+            title=_("No content to display"),
+            description=_("Photometric file doesn't contain any direct ratios for room indices"),
+            icon_name='dialog-question',
+            vexpand=True
+        )
 
         box = Gtk.Box(
             orientation=Orientation.VERTICAL,
@@ -26,6 +32,7 @@ class DirectRatiosPage(BasePage):
         )
 
         box.append(self.property_list)
+        box.append(self.no_content_page)
 
         clamp = Adw.Clamp(maximum_size=CLAMP_MAX_WIDTH)
         clamp.set_child(box)
@@ -41,6 +48,7 @@ class DirectRatiosPage(BasePage):
         self.luminaire = luminaire
         self.property_list.clear()
 
+        has_content = False
         for room_index, ratio in luminaire.metadata.direct_ratios_for_room_indices.items():
             row = ActionRow(
                 title=_("Room index: {:.2f}").format(room_index),
@@ -50,3 +58,7 @@ class DirectRatiosPage(BasePage):
 
             )
             self.property_list.append(row)
+            has_content = True
+
+        self.property_list.set_visible(has_content)
+        self.no_content_page.set_visible(not has_content)

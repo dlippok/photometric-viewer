@@ -9,22 +9,12 @@ from photometric_viewer.photometry.validation import ValidationIssueBase, Severi
 
 class IssuesPopover(Gtk.Popover):
     def __init__(self, connected_view: View):
-        super().__init__()
+        super().__init__(css_classes=['menu'])
         self.connected_view = connected_view
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
-        box.append(
-            Gtk.Label(
-                label=_("Issues"),
-                css_classes=["heading"],
-                margin_top=12,
-                margin_bottom=12
-            )
-        )
-
         self.issues_list = Gtk.ListBox(
             selection_mode=Gtk.SelectionMode.NONE,
-            css_classes=['boxed-list'],
             width_request=400
 
         )
@@ -51,6 +41,9 @@ class IssuesPopover(Gtk.Popover):
             row = self._create_list_item(issue)
             self.issues_list.append(row)
 
+        if len(decorated_issues) == 0:
+            self.issues_list.append(self._no_issues_list_item())
+
     def _create_list_item(self, issue: ValidationIssueBase) -> Adw.ActionRow:
         translations = get_translations(issue)
 
@@ -72,6 +65,16 @@ class IssuesPopover(Gtk.Popover):
             row.set_activatable(True)
             row.connect('activated', lambda _: self._goto_line(issue.line_number))
 
+        return row
+
+    def _no_issues_list_item(self) -> Adw.ActionRow:
+        row = Adw.ActionRow(
+            title=_("No issues"),
+            subtitle=_("Congratulations, the selected file is fully valid"),
+            css_classes=["success"]
+        )
+        row.set_activatable(False)
+        row.add_prefix(Gtk.Image(icon_name='no-issues'))
         return row
 
     def _goto_line(self, number: int):

@@ -100,9 +100,8 @@ class StatusBar(Gtk.Box):
 
         total_issues = n_style + n_info + n_warnings + n_errors
         if total_issues == 0:
-            self.issues_button.set_visible(False)
+            issues_box.append(Gtk.Image(icon_name="no-issues-symbolic", css_classes=["success"]))
         else:
-            self.issues_button.set_visible(True)
             remaining_issues = total_issues
             if n_errors:
                 issues_box.append(Gtk.Image(icon_name="errors-symbolic", css_classes=["error"], margin_end=6))

@@ -31,6 +31,13 @@ class IntensityValuesPage(BasePage):
         self.gamma_angle_selection_row.connect("notify::selected", self.on_update_gamma_angle)
         self.selection_list.append(self.gamma_angle_selection_row)
 
+        self.no_content_page = Adw.StatusPage(
+            title=_("No content to display"),
+            description=_("Photometric file doesn't contain any intensity values"),
+            icon_name='dialog-question',
+            vexpand=True
+        )
+
         box = Gtk.Box(
             orientation=Orientation.VERTICAL,
             spacing=16,
@@ -42,6 +49,7 @@ class IntensityValuesPage(BasePage):
 
         box.append(self.selection_list)
         box.append(self.property_list)
+        box.append(self.no_content_page)
 
         clamp = Adw.Clamp(maximum_size=CLAMP_MAX_WIDTH)
         clamp.set_child(box)
@@ -73,6 +81,11 @@ class IntensityValuesPage(BasePage):
         for gamma_angle in self.luminaire.gamma_angles:
             gamma_angle_model.append(str(gamma_angle))
         self.gamma_angle_selection_row.set_model(gamma_angle_model)
+
+        has_content = len(luminaire.gamma_angles) > 0
+        self.selection_list.set_visible(has_content)
+        self.property_list.set_visible(has_content)
+        self.no_content_page.set_visible(not has_content)
 
     def _needs_update(self, luminaire: Luminaire):
         if luminaire and not self.luminaire:

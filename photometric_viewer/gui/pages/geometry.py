@@ -16,6 +16,12 @@ class GeometryPage(BasePage):
         super().__init__(_("Geometry"), **kwargs)
         self.luminaire: Luminaire | None = None
         self.property_list = PropertyList()
+        self.no_content_page = Adw.StatusPage(
+            title=_("No content to display"),
+            description=_("Photometric file doesn't contain any geometry"),
+            icon_name='dialog-question',
+            vexpand=True
+        )
 
         box = Gtk.Box(
             orientation=Orientation.VERTICAL,
@@ -27,6 +33,7 @@ class GeometryPage(BasePage):
         )
 
         box.append(self.property_list)
+        box.append(self.no_content_page)
 
         clamp = Adw.Clamp(maximum_size=CLAMP_MAX_WIDTH)
         clamp.set_child(box)
@@ -78,45 +85,61 @@ class GeometryPage(BasePage):
 
         self.property_list.clear()
 
+        has_content = False
+
         match self.luminaire.geometry:
             case LuminaireGeometry(w, l, h, Shape.RECTANGULAR):
                 self.property_list.add(_("Luminaire shape"), _("Rectangular"))
                 self.property_list.add(_("Luminaire dimensions"), f"{self._convert(w)} x {self._convert(l)} x {self._convert(h)}")
+                has_content = True
             case LuminaireGeometry(w, l, h, Shape.ROUND):
                 self.property_list.add(_("Luminaire shape"), _("Round"))
                 self.property_list.add(_("Luminaire dimensions"), f"{self._convert(w)} x {self._convert(l)} x {self._convert(h)}")
+                has_content = True
 
         if self.luminaire.luminous_opening_geometry is not None:
             match self.luminaire.luminous_opening_geometry.shape:
                 case LuminousOpeningShape.RECTANGULAR:
                     self.property_list.add(_("Luminous opening shape"), _("Rectangular"))
+                    has_content = True
                 case LuminousOpeningShape.ROUND:
                     self.property_list.add(_("Luminous opening shape"), _("Round"))
+                    has_content = True
                 case LuminousOpeningShape.SPHERE:
                     self.property_list.add(_("Luminous opening shape"), _("Sphere"))
+                    has_content = True
                 case LuminousOpeningShape.POINT:
                     self.property_list.add(_("Luminous opening shape"), _("Point"))
+                    has_content = True
                 case LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_WIDTH:
                     self.property_list.add(_("Luminous opening shape"), _("Horizontal cylinder oriented along luminaire width"))
+                    has_content = True
                 case LuminousOpeningShape.HORIZONTAL_CYLINDER_ALONG_LENGTH:
                     self.property_list.add(_("Luminous opening shape"), _("Horizontal cylinder oriented along luminaire length"))
+                    has_content = True
                 case LuminousOpeningShape.ELLIPSE_ALONG_WIDTH:
                     self.property_list.add(_("Luminous opening shape"), _("Ellipse oriented along luminaire width"))
+                    has_content = True
                 case LuminousOpeningShape.ELLIPSE_ALONG_LENGTH:
                     self.property_list.add(_("Luminous opening shape"), _("Ellipse oriented along luminaire length"))
+                    has_content = True
                 case LuminousOpeningShape.ELLIPSOID_ALONG_WIDTH:
                     self.property_list.add(_("Luminous opening shape"), _("Ellipsoid oriented along luminaire width"))
+                    has_content = True
                 case LuminousOpeningShape.ELLIPSOID_ALONG_LENGTH:
                     self.property_list.add(_("Luminous opening shape"), _("Ellipsoid oriented along luminaire length"))
+                    has_content = True
 
             match self.luminaire.luminous_opening_geometry:
                 case LuminousOpeningGeometry(width=0, length=0, height=0, shape=LuminousOpeningShape.POINT):
                     pass
                 case LuminousOpeningGeometry(width=w, length=l, height=0, shape=_):
                     self.property_list.add(_("Luminous opening dimensions"), f"{self._convert(w)} x {self._convert(l)}")
+                    has_content = True
                 case LuminousOpeningGeometry(width=w, length=l, height=h, height_c90=None, shape=_):
                     self.property_list.add(_("Luminous opening dimensions"),
                              f"{self._convert(w)} x {self._convert(l)} x {self._convert(h)}")
+                    has_content = True
                 case LuminousOpeningGeometry(width=w, length=l, height=h0, height_c90=h90, height_c180=h180,
                                              height_c270=h270, shape=_):
                     self.property_list.add(_("Luminous opening dimensions"), f"{self._convert(w)} x {self._convert(l)}")
@@ -124,11 +147,20 @@ class GeometryPage(BasePage):
                         _("Luminous opening height"),
                         f"C0:\t\t{self._convert(h0)}\nC90:\t{self._convert(h90)}\nC180:\t{self._convert(h180)}\nC270:\t{self._convert(h270)}"
                     )
+                    has_content = True
 
-        self.property_list.add_if_non_empty(_("Luminaire type"), self._display_luminaire_type(self.luminaire.metadata.luminaire_type))
+        luminaire_type = self._display_luminaire_type(self.luminaire.metadata.luminaire_type)
+        if luminaire_type is not None:
+            self.property_list.add(_("Luminaire type"), luminaire_type)
+            has_content = True
+
+        self.property_list.set_visible(has_content)
+        self.no_content_page.set_visible(not has_content)
+
+
 
     @staticmethod
-    def _display_luminaire_type(luminaire_type: LuminaireType | None):
+    def _display_luminaire_type(luminaire_type: LuminaireType | None) -> str | None:
         match luminaire_type:
             case LuminaireType.POINT_SOURCE_WITH_VERTICAL_SYMMETRY:
                 return _("Point source with symmetry about the vertical axis")
