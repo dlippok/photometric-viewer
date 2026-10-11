@@ -1,3 +1,5 @@
+from cProfile import label
+
 from gi.repository import Adw, Gtk
 from gi.repository.Gtk import ScrolledWindow, PolicyType, Orientation
 
@@ -16,6 +18,12 @@ class PhotometryPage(BasePage):
         self.luminaire = None
 
         self.property_list = PropertyList()
+        self.no_content_page = Adw.StatusPage(
+            title=_("No content to display"),
+            description=_("Photometric file doesn't contain any photometric properties"),
+            icon_name='dialog-question',
+            vexpand=True
+        )
 
         box = Gtk.Box(
             orientation=Orientation.VERTICAL,
@@ -27,6 +35,7 @@ class PhotometryPage(BasePage):
         )
 
         box.append(self.property_list)
+        box.append(self.no_content_page)
 
         clamp = Adw.Clamp(maximum_size=CLAMP_MAX_WIDTH)
         clamp.set_child(box)
@@ -46,6 +55,8 @@ class PhotometryPage(BasePage):
         self.property_list.clear()
         photometric_properties = calc.PHOTOMETRIC_PROPERTY_CALCULATOR.calculate(luminaire)
 
+        has_content = False
+
         if photometric_properties.luminous_flux.value:
             self.property_list.add(
                 _("Luminous flux"),
@@ -53,6 +64,7 @@ class PhotometryPage(BasePage):
                 is_calculated=photometric_properties.luminous_flux.is_calculated,
                 hint=_("Total amount of light emitted by the luminaire.")
             )
+            has_content = True
 
         if photometric_properties.lor.value:
             self.property_list.append(
@@ -66,6 +78,7 @@ class PhotometryPage(BasePage):
                     hint=_("Ratio of luminous flux emitted by the luminaire to the luminous flux emitted by the lamps.")
                 )
             )
+            has_content = True
 
         if photometric_properties.efficacy.value:
             self.property_list.append(Gauge(
@@ -76,6 +89,7 @@ class PhotometryPage(BasePage):
                 calculated=photometric_properties.efficacy.is_calculated,
                 hint=_("Ratio of luminous flux emitted by the luminaire to the power consumed by the luminaire.")
             ))
+            has_content = True
 
         if photometric_properties.dff.value:
             self.property_list.append(
@@ -90,6 +104,10 @@ class PhotometryPage(BasePage):
                         "Ratio of luminous flux emitted by the luminaire in the downward hemisphere to the luminous flux emitted by the luminaire in all directions.")
                 )
             )
+            has_content = True
+
+        self.property_list.set_visible(has_content)
+        self.no_content_page.set_visible(not has_content)
 
     def _needs_update(self, luminaire: Luminaire):
         if luminaire and not self.luminaire:

@@ -57,11 +57,7 @@ class PhotometricDiagram(Gtk.DrawingArea):
 
     def set_photometry(self, luminaire: Luminaire):
         self.luminaire = luminaire
-        if self.luminaire.intensity_values:
-            self.set_visible(True)
-            self.queue_draw()
-        else:
-            self.set_visible(False)
+        self.queue_draw()
 
         self.lock_angle = False
 

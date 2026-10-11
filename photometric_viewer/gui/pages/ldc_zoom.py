@@ -34,7 +34,6 @@ class LdcZoomPage(BasePage):
         self.highlight_details = DiagramHighlightDetails()
 
         box.append(self.diagram)
-
         box.append(self.highlight_details)
 
         clamp = Adw.Clamp(maximum_size=CLAMP_MAX_WIDTH)

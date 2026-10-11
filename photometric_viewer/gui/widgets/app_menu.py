@@ -64,6 +64,10 @@ class ApplicationMenuButton(Gtk.MenuButton):
                     <attribute name='action'>app.show_preferences</attribute>
                 </item>
                 <item>
+                    <attribute name='label' translatable='yes'>Keyboard Shortcuts</attribute>
+                    <attribute name='action'>app.show_keyboard_shortcuts</attribute>
+                </item>
+                <item>
                     <attribute name='label' translatable='yes'>About Photometry</attribute>
                     <attribute name='action'>app.show_about_window</attribute>
                 </item>
@@ -73,7 +77,7 @@ class ApplicationMenuButton(Gtk.MenuButton):
     """
 
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+        super().__init__(**kwargs, primary=True)
 
         builder: Gtk.Builder = Gtk.Builder()
         builder.set_translation_domain("io.github.dlippok.photometric-viewer")

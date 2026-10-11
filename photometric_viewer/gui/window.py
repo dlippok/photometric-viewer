@@ -10,6 +10,7 @@ import photometric_viewer.formats.csv
 import photometric_viewer.formats.format_json
 import photometric_viewer.formats.png
 import photometric_viewer.formats.svg
+from photometric_viewer.gui.dialogs.shortcuts import ShortcutsWindow
 from photometric_viewer.photometry.common import import_from_file
 from photometric_viewer.formats.exceptions import InvalidPhotometricFileFormatException
 from photometric_viewer.gui.dialogs.about import AboutWindow
@@ -133,12 +134,15 @@ class MainWindow(Adw.ApplicationWindow):
                 ("new", self.on_new),
                 ("show_ldc_zoom", self.on_show_ldc_zoom),
                 ("toggle_sidebar", self.on_toggle_sidebar),
-                ("goto_line", self.on_goto_line)
+                ("goto_line", self.on_goto_line),
+                ("show_issues", self.on_show_issues),
+                ("close", self.on_close)
             ]
         )
 
         self.install_action("app.show_about_window", None, self.show_about_dialog)
         self.install_action("app.show_preferences", None, self.show_preferences)
+        self.install_action("app.show_keyboard_shortcuts", None, self.show_keyboard_shortcuts)
         self.connect("close-request", self.on_close_request)
 
     def setup_accelerators(self):
@@ -268,6 +272,9 @@ class MainWindow(Adw.ApplicationWindow):
     def on_goto_line(self, *args):
         self.source_view_page.status_bar.cursor_positon_button.activate()
 
+    def on_show_issues(self, *args):
+        self.source_view_page.status_bar.issues_button.activate()
+
     def on_toggle_sidebar(self, *args):
         current = self.split_view.overlay_split_view.get_show_sidebar()
         show_sidebar = not current
@@ -289,7 +296,6 @@ class MainWindow(Adw.ApplicationWindow):
             self.add_action_entries(
                 [
                     ("show_intensity_values", self.show_intensity_values),
-                    ("show_source", self.show_source),
                     ("show_direct_ratios", self.show_direct_ratios),
                     ("show_photometry", self.show_photometry),
                     ("show_geometry", self.show_geometry),
@@ -344,6 +350,10 @@ class MainWindow(Adw.ApplicationWindow):
 
     def show_preferences(self, *args):
         window = PreferencesWindow()
+        window.show()
+
+    def show_keyboard_shortcuts(self, *args):
+        window = ShortcutsWindow(self)
         window.show()
 
     def show_page(self, page: BasePage):
@@ -445,6 +455,8 @@ class MainWindow(Adw.ApplicationWindow):
             self.navigation_view.replace([self.empty_page])
             self.is_empty = True
 
+    def on_close(self, *args):
+        self.close()
 
     def on_close_request(self, *args):
         if self.pending_action == "close":
