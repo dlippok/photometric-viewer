@@ -77,7 +77,7 @@ class ApplicationMenuButton(Gtk.MenuButton):
     """
 
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+        super().__init__(**kwargs, primary=True)
 
         builder: Gtk.Builder = Gtk.Builder()
         builder.set_translation_domain("io.github.dlippok.photometric-viewer")
