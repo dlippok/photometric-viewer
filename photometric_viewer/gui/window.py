@@ -509,7 +509,6 @@ class MainWindow(Adw.ApplicationWindow):
         self.pending_action = None
         self.pending_drop_file = None
 
-    @staticmethod
-    def show_about_dialog(*args):
-        window = AboutWindow()
+    def show_about_dialog(self, *args):
+        window = AboutWindow(self)
         window.show()
