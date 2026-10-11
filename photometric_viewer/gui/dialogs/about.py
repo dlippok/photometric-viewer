@@ -19,3 +19,4 @@ class AboutWindow:
 
     def show(self):
         self._about_window.show()
+

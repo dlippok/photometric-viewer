@@ -64,6 +64,10 @@ class ApplicationMenuButton(Gtk.MenuButton):
                     <attribute name='action'>app.show_preferences</attribute>
                 </item>
                 <item>
+                    <attribute name='label' translatable='yes'>Keyboard Shortcuts</attribute>
+                    <attribute name='action'>app.show_keyboard_shortcuts</attribute>
+                </item>
+                <item>
                     <attribute name='label' translatable='yes'>About Photometry</attribute>
                     <attribute name='action'>app.show_about_window</attribute>
                 </item>

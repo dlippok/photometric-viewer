@@ -10,6 +10,7 @@ import photometric_viewer.formats.csv
 import photometric_viewer.formats.format_json
 import photometric_viewer.formats.png
 import photometric_viewer.formats.svg
+from gui.dialogs.shortcuts import ShortcutsWindow
 from photometric_viewer.photometry.common import import_from_file
 from photometric_viewer.formats.exceptions import InvalidPhotometricFileFormatException
 from photometric_viewer.gui.dialogs.about import AboutWindow
@@ -139,6 +140,7 @@ class MainWindow(Adw.ApplicationWindow):
 
         self.install_action("app.show_about_window", None, self.show_about_dialog)
         self.install_action("app.show_preferences", None, self.show_preferences)
+        self.install_action("app.show_keyboard_shortcuts", None, self.show_keyboard_shortcuts)
         self.connect("close-request", self.on_close_request)
 
     def setup_accelerators(self):
@@ -289,7 +291,6 @@ class MainWindow(Adw.ApplicationWindow):
             self.add_action_entries(
                 [
                     ("show_intensity_values", self.show_intensity_values),
-                    ("show_source", self.show_source),
                     ("show_direct_ratios", self.show_direct_ratios),
                     ("show_photometry", self.show_photometry),
                     ("show_geometry", self.show_geometry),
@@ -344,6 +345,10 @@ class MainWindow(Adw.ApplicationWindow):
 
     def show_preferences(self, *args):
         window = PreferencesWindow()
+        window.show()
+
+    def show_keyboard_shortcuts(self, *args):
+        window = ShortcutsWindow(self)
         window.show()
 
     def show_page(self, page: BasePage):
