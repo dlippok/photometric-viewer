@@ -4,8 +4,8 @@ from photometric_viewer.utils.project import PROJECT
 
 
 class AboutWindow:
-    def __init__(self):
-        self._about_window = Adw.AboutWindow(
+    def __init__(self, parent: Gtk.Window):
+        self._about_window = Adw.AboutDialog(
             application_name=_(PROJECT.name),
             application_icon=PROJECT.id,
             developer_name=PROJECT.developer_name,
@@ -14,9 +14,10 @@ class AboutWindow:
             issue_url=PROJECT.urls.bug_tracker,
             support_url=PROJECT.urls.support,
             copyright=PROJECT.copyright,
-            license_type=Gtk.License.MIT_X11
+            license_type=Gtk.License.MIT_X11,
         )
+        self.parent = parent
 
     def show(self):
-        self._about_window.show()
+        self._about_window.present(self.parent)
 
