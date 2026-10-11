@@ -31,6 +31,7 @@ class LuminairePhotometricProperties(Box):
             activatable_widget=photometric_properites_icon,
         )
         self.photometric_properites_flux_label = Label()
+        self.photometric_properites_row.add_prefix(Gtk.Image(icon_name="photometry-symbolic"))
         self.photometric_properites_row.add_suffix(self.photometric_properites_flux_label)
         self.photometric_properites_row.add_suffix(photometric_properites_icon)
         self.property_list.append(self.photometric_properites_row)

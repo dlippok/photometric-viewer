@@ -1,6 +1,6 @@
 import locale
 
-from gi.repository.Gtk import Box, Orientation, Label, Expander, Adjustment, Scale, Align
+from gi.repository.Gtk import Box, Orientation, Label, Expander, Adjustment, Scale, Align, PositionType
 
 from photometric_viewer.model.settings import Settings
 from photometric_viewer.utils.calc import annual_power_consumption, energy_cost
@@ -26,29 +26,11 @@ class WattageBox(Box):
         self.wattage: float = wattage
         self.daily_hours_of_operation = 8
 
-        name_label = Label(label=_("Wattage"), hexpand=True, xalign=0)
-        name_label.set_css_classes(["h1"])
-        self.append(name_label)
-
-        value_label = Label(
-            label=f"{self.wattage:.0f} W",
-            margin_top=8,
-            tooltip_text=f"{self.wattage:.0f} W",
-            hexpand=True,
-            xalign=0,
-            selectable=True,
-            wrap=True
-        )
-        self.append(value_label)
-
-        power_consumption_expander = Expander(label=_("Power consumption"), margin_top=8)
-
         self.power_consumption_label = Label(xalign=1, selectable=True)
         self.annual_cost_label = Label(xalign=1, selectable=True)
 
         power_consumption_box = self.power_consumption_calculator()
-        power_consumption_expander.set_child(power_consumption_box)
-        self.append(power_consumption_expander)
+        self.append(power_consumption_box)
 
         self._refresh_cost_calculation()
 
@@ -60,7 +42,7 @@ class WattageBox(Box):
             margin_end=12
         )
 
-        content_box.append(Label(label=_("Utilization (hours per day)"), xalign=0, yalign=0.5))
+        content_box.append(Label(label=_("Utilization (hours per day)"), xalign=0, yalign=0))
 
         daily_hours_adjustment = Adjustment(
             lower=0,
@@ -70,18 +52,23 @@ class WattageBox(Box):
             page_size=0
         )
 
-        daily_hours_scale = Scale(hexpand=True, adjustment=daily_hours_adjustment)
+        daily_hours_scale = Scale(hexpand=True, adjustment=daily_hours_adjustment, margin_bottom=12)
         daily_hours_scale.set_draw_value(True)
         daily_hours_scale.connect("value-changed", self._on_daily_hours_scale_value_changed)
+        daily_hours_scale.add_mark(0, PositionType.BOTTOM, "0")
+        daily_hours_scale.add_mark(6, PositionType.BOTTOM, "6")
+        daily_hours_scale.add_mark(12, PositionType.BOTTOM, "12")
+        daily_hours_scale.add_mark(18, PositionType.BOTTOM, "18")
+        daily_hours_scale.add_mark(24, PositionType.BOTTOM, "24")
         content_box.append(daily_hours_scale)
 
-        power_consumption_box = Box(orientation=Orientation.HORIZONTAL, spacing=6, homogeneous=False, halign=Align.CENTER)
+        power_consumption_box = Box(orientation=Orientation.HORIZONTAL, spacing=6, homogeneous=False, halign=Align.START)
         power_consumption_box.append(Label(label=_("Annual power consumption"), xalign=0))
 
         power_consumption_box.append(self.power_consumption_label)
         content_box.append(power_consumption_box)
 
-        annual_cost_box = Box(orientation=Orientation.HORIZONTAL, spacing=6, homogeneous=False, halign=Align.CENTER)
+        annual_cost_box = Box(orientation=Orientation.HORIZONTAL, spacing=6, homogeneous=False, halign=Align.START)
         annual_cost_box.append(Label(label=_("Annual cost of operation"), xalign=0))
 
         annual_cost_box.append(self.annual_cost_label)

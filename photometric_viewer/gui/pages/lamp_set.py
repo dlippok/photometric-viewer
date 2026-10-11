@@ -47,10 +47,7 @@ class LampSetPage(BasePage):
         self.property_list.add_if_non_empty(_("Number of lamps"), lamp_set.number_of_lamps)
         self.property_list.add_if_non_empty(_("Lamp"), lamp_set.description)
         self.property_list.add_if_non_empty(_("Lamp catalog no."), lamp_set.catalog_number)
-
-        self._add_color_widget(lamp_set)
         self._add_cri_widget(lamp_set)
-        self._add_wattage_widget(lamp_set)
 
         if not luminaire.photometry.is_absolute and lamp_set.lumens_per_lamp:
             self.property_list.add(
@@ -61,16 +58,15 @@ class LampSetPage(BasePage):
 
             if lamp_set.wattage:
                 efficacy = round(lamp_set.lumens_per_lamp * lamp_set.number_of_lamps / lamp_set.wattage)
-                self.property_list.append(Gauge(
-                    name=_("Efficacy"),
-                    min_value=0, max_value=160,
-                    value=efficacy,
-                    display=_value_with_unit(efficacy, "lm/W"),
-                    calculated=lamp_set.lumens_per_lamp is None,
+                self.property_list.add(
+                    _("Efficacy"),
+                    _value_with_unit(efficacy, "lm/W"),
                     hint=_("Ratio of luminous flux emitted by the lamp to the power consumed by the lamp.")
-                ))
+                )
 
         self.property_list.add_if_non_empty(_("Lamp position"), lamp_set.position)
+        self._add_color_widget(lamp_set)
+        self._add_wattage_widget(lamp_set)
 
     def _add_color_widget(self, lamp_set: Lamps):
         if not lamp_set.color:
@@ -83,9 +79,11 @@ class LampSetPage(BasePage):
         cri_temp_match = cri_temp_regex.match(lamp_set.color)
 
         if color_temp_match:
-            self.property_list.append(ColorTemperatureGauge(int(color_temp_match.groups()[0])))
+            temp = int(color_temp_match.groups()[0])
+            self.property_list.add_expander(_("Color temperature"), f"{temp} K", ColorTemperatureGauge(temp))
         elif cri_temp_match:
-            self.property_list.append(ColorTemperatureGauge(int(cri_temp_match.groups()[1]) * 100))
+            temp = int(cri_temp_match.groups()[1]) * 100
+            self.property_list.add_expander(_("Color temperature"), f"{temp} K", ColorTemperatureGauge(temp))
         else:
             self.property_list.add(
                 _("Color"),
@@ -94,30 +92,21 @@ class LampSetPage(BasePage):
             )
 
     def _add_cri_widget(self, lamp_set: Lamps):
-        if lamp_set.cri and lamp_set.cri.isnumeric():
-            self.property_list.append(
-                Gauge(
-                    name=_("Color Rendering Index (CRI)"),
-                    min_value=0, max_value=100,
-                    value=float(lamp_set.cri),
-                    display=lamp_set.cri,
-                    hint=_(
-                        "Measure of the ability of a light source to reproduce the colors of various objects faithfully in comparison with an ideal or natural light source."
-                    )
-                )
+        self.property_list.add_if_non_empty(
+            _("Color Rendering Index (CRI)"),
+            lamp_set.cri,
+            hint=_(
+                "Measure of the ability of a light source to reproduce the colors of various objects faithfully in comparison with an ideal or natural light source."
             )
-        else:
-            self.property_list.add_if_non_empty(
-                _("Color Rendering Index (CRI)"),
-                lamp_set.cri,
-                hint=_(
-                    "Measure of the ability of a light source to reproduce the colors of various objects faithfully in comparison with an ideal or natural light source."
-                )
-            )
+        )
 
     def _add_wattage_widget(self, lamp_set: Lamps):
         self.wattage_box = None
         if lamp_set.wattage:
             self.wattage_box = WattageBox(lamp_set.wattage)
-            self.property_list.append(self.wattage_box)
+            self.property_list.add_expander(
+                _("Wattage"),
+                f"{lamp_set.wattage:.0f} W",
+                self.wattage_box
+            )
 

@@ -33,15 +33,6 @@ class ColorTemperatureGauge(Box):
         ]
 
         self.color_temperature = color_temperature
-
-        name_label = Label(label=_("Color temperature"), hexpand=True, xalign=0)
-        name_label.set_css_classes(["h1"])
-        self.append(name_label)
-
-        self.color_temperature_label = Label(hexpand=True, selectable=True)
-        self.color_temperature_label.set_xalign(0)
-        self.append(self.color_temperature_label)
-
         self.temp_bar = Label(css_classes=["temperature-bar"], label="|")
         self.append(self.temp_bar)
 
@@ -111,7 +102,6 @@ class ColorTemperatureGauge(Box):
         return None
 
     def update(self):
-        self.color_temperature_label.set_label(f"{self.color_temperature} K")
         position = 0
         match self.color_temperature:
             case x if x < 1600:
@@ -121,7 +111,6 @@ class ColorTemperatureGauge(Box):
             case x if x >= 6800:
                 position = 1
 
-        self.color_temperature_label.set_xalign(position)
         self.temp_bar.set_xalign(position)
 
         closest_source = self._get_closest_source(self.color_temperature)
