@@ -132,6 +132,13 @@
     </requires>
 
     <releases>
+        <release version="3.6.0" date="2026-10-17">
+           <description>
+                <p>Adds validation issues for IES and EULUMDAT files, keyboard shortcuts, and a redesigned luminaire information header.</p>
+                <p xml:lang="de">Fügt Validierungshinweise für IES- und EULUMDAT-Dateien, Tastenkürzel und eine überarbeitete Leuchtenkopfzeile hinzu.</p>
+                <p xml:lang="pl">Dodaje informacje o błędach walidacji plików IES i EULUMDAT, skróty klawiaturowe oraz przeprojektowany nagłówek danych oprawy.</p>
+           </description>
+        </release>
         <release version="3.5.1" date="2026-08-09">
            <description>
                 <p>Improves performance when updating photometric data in the text editor.</p>
@@ -303,4 +310,3 @@
         <release version="0.1.0" date="2023-04-07"/>
     </releases>
 </component>
-
