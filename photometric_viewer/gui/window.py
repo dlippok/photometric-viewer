@@ -50,7 +50,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.pending_drop_file = None
         self.is_empty = True
 
-        self.set_default_size(1000, 700)
+        self.set_default_size(1200, 900)
         self.install_actions()
 
         self.settings_manager = SettingsManager()
@@ -350,7 +350,7 @@ class MainWindow(Adw.ApplicationWindow):
 
     def show_preferences(self, *args):
         window = PreferencesWindow()
-        window.show()
+        window.present(self)
 
     def show_keyboard_shortcuts(self, *args):
         window = ShortcutsWindow(self)
@@ -509,7 +509,6 @@ class MainWindow(Adw.ApplicationWindow):
         self.pending_action = None
         self.pending_drop_file = None
 
-    @staticmethod
-    def show_about_dialog(*args):
-        window = AboutWindow()
+    def show_about_dialog(self, *args):
+        window = AboutWindow(self)
         window.show()
