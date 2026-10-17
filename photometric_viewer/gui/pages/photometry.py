@@ -67,41 +67,31 @@ class PhotometryPage(BasePage):
             has_content = True
 
         if photometric_properties.lor.value:
-            self.property_list.append(
-                Gauge(
-                    name=_("Light output ratio"),
-                    value=photometric_properties.lor.value,
-                    min_value=0,
-                    max_value=1,
-                    display=f"{photometric_properties.lor.value:.2%}",
-                    calculated=photometric_properties.lor.is_calculated,
-                    hint=_("Ratio of luminous flux emitted by the luminaire to the luminous flux emitted by the lamps.")
-                )
+            self.property_list.add(
+                _("Light output ratio"),
+                f"{photometric_properties.lor.value:.2%}",
+                is_calculated=photometric_properties.lor.is_calculated,
+                hint=_("Ratio of luminous flux emitted by the luminaire to the luminous flux emitted by the lamps.")
             )
             has_content = True
 
         if photometric_properties.efficacy.value:
-            self.property_list.append(Gauge(
-                name=_("Efficacy"),
-                min_value=0, max_value=160,
-                value=photometric_properties.efficacy.value,
-                display=f"{photometric_properties.efficacy.value:.0f}lm/w",
-                calculated=photometric_properties.efficacy.is_calculated,
-                hint=_("Ratio of luminous flux emitted by the luminaire to the power consumed by the luminaire.")
-            ))
+            self.property_list.add(
+                    _("Efficacy"),
+                    f"{photometric_properties.efficacy.value:.0f}lm/w",
+                    is_calculated=photometric_properties.efficacy.is_calculated,
+                    hint=_("Ratio of luminous flux emitted by the luminaire to the power consumed by the luminaire.")
+            )
             has_content = True
 
         if photometric_properties.dff.value:
-            self.property_list.append(
-                Gauge(
-                    name=_("Downward flux fraction (DFF)"),
-                    value=photometric_properties.dff.value,
-                    min_value=0,
-                    max_value=1,
-                    display=f"{photometric_properties.dff.value:.0%}",
-                    calculated=photometric_properties.dff.is_calculated,
-                    hint=_(
-                        "Ratio of luminous flux emitted by the luminaire in the downward hemisphere to the luminous flux emitted by the luminaire in all directions.")
+            self.property_list.add(
+                _("Downward flux fraction (DFF)"),
+                f"{photometric_properties.dff.value:.0%}",
+                is_calculated=photometric_properties.dff.is_calculated,
+                hint=_(
+                    "Ratio of luminous flux emitted by the luminaire in the downward hemisphere to the luminous flux "
+                    "emitted by the luminaire in all directions."
                 )
             )
             has_content = True

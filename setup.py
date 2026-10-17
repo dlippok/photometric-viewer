@@ -38,6 +38,8 @@ setup(name='photometric-viewer',
               'assets/icons/hicolor/scalable/actions/date-symbolic.svg',
               'assets/icons/hicolor/scalable/actions/measurement-symbolic.svg',
               'assets/icons/hicolor/scalable/actions/description-symbolic.svg',
+              'assets/icons/hicolor/scalable/actions/value-lock-symbolic.svg',
+              'assets/icons/hicolor/scalable/actions/calculated-symbolic.svg',
           ],
       },
       zip_safe=False)

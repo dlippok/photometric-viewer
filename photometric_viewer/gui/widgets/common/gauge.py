@@ -10,35 +10,21 @@ class Gauge(Box):
             orientation=Orientation.VERTICAL,
             homogeneous=False,
             spacing=4,
-            margin_start=16,
-            margin_end=16,
+            margin_start=12,
+            margin_end=12,
             margin_top=16,
             margin_bottom=16,
             **kwargs
         )
 
         name_box = Box(orientation=Orientation.HORIZONTAL)
-        name_label = Label(label=name, hexpand=True, xalign=0, wrap=True, wrap_mode=WrapMode.WORD_CHAR)
-        name_label.set_css_classes(["h1"])
+        name_label = Label(label=name, hexpand=True, xalign=0, wrap=True, wrap_mode=WrapMode.WORD_CHAR, css_classes=["dim-label", "small"])
         name_box.append(name_label)
 
         if calculated:
             name_box.append(badges.calculated())
 
         self.append(name_box)
-
-        if hint:
-            hint_label = Label(
-                label=hint,
-                hexpand=True,
-                xalign=0,
-                wrap=True,
-                wrap_mode=WrapMode.WORD_CHAR,
-                selectable=True,
-                css_classes=["dim-label"],
-            )
-            self.append(hint_label)
-
 
         try:
             bar_value = min(value, max_value)
@@ -47,7 +33,6 @@ class Gauge(Box):
                 min_value=min_value,
                 max_value=max_value,
                 value=bar_value,
-                margin_top=8
             )
             self.append(level_bar)
         except ValueError:
