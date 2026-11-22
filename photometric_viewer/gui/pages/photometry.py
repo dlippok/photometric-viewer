@@ -1,15 +1,12 @@
-from cProfile import label
-
 from gi.repository import Adw, Gtk
 from gi.repository.Gtk import ScrolledWindow, PolicyType, Orientation
 
 from photometric_viewer.config.appearance import CLAMP_MAX_WIDTH
 from photometric_viewer.gui.pages.base import BasePage
-from photometric_viewer.gui.widgets.common.gauge import Gauge
 from photometric_viewer.gui.widgets.common.property_list import PropertyList
 from photometric_viewer.model.luminaire import Luminaire
-from photometric_viewer.utils import calc
 from photometric_viewer.profiling.decorators import profiled
+from photometric_viewer.utils import calc
 
 
 class PhotometryPage(BasePage):
