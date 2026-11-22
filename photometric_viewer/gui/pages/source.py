@@ -3,7 +3,7 @@ import time
 import typing
 from concurrent.futures import ThreadPoolExecutor
 
-from gi.repository import Adw, Gtk, GtkSource
+from gi.repository import Adw, GLib, Gtk, GtkSource
 from gi.repository.GObject import ParamSpecInt
 from gi.repository.Gtk import ScrolledWindow, PolicyType, WrapMode
 from gi.repository.GtkSource import View
@@ -85,6 +85,56 @@ class SourceViewPage(BasePage):
             self.source_text_view.get_buffer().set_modified(False)
         finally:
             self.opening = False
+
+    def reload_stream(self, f: typing.IO) -> bool:
+        buffer = self.source_text_view.get_buffer()
+        content = f.read()
+        start = buffer.get_start_iter()
+        end = buffer.get_end_iter()
+        if buffer.get_text(start, end, True) == content:
+            buffer.set_modified(False)
+            return False
+
+        cursor_offset = buffer.get_iter_at_mark(buffer.get_insert()).get_offset()
+        selection_offset = buffer.get_iter_at_mark(buffer.get_selection_bound()).get_offset()
+        horizontal_adjustment = self.scrolled_window.get_hadjustment()
+        vertical_adjustment = self.scrolled_window.get_vadjustment()
+        horizontal_scroll = horizontal_adjustment.get_value()
+        vertical_scroll = vertical_adjustment.get_value()
+
+        try:
+            self.opening = True
+            buffer.begin_user_action()
+            buffer.set_text(content)
+        finally:
+            buffer.end_user_action()
+            self.opening = False
+
+        buffer.set_modified(False)
+        end_offset = buffer.get_char_count()
+        buffer.select_range(
+            buffer.get_iter_at_offset(min(cursor_offset, end_offset)),
+            buffer.get_iter_at_offset(min(selection_offset, end_offset)),
+        )
+        GLib.idle_add(
+            self.restore_scroll_position,
+            horizontal_adjustment,
+            horizontal_scroll,
+            vertical_adjustment,
+            vertical_scroll,
+        )
+        return True
+
+    @staticmethod
+    def restore_scroll_position(
+        horizontal_adjustment: Gtk.Adjustment,
+        horizontal_scroll: float,
+        vertical_adjustment: Gtk.Adjustment,
+        vertical_scroll: float,
+    ):
+        horizontal_adjustment.set_value(horizontal_scroll)
+        vertical_adjustment.set_value(vertical_scroll)
+        return GLib.SOURCE_REMOVE
 
     def _update_language(self):
         time.sleep(0.1)
