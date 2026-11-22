@@ -372,8 +372,23 @@ class MainWindow(Adw.ApplicationWindow):
         if self.opened_file_mtime is not None and file_mtime != self.opened_file_mtime:
             path = self.opened_file.get_path() or self.opened_file.get_parse_name()
             print(f"File {path} changed on disk")
+            if not self.reload_opened_file():
+                return True
 
         self.opened_file_mtime = file_mtime
+        return True
+
+    def reload_opened_file(self) -> bool:
+        if not self.opened_file:
+            return False
+
+        try:
+            with gio_file_stream(self.opened_file) as file_stream:
+                self.source_view_page.reload_stream(file_stream)
+        except GLib.Error:
+            logging.exception("Could not reload changed photometric file")
+            return False
+
         return True
 
     def open_file(self, file: Gio.File):
