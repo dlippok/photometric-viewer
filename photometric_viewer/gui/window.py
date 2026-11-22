@@ -60,6 +60,8 @@ class MainWindow(Adw.ApplicationWindow):
         self.opened_photometry: Optional[Luminaire] = None
         self.opened_file: Gio.File | None = None
         self.opened_file_mtime: tuple[int, int] | None = None
+        self.external_change_toast: Adw.Toast | None = None
+        self.external_change_reload_undo_available = False
         self.refresh_after: datetime | None = None
 
         GLib.timeout_add(100, self.load_textarea_changes_async)
@@ -324,6 +326,8 @@ class MainWindow(Adw.ApplicationWindow):
     def update_file(self, file: Gio.File):
         self.opened_file = file
         self.refresh_opened_file_mtime()
+        self.external_change_reload_undo_available = False
+        self.dismiss_external_change_toast()
 
         filename = file.get_basename()
         self.set_title(title=filename)
@@ -374,6 +378,7 @@ class MainWindow(Adw.ApplicationWindow):
             print(f"File {path} changed on disk")
             if not self.reload_opened_file():
                 return True
+            self.show_external_change_toast()
 
         self.opened_file_mtime = file_mtime
         return True
@@ -384,12 +389,44 @@ class MainWindow(Adw.ApplicationWindow):
 
         try:
             with gio_file_stream(self.opened_file) as file_stream:
-                self.source_view_page.reload_stream(file_stream)
+                self.external_change_reload_undo_available = self.source_view_page.reload_stream(file_stream)
         except GLib.Error:
+            self.external_change_reload_undo_available = False
             logging.exception("Could not reload changed photometric file")
             return False
 
         return True
+
+    def show_external_change_toast(self):
+        self.dismiss_external_change_toast()
+
+        toast = Adw.Toast.new(_("The photometric file has been modified on the disk"))
+        toast.set_button_label(_("Undo"))
+        toast.set_timeout(5)
+        toast.connect("button-clicked", self.on_external_change_toast_undo)
+        toast.connect("dismissed", self.on_external_change_toast_dismissed)
+        self.external_change_toast = toast
+        self.toast_overlay.add_toast(toast)
+
+    def on_external_change_toast_undo(self, *args):
+        buffer = self.source_view_page.source_text_view.get_buffer()
+        if self.external_change_reload_undo_available and buffer.get_can_undo():
+            buffer.undo()
+        elif self.external_change_reload_undo_available:
+            logging.warning("No undo action is available for the external file reload")
+
+        self.external_change_reload_undo_available = False
+        self.dismiss_external_change_toast()
+
+    def on_external_change_toast_dismissed(self, toast: Adw.Toast):
+        if self.external_change_toast is toast:
+            self.external_change_toast = None
+
+    def dismiss_external_change_toast(self):
+        toast = self.external_change_toast
+        self.external_change_toast = None
+        if toast:
+            toast.dismiss()
 
     def open_file(self, file: Gio.File):
         try:

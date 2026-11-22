@@ -86,14 +86,14 @@ class SourceViewPage(BasePage):
         finally:
             self.opening = False
 
-    def reload_stream(self, f: typing.IO):
+    def reload_stream(self, f: typing.IO) -> bool:
         buffer = self.source_text_view.get_buffer()
         content = f.read()
         start = buffer.get_start_iter()
         end = buffer.get_end_iter()
         if buffer.get_text(start, end, True) == content:
             buffer.set_modified(False)
-            return
+            return False
 
         cursor_offset = buffer.get_iter_at_mark(buffer.get_insert()).get_offset()
         selection_offset = buffer.get_iter_at_mark(buffer.get_selection_bound()).get_offset()
@@ -123,6 +123,7 @@ class SourceViewPage(BasePage):
             vertical_adjustment,
             vertical_scroll,
         )
+        return True
 
     @staticmethod
     def restore_scroll_position(
