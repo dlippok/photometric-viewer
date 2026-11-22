@@ -59,9 +59,11 @@ class MainWindow(Adw.ApplicationWindow):
 
         self.opened_photometry: Optional[Luminaire] = None
         self.opened_file: Gio.File | None = None
+        self.opened_file_mtime: tuple[int, int] | None = None
         self.refresh_after: datetime | None = None
 
         GLib.timeout_add(100, self.load_textarea_changes_async)
+        GLib.timeout_add_seconds(1, self.check_opened_file_mtime)
 
         self.empty_page = EmptyContentPage()
         self.luminaire_content_page = PhotometryContentPage()
@@ -186,6 +188,7 @@ class MainWindow(Adw.ApplicationWindow):
             start = buffer.get_start_iter()
             end = buffer.get_end_iter()
             write_string(self.opened_file, buffer.get_text(start, end, True))
+            self.refresh_opened_file_mtime()
             self.source_view_page.source_text_view.get_buffer().set_modified(False)
             self.resume_pending_action()
         else:
@@ -320,6 +323,8 @@ class MainWindow(Adw.ApplicationWindow):
 
     def update_file(self, file: Gio.File):
         self.opened_file = file
+        self.refresh_opened_file_mtime()
+
         filename = file.get_basename()
         self.set_title(title=filename)
         self.window_title.set_subtitle(filename)
@@ -328,6 +333,48 @@ class MainWindow(Adw.ApplicationWindow):
         self.json_export_file_chooser.set_current_name(f"{filename}.json")
         self.csv_export_file_chooser.set_current_name(f"{filename}.csv")
         self.photometry_export_page.set_current_name(f"{filename}_exported")
+
+    def get_file_mtime(self, file: Gio.File) -> tuple[int, int]:
+        info = file.query_info(
+            "time::modified,time::modified-usec",
+            Gio.FileQueryInfoFlags.NONE,
+            None,
+        )
+        modified = info.get_attribute_uint64("time::modified")
+        modified_usec = (
+            info.get_attribute_uint32("time::modified-usec")
+            if info.has_attribute("time::modified-usec")
+            else 0
+        )
+        return modified, modified_usec
+
+    def refresh_opened_file_mtime(self):
+        if not self.opened_file:
+            self.opened_file_mtime = None
+            return
+
+        try:
+            self.opened_file_mtime = self.get_file_mtime(self.opened_file)
+        except GLib.Error:
+            self.opened_file_mtime = None
+            logging.exception("Could not query opened photometric file modification time")
+
+    def check_opened_file_mtime(self):
+        if not self.opened_file or not self.get_property("is-active"):
+            return True
+
+        try:
+            file_mtime = self.get_file_mtime(self.opened_file)
+        except GLib.Error:
+            logging.exception("Could not query opened photometric file modification time")
+            return True
+
+        if self.opened_file_mtime is not None and file_mtime != self.opened_file_mtime:
+            path = self.opened_file.get_path() or self.opened_file.get_parse_name()
+            print(f"File {path} changed on disk")
+
+        self.opened_file_mtime = file_mtime
+        return True
 
     def open_file(self, file: Gio.File):
         try:
