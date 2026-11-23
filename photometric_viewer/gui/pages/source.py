@@ -105,7 +105,8 @@ class SourceViewPage(BasePage):
         try:
             self.opening = True
             buffer.begin_user_action()
-            buffer.set_text(content)
+            buffer.delete(start, end)
+            buffer.insert(buffer.get_start_iter(), content)
         finally:
             buffer.end_user_action()
             self.opening = False

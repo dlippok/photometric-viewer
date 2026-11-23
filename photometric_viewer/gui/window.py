@@ -374,8 +374,6 @@ class MainWindow(Adw.ApplicationWindow):
             return True
 
         if self.opened_file_mtime is not None and file_mtime != self.opened_file_mtime:
-            path = self.opened_file.get_path() or self.opened_file.get_parse_name()
-            print(f"File {path} changed on disk")
             if not self.reload_opened_file():
                 return True
             self.show_external_change_toast()
